@@ -1,0 +1,129 @@
+<article class="content dashboard-page" ng-init="loadEmpDetails()">
+  <section class="section">
+    <div class="row">
+			<div class="col-md-6">
+				<div class="card card-info">
+					<div class="card-header">
+						<div class="header-block">
+							<p class="title"> Personal Information</p>
+						</div>
+					</div>
+				  <div class="card card-block">
+						<div class="row">
+							<div class="col-xs-6 col-sm-4">
+								<div class="profile-img">
+									<img class="img-responsive" src="assets/faces/3.jpg" />
+								</div>
+							</div>
+							<div class="col-sm-8">
+								<div class="form-group">
+									<label for="email">About</label>
+									<p>{{employee_details.about}}</p>
+								</div>
+							</div>
+						</div>
+						<div class="row m-t-20">
+							<div class="col-md-12">
+								<table class="table table-bordered">
+                  <tbody>
+                    <tr>
+                        <th scope="row">Employee ID</th>
+                        <td>{{employee_details.emp_id}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Name</th>
+                        <td>{{employee_details.first_name}} {{employee_details.last_name}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Personal Email</th>
+                        <td>{{employee_details.per_email}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Gender</th>
+                        <td>{{employee_details.gender}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Marital</th>
+                        <td>{{employee_details.merital_status}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Birthday</th>
+                        <td>{{employee_details.dob}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Mobile</th>
+                        <td>{{employee_details.mobile}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">City</th>
+                        <td>{{employee_details.city}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">State</th>
+                        <td>{{employee_details.state}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Postal</th>
+                        <td>{{employee_details.postal}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Country</th>
+                        <td>{{employee_details.country}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Address</th>
+                        <td>{{employee_details.address}}</td>
+                    </tr>
+                </tbody>
+            </table>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+    <div class="col-md-6">
+      <div class="card card-info">
+        <div class="card-header">
+          <div class="header-block">
+          <p class="title"> Professional Information</p>
+          </div>
+        </div>
+        <div class="card card-block">
+          <div class="row m-t-20">
+            <div class="col-md-12">
+              <table class="table table-bordered">
+                <tbody>
+                  <tr>
+                    <th scope="row">Education Qualification</th>
+                    <td>{{employee_details.qualification}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Professional Qualification</th>
+                    <td>{{employee_details.pro_qualification}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Previous Company</th>
+                    <td>{{employee_details.pre_company}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Designation</th>
+                    <td>{{employee_details.designation}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Year of Experience</th>
+                    <td>{{employee_details.year_of_exp}} Yrs</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Email</th>
+                    <td>{{employee_details.email}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </section>
+</article>

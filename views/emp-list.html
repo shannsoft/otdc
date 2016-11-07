@@ -1,0 +1,46 @@
+<article class="content dashboard-page" ng-init="getEmployeeList()">
+  <section class="section">
+    <div class="row">
+			<div class="row">
+				<div class="col-md-8">
+					<button type="submit" class="btn btn-primary pull-right" ui-sref="add-employee">Add New</button>
+				</div>
+			</div>
+			<div class="col-md-8">
+				<div class="card card-info">
+					<div class="card-header">
+						<div class="header-block">
+							<p class="title"> Employee List</p>
+						</div>
+					</div>
+					<div class="card card-block">
+						<div class="row">
+							<div class="col-md-12">
+								<table class="table table-striped table-bordered">
+									<thead>
+										<tr>
+											<th>#Sl No</th>
+											<th>Employee ID</th>
+											<th>Name</th>
+											<th>Designation</th>
+											<th>Option</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="employee in employee_list">
+											<th>{{$index+1}}</th>
+											<th>{{employee.emp_id}}</th>
+											<td>{{employee.first_name}} {{employee.last_name}}</td>
+											<td>{{employee.designation}}</td>
+											<td><a ui-sref="emp-details({emp_id:employee.sl_no})">View</a> <a class="m-l-20" ui-sref="emp-update({emp_id:employee.sl_no})"><i class="fa fa-edit"></i></a> <a class="m-l-20" href="" ng-click="deleteEmployee(employee.sl_no)"><i class="fa fa-trash"></i></a></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+      </div>
+    </div>
+  </section>
+</article>

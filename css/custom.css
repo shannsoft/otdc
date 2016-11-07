@@ -1,0 +1,60 @@
+.m-t-5{ margin-top:5px;}
+.m-t-10{ margin-top:10px;}
+.m-t-20{ margin-top:20px;}
+.m-t-30{ margin-top:30px;}
+.m-t-40{ margin-top:40px;}
+.m-t-50{ margin-top:50px;}
+.m-b-5{ margin-bottom:5px;}
+.m-b-10{ margin-bottom:10px;}
+.m-b-20{ margin-bottom:20px;}
+.m-b-30{ margin-bottom:30px;}
+.m-b-40{ margin-bottom:40px;}
+.m-b-50{ margin-bottom:50px;}
+.m-l-5{ margin-left:5px;}
+.m-l-10{ margin-left:10px;}
+.m-l-20{ margin-left:20px;}
+.m-l-30{ margin-left:30px;}
+.m-l-40{ margin-left:40px;}
+.m-l-50{ margin-left:50px;}
+.w-100{ width:100px;}
+.m-h-5{
+	margin-left:5px;
+	margin-right:5px;
+}
+
+.profile-img{
+	display:block;
+}
+.profile-img img{
+	border:2px solid #ddd;
+	width:100%;
+}
+
+.fileUpload {
+    position: relative;
+    overflow: hidden;
+}
+.fileUpload input.upload {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
+}
+.btn-gray{
+	padding:8px 20px;
+	background:#f1f2f5;
+}
+.btn-gray:hover,
+.btn-gray:focus,
+.btn-gray.focus,
+.btn-gray:active,
+.btn-gray.active{
+  background-color: #eaeaec;
+  border-color: #eaeaec;
+  color:#000;
+}

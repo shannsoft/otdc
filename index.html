@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html ng-app="teknobiz">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Teknobiz Solution</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="stylesheet" href="css/vendor.css">
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/custom.css">
+    <script src="lib/angular/angular.js"></script>
+    <script src="lib/angular/angular-ui-router.js"></script>
+    <script src="lib/angular/angular-resource.js"></script>
+    <script src="lib/angular/ng-animate.js"></script>
+    <script src="lib/angular/ui-bootstrap-tpls-0.14.3.min.js"></script>
+    <script src="lib/angular/ngStorage.min.js"></script>
+    <script src="lib/angular/angular-cookies.min.js"></script>
+    <script src="js/vendor.js"></script>
+    <script src="js/app.js"></script>
+    <!-- Theme initialization -->
+    <script src="app.js"></script>
+    <script src="controller/mainController.js"></script>
+    <script src="services/app_service.js"></script>
+</head>
+<body ng-controller="Main_Controller" ng-init="getUserDetails()">
+<div class="" ng-if="!is_loggedin">
+  <div ui-view></div>
+</div>
+<div class="" ng-if="is_loggedin">
+  <div class="main-wrapper">
+    <div class="app header-fixed sidebar-fixed" id="app">
+      <div ng-include="'views/header.html'"></div>
+      <div ng-include="'views/sidebar.html'" ></div>
+      <div ui-view ng-init="init()"></div>
+      <div ng-include="'views/footer.html'"></div>
+    </div>
+  </div>
+</div>
+<!-- jQuery 2.2.0 -->
+  </body>
+</html>
