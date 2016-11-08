@@ -1,0 +1,34 @@
+{
+  "name": "otdc",
+  "version": "1.0.0",
+  "description": "otdc_client_v1",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shannsoft/otdc.git"
+  },
+  "author": "rajendra <rajendrasahoodbpb@gmail.com> (http://rajendradbpb.com/)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shannsoft/otdc/issues"
+  },
+  "homepage": "https://github.com/shannsoft/otdc#readme",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-concurrent": "^2.1.0",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-jshint": "^0.11.3",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-nodemon": "^0.4.0",
+    "grunt-http": "^2.0.1",
+    "grunt-notify": "^0.4.5",
+    "grunt-open": "^0.2.3",
+    "grunt-contrib-connect": "^1.0.2"
+  },
+  "dependencies": {
+    "grunt-notify-chrome": "^0.1.1"
+  }
+}
