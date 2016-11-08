@@ -4,6 +4,12 @@ app.controller('Main_Controller',function($scope,$rootScope,$state,MainService,$
       $(document).trigger("TemplateLoaded");
     });
   }
+  $rootScope.is_loggedin = true;
+  // $scope.signOut = function() {
+  //   $rootScope.loggedin = false;
+  //   // delete $localStorage[Constants.getTokenKey()]
+  //   // $state.go("signIn");
+  // }
   /***************************************************************************/
   /**************************This is use for login****************************/
   /***************************************************************************/

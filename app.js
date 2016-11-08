@@ -18,6 +18,36 @@ app.config(function($stateProvider, $urlRouterProvider) {
             url: '/forget-password',
             controller:"Main_Controller"
         })
+        .state('AddTender', {
+            templateUrl: 'views/Tender/AddTender.html',
+            url: '/AddTender',
+            controller:"Tender_controller"
+        })
+        .state('AddTenderDetails', {
+            templateUrl: 'views/Tender/TenderDetails.html',
+            url: '/AddTenderDetails',
+            controller:"Tender_controller"
+        })
+        .state('UserList', {
+            templateUrl: 'views/User/userList.html',
+            url: '/UserList',
+            controller:"User_Controller"
+        })
+        .state('AddUser', {
+            templateUrl: 'views/User/addUser.html',
+            url: '/AddUser',
+            controller:"User_Controller"
+        })
+        .state('editUserDetails', {
+            templateUrl: 'views/User/userDetails.html',
+            url: '/editUserDetails',
+            controller:"User_Controller"
+        })
+        .state('tenderDetails', {
+            templateUrl: 'views/Tender/editTenderDetails.html',
+            url: '/tenderDetails',
+            controller:"Tender_controller"
+        })
   });
   app.constant('CONFIG', {
     'HTTP_HOST': '../ep-portal/Server/api.php' //client staging
@@ -36,7 +66,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
   }]);
 app.run(function($rootScope) {
   $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
-    console.log(toState.name);
     $rootScope.stateName = toState.name;
   });
 });

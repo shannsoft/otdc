@@ -247,7 +247,10 @@ body {
 .btn {
   background-image: none;
   border-radius: 0;
-  margin-bottom: 5px; }
+  margin-bottom: 5px;
+  margin-left: 428px;
+  margin-top: -70px;
+ }
   .btn.btn-primary {
     color: #ffffff;
     background-color: #4bcf99;
@@ -547,7 +550,9 @@ body {
     outline-offset: initial; }
   .btn.btn-pill-left {
     border-top-left-radius: 25px;
-    border-bottom-left-radius: 25px; }
+    border-bottom-left-radius: 25px;
+    margin-left: 909px;
+ }
   .btn.btn-pill-right {
     border-top-right-radius: 25px;
     border-bottom-right-radius: 25px; }
@@ -1647,7 +1652,9 @@ span a {
     font-size: 1.4rem; }
   .card .title {
     font-size: 1.1rem;
-    color: #4f5f6f; }
+    color: #4f5f6f;
+   margin-top: 28px;
+ }
 
 .title-description {
   margin: 0;
@@ -2859,3 +2866,10 @@ pre {
   @media (max-width: 767px) {
     .header .header-block-nav .profile-dropdown-menu {
       margin-top: 8px; } }
+      .adduser{
+        margin-bottom: -125px;
+        margin-left: 0px;
+      }
+      .titletenderlist{
+        margin-top: -104px;
+      }
