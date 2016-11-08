@@ -32,21 +32,6 @@ module.exports = function(grunt) {
     },
     connect: {
       server: {
-      //   options: {
-      //     protocol:'http',
-      //     hostname:'localhost',
-		  // base:'./',
-		  // keepalive: true,
-      // // livereload:true,
-      //     open:{
-      //       target:'http://localhost:5050/index.html', // target url to open
-      //       appName:'Google Chrome', // name of the app that opens, ie: open, start, xdg-open
-      //       callback: function() {
-      //         grunt.log("Server connected !!!").ok();
-      //       } // called when the app has opened
-      //     },
-      //     port: 5050
-      //   }
       options: {
           livereload: true,
           base: './',
@@ -95,13 +80,13 @@ module.exports = function(grunt) {
   //     }
   //   }
   // }
-  notify_hooks: {
-      options: {
-        enabled: true,
-        max_js_hint_notifications: 5,
-        title: 'Notifications'
-      }
-    }
+  // notify_hooks: {
+  //     options: {
+  //       enabled: true,
+  //       max_js_hint_notifications: 5,
+  //       title: 'Notifications'
+  //     }
+  //   }
 
   });
 
@@ -114,10 +99,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-http');
   grunt.loadNpmTasks('grunt-notify');
   // grunt.loadNpmTasks("grunt-concurrent")
-grunt.task.run('notify_hooks');
+// grunt.task.run('notify_hooks');
   // registerTask
-  grunt.registerTask("default", ['concat','watch']);
-  grunt.registerTask("conn", ['concat','connect:server','open:dev','watch']);
+  // grunt.registerTask("default", ['concat','watch']);
+  grunt.registerTask("default", ['concat','connect:server','open:dev','watch']);
   // grunt.registerTask("conn", ['concat','open:dev','watch']);
 
 };
