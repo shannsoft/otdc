@@ -1,52 +1,109 @@
 var app = angular.module("teknobiz", ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate','ngCookies']);
-app.config(function($stateProvider, $urlRouterProvider) {
+app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
+  //adding http intercepter
+  $httpProvider.interceptors.push(function ($q, $location, $window,$localStorage) {
+      return {
+          request: function (config) {
+              config.headers = config.headers || {};
+              // config.headers['Authorization'] = 'bearer '+$localStorage[Constants.getTokenKey()];
+              return config;
+          },
+          response: function (response) {
+              if (response.status === 401) {
+                  // handle the case where the user is not authenticated
+                  $location.path('/');
+              }
+              return response || $q.when(response);
+          }
+      };
+  });
+
+  function checkLoggedin($q, $timeout, $http, $location, $rootScope, $state,$localStorage,$rootScope) {
+      var deferred = $q.defer();
+      // $timeout(deferred.resolve, 0);
+      if ($rootScope.is_loggedin) {
+            $timeout(function () {
+                deferred.resolve();
+                $state.go("dashboard");
+            }, 100);
+          }
+          else {
+            $timeout(function () {
+                deferred.resolve();
+            }, 100);
+          }
+      return deferred.promise;
+  };
+  function checkLoggedout ($q, $timeout, $http, $location, $rootScope, $state,$localStorage) {
+      var deferred = $q.defer();
+      if ($rootScope.is_loggedin) {
+        $timeout(deferred.resolve, 0);
+          }
+          else {
+            $timeout(function () {
+                deferred.resolve();
+                $state.go('login');
+            }, 100);
+          }
+      return deferred.promise;
+  };
+
     $urlRouterProvider.otherwise('/login');
     $stateProvider
     // HOME STATES AND NESTED VIEWS ========================================
         .state('dashboard', {
             templateUrl: 'views/dashboard.html',
             url: '/dashboard',
-            controller:"Main_Controller"
+            controller:"Main_Controller",
+            resolve: {loggedout: checkLoggedout},
         })
         .state('login', {
             templateUrl: 'views/login.html',
             url: '/login',
-            controller:"Main_Controller"
+            controller:"Main_Controller",
+            resolve: {loggedin: checkLoggedin},
         })
         .state('forget-password', {
             templateUrl: 'views/forget.html',
             url: '/forget-password',
-            controller:"Main_Controller"
+            controller:"Main_Controller",
+            resolve: {loggedout: checkLoggedout},
         })
         .state('AddTender', {
             templateUrl: 'views/Tender/AddTender.html',
             url: '/AddTender',
-            controller:"Tender_controller"
+            controller:"Tender_controller",
+            resolve: {loggedout: checkLoggedout},
         })
         .state('AddTenderDetails', {
             templateUrl: 'views/Tender/TenderDetails.html',
             url: '/AddTenderDetails',
-            controller:"Tender_controller"
+            controller:"Tender_controller",
+            resolve: {loggedout: checkLoggedout},
         })
         .state('UserList', {
             templateUrl: 'views/User/userList.html',
             url: '/UserList',
-            controller:"User_Controller"
+            controller:"User_Controller",
+            resolve: {loggedout: checkLoggedout},
         })
         .state('AddUser', {
             templateUrl: 'views/User/addUser.html',
             url: '/AddUser',
-            controller:"User_Controller"
+            controller:"User_Controller",
+            resolve: {loggedout: checkLoggedout},
         })
         .state('editUserDetails', {
             templateUrl: 'views/User/userDetails.html',
             url: '/editUserDetails',
-            controller:"User_Controller"
+            controller:"User_Controller",
+            resolve: {loggedout: checkLoggedout},
         })
         .state('tenderDetails', {
             templateUrl: 'views/Tender/editTenderDetails.html',
             url: '/tenderDetails',
-            controller:"Tender_controller"
+            controller:"Tender_controller",
+            resolve: {loggedout: checkLoggedout},
         })
   });
   app.constant('CONFIG', {
@@ -64,8 +121,8 @@ app.config(function($stateProvider, $urlRouterProvider) {
       };
       return Util;
   }]);
-app.run(function($rootScope) {
-  $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
-    $rootScope.stateName = toState.name;
-  });
-});
+// app.run(function($rootScope) {
+//   $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
+//     $rootScope.stateName = toState.name;
+//   });
+// });

@@ -1,8 +1,9 @@
 app.controller('Main_Controller',function($scope,$rootScope,$state,MainService,$timeout,$cookieStore,$localStorage){
   $scope.init = function(){
-    $scope.$on('$viewContentLoaded',function(event) {
-      $(document).trigger("TemplateLoaded");
-    });
+    // $scope.$on('$viewContentLoaded',function(event) {
+    //   $(document).trigger("TemplateLoaded");
+    // });
+    console.log(11111);
   }
   $rootScope.is_loggedin = true;
   // $scope.signOut = function() {
@@ -14,7 +15,7 @@ app.controller('Main_Controller',function($scope,$rootScope,$state,MainService,$
   /**************************This is use for login****************************/
   /***************************************************************************/
   $scope.login = function() {
-
+    $state.go('dashboard');
   }
   /*******************************************************/
   /*************This is use for check user login**********/
