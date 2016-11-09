@@ -2,7 +2,7 @@
   <div class="sidebar-container">
     <div class="sidebar-header">
       <div class="brand">
-        <div class="logo" ui-sref="dashboard"><img src="assets/otdclogo.png"> </div>
+        <div class="logo" ui-sref="dashboard"><img src="assets/otdclogo.png" height="50"> </div>
       </div>
     </div>
     <nav class="menu">
@@ -10,23 +10,11 @@
         <li ng-class="{'active':stateName=='dashboard'}">
           <a ui-sref="dashboard"> <i class="fa fa-home"></i>Dashboard</a>
         </li>
-        <li ng-class="{'active':stateName=='AddTender'}">
-          <a ui-sref="AddTender"> <i class="fa fa-home"></i>AddTender</a>
+        <li ng-class="{'active':stateName=='tenderList' || stateName=='addTender' || stateName=='editTender' || stateName=='tenderDetails'}">
+          <a ui-sref="tenderList"> <i class="fa fa-home"></i>Tender Management</a>
         </li>
-        <li class="open">
-          <a href=""><i class="fa fa-th-large"></i> User Manager <i class="fa arrow"></i> </a>
-             <ul class="collapse in">
-                  <li>
-                    <a ui-sref="UserList">
-                     User List
-                   </a>
-                 </li>
-                 <li>
-                   <a ui-sref="AddUser">
-                     Add User
-                   </a>
-               </li>
-           </ul>
+        <li ng-class="{'active':stateName=='UserList'}">
+          <a ui-sref="UserList"><i class="fa fa-th-large"></i> User Manager</a>
          </li>
       </ul>
     </nav>

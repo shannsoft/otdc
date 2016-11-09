@@ -69,15 +69,27 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
             controller:"Main_Controller",
             resolve: {loggedout: checkLoggedout},
         })
-        .state('AddTender', {
-            templateUrl: 'views/Tender/AddTender.html',
-            url: '/AddTender',
+        .state('tenderList', {
+            templateUrl: 'views/Tender/tenderList.html',
+            url: '/tenderList',
             controller:"Tender_controller",
             resolve: {loggedout: checkLoggedout},
         })
-        .state('AddTenderDetails', {
+        .state('addTender', {
+            templateUrl: 'views/Tender/addTender.html',
+            url: '/addTender',
+            controller:"Tender_controller",
+            resolve: {loggedout: checkLoggedout},
+        })
+        .state('editTender', {
+            templateUrl: 'views/Tender/editTenderDetails.html',
+            url: '/editTender',
+            controller:"Tender_controller",
+            resolve: {loggedout: checkLoggedout},
+        })
+        .state('tenderDetails', {
             templateUrl: 'views/Tender/TenderDetails.html',
-            url: '/AddTenderDetails',
+            url: '/tenderDetails',
             controller:"Tender_controller",
             resolve: {loggedout: checkLoggedout},
         })
@@ -99,12 +111,6 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
             controller:"User_Controller",
             resolve: {loggedout: checkLoggedout},
         })
-        .state('tenderDetails', {
-            templateUrl: 'views/Tender/editTenderDetails.html',
-            url: '/tenderDetails',
-            controller:"Tender_controller",
-            resolve: {loggedout: checkLoggedout},
-        })
   });
   app.constant('CONFIG', {
     'HTTP_HOST': '../ep-portal/Server/api.php' //client staging
@@ -121,8 +127,8 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
       };
       return Util;
   }]);
-// app.run(function($rootScope) {
-//   $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
-//     $rootScope.stateName = toState.name;
-//   });
-// });
+app.run(function($rootScope) {
+  $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
+    $rootScope.stateName = toState.name;
+  });
+});
