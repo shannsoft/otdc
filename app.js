@@ -99,9 +99,9 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
             controller:"User_Controller",
             resolve: {loggedout: checkLoggedout},
         })
-        .state('AddUser', {
+        .state('addUser', {
             templateUrl: 'views/User/addUser.html',
-            url: '/AddUser',
+            url: '/addUser',
             controller:"User_Controller",
             resolve: {loggedout: checkLoggedout},
         })
