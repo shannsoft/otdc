@@ -105,9 +105,9 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
             controller:"User_Controller",
             resolve: {loggedout: checkLoggedout},
         })
-        .state('editUserDetails', {
-            templateUrl: 'views/User/userDetails.html',
-            url: '/editUserDetails',
+        .state('editUser', {
+            templateUrl: 'views/User/editUser.html',
+            url: '/editUser',
             controller:"User_Controller",
             resolve: {loggedout: checkLoggedout},
         })
