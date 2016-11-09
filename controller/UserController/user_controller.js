@@ -18,4 +18,10 @@ app.controller('User_Controller',function($scope,$rootScope,$state,MainService,$
   $scope.cancel = function () {
      $scope.showModal = false;
   };
+  /***************************************************************************/
+  /**************************This is use to go edituser page****************************/
+  /***************************************************************************/
+  $scope.gotoEditUser = function(){
+    $state.go('editUser');
+  }
 })

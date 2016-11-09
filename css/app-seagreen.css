@@ -2872,4 +2872,24 @@ pre {
       }
       .titletenderlist{
         margin-top: -104px;
+        margin-left: -42px;
+      }
+      .userList{
+        margin-left: 46px;
+      }
+      .tenderdetailstitle{
+        margin-left: 285px;
+      }
+      .date{
+        margin-left: 839px;
+      }
+      .tabletd{
+        style="width: 178px;"
+      }
+      .containerclass{
+        margin-left: -16px;
+        margin-right: -14px;
+      }
+      .fontclass{
+        font-size: small;
       }

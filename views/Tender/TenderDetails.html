@@ -1,211 +1,134 @@
-
-<section>
-  <div class="title-block">
-        <h3 class="title">
-
-        </h3>
-  </div>
-  <div class="card card-block sameheight-item" style="height: 2000px;">
+<section class="content title-block forms-page add tender button ng-scope">
+  <div class="card card-block sameheight-item" style="height: 1500px;">
           <div class="title-block">
-              <h3 class="title">
-  					 	  Add Tender Details
+              <h3 class="title tenderdetailstitle">
+  					 	  eProcurement System Goverment of Odisha
   					 </h3>
           </div>
-          <form name="TenderDetails">
-             <div class=" form-group">
-                <label for="inputEmail3" class="col-sm-2 control-label">Organisation Chain </label>
-                 <div class="col-sm-10">
-                   <input type="text" class="form-control boxed">
-                 </div>
-            </div>
-            <div class=" form-group">
-               <label for="inputEmail3" class="col-sm-2 control-label">Tender Reference No</label>
-                <div class="col-sm-10">
-                  <input type="text" class="form-control boxed" name="Tender_ref_No"  placeholder="Enter Tender Reference No" required ng-pattern="/^[a-zA-Z0-9]*$/">
-                  <span class="help-block" ng-show="TenderDetails.Tender_ref_No.$error.required && TenderDetails.Tender_ref_No.$touched">Please enter Tender Reference No</span>
-                  <span class="help-block" ng-show="TenderDetails.Tender_ref_No.$error.pattern && TenderDetails.Tender_ref_No.$touched">must be fill</span>
-                </div>
-           </div>
-           <div class=" form-group">
-              <label for="inputEmail3" class="col-sm-2 control-label">Tender Type</label>
-               <div class="col-sm-10">
-                     <select class="form-control" name="Tender_type" required>
-                       <option value="">Select Tender Type</option>
-                     </select>
-                     <span class="help-block" ng-show="TenderDetails.Tender_Type.$error.required && TenderDetails.Tender_Type.$touched">select one</span>
+          <form name="TenderDetails fontclass">
+                <div class="row">
+                    <div class="col-sm-6">
+                      <img src="assets/odishalogo.jpg"  style="width:80px;height:90px;">
+                    </div>
+                    <div class="col-sm-6">
+                      Tender Details
+                    </div>
                </div>
-          </div>
-          <div class=" form-group">
-             <label for="inputEmail3" class="col-sm-2 control-label">Tender Category</label>
-              <div class="col-sm-10">
-                <select class="form-control" name="Tender_category" required>
-                  <option value="">Select Tender Category</option>
-                </select>
-                <span class="help-block" ng-show="TenderDetails.Tender_category.$error.required && TenderDetails.Tender_category.$touched">select one</span>
+               <hr>
+               <div class="row">
+                   <div class="col-sm-12 date" >
+                       Date:11/9/2016
+                   </div>
               </div>
-         </div>
-         <div class=" form-group">
-            <label for="inputEmail3" class="col-sm-2 control-label">General Technical Evaluation Allowed</label>
-            <div class="col-sm-10">
-              <select class="form-control" name="Technical_evaluation" required>
-                <option value="">Select One</option>
-                <option value="">yes</option>
-                <option value="">No</option>
-              </select>
-              <span class="help-block" ng-show="TenderDetails.Technical_evaluation.$error.required && TenderDetails.Technical_evaluation.$touched">select one</span>
+             <div class="container">
+                  <p>Basic Details:</p>
+              <table class="table table-bordered">
+                <tbody>
+                  <tr >
+                    <td style="width: 178px;">Organisation Chain</td>
+                    <td colspan="6">123</td>
+                  </tr>
+                  <tr>
+                    <td>TenderReference No</td>
+                    <td colspan="6">1234</td>
+                  </tr>
+                  <tr>
+                    <td>Tender Id</td>
+                    <td colspan="6">1234</td>
+                  </tr>
+                  <tr>
+                    <td>Tender Type</td>
+                    <td  colspan="3">National</td>
+                    <td>Form Of Contact</td>
+                    <td style="width: 346px;">1234</td>
+                  </tr>
+                  <tr>
+                    <td>Tender category</td>
+                    <td  colspan="3">National</td>
+                    <td>No Of Covers</td>
+                    <td>1234</td>
+                  </tr>
+                   <tr>
+                    <td>General Technical Evaluation Allowed</td>
+                    <td colspan="3">No</td>
+                    <td>Itemwise technical evaluation allowed</td>
+                    <td>1234</td>
+                  </tr>
+                  <tr>
+                    <td>Payment Mode</td>
+                    <td colspan="3">cash</td>
+                    <td>Is multicurrency allowed for BOQ</td>
+                    <td>1234</td>
+                  </tr>
+                  <tr>
+                    <td colspan="3">TenderReference No</td>
+                    <td>1234</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-        </div>
-        <div class=" form-group">
-           <label for="inputEmail3" class="col-sm-2 control-label">Payment mode</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control boxed" name="payment_mode"  placeholder="Enter Payment Mode" required ng-pattern="/^[a-zA-Z0-9]*$/">
-              <span class="help-block" ng-show="TenderDetails.payment_mode.$error.required && TenderDetails.payment_mode.$touched">Please enter Tender Reference No</span>
-              <span class="help-block" ng-show="TenderDetails.payment_mode.$error.pattern && TenderDetails.payment_mode.$touched">must be fill</span>
+              <div class="container ">
+                   <p>Tender Fee Details,[Total Fee(INR)*-6,300]</p>
+               <table class="table table-bordered">
+                 <tbody>
+                   <tr>
+                     <td>Tender Fee(INR)</td>
+                     <td  colspan="3">6000</td>
+                     <td>VAT charges(INR)</td>
+                     <td>1234</td>
+                   </tr>
+                   <tr>
+                     <td>Fee payble To</td>
+                     <td  colspan="3">MD OTDC</td>
+                     <td>Fee payble At</td>
+                     <td>Bhubaneswar</td>
+                   </tr>
+                   <tr>
+                     <td colspan="3">Tender Fee Exemption Allowed</td>
+                     <td>1234</td>
+                   </tr>
+                 </tbody>
+               </table>
+             </div>
+             <div class="container ">
+                  <p>EMD Fee Details</p>
+              <table class="table table-bordered">
+                <tbody>
+                  <tr>
+                    <td>EMD Amount(INR)</td>
+                    <td  colspan="3">6000</td>
+                    <td>EMD Exemption Allowed</td>
+                    <td>1234</td>
+                  </tr>
+                  <tr>
+                    <td>EMD Fee Type</td>
+                    <td  colspan="3">Percentage</td>
+                    <td>EMD Percentage</td>
+                    <td>1.0%</td>
+                  </tr>
+                  <tr>
+                    <td colspan="3">EMD Fee Type</td>
+                    <td>MD OTDC</td>
+                    <td>EMD Payble At</td>
+                    <td>Bhubaneswar</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-       </div>
-       <div class=" form-group">
-          <label for="inputEmail3" class="col-sm-2 control-label">Is Multi Currency Allowed For Fee</label>
-          <div class="col-sm-10">
-            <select class="form-control" name="Multi_currency_allowed" required>
-              <option value="">Select One</option>
-              <option value="">yes</option>
-              <option value="">No</option>
-            </select>
-            <span class="help-block" ng-show="TenderDetails.Multi_currency_allowed.$error.required && TenderDetails.Multi_currency_allowed.$touched">select one</span>
-          </div>
-      </div>
-      <div class=" form-group">
-         <label for="inputEmail3" class="col-sm-2 control-label">Form Of Contact</label>
-          <div class="col-sm-10">
-            <input type="text" class="form-control boxed" name="Form_of_contact"  placeholder="Enter Form Of Contact" required ng-pattern="/^(\D)+$/">
-            <span class="help-block" ng-show="TenderDetails.Form_of_contact.$error.required && TenderDetails.Form_of_contact.$touched">Please enter Tender Reference No</span>
-            <span class="help-block" ng-show="TenderDetails.Form_of_contact.$error.pattern && TenderDetails.Form_of_contact.$touched">must be fill</span>
-          </div>
-     </div>
-     <div class=" form-group">
-        <label for="inputEmail3" class="col-sm-2 control-label">No of covers</label>
-         <div class="col-sm-10">
-           <input type="text" class="form-control boxed" name="No_of_covers"  placeholder="Enter No of covers" required ng-pattern="/[^0-9]/g">
-           <span class="help-block" ng-show="TenderDetails.No_of_covers.$error.required && TenderDetails.No_of_covers.$touched">Please enter Tender Reference No</span>
-           <span class="help-block" ng-show="TenderDetails.No_of_covers.$error.pattern && TenderDetails.No_of_covers.$touched">must be fill</span>
-         </div>
-    </div>
-    <div class=" form-group">
-       <label for="inputEmail3" class="col-sm-2 control-label">Itemwise Technical Evaluation Allowed</label>
-       <div class="col-sm-10">
-         <select class="form-control" name="Technical_evaluation_allowed" required>
-           <option value="">Select One</option>
-           <option value="">yes</option>
-           <option value="">No</option>
-         </select>
-         <span class="help-block" ng-show="TenderDetails.Technical_evaluation_allowed.$error.required && TenderDetails.Technical_evaluation_allowed.$touched">select one</span>
-       </div>
-   </div>
-   <div class=" form-group">
-      <label for="inputEmail3" class="col-sm-2 control-label">Is Multi Currency Allowed For BOQ</label>
-      <div class="col-sm-10">
-        <select class="form-control" name="BOQ_currency" required>
-          <option value="">Select One</option>
-          <option value="">yes</option>
-          <option value="">No</option>
-        </select>
-        <span class="help-block" ng-show="TenderDetails.BOQ_currency.$error.required && TenderDetails.BOQ_currency.$touched">select one</span>
-      </div>
-  </div>
-  <div class=" form-group">
-     <label for="inputEmail3" class="col-sm-2 control-label">Tender Fee</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control boxed" name="Tender_fee"  placeholder="Enter Tender Fee" required ng-pattern="/[^0-9]/g">
-        <span class="help-block" ng-show="TenderDetails.Tender_fee.$error.required && TenderDetails.Tender_fee.$touched">Please enter Tender Reference No</span>
-        <span class="help-block" ng-show="TenderDetails.Tender_fee.$error.pattern && TenderDetails.Tender_fee.$touched">must be fill</span>
-      </div>
- </div>
- <div class=" form-group">
-    <label for="inputEmail3" class="col-sm-2 control-label">Fee Payble To</label>
-     <div class="col-sm-10">
-       <input type="text" class="form-control boxed" name="Fee_payble_to"  placeholder="Enter Fee payble To" required  ng-pattern="/^(\D)+$/">
-       <span class="help-block" ng-show="TenderDetails.Tender_fee.$error.required && TenderDetails.Tender_fee.$touched">Please enter Tender Reference No</span>
-       <span class="help-block" ng-show="TenderDetails.Tender_fee.$error.pattern && TenderDetails.Tender_fee.$touched">must be fill</span>
-     </div>
-</div>
-<div class=" form-group">
-   <label for="inputEmail3" class="col-sm-2 control-label">VAT Charges</label>
-    <div class="col-sm-10">
-      <input type="text" class="form-control boxed" name="vat_changes"  placeholder="Enter VAT Charges" required ng-pattern="/[^0-9]/g">
-      <span class="help-block" ng-show="TenderDetails.vat_changes.$error.required && TenderDetails.vat_changes.$touched">Please enter Tender Reference No</span>
-      <span class="help-block" ng-show="TenderDetails.vat_changes.$error.pattern && TenderDetails.vat_changes.$touched">must be fill</span>
-    </div>
-</div>
-<div class=" form-group">
-   <label for="inputEmail3" class="col-sm-2 control-label">Fee Payble At</label>
-    <div class="col-sm-10">
-      <input type="text" class="form-control boxed" name="Fee_payble_at"  placeholder="Enter Fee payable at" required ng-pattern="/^(\D)+$/">
-      <span class="help-block" ng-show="TenderDetails.Fee_payble_at.$error.required && TenderDetails.Fee_payble_at.$touched">Please enter Tender Reference No</span>
-      <span class="help-block" ng-show="TenderDetails.Fee_payble_at.$error.pattern && TenderDetails.Fee_payble_at.$touched">must be fill</span>
-    </div>
-</div>
-<div class=" form-group">
-   <label for="inputEmail3" class="col-sm-2 control-label">EMD Fee Type</label>
-    <div class="col-sm-10">
-      <input type="text" class="form-control boxed" name="EMD_feetype"  placeholder="Enter EMD Fee Type"required ng-pattern="/^(\D)+$/">
-      <span class="help-block" ng-show="TenderDetails.EMD_feetype.$error.required && TenderDetails.EMD_feetype.$touched">Please enter Tender Reference No</span>
-      <span class="help-block" ng-show="TenderDetails.EMD_feetype.$error.pattern && TenderDetails.EMD_feetype.$touched">must be fill</span>
-    </div>
-</div>
-<div class=" form-group">
-   <label for="inputEmail3" class="col-sm-2 control-label">EMD Payble To</label>
-    <div class="col-sm-10">
-      <input type="text" class="form-control boxed" name="emd_payble_to"  placeholder="Enter EMD Payble To" required ng-pattern="/^(\D)+$/">
-      <span class="help-block" ng-show="TenderDetails.emd_payble_to.$error.required && TenderDetails.emd_payble_to.$touched">Please enter Tender Reference No</span>
-      <span class="help-block" ng-show="TenderDetails.emd_payble_to.$error.pattern && TenderDetails.emd_payble_to.$touched">must be fill</span>
-    </div>
-</div>
-<div class=" form-group">
-   <label for="inputEmail3" class="col-sm-2 control-label">EMD Exemption Allowed</label>
-   <div class="col-sm-10">
-     <select class="form-control" name="Exemption_allowd" required>
-       <option value="">Select One</option>
-       <option value="">yes</option>
-       <option value="">No</option>
-     </select>
-     <span class="help-block" ng-show="TenderDetails.Exemption_allowd.$error.required && TenderDetails.Exemption_allowd.$touched">select one</span>
-   </div>
-</div>
-<div class=" form-group">
-   <label for="inputEmail3" class="col-sm-2 control-label">EMD Percentage</label>
-    <div class="col-sm-10">
-      <input type="text" class="form-control boxed" name="EMD_Percentage"  placeholder="Enter EMD Percentage"required ng-pattern="/[^0-9]/g">
-      <span class="help-block" ng-show="TenderDetails.EMD_Percentage.$error.required && TenderDetails.EMD_Percentage.$touched">Please enter Tender Reference No</span>
-      <span class="help-block" ng-show="TenderDetails.EMD_Percentage.$error.pattern && TenderDetails.EMD_Percentage.$touched">must be fill</span>
-    </div>
-</div>
-<div class=" form-group">
-   <label for="inputEmail3" class="col-sm-2 control-label">EMD Payble At</label>
-    <div class="col-sm-10">
-      <input type="text" class="form-control boxed" name="EMD_payble_at"  placeholder="Enter EMD Payble At" required  ng-pattern="/^(\D)+$/">
-      <span class="help-block" ng-show="TenderDetails.EMD_payble_at.$error.required && TenderDetails.EMD_payble_at.$touched">Please enter Tender Reference No</span>
-      <span class="help-block" ng-show="TenderDetails.EMD_payble_at.$error.pattern && TenderDetails.EMD_payble_at.$touched">must be fill</span>
-    </div>
-</div>
-<div class=" form-group">
-   <label for="inputEmail3" class="col-sm-2 control-label">Title</label>
-    <div class="col-sm-10">
-      <input type="text" class="form-control boxed" name="Title"  placeholder="Enter Tender Title" required ng-pattern="/^(\D)+$/">
-      <span class="help-block" ng-show="TenderDetails.Title.$error.required && TenderDetails.Title.$touched">Please enter Tender Reference No</span>
-      <span class="help-block" ng-show="TenderDetails.Title.$error.pattern && TenderDetails.Title.$touched">must be fill</span>
-    </div>
-</div>
-<div class=" form-group">
-   <label for="inputEmail3" class="col-sm-2 control-label">Work Description</label>
-    <div class="col-sm-10">
-      <textarea name="work_Desc" class="form-control" rows="4" placeholder="Work Description" required ng-pattern="/^(\D)+$/"></textarea>
-      <span class="help-block" ng-show="TenderDetails.work_Desc.$error.required && TenderDetails.work_Desc.$touched">Please enterWork Description</span>
-      <span class="help-block" ng-show="TenderDetails.work_Desc.$error.pattern && TenderDetails.work_Desc.$touched">must be fill</span>
-    </div>
-</div>
-<div class=" form-group col-sm-5">
-   <button type="button" class="btn btn-oval btn-success adduser">Submit</button>
-</div>
- </form>
-  </div>
+            <div class="container ">
+                 <p>Work/Items(s)</p>
+             <table class="table table-bordered">
+               <tbody>
+                 <tr>
+                   <td>Title</td>
+                   <td>Illumination</td>
+                 </tr>
+                 <tr>
+                   <td>Work Description</td>
+                   <td>Illumination</td>
+                 </tr>
+               </tbody>
+             </table>
+           </div>
+         </form>
 </section>

@@ -7112,7 +7112,7 @@ html {
 
 body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 1rem;
+  font-size: small;
   line-height: 1.5;
   color: #373a3c;
   background-color: #fff;
@@ -7845,7 +7845,7 @@ pre code {
     width: 41.666667%;
   }
   .col-sm-6 {
-    width: 50%;
+    width: 41%;
   }
   .col-sm-7 {
     width: 58.333333%;
@@ -8469,7 +8469,7 @@ pre code {
 
 .table th,
 .table td {
-  padding: .75rem;
+  padding: -0.25rem;
   line-height: 1.5;
   vertical-align: top;
   border-top: 1px solid #eceeef;
