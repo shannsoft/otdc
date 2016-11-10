@@ -2879,7 +2879,7 @@ pre {
         margin-left: 46px;
       }
       .tenderdetailstitle{
-        margin-left: 285px;
+        margin-left: 289px;
       }
       .date{
         margin-left: 839px;
@@ -2893,4 +2893,13 @@ pre {
       }
       .fontclass{
         font-size: small;
+      }
+      .searchtext{
+        width: 161px;
+        margin-left: 180px;
+        margin-top: -69px;
+        -moz-border-radius: 15px;
+        border-radius: 23px;
+        border: solid 1px black;
+        padding: 1px;
       }

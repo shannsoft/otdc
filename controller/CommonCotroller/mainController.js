@@ -27,4 +27,7 @@ app.controller('Main_Controller',function($scope,$rootScope,$state,MainService,$
  /*******************************************************/
  $scope.signOut = function(){
  }
+ $scope.forgetpassword = function(){
+   $state.go('forget_password');
+ }
 })

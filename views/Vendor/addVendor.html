@@ -1,0 +1,54 @@
+<section class="content title-block forms-page add tender ng-scope">
+  <div class="card card-block sameheight-item" style="height: 1900px;">
+    <div class="title-block">
+        <h3 class="title">
+			 	  Add New Vendor
+			 </h3>
+    </div>
+    <form name="VendorDetails">
+      <div class=" form-group" ng-class="{'has-error': (VendorDetails.vendor_name.$invalid && VendorDetails.vendor_name.$touched)}">
+             <label for="inputEmail3" class="col-sm-2 control-label">vendor Name</label>
+                   <div class="col-sm-10" >
+                        <input type="text" class="form-control boxed" name="vendor_name"  placeholder="Enter vendor Name" required ng-pattern="/^(\D)+$/">
+                        <span class="help-block" ng-show="VendorDetails.vendor_name.$error.required && VendorDetails.vendor_name.$touched">Please enter User Firstname</span>
+                        <span class="help-block" ng-show="VendorDetails.vendor_name.$error.pattern && VendorDetails.vendor_name.$touched">First name must be character</span>
+                  </div>
+      </div>
+       <div class=" form-group" ng-class="{'has-error': (VendorDetails.Email.$invalid && VendorDetails.Email.$touched)}">
+            <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+                  <div class="col-sm-10">
+                       <input type="Email" class="form-control boxed" name="Email"  placeholder="Enter Valid Email" required ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/">
+                       <span class="help-block" ng-show="VendorDetails.Email.$error.required && VendorDetails.Email.$touched">Please enter valid mail</span>
+                       <span class="help-block" ng-show="VendorDetails.Email.$error.pattern && VendorDetails.Email.$touched">must be fill</span>
+                 </div>
+       </div>
+       <div class=" form-group" ng-class="{'has-error': (VendorDetails.address.$invalid && VendorDetails.address.$touched)}">
+                <label for="inputEmail3" class="col-sm-2 control-label">Address</label>
+                      <div class="col-sm-10">
+                            <textarea name="address" class="form-control" rows="4" placeholder="Enter Address" required ng-pattern="/^(\D)+$/"></textarea>
+                            <span class="help-block" ng-show="VendorDetails.address.$error.required && VendorDetails.address.$touched">Please enter address</span>
+                            <span class="help-block" ng-show="VendorDetails.address.$error.pattern && VendorDetails.address.$touched">must be fill</span>
+                      </div>
+          </div>
+         <div class=" form-group">
+              <label for="inputEmail3" class="col-sm-2 control-label">Bank Name</label>
+                    <div class="col-sm-10">
+                         <input type="text" class="form-control boxed" name="bank_name"  placeholder="Enter Bank Name" required ng-pattern="/^(\D)+$/">
+                         <span class="help-block" ng-show="VendorDetails.bank_name.$error.required && VendorDetails.bank_name.$touched">Please enter your Bankname</span>
+                         <span class="help-block" ng-show="VendorDetails.bank_name.$error.pattern && VendorDetails.bank_name.$touched">must be fill</span>
+                   </div>
+        </div>
+        <div class=" form-group">
+             <label for="inputEmail3" class="col-sm-2 control-label">IFSC Code</label>
+                   <div class="col-sm-10">
+                        <input type="text" class="form-control boxed" name="ifsc_code"  placeholder="Enter IFSC Code" required ng-pattern="/^[a-zA-Z0-9]*$/">
+                        <span class="help-block" ng-show="VendorDetails.ifsc_code.$error.required && VendorDetails.ifsc_code.$touched">Please enter your IFSC Code</span>
+                        <span class="help-block" ng-show="VendorDetails.ifsc_code.$error.pattern && VendorDetails.ifsc_code.$touched">must be fill</span>
+                  </div>
+       </div>
+        <div class=" form-group col-sm-5">
+             <button type="button" class="btn btn-oval btn-success adduser">Submit</button>
+       </div>
+</form>
+</div>
+</section>

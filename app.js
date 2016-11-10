@@ -63,12 +63,12 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
             controller:"Main_Controller",
             resolve: {loggedin: checkLoggedin},
         })
-        .state('forget-password', {
-            templateUrl: 'views/forget.html',
-            url: '/forget-password',
-            controller:"Main_Controller",
-            resolve: {loggedout: checkLoggedout},
-        })
+        // .state('forget-password', {
+        //     templateUrl: 'views/forget.html',
+        //     url: '/forget-password',
+        //     controller:"Main_Controller",
+        //     resolve: {loggedout: checkLoggedout},
+        // })
         .state('tenderList', {
             templateUrl: 'views/Tender/tenderList.html',
             url: '/tenderList',
@@ -109,6 +109,36 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
             templateUrl: 'views/User/editUser.html',
             url: '/editUser',
             controller:"User_Controller",
+            resolve: {loggedout: checkLoggedout},
+        })
+        .state('VendorList', {
+            templateUrl: 'views/Vendor/vendorList.html',
+            url: '/VendorList',
+            controller:"Vendor_controller",
+            resolve: {loggedout: checkLoggedout},
+        })
+        .state('addVendor', {
+            templateUrl: 'views/Vendor/addVendor.html',
+            url: '/addVendor',
+            controller:"Vendor_controller",
+            resolve: {loggedout: checkLoggedout},
+        })
+        .state('vendorDetails', {
+            templateUrl: 'views/Vendor/vendorDetails.html',
+            url: '/vendorDetails',
+            controller:"Vendor_controller",
+            resolve: {loggedout: checkLoggedout},
+        })
+        .state('editVendor', {
+            templateUrl: 'views/Vendor/editVendor.html',
+            url: '/editVendor',
+            controller:"Vendor_controller",
+            resolve: {loggedout: checkLoggedout},
+        })
+        .state('forget_password', {
+            templateUrl: 'views/forgetpassword.html',
+            url: '/forget_password',
+            controller:"Main_Controller",
             resolve: {loggedout: checkLoggedout},
         })
   });
