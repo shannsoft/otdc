@@ -1,18 +1,12 @@
-
-<section>
-  <div class="title-block">
+<section class="content title-block forms-page add tender ng-scope">
+  <div class="card card-block sameheight-item" style="height: 1900px;">
+    <div class="title-block">
         <h3 class="title">
-
-        </h3>
-  </div>
-  <div class="card card-block sameheight-item" style="height: 1000px;">
-          <div class="title-block">
-              <h3 class="title">
-  					 	  Add User
-  					 </h3>
-          </div>
-  <form name="UserDetails">
-        <div class=" form-group" ng-class="{'has-error': (UserDetails.First_name.$invalid && UserDetails.First_name.$touched)}">
+			 	  Add New User
+			 </h3>
+    </div>
+    <form name="TenderDetails">
+      <div class=" form-group" ng-class="{'has-error': (UserDetails.First_name.$invalid && UserDetails.First_name.$touched)}">
              <label for="inputEmail3" class="col-sm-2 control-label">First Name</label>
                    <div class="col-sm-10" >
                         <input type="text" class="form-control boxed" name="First_name"  placeholder="Enter Firstname" required ng-pattern="/^(\D)+$/">
@@ -21,73 +15,67 @@
                   </div>
       </div>
       <div class=" form-group" ng-class="{'has-error': (UserDetails.last_name.$invalid && UserDetails.last_name.$touched)}">
-          <label for="inputEmail3" class="col-sm-2 control-label">Last Name</label>
-                 <div class="col-sm-10" ng-class="{'has-error': (UserDetails.last_name.$invalid && UserDetails.last_name.$touched)}">
-                       <input type="text" class="form-control boxed" name="last_name"  placeholder="Enter Last Name" required ng-pattern="/^(\D)+$/">
-                       <span class="help-block" ng-show="UserDetails.last_name.$error.required && UserDetails.last_name.$touched">Please enter Last name</span>
-                       <span class="help-block" ng-show="UserDetails.last_name.$error.pattern && UserDetails.last_name.$touched">last name must be fill</span>
+           <label for="inputEmail3" class="col-sm-2 control-label">Last Name</label>
+                  <div class="col-sm-10" ng-class="{'has-error': (UserDetails.last_name.$invalid && UserDetails.last_name.$touched)}">
+                        <input type="text" class="form-control boxed" name="last_name"  placeholder="Enter Last Name" required ng-pattern="/^(\D)+$/">
+                        <span class="help-block" ng-show="UserDetails.last_name.$error.required && UserDetails.last_name.$touched">Please enter Last name</span>
+                        <span class="help-block" ng-show="UserDetails.last_name.$error.pattern && UserDetails.last_name.$touched">last name must be fill</span>
+                  </div>
+       </div>
+       <div class=" form-group" ng-class="{'has-error': (UserDetails.Email.$invalid && UserDetails.Email.$touched)}">
+            <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+                  <div class="col-sm-10">
+                       <input type="text" class="form-control boxed" name="Email"  placeholder="Enter Valid Email" required ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/">
+                       <span class="help-block" ng-show="UserDetails.Email.$error.required && UserDetails.Email.$touched">Please enter valid mail</span>
+                       <span class="help-block" ng-show="UserDetails.Email.$error.pattern && UserDetails.Email.$touched">must be fill</span>
                  </div>
-      </div>
-      <div class=" form-group" ng-class="{'has-error': (UserDetails.Email.$invalid && UserDetails.Email.$touched)}">
-           <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
-                 <div class="col-sm-10">
-                      <input type="text" class="form-control boxed" name="Email"  placeholder="Enter Valid Email" required ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/">
-                      <span class="help-block" ng-show="UserDetails.Email.$error.required && UserDetails.Email.$touched">Please enter valid mail</span>
-                      <span class="help-block" ng-show="UserDetails.Email.$error.pattern && UserDetails.Email.$touched">must be fill</span>
-                </div>
-      </div>
+       </div>
        <div class=" form-group" ng-class="{'has-error': (UserDetails.address.$invalid && UserDetails.address.$touched)}">
-            <label for="inputEmail3" class="col-sm-2 control-label">Address</label>
-                  <div class="col-sm-10">
-                        <textarea name="address" class="form-control" rows="4" placeholder="Entert Address" required ng-pattern="/^(\D)+$/"></textarea>
-                        <span class="help-block" ng-show="UserDetails.address.$error.required && UserDetails.address.$touched">Please enter address</span>
-                        <span class="help-block" ng-show="UserDetails.address.$error.pattern && UserDetails.address.$touched">must be fill</span>
-                  </div>
-      </div>
-      <div class=" form-group" ng-class="{'has-error': (UserDetails.mobile_no.$invalid && UserDetails.mobile_no.$touched)}">
-            <label for="inputEmail3" class="col-sm-2 control-label">Mobile</label>
-                  <div class="col-sm-10">
-                        <input type="text" class="form-control boxed" name="mobile_no"  placeholder="Enter Mobile No" required >
-                        <span class="help-block" ng-show="UserDetails.mobile_no.$error.required && UserDetails.mobile_no.$touched">Please enter 10 digit mobile no</span>
-                        <span class="help-block" ng-show="UserDetails.mobile_no.$error.pattern && UserDetails.mobile_no.$touched">mobile number not be a character</span>
-                  </div>
-     </div>
-     <div class=" form-group" ng-class="{'has-error': (UserDetails.Desingnation.$invalid && UserDetails.Desingnation.$touched)}">
-          <label for="inputEmail3" class="col-sm-2 control-label">Desingnation</label>
-                 <div class="col-sm-10">
-                         <select class="form-control" name="Desingnation" required>
-                           <option value="">Select Tender Type</option>
-                         </select>
-                         <span class="help-block" ng-show="UserDetails.Desingnation.$error.required && UserDetails.Desingnation.$touched">select one</span>
-                 </div>
-    </div>
-    <div class=" form-group" ng-class="{'has-error': (UserDetails.Create_password.$invalid && UserDetails.Create_password.$touched)}">
-         <label for="inputEmail3" class="col-sm-2 control-label">Create Password</label>
-               <div class="col-sm-10">
-                    <input type="text" class="form-control boxed" name="Create_password"  placeholder="Enter Password" required ng-pattern="/^[a-zA-Z0-9]*$/">
-                    <span class="help-block" ng-show="UserDetails.Create_password.$error.required && UserDetails.Create_password.$touched">please enter your password</span>
-                    <span class="help-block" ng-show="UserDetails.Create_password.$error.pattern && UserDetails.Create_password.$touched">must be fill</span>
-              </div>
-   </div>
-   <div class=" form-group">
-        <label for="inputEmail3" class="col-sm-2 control-label">confirm Password</label>
-              <div class="col-sm-10">
-                   <input type="text" class="form-control boxed" name="confirm_password"  placeholder="Confirm Password" required ng-pattern="/^[a-zA-Z0-9]*$/">
-                   <span class="help-block" ng-show="UserDetails.confirm_password.$error.required && UserDetails.confirm_password.$touched">Please confirm your password</span>
-                   <span class="help-block" ng-show="UserDetails.confirm_password.$error.pattern && UserDetails.confirm_password.$touched">must be fill</span>
-             </div>
-  </div>
-  <div class=" form-group">
-       <label for="inputEmail3" class="col-sm-2 control-label">confirm Password</label>
-             <div class="col-sm-10">
-                  <input type="text" class="form-control boxed" name="confirm_password"  placeholder="Confirm Password" required ng-pattern="/^[a-zA-Z0-9]*$/">
-                  <span class="help-block" ng-show="UserDetails.confirm_password.$error.required && UserDetails.confirm_password.$touched">Please confirm your password</span>
-                  <span class="help-block" ng-show="UserDetails.confirm_password.$error.pattern && UserDetails.confirm_password.$touched">must be fill</span>
-            </div>
- </div>
- <div class=" form-group col-sm-5">
-    <button type="button" class="btn btn-oval btn-success adduser">Submit</button>
+                <label for="inputEmail3" class="col-sm-2 control-label">Address</label>
+                      <div class="col-sm-10">
+                            <textarea name="address" class="form-control" rows="4" placeholder="Entert Address" required ng-pattern="/^(\D)+$/"></textarea>
+                            <span class="help-block" ng-show="UserDetails.address.$error.required && UserDetails.address.$touched">Please enter address</span>
+                            <span class="help-block" ng-show="UserDetails.address.$error.pattern && UserDetails.address.$touched">must be fill</span>
+                      </div>
+          </div>
+          <div class=" form-group" ng-class="{'has-error': (UserDetails.mobile_no.$invalid && UserDetails.mobile_no.$touched)}">
+                <label for="inputEmail3" class="col-sm-2 control-label">Mobile</label>
+                      <div class="col-sm-10">
+                            <input type="text" class="form-control boxed" name="mobile_no"  placeholder="Enter Mobile No" required >
+                            <span class="help-block" ng-show="UserDetails.mobile_no.$error.required && UserDetails.mobile_no.$touched">Please enter 10 digit mobile no</span>
+                            <span class="help-block" ng-show="UserDetails.mobile_no.$error.pattern && UserDetails.mobile_no.$touched">mobile number not be a character</span>
+                      </div>
+         </div>
+
+         <div class=" form-group" ng-class="{'has-error': (UserDetails.Desingnation.$invalid && UserDetails.Desingnation.$touched)}">
+                  <label for="inputEmail3" class="col-sm-2 control-label">Desingnation</label>
+                         <div class="col-sm-10">
+                                 <select class="form-control" name="Desingnation" required>
+                                   <option value="">Select Tender Type</option>
+                                 </select>
+                                 <span class="help-block" ng-show="UserDetails.Desingnation.$error.required && UserDetails.Desingnation.$touched">select one</span>
+                         </div>
+        </div>
+
+          <div class=" form-group" ng-class="{'has-error': (UserDetails.Create_password.$invalid && UserDetails.Create_password.$touched)}">
+               <label for="inputEmail3" class="col-sm-2 control-label">Create Password</label>
+                     <div class="col-sm-10">
+                          <input type="text" class="form-control boxed" name="Create_password"  placeholder="Enter Password" required ng-pattern="/^[a-zA-Z0-9]*$/">
+                          <span class="help-block" ng-show="UserDetails.Create_password.$error.required && UserDetails.Create_password.$touched">please enter your password</span>
+                          <span class="help-block" ng-show="UserDetails.Create_password.$error.pattern && UserDetails.Create_password.$touched">must be fill</span>
+                    </div>
+         </div>
+         <div class=" form-group">
+              <label for="inputEmail3" class="col-sm-2 control-label">confirm Password</label>
+                    <div class="col-sm-10">
+                         <input type="text" class="form-control boxed" name="confirm_password"  placeholder="Confirm Password" required ng-pattern="/^[a-zA-Z0-9]*$/">
+                         <span class="help-block" ng-show="UserDetails.confirm_password.$error.required && UserDetails.confirm_password.$touched">Please confirm your password</span>
+                         <span class="help-block" ng-show="UserDetails.confirm_password.$error.pattern && UserDetails.confirm_password.$touched">must be fill</span>
+                   </div>
+        </div>
+        <div class=" form-group col-sm-5">
+             <button type="button" class="btn btn-oval btn-success adduser">Submit</button>
+       </div>
+</form>
 </div>
- </form>
-  </div>
 </section>

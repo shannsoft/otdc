@@ -1653,7 +1653,8 @@ span a {
   .card .title {
     font-size: 1.1rem;
     color: #4f5f6f;
-   margin-top: 28px;
+    /*margin-top: -93px;*/
+     margin-left: -4px;
  }
 
 .title-description {
