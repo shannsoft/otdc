@@ -141,6 +141,24 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
             controller:"Main_Controller",
             resolve: {loggedout: checkLoggedout},
         })
+        .state('tender_assign', {
+            templateUrl: 'views/Tender/assignTender.html',
+            url: '/tender_assign',
+            controller:"Tender_controller",
+            resolve: {loggedout: checkLoggedout},
+        })
+        .state('tender_milestone', {
+            templateUrl: 'views/Tender/TendorMilestone.html',
+            url: '/tender_milestone',
+            controller:"Tender_controller",
+            resolve: {loggedout: checkLoggedout},
+        })
+        .state('tender_checklist', {
+            templateUrl: 'views/Tender/TenderCheckList.html',
+            url: '/tender_checklist',
+            controller:"Tender_controller",
+            resolve: {loggedout: checkLoggedout},
+        })
   });
   app.constant('CONFIG', {
     'HTTP_HOST': '../ep-portal/Server/api.php' //client staging

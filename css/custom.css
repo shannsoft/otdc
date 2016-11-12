@@ -65,3 +65,32 @@
   border-color: #eaeaec;
   color:#000;
 }
+
+.block-title{
+	font-size: 18px;
+	font-weight: bold;
+}
+.red-bg{
+	background: #f2dede;
+	border:2px solid #ebccd1;
+	color: #a94442;
+}
+.green-bg{
+	background-color: #dff0d8;
+	border:2px solid #d6e9c6;
+	color: #3c763d;
+}
+
+.tm-content{
+	position: relative;
+}
+.tm-content span{
+	display: block;
+	font-size: 18px;
+	font-weight: bold;
+	text-transform: uppercase;
+}
+.font-bold{font-weight: bold;}
+.text-right{
+	text-align: right;
+}

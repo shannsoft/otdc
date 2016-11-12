@@ -1,204 +1,180 @@
-<section class="content title-block forms-page add tender ng-scope">
-  <div class="card card-block sameheight-item" style="height: 1900px;">
-    <div class="title-block">
-        <h3 class="title">
-			 	  Add New Tender
-			 </h3>
-    </div>
-    <form name="TenderDetails">
-      <div class=" form-group" ng-class="{'has-error': (TenderDetails.organisation_chain.$invalid && TenderDetails.organisation_chain.$touched)}">
-          <label for="inputEmail3" class="col-sm-2 control-label">Organisation Chain </label>
-                 <div class="col-sm-10">
-                       <input type="text" class="form-control boxed" name="organisation_chain">
-                            <span class="help-block" ng-show="tenderDetails.organisation_chain.$error.required && tenderDetails.organisation_chain.$touched">Please enter organisation chain</span>
-                       <span class="help-block" ng-show="tenderDetails.organisation_chain.$error.pattern && tenderDetails.organisation_chain.$touched">organisation chain name must be character</span>
-                 </div>
-      </div>
-      <div class=" form-group" ng-class="{'has-error': (TenderDetails.Tender_ref_No.$invalid && TenderDetails.Tender_ref_No.$touched)}">
-           <label for="inputEmail3" class="col-sm-2 control-label">Tender Reference No</label>
-                  <div class="col-sm-10">
-                        <input type="text" class="form-control boxed" name="Tender_ref_No"  placeholder="Enter Tender Reference No" required ng-pattern="/^[a-zA-Z0-9]*$/">
-                              <span class="help-block" ng-show="tenderDetails.Tender_ref_No.$error.required && tenderDetails.Tender_ref_No.$touched">Please enter organisation chain</span>
-                        <span class="help-block" ng-show="tenderDetails.Tender_ref_No.$error.pattern && tenderDetails.Tender_ref_No.$touched">organisation chain name must be character</span>
+<article class="content forms-page">
+<div class="row">
+    <div class="col-md-12">
+          <div class="card card-block sameheight-item">
+                <div class="title-block">
+                     <h3 class="title">
+						           Add Tender
+				           	</h3>
                 </div>
-    </div>
-    <div class=" form-group" ng-class="{'has-error': (TenderDetails.Tender_type.$invalid && TenderDetails.Tender_type.$touched)}">
-        <label for="inputEmail3" class="col-sm-2 control-label">Tender Type</label>
-             <div class="col-sm-10">
-                 <select class="form-control" name="Tender_type" required>
-                         <option value="">Select Tender Type</option>
-                </select>
-                 <span class="help-block" ng-show="TenderDetails.Tender_Type.$error.required && TenderDetails.Tender_Type.$touched">select one</span>
-           </div>
-    </div>
-    <div class=" form-group" ng-class="{'has-error': (TenderDetails.Tender_type.$invalid && TenderDetails.Tender_type.$touched)}">
-         <label for="inputEmail3" class="col-sm-2 control-label">Tender Category</label>
-               <div class="col-sm-10">
-                   <select class="form-control" name="Tender_category" required>
-                        <option value="">Select Tender Category</option>
-                 </select>
-                  <span class="help-block" ng-show="TenderDetails.Tender_category.$error.required && TenderDetails.Tender_category.$touched">select one</span>
-               </div>
-   </div>
-   <div class=" form-group" ng-class="{'has-error': (TenderDetails.Technical_evaluation.$invalid && TenderDetails.Technical_evaluation.$touched)}">
-        <label for="inputEmail3" class="col-sm-2 control-label">General Technical Evaluation Allowed</label>
-              <div class="col-sm-10">
-                  <select class="form-control" name="Technical_evaluation" required>
-                       <option value="">Select One</option>
-                        <option value="">yes</option>
-                        <option value="">No</option>
-                  </select>
-                    <span class="help-block" ng-show="TenderDetails.Technical_evaluation.$error.required && TenderDetails.Technical_evaluation.$touched">select one</span>
-            </div>
-  </div>
-  <div class=" form-group" ng-class="{'has-error': (TenderDetails.payment_mode.$invalid && TenderDetails.payment_mode.$touched)}">
-      <label for="inputEmail3" class="col-sm-2 control-label">Payment mode</label>
-             <div class="col-sm-10">
-                    <input type="text" class="form-control boxed" name="payment_mode"  placeholder="Enter Payment Mode" required ng-pattern="/^[a-zA-Z0-9]*$/">
-                          <span class="help-block" ng-show="tenderDetails.payment_mode.$error.required && tenderDetails.payment_mode.$touched">Please enter payment Mode</span>
-                    <span class="help-block" ng-show="tenderDetails.payment_mode.$error.pattern && tenderDetails.payment_mode.$touched">payment mode must be entered</span>
-           </div>
- </div>
- <div class=" form-group">
-      <label for="inputEmail3" class="col-sm-2 control-label">Is Multi Currency Allowed For Fee</label>
-             <div class="col-sm-10">
-               <select class="form-control" name="Multi_currency_allowed" required>
-                      <option value="">Select One</option>
-                      <option value="">yes</option>
-                      <option value="">No</option>
-             </select>
-                 <span class="help-block" ng-show="TenderDetails.Multi_currency_allowed.$error.required && TenderDetails.Multi_currency_allowed.$touched">select one</span>
-            </div>
-</div>
-<div class=" form-group" ng-class="{'has-error': (TenderDetails.Form_of_contact.$invalid && TenderDetails.Form_of_contact.$touched)}">
-       <label for="inputEmail3" class="col-sm-2 control-label">Form Of Contact</label>
-              <div class="col-sm-10">
-                    <input type="text" class="form-control boxed" name="Form_of_contact"  placeholder="Enter Form Of Contact" required ng-pattern="/^(\D)+$/">
-                    <span class="help-block" ng-show="tenderDetails.Form_of_contact.$error.required && tenderDetails.Form_of_contact.$touched">Please enter payment Mode</span>
-                    <span class="help-block" ng-show="tenderDetails.Form_of_contact.$error.pattern && tenderDetails.Form_of_contact.$touched">payment mode must be entered</span>
-             </div>
-</div>
-<div class=" form-group" ng-class="{'has-error': (TenderDetails.No_of_covers.$invalid && TenderDetails.No_of_covers.$touched)}">
-      <label for="inputEmail3" class="col-sm-2 control-label">No of covers</label>
-             <div class="col-sm-10">
-                   <input type="text" class="form-control boxed" name="No_of_covers"  placeholder="Enter No of covers" required ng-pattern="/[^0-9]/g">
-                   <span class="help-block" ng-show="tenderDetails.No_of_covers.$error.required && tenderDetails.No_of_covers.$touched">Please enter payment Mode</span>
-                   <span class="help-block" ng-show="tenderDetails.No_of_covers.$error.pattern && tenderDetails.No_of_covers.$touched">payment mode must be entered</span>
-             </div>
-</div>
-<div class=" form-group" ng-class="{'has-error': (TenderDetails.Technical_evaluation_allowed.$invalid && TenderDetails.Technical_evaluation_allowed.$touched)}">
-        <label for="inputEmail3" class="col-sm-2 control-label">Itemwise Technical Evaluation Allowed</label>
-              <div class="col-sm-10">
-                    <select class="form-control" name="Technical_evaluation_allowed" required>
-                            <option value="">Select One</option>
-                            <option value="">yes</option>
-                            <option value="">No</option>
-                    </select>
-              </div>
-</div>
-<div class=" form-group" ng-class="{'has-error': (TenderDetails.BOQ_currency.$invalid && TenderDetails.BOQ_currency.$touched)}">
-    <label for="inputEmail3" class="col-sm-2 control-label">Is Multi Currency Allowed For BOQ</label>
-          <div class="col-sm-10">
-               <select class="form-control" name="BOQ_currency" required>
-                       <option value="">Select One</option>
-                       <option value="">yes</option>
-                       <option value="">No</option>
+            <form role="TenderDetails">
+                  <fieldset class="form-group">
+                        <label class="control-label" for="formGroupExampleInput">Organisation Chain</label>
+                        <input type="text" class="form-control" id="formGroupExampleInput" readonly>
+                   </fieldset>
+                  <fieldset class="form-group" ng-class="{'has-error': (TenderDetails.Tender_ref_No.$invalid && TenderDetails.Tender_ref_No.$touched)}">
+                        <label class="control-label" for="formGroupExampleInput2">Tender Reference No</label>
+                        <input type="password" class="form-control" name="Tender_ref_No" id="formGroupExampleInput2" placeholder="Enter Tender Reference No" ng-pattern="/^[a-zA-Z0-9]*$/">
+                        <span class="help-block" ng-show="tenderDetails.Tender_ref_No.$error.required && tenderDetails.Tender_ref_No.$touched">Please enter Tender Reference No</span>
+                        <span class="help-block" ng-show="tenderDetails.Tender_ref_No.$error.pattern && tenderDetails.Tender_ref_No.$touched">Tender Reference No must be fill</span>
+                   </fieldset>
+                  <fieldset class="form-group" ng-class="{'has-error': (TenderDetails.Tender_ref_No.$invalid && TenderDetails.Tender_ref_No.$touched)}">
+                     <label class="control-label" for="formGroupExampleInput3">Tender Id</label>
+                     <input type="text" class="form-control" name="tender_id" id="formGroupExampleInput3" placeholder="Enter Tender ID" ng-pattern="/^[a-zA-Z0-9]*$/">
+                     <span class="help-block" ng-show="tenderDetails.tender_id.$error.required && tenderDetails.tender_id.$touched">Please enter Tender ID</span>
+                     <span class="help-block" ng-show="tenderDetails.tender_id.$error.pattern && tenderDetails.tender_id.$touched">Tender Reference No must be fill</span>
+                   </fieldset>
+                  <fieldset class="form-group" ng-class="{'has-error': (TenderDetails.Tender_type.$invalid && TenderDetails.Tender_type.$touched)}">
+                  <label class="control-label"for="formGroupExampleInput3">Tender Type</label>
+                  <select class="form-control" name="Tender_Type">
+          							<option>Option one</option>
+          							<option>Option two</option>
+          							<option>Option three</option>
+          							<option>Option four</option>
+      						</select>
+                  <span class="help-block" ng-show="TenderDetails.Tender_Type.$error.required && TenderDetails.Tender_Type.$touched">select one</span>
+                </fieldset>
+                <fieldset class="form-group" ng-class="{'has-error': (TenderDetails.Tender_category.$invalid && TenderDetails.Tender_category$touched)}">
+                <label class="control-label" for="formGroupExampleInput3">Tender Category</label>
+                <select class="form-control" name="Tender_category">
+      							<option>Option one</option>
+      							<option>Option two</option>
+      							<option>Option three</option>
+      							<option>Option four</option>
+						    </select>
+                <span class="help-block" ng-show="TenderDetails.Tender_category.$error.required && TenderDetails.Tender_category.$touched">select one</span>
+              </fieldset>
+              <fieldset class="form-group" ng-class="{'has-error': (TenderDetails.Technical_evaluation.$invalid && TenderDetails.Technical_evaluation.$touched)}">
+              <label class="control-label" for="formGroupExampleInput4">General Technical Evaluation Allowed</label>
+              <select class="form-control" name="Technical_evaluation">
+                  <option>Option one</option>
+                  <option>Option two</option>
               </select>
-          </div>
-</div>
-<div class=" form-group" ng-class="{'has-error': (TenderDetails.Tender_fee.$invalid && TenderDetails.Tender_fee.$touched)}">
-      <label for="inputEmail3" class="col-sm-2 control-label">Tender Fee</label>
-            <div class="col-sm-10">
-                 <input type="text" class="form-control boxed" name="Tender_fee"  placeholder="Enter Tender Fee" required ng-pattern="/[^0-9]/g">
-                 <span class="help-block" ng-show="tenderDetails.Tender_fee.$error.required && tenderDetails.Tender_fee.$touched">Please enter payment Mode</span>
-                 <span class="help-block" ng-show="tenderDetails.Tender_fee.$error.pattern && tenderDetails.Tender_fee.$touched">payment mode must be entered</span>
-            </div>
-</div>
-<div class=" form-group" ng-class="{'has-error': (TenderDetails.Fee_payble_to.$invalid && TenderDetails.Fee_payble_to.$touched)}">
-      <label for="inputEmail3" class="col-sm-2 control-label">Fee Payble To</label>
-            <div class="col-sm-10">
-                  <input type="text" class="form-control boxed" name="Fee_payble_to"  placeholder="Enter Fee payble To" required  ng-pattern="/^(\D)+$/">
-                  <span class="help-block" ng-show="tenderDetails.Fee_payble_to.$error.required && tenderDetails.Fee_payble_to.$touched">Please enter payment Mode</span>
-                  <span class="help-block" ng-show="tenderDetails.Fee_payble_to.$error.pattern && tenderDetails.Fee_payble_to.$touched">payment mode must be entered</span>
-           </div>
-</div>
-<div class=" form-group" ng-class="{'has-error': (TenderDetails.vat_changes.$invalid && TenderDetails.vat_changes.$touched)}">
-      <label for="inputEmail3" class="col-sm-2 control-label">VAT Charges</label>
-              <div class="col-sm-10">
-                    <input type="text" class="form-control boxed" name="vat_changes"  placeholder="Enter VAT Charges" required ng-pattern="/[^0-9]/g">
-                    <span class="help-block" ng-show="tenderDetails.vat_changes.$error.required && tenderDetails.vat_changes.$touched">Please enter payment Mode</span>
-                    <span class="help-block" ng-show="tenderDetails.vat_changes.$error.pattern && tenderDetails.vat_changes.$touched">payment mode must be entered</span>
-              </div>
-</div>
-<div class=" form-group" ng-class="{'has-error': (TenderDetails.Fee_payble_at.$invalid && TenderDetails.Fee_payble_at.$touched)}">
-      <label for="inputEmail3" class="col-sm-2 control-label">Fee Payble At</label>
-            <div class="col-sm-10">
-                  <input type="text" class="form-control boxed" name="Fee_payble_at"  placeholder="Enter Fee payable at" required ng-pattern="/^(\D)+$/">
-                  <span class="help-block" ng-show="tenderDetails.Fee_payble_at.$error.required && tenderDetails.Fee_payble_at.$touched">Please enter payment Mode</span>
-                  <span class="help-block" ng-show="tenderDetails.Fee_payble_at.$error.pattern && tenderDetails.Fee_payble_at.$touched">payment mode must be entered</span>
-           </div>
-</div>
-<div class=" form-group" ng-class="{'has-error': (TenderDetails.EMD_feetype.$invalid && TenderDetails.EMD_feetype.$touched)}">
-      <label for="inputEmail3" class="col-sm-2 control-label">EMD Fee Type</label>
-            <div class="col-sm-10">
-                  <input type="text" class="form-control boxed" name="EMD_feetype"  placeholder="Enter EMD Fee Type"required ng-pattern="/^(\D)+$/">
-                  <span class="help-block" ng-show="tenderDetails.EMD_feetype.$error.required && tenderDetails.EMD_feetype.$touched">Please enter payment Mode</span>
-                  <span class="help-block" ng-show="tenderDetails.EMD_feetype.$error.pattern && tenderDetails.EMD_feetype.$touched">payment mode must be entered</span>
-            </div>
-</div>
-<div class=" form-group" ng-class="{'has-error': (TenderDetails.emd_payble_to.$invalid && TenderDetails.emd_payble_to.$touched)}">
-        <label for="inputEmail3" class="col-sm-2 control-label">EMD Payble To</label>
-        <div class="col-sm-10">
-              <input type="text" class="form-control boxed" name="emd_payble_to"  placeholder="Enter EMD Payble To" required ng-pattern="/^(\D)+$/">
-              <span class="help-block" ng-show="tenderDetails.emd_payble_to.$error.required && tenderDetails.emd_payble_to.$touched">Please enter payment Mode</span>
-              <span class="help-block" ng-show="tenderDetails.emd_payble_to.$error.pattern && tenderDetails.emd_payble_to.$touched">payment mode must be entered</span>
-        </div>
-</div>
-<div class=" form-group" ng-class="{'has-error': (TenderDetails.Exemption_allowd.$invalid && TenderDetails.Exemption_allowd.$touched)}">
-      <label for="inputEmail3" class="col-sm-2 control-label">EMD Exemption Allowed</label>
-            <div class="col-sm-10">
-                <select class="form-control" name="Exemption_allowd" required>
-                         <option value="">Select One</option>
-                         <option value="">yes</option>
-                         <option value="">No</option>
+              <span class="help-block" ng-show="TenderDetails.Technical_evaluation.$error.required && TenderDetails.Technical_evaluation.$touched">select one</span>
+            </fieldset>
+            <fieldset class="form-group" ng-class="{'has-error': (TenderDetails.payment_mode.$invalid && TenderDetails.payment_mode.$touched)}">
+                <label class="control-label" for="formGroupExampleInput4">Payment Mode</label>
+                <input type="text" name="payment_mode" class="form-control" id="formGroupExampleInput4" placeholder="Enter Payment Mode">
+                <span class="help-block" ng-show="tenderDetails.payment_mode.$error.required && tenderDetails.payment_mode.$touched">Please enter payment Mode</span>
+                <span class="help-block" ng-show="tenderDetails.payment_mode.$error.pattern && tenderDetails.payment_mode.$touched">payment mode must be entered</span>
+            </fieldset>
+          <fieldset class="form-group" ng-class="{'has-error': (TenderDetails.Multi_currency_allowed.$invalid && TenderDetails.Multi_currency_allowed.$touched)}">
+                <label class="control-label" for="formGroupExampleInput4">Is MultiCurrency Allowed For Fee</label>
+                <select class="form-control" name="Multi_currency_allowed">
+                    <option>Select One</option>
+                    <option>Yes</option>
                 </select>
-      </div>
-</div>
-<div class=" form-group" ng-class="{'has-error': (TenderDetails.EMD_Percentage.$invalid && TenderDetails.EMD_Percentage.$touched)}">
-      <label for="inputEmail3" class="col-sm-2 control-label">EMD Percentage</label>
-            <div class="col-sm-10">
-                  <input type="text" class="form-control boxed" name="EMD_Percentage"  placeholder="Enter EMD Percentage"required ng-pattern="/[^0-9]/g">
-                  <span class="help-block" ng-show="tenderDetails.EMD_Percentage.$error.required && tenderDetails.EMD_Percentage.$touched">Please enter payment Mode</span>
-                  <span class="help-block" ng-show="tenderDetails.EMD_Percentage.$error.pattern && tenderDetails.EMD_Percentage.$touched">payment mode must be entered</span>
-            </div>
-</div>
-<div class=" form-group" ng-class="{'has-error': (TenderDetails.EMD_payble_at.$invalid && TenderDetails.EMD_payble_at.$touched)}">
-      <label for="inputEmail3" class="col-sm-2 control-label">EMD Payble At</label>
-      <div class="col-sm-10">
-            <input type="text" class="form-control boxed" name="EMD_payble_at"  placeholder="Enter EMD Payble At" required  ng-pattern="/^(\D)+$/">
-            <span class="help-block" ng-show="tenderDetails.EMD_payble_at.$error.required && tenderDetails.EMD_payble_at.$touched">Please enter payment Mode</span>
-            <span class="help-block" ng-show="tenderDetails.EMD_payble_at.$error.pattern && tenderDetails.EMD_payble_at.$touched">payment mode must be entered</span>
-      </div>
-</div>
-<div class=" form-group" ng-class="{'has-error': (TenderDetails.Title.$invalid && TenderDetails.Title.$touched)}">
-      <label for="inputEmail3" class="col-sm-2 control-label">Title</label>
-      <div class="col-sm-10">
-            <input type="text" class="form-control boxed" name="Title"  placeholder="Enter Tender Title" required ng-pattern="/^(\D)+$/">
-            <span class="help-block" ng-show="tenderDetails.Title.$error.required && tenderDetails.Title.$touched">Please enter payment Mode</span>
-            <span class="help-block" ng-show="tenderDetails.Title.$error.pattern && tenderDetails.Title.$touched">payment mode must be entered</span>
-      </div>
-</div>
-<div class=" form-group" ng-class="{'has-error': (TenderDetails.work_Desc.$invalid && TenderDetails.work_Desc.$touched)}">
-      <label for="inputEmail3" class="col-sm-2 control-label">Work Description</label>
-            <div class="col-sm-10">
-                  <textarea name="work_Desc" class="form-control" rows="4" placeholder="Work Description" required ng-pattern="/^(\D)+$/"></textarea>
-                  <span class="help-block" ng-show="tenderDetails.work_Desc.$error.required && tenderDetails.work_Desc.$touched">Please enter payment Mode</span>
+                <span class="help-block" ng-show="TenderDetails.Multi_currency_allowed.$error.required && TenderDetails.Multi_currency_allowed.$touched">select one</span>
+          </fieldset>
+          <fieldset class="form-group" ng-class="{'has-error': (TenderDetails.Form_of_contact.$invalid && TenderDetails.Form_of_contact.$touched)}">
+                <label class="control-label" for="formGroupExampleInput4">Form Of Contact</label>
+                <input type="text" name="Form_of_contact" class="form-control" id="formGroupExampleInput4" placeholder="Enter Form Of Contact">
+                <span class="help-block" ng-show="tenderDetails.Form_of_contact.$error.required && tenderDetails.Form_of_contact.$touched">Please enter Form Of Contact</span>
+                <span class="help-block" ng-show="tenderDetails.Form_of_contact.$error.pattern && tenderDetails.Form_of_contact.$touched">Form Of Contact must be entered</span>
+          </fieldset>
+          <fieldset class="form-group" ng-class="{'has-error': (TenderDetails.No_of_covers.$invalid && TenderDetails.No_of_covers.$touched)}">
+                <label class="control-label" for="formGroupExampleInput4">No Of Covers</label>
+                <input type="text" name="No_of_covers" class="form-control" id="formGroupExampleInput4" placeholder=" Enter No Of Covers" required>
+                <span class="help-block" ng-show="tenderDetails.No_of_covers.$error.required && tenderDetails.No_of_covers.$touched">Please enter payment Mode</span>
+                <span class="help-block" ng-show="tenderDetails.No_of_covers.$error.pattern && tenderDetails.No_of_covers.$touched">payment mode must be entered</span>
+          </fieldset>
+          <fieldset class="form-group" ng-class="{'has-error': (TenderDetails.Technical_evaluation_allowed.$invalid && TenderDetails.Technical_evaluation_allowed.$touched)}">
+                <label class="control-label" for="formGroupExampleInput4">Itemwise Technical Evaluation Allowed</label>
+                <select class="form-control" name="Technical_evaluation_allowed">
+                    <option>Option one</option>
+                    <option>Option two</option>
+                </select>
+                <span class="help-block" ng-show="Technical_evaluation_allowed.$error.required && Technical_evaluation_allowed.$touched">select one</span>
+          </fieldset>
+          <fieldset class="form-group" ng-class="{'has-error': (TenderDetails.BOQ_currency.$invalid && TenderDetails.BOQ_currency.$touched)}">
+                <label class="control-label" for="formGroupExampleInput4">Is Multi Currency Allowed For BOQ</label>
+                <select class="form-control" name="BOQ_currency">
+                    <option>Option one</option>
+                    <option>Option two</option>
+                </select>
+                  <span class="help-block" ng-show="TenderDetails.BOQ_currency.$error.required && TenderDetails.BOQ_currency.$touched">select one</span>
+          </fieldset>
+          <fieldset class="form-group" ng-class="{'has-error': (TenderDetails.Tender_fee.$invalid && TenderDetails.Tender_fee.$touched)}">
+                <label class="control-label" for="formGroupExampleInput4">Tender Fee</label>
+                <input type="text" name="Tender_fee" class="form-control" id="formGroupExampleInput4" placeholder="Enter Tender Fee" required ng-pattern="/^(\D)+$/">
+                <span class="help-block" ng-show="tenderDetails.Tender_fee.$error.required && tenderDetails.Tender_fee.$touched">Please enter Tender Fee</span>
+                <span class="help-block" ng-show="tenderDetails.Tender_fee.$error.pattern && tenderDetails.Tender_fee.$touched">Tender Fee must be entered</span>
+          </fieldset>
+          <fieldset class="form-group" ng-class="{'has-error': (TenderDetails.Fee_payble_to.$invalid && TenderDetails.Fee_payble_to.$touched)}">
+                <label class="control-label" for="formGroupExampleInput4">Fee Payble To</label>
+                <input type="text" name="Fee_payble_to" class="form-control" id="formGroupExampleInput4" placeholder="Enter Fee Payble To" required ng-pattern="/^(\D)+$/">
+                <span class="help-block" ng-show="tenderDetails.Fee_payble_to.$error.required && tenderDetails.Fee_payble_to.$touched">Please enter Fee Payble to</span>
+                  <span class="help-block" ng-show="tenderDetails.Fee_payble_to.$error.pattern && tenderDetails.Fee_payble_to.$touched">Fee Payble to must be entered</span>
+          </fieldset>
+          <fieldset class="form-group" ng-class="{'has-error': (TenderDetails.vat_charges.$invalid && TenderDetails.vat_charges.$touched)}">
+                <label class="control-label" for="formGroupExampleInput4">VAT Charges</label>
+                <input type="text" name="vat_charges" class="form-control" id="formGroupExampleInput4" placeholder="Enter Vat Charges" ng-pattern="/[^0-9]/g">
+                <span class="help-block" ng-show="tenderDetails.vat_charges.$error.required && tenderDetails.vat_charges.$touched">Please enter vat charges</span>
+                    <span class="help-block" ng-show="tenderDetails.vat_charges.$error.pattern && tenderDetails.vat_charges.$touched">vat charges must be entered</span>
+          </fieldset>
+          <fieldset class="form-group" ng-class="{'has-error': (TenderDetails.Fee_payble_at.$invalid && TenderDetails.Fee_payble_at.$touched)}">
+                <label class="control-label" for="formGroupExampleInput4">Fee Payble At</label>
+                <input type="text"  class="form-control" id="formGroupExampleInput4" name="Fee_payble_at"  placeholder="Enter Fee payable at" required ng-pattern="/^(\D)+$/">
+                <span class="help-block" ng-show="tenderDetails.Fee_payble_at.$error.required && tenderDetails.Fee_payble_at.$touched">Please enter Fee Payble At</span>
+                 <span class="help-block" ng-show="tenderDetails.Fee_payble_at.$error.pattern && tenderDetails.Fee_payble_at.$touched">Fee Payble At must be entered</span>
+          </fieldset>
+          <fieldset class="form-group" ng-class="{'has-error': (TenderDetails.emd_amount.$invalid && TenderDetails.emd_amount.$touched)}">
+                <label class="control-label" for="formGroupExampleInput4">EMD Amount(INR)</label>
+                <input type="text" name="emd_amount" class="form-control" id="formGroupExampleInput4" placeholder="Enter EMD Amount">
+                <span class="help-block" ng-show="tenderDetails.emd_amount.$error.required && tenderDetails.emd_amount.$touched">Please enter EMD Amount</span>
+                 <span class="help-block" ng-show="tenderDetails.emd_amount.$error.pattern && tenderDetails.emd_amount.$touched">EMD Amount must be entered</span>
+          </fieldset>
+          <fieldset class="form-group" ng-class="{'has-error': (TenderDetails.emd_fee_type.$invalid && TenderDetails.emd_fee_type.$touched)}">
+                <label class="control-label" for="formGroupExampleInput7">EMD Fee Type</label>
+                <select class="form-control" name="emd_fee_type">
+                    <option>Option one</option>
+                    <option>Option two</option>
+                </select>
+                  <span class="help-block" ng-show="TenderDetails.emd_fee_type.$error.required && TenderDetails.emd_fee_type.$touched">select one</span>
+          </fieldset>
+          <fieldset class="form-group" ng-class="{'has-error': (TenderDetails.emd_payble_to.$invalid && TenderDetails.emd_payble_to.$touched)}">
+                <label class="control-label" for="formGroupExampleInput7" name="emd_payble_to"  placeholder="Enter EMD Payble To" required ng-pattern="/^(\D)+$/">EMD Payble To</label>
+                <input type="text"  class="form-control" id="formGroupExampleInput4" placeholder="Disabled input text">
+                <span class="help-block" ng-show="tenderDetails.emd_payble_to.$error.required && tenderDetails.emd_payble_to.$touched">Please enter EMD Payble To</span>
+                <span class="help-block" ng-show="tenderDetails.emd_payble_to.$error.pattern && tenderDetails.emd_payble_to.$touched">EMD Payble To must be entered</span>
+          </fieldset>
+          <fieldset class="form-group" ng-class="{'has-error': (TenderDetails.Exemption_allowd.$invalid && TenderDetails.Exemption_allowd.$touched)}">
+                <label class="control-label" for="formGroupExampleInput7">EMD Exemption Allowed</label>
+                <select class="form-control"  name="Exemption_allowd" required>
+                    <option>Option one</option>
+                    <option>Option two</option>
+                </select>
+                <span class="help-block" ng-show="TenderDetails.Exemption_allowd.$error.required && TenderDetails.Exemption_allowd.$touched">select one</span>
+          </fieldset>
+          <fieldset class="form-group" ng-class="{'has-error': (TenderDetails.EMD_Percentage.$invalid && TenderDetails.EMD_Percentage.$touched)}">
+                <label class="control-label" for="formGroupExampleInput7">EMD Percentage</label>
+                <input type="text"  class="form-control" id="formGroupExampleInput4"  name="EMD_Percentage"  placeholder="Enter EMD Percentage"required ng-pattern="/[^0-9]/g">
+                <span class="help-block" ng-show="tenderDetails.EMD_Percentage.$error.required && tenderDetails.EMD_Percentage.$touched">Please enter EMD Percentage</span>
+                  <span class="help-block" ng-show="tenderDetails.EMD_Percentage.$error.pattern && tenderDetails.EMD_Percentage.$touched">EMD Percentage must be entered</span>
+          </fieldset>
+          <fieldset class="form-group" ng-class="{'has-error': (TenderDetails.EMD_payble_at.$invalid && TenderDetails.EMD_payble_at.$touched)}">
+                <label class="control-label" for="formGroupExampleInput7">EMD Payble At</label>
+                <input type="text"  class="form-control" id="formGroupExampleInput4" name="EMD_payble_at"  placeholder="Enter EMD Payble At" required  ng-pattern="/^(\D)+$/">
+                <span class="help-block" ng-show="tenderDetails.EMD_payble_at.$error.required && tenderDetails.EMD_payble_at.$touched">Please enter EMD Payble At</span>
+                <span class="help-block" ng-show="tenderDetails.EMD_payble_at.$error.pattern && tenderDetails.EMD_payble_at.$touched">EMD Payble At must be entered</span>
+          </fieldset>
+          <fieldset class="form-group" ng-class="{'has-error': (TenderDetails.Title.$invalid && TenderDetails.Title.$touched)}">
+                <label class="control-label" for="formGroupExampleInput7">Title</label>
+                <input type="text"  class="form-control" id="formGroupExampleInput4" name="Title"  placeholder="Enter Tender Title" required ng-pattern="/^(\D)+$/">
+                <span class="help-block" ng-show="tenderDetails.Title.$error.required && tenderDetails.Title.$touched">Please enter Tender Title</span>
+                <span class="help-block" ng-show="tenderDetails.Title.$error.pattern && tenderDetails.Title.$touched">Tender Title must be entered</span>
+          </fieldset>
+            <fieldset class="form-group" ng-class="{'has-error': (TenderDetails.work_Desc.$invalid && TenderDetails.work_Desc.$touched)}">
+                <label class="control-label" for="formGroupExampleInput7">Work</label>
+                    <textarea rows="3" class="form-control" id="formGroupExampleInput7"placeholder="Work Description" required ng-pattern="/^(\D)+$/"></textarea>
+                    <span class="help-block" ng-show="tenderDetails.work_Desc.$error.required && tenderDetails.work_Desc.$touched">Please enter payment Mode</span>
                   <span class="help-block" ng-show="tenderDetails.work_Desc.$error.pattern && tenderDetails.work_Desc.$touched">payment mode must be entered</span>
-            </div>
-</div>
-<div class=" form-group col-sm-5">
-      <button type="button" class="btn btn-oval btn-success adduser">Submit</button>
-</div>
-   </form>
+            </fieldset>
+            <fieldset class="form-group">
+                  <button type="button" class="btn btn-success">Submit</button>
+           </fieldset>
+            </form>
+        </div>
   </div>
-</section>
+</div>
+</article>

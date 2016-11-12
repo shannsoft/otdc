@@ -2903,3 +2903,35 @@ pre {
         border: solid 1px black;
         padding: 1px;
       }
+      .asigntenderlist{
+        width: 70px;
+        margin-left: 0px;
+        float: right;
+        margin-top: -2px;
+        -moz-border-radius: 15px;
+        border-radius: 6px;
+        /* border: solid 1px black; */
+        padding: 0px;
+      }
+      .addvendortenderlist{
+        margin-top: -33px;
+        padding: -1.625rem 11rem;
+        font-size: 1rem;
+        font-weight: normal;
+        line-height: 1.5;
+      }
+      .addtenderassigntextbox{
+        margin-left: -116px;
+        margin-top: -20px;
+      }
+      .addtenderdropdown{
+        margin-left: 165px;
+      }
+      .tendermilestone{
+        margin-left: -298px;
+        margin-top: 20px;
+      }
+      .tendermilestonedate{
+        margin-left: 107px;
+        margin-top: -30px;
+      }
