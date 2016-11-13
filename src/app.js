@@ -52,109 +52,109 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
     $stateProvider
     // HOME STATES AND NESTED VIEWS ========================================
         .state('dashboard', {
-            templateUrl: 'views/dashboard.html',
+            templateUrl: 'src/views/dashboard.html',
             url: '/dashboard',
             controller:"Main_Controller",
             resolve: {loggedout: checkLoggedout},
         })
         .state('login', {
-            templateUrl: 'views/login.html',
+            templateUrl: 'src/views/login.html',
             url: '/login',
             controller:"Main_Controller",
             resolve: {loggedin: checkLoggedin},
         })
         // .state('forget-password', {
-        //     templateUrl: 'views/forget.html',
+        //     templateUrl: 'src/views/forget.html',
         //     url: '/forget-password',
         //     controller:"Main_Controller",
         //     resolve: {loggedout: checkLoggedout},
         // })
         .state('tenderList', {
-            templateUrl: 'views/Tender/tenderList.html',
+            templateUrl: 'src/views/Tender/tenderList.html',
             url: '/tenderList',
             controller:"Tender_controller",
             resolve: {loggedout: checkLoggedout},
         })
         .state('addTender', {
-            templateUrl: 'views/Tender/addTender.html',
+            templateUrl: 'src/views/Tender/addTender.html',
             url: '/addTender',
             controller:"Tender_controller",
             resolve: {loggedout: checkLoggedout},
         })
         .state('editTender', {
-            templateUrl: 'views/Tender/editTenderDetails.html',
+            templateUrl: 'src/views/Tender/editTenderDetails.html',
             url: '/editTender',
             controller:"Tender_controller",
             resolve: {loggedout: checkLoggedout},
         })
         .state('tenderDetails', {
-            templateUrl: 'views/Tender/TenderDetails.html',
+            templateUrl: 'src/views/Tender/TenderDetails.html',
             url: '/tenderDetails',
             controller:"Tender_controller",
             resolve: {loggedout: checkLoggedout},
         })
         .state('UserList', {
-            templateUrl: 'views/User/userList.html',
+            templateUrl: 'src/views/User/userList.html',
             url: '/UserList',
             controller:"User_Controller",
             resolve: {loggedout: checkLoggedout},
         })
         .state('addUser', {
-            templateUrl: 'views/User/addUser.html',
+            templateUrl: 'src/views/User/addUser.html',
             url: '/addUser',
             controller:"User_Controller",
             resolve: {loggedout: checkLoggedout},
         })
         .state('editUser', {
-            templateUrl: 'views/User/editUser.html',
+            templateUrl: 'src/views/User/editUser.html',
             url: '/editUser',
             controller:"User_Controller",
             resolve: {loggedout: checkLoggedout},
         })
         .state('VendorList', {
-            templateUrl: 'views/Vendor/vendorList.html',
+            templateUrl: 'src/views/Vendor/vendorList.html',
             url: '/VendorList',
             controller:"Vendor_controller",
             resolve: {loggedout: checkLoggedout},
         })
         .state('addVendor', {
-            templateUrl: 'views/Vendor/addVendor.html',
+            templateUrl: 'src/views/Vendor/addVendor.html',
             url: '/addVendor',
             controller:"Vendor_controller",
             resolve: {loggedout: checkLoggedout},
         })
         .state('vendorDetails', {
-            templateUrl: 'views/Vendor/vendorDetails.html',
+            templateUrl: 'src/views/Vendor/vendorDetails.html',
             url: '/vendorDetails',
             controller:"Vendor_controller",
             resolve: {loggedout: checkLoggedout},
         })
         .state('editVendor', {
-            templateUrl: 'views/Vendor/editVendor.html',
+            templateUrl: 'src/views/Vendor/editVendor.html',
             url: '/editVendor',
             controller:"Vendor_controller",
             resolve: {loggedout: checkLoggedout},
         })
         .state('forget_password', {
-            templateUrl: 'views/forgetpassword.html',
+            templateUrl: 'src/views/forgetpassword.html',
             url: '/forget_password',
             controller:"Main_Controller",
             resolve: {loggedout: checkLoggedout},
         })
         .state('tender_assign', {
-            templateUrl: 'views/Tender/assignTender.html',
+            templateUrl: 'src/views/Tender/assignTender.html',
             url: '/tender_assign',
             controller:"Tender_controller",
             resolve: {loggedout: checkLoggedout},
         })
         .state('tender_milestone', {
-            templateUrl: 'views/Tender/TendorMilestone.html',
+            templateUrl: 'src/views/Tender/TendorMilestone.html',
             url: '/tender_milestone',
             controller:"Tender_controller",
             resolve: {loggedout: checkLoggedout},
         })
         .state('tender_checklist', {
-            templateUrl: 'views/Tender/TenderCheckList.html',
+            templateUrl: 'src/views/Tender/TenderCheckList.html',
             url: '/tender_checklist',
             controller:"Tender_controller",
             resolve: {loggedout: checkLoggedout},

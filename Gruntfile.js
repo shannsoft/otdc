@@ -5,17 +5,17 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('package.json'),
     jshint: {
       all: [
-        'app.js',
-        'controller/*.js',
-        'controller/**/*.js'
+        'src/app.js',
+        'src/controller/*.js',
+        'src/controller/**/*.js'
       ]
     },
     watch: {
       scripts: {
         files: [
-          'app.js',
-          'controller/*.js',
-          'controller/**/*.js'
+          'src/app.js',
+          'src/controller/*.js',
+          'src/controller/**/*.js'
         ],
         tasks: ['concat'],
         options: {
@@ -55,11 +55,11 @@ module.exports = function(grunt) {
       },
       dist: {
         src: [
-          "app.js",
-          "controller/CommonCotroller/mainController.js",
-          "controller/TenderController/TenderController.js",
-          "controller/UserController/user_controller.js",
-          "services/app_service.js"
+          "src/app.js",
+          "src/controller/CommonCotroller/mainController.js",
+          "src/controller/TenderController/TenderController.js",
+          "src/controller/UserController/user_controller.js",
+          "src/services/app_service.js"
 
         ],
         dest: 'built.js',
