@@ -1,12 +1,23 @@
-app.controller('Main_Controller',function($scope,$rootScope,$state,EnvService,$timeout,$cookieStore,$localStorage,validationService,Events){
+app.controller('Main_Controller',function($scope,$rootScope,$state,EnvService,$timeout,$cookieStore,$localStorage,validationService,Events,$location,Util,$anchorScroll){
   // Events handling
   $rootScope.$on(Events.validationFieldMissing,function(event,data) {
     alert("Event handled",data);
   });
+  $rootScope.$on(Events.errorInLogin,function(event,data){
+      $location.hash('top');
+      $anchorScroll();
+      Util.alertMessage(data.type, data.message || Events.errorInLogin);
+  })
+  $rootScope.$on(Events.errorInLogout,function(event,data){
+      $location.hash('top');
+      $anchorScroll();
+      Util.alertMessage(data.type, data.message || Events.errorInLogout);
+  })
+
 
   $scope.init = function(){
     console.log(11111);
-    var temp = validationService.getValidationMessage("required","type1","username");
+    //var temp = validationService.getValidationMessage("required","type1","username");
   }
   // $rootScope.is_loggedin = false;
   // $scope.signOut = function() {
