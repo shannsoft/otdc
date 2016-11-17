@@ -17,7 +17,7 @@ module.exports = function(grunt) {
           'src/controller/*.js',
           'src/controller/**/*.js'
         ],
-        tasks: ['concat'],
+        tasks: ['co'],
         options: {
           livereload: 35729,
           spawn: false,
@@ -66,6 +66,21 @@ module.exports = function(grunt) {
       },
 
     },
+    copy: {
+      main: {
+        cwd: '.',
+        src: 'src/**',
+        dest: 'ssapp',
+        expand: true,
+        // flatten: true,
+        // filter: 'isFile',
+      }
+  },
+  clean: {
+    ssapp: {
+      src: ['ssapp']
+    }
+  },
 
   //   notify: {
   //   task_name: {
@@ -98,11 +113,29 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-open');
   grunt.loadNpmTasks('grunt-http');
   grunt.loadNpmTasks('grunt-notify');
+  grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-copy');
   // grunt.loadNpmTasks("grunt-concurrent")
 // grunt.task.run('notify_hooks');
   // registerTask
   // grunt.registerTask("default", ['concat','watch']);
   grunt.registerTask("default", ['concat','connect:server','open:dev','watch']);
+  grunt.registerTask("co", ['copy']);
   // grunt.registerTask("conn", ['concat','open:dev','watch']);
+  grunt.registerTask('something', 'Do something interesting.', function(arg) {
+    var msg = 'Doing something...';
+    grunt.verbose.write(msg);
+    try {
+      // doSomethingThatThrowsAnExceptionOnError(arg);
+      console.log(msg+" from console log");
+      throw Error('Error grunt');
+      // grunt.verbose.ok();
+    } catch(e) {
+      // Something went wrong.
+      // grunt.verbose.or.write(msg).error().error(e.message);
+      grunt.fail.warn('Something went wrong.');
+      console.err(msg+" from console log");
+    }
+  });
 
 };

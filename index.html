@@ -6,13 +6,14 @@
     <title>OTDC</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <link rel="stylesheet" href="css/vendor.css">
     <link rel="stylesheet" href="css/app-seagreen.css">
     <link rel="stylesheet" href="css/custom.css">
     <link rel="stylesheet" href="plugins/iCheck/flat/blue.css">
-    <link rel="stylesheet" href="plugins/datepicker/datepicker3.css">
-    <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker-bs3.css">
+    <!-- <link rel="stylesheet" href="plugins/datepicker/datepicker3.css">
+    <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker-bs3.css"> -->
     <script src="dist/js/date-picker/angular-datepicker.min.js"></script>
     <link rel="stylesheet" href="dist/js/date-picker/angular-datepicker.min.css">
     <script src="dist/js/date-picker/moment.js"></script>
@@ -25,14 +26,20 @@
     <script src="lib/angular/angular-cookies.min.js"></script>
     <script src="js/vendor.js"></script>
     <script src="js/app.js"></script>
+    <script src="lib/angular/angular-messages.js"></script>
     <!-- Theme initialization -->
+    <script src="src/modules/validation.js"></script>
+    <script src="src/modules/eventHandler.js"></script>
+    <script src="src/modules/authentication.js"></script>
+    <script src="src/modules/webService.js"></script>
     <script src="src/app.js"></script>
     <script src="src/controller/CommonCotroller/mainController.js"></script>
-    <script src="controller/TenderController/TenderController.js"></script>
+    <script src="src/controller/TenderController/TenderController.js"></script>
     <script src="src/controller/UserController/user_controller.js"></script>
     <script src="src/controller/VendorController/vendorcontroller.js"></script>
     <script src="src/directive/dateviewer.js"></script>
-    <script src="src/services/app_service.js"></script>
+    <script src="src/services/envService.js"></script>
+    <script src="src/controller/TenderController/tenderMilestoneCtrl.js"></script>
     <script src="//localhost:35729/livereload.js"></script>
 </head>
 <body ng-controller="Main_Controller" ng-init="getUserDetails()">

@@ -1,4 +1,4 @@
-app.controller('Tender_controller',function($scope,$rootScope,$state,MainService,$timeout,$cookieStore,$localStorage){
+app.controller('Tender_controller',function($scope,$rootScope,$state,EnvService,$timeout,$cookieStore,$localStorage){
 $scope.goTenderAssign = function(){
   $state.go('tender_assign');
 }

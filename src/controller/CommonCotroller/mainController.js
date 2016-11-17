@@ -1,11 +1,14 @@
-app.controller('Main_Controller',function($scope,$rootScope,$state,MainService,$timeout,$cookieStore,$localStorage){
+app.controller('Main_Controller',function($scope,$rootScope,$state,EnvService,$timeout,$cookieStore,$localStorage,validationService,Events){
+  // Events handling
+  $rootScope.$on(Events.validationFieldMissing,function(event,data) {
+    alert("Event handled",data);
+  });
+
   $scope.init = function(){
-    // $scope.$on('$viewContentLoaded',function(event) {
-    //   $(document).trigger("TemplateLoaded");
-    // });
     console.log(11111);
+    var temp = validationService.getValidationMessage("required","type1","username");
   }
-  $rootScope.is_loggedin = true;
+  // $rootScope.is_loggedin = false;
   // $scope.signOut = function() {
   //   $rootScope.loggedin = false;
   //   // delete $localStorage[Constants.getTokenKey()]
@@ -14,9 +17,9 @@ app.controller('Main_Controller',function($scope,$rootScope,$state,MainService,$
   /***************************************************************************/
   /**************************This is use for login****************************/
   /***************************************************************************/
-  $scope.login = function() {
-    $state.go('dashboard');
-  }
+  // $scope.login = function() {
+  //   $state.go('dashboard');
+  // }
   /*******************************************************/
   /*************This is use for check user login**********/
   /*******************************************************/

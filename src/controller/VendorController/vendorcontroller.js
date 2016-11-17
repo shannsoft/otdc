@@ -1,4 +1,4 @@
-app.controller('Vendor_controller',function($scope,$rootScope,$state,MainService,$timeout,$cookieStore,$localStorage){
+app.controller('Vendor_controller',function($scope,$rootScope,$state,EnvService,$timeout,$cookieStore,$localStorage){
   /***************************************************************************/
   /**************************This is use to show a pop up****************************/
   /***************************************************************************/

@@ -24,6 +24,9 @@
 .m-r-50{ margin-right:50px !important;}
 .right{ float:right !important;}
 .w-100{ width:100px;}
+.m-l-20pr{
+	margin-left:20%;
+}
 .m-h-5{
 	margin-left:5px;
 	margin-right:5px;
@@ -93,4 +96,33 @@
 .font-bold{font-weight: bold;}
 .text-right{
 	text-align: right;
+}
+hr{
+	width: 100px;
+height: 10px;
+/* color: black; */
+border-color: black;
+}
+.circular {
+	display: block;
+	height: 30px;
+	width: 30px;
+	line-height: 30px;
+	-moz-border-radius: 30px;
+	border-radius: 30px;
+	background-color: black;
+	color: white;
+	text-align: center;
+	font-size: 1em;
+}
+
+/*angular form validation*/
+input.ng-invalid {
+    border-color: red;
+}
+input.ng-valid {
+    border-color: lightgreen;
+}
+input.ng-untouched {
+    border-color: #CCCCCC;
 }

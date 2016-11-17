@@ -10,7 +10,7 @@ app.directive('dateViewer', function () {
     return {
         require: "ngModel",
         restrict: 'EA',
-        templateUrl: 'directive/views/datepicker.html',
+        templateUrl: 'src/directive/views/datepicker.html',
         controller:'dateViewerController',
         scope:{
           ngModel:'=',
