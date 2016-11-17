@@ -1,4 +1,8 @@
+<section class="alert-message">
+    <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="close()">{{alert.msg}}</alert>
+</section>
 <header class="header" ng-controller="LoginController">
+
   <div class="header-block header-block-collapse hidden-lg-up"> <button class="collapse-btn" id="sidebar-collapse-btn">
     <i class="fa fa-bars"></i>
     </button>
