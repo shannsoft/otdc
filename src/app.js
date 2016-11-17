@@ -203,21 +203,6 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
 app.constant('CONFIG', {
     'HTTP_HOST': '../ep-portal/Server/api.php' //client staging
 })
-app.factory('Util', ['$rootScope', '$timeout', function($rootScope, $timeout) {
-    var Util = {};
-    $rootScope.alerts = [];
-    Util.alertMessage = function(msgType, message) {
-        var alert = {
-            type: msgType,
-            msg: message
-        };
-        $rootScope.alerts.push(alert);
-        $timeout(function() {
-            $rootScope.alerts.splice($rootScope.alerts.indexOf(alert), 1);
-        }, 5000);
-    };
-    return Util;
-}]);
 app.run(function($http, EnvService) {
     // $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
     //   $rootScope.stateName = toState.name;
