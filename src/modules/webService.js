@@ -2,23 +2,30 @@ angular.module('WebService', [])
     .factory('API',function($http,$resource,EnvService) {
       return {
         login : {
-          url : "/api/user",
-          method: "GET"
+          "url" : "/api/User",
+          "method": "GET",
+          "Content-Type":"application/json",
+          "isArray" : true
         },
-        logOut : {
+        logout : {
           url : "/api/User",
           method: "GET"
+        },
+        token : {
+          "url" : "/api/User",
+          "method": "GET",
+          "Content-Type":"application/json",
+          "isArray" : true
         }
       }
     })
     .factory('ApiGenerator',function($http,$resource,API,EnvService) {
       return {
         getApi : function(api) {
-          console.log("request api ",api);
-          var obj = {
-            url : EnvService.getBasePath()+API[api]['url'],
-            method: API[api]['method']
-          }
+          var obj = {};
+          obj = API[api];
+          obj.url = EnvService.getBasePath()+obj.url; // prefix the base path
+          console.log(">>>>>>>>>>>>>>   ",obj);
           return obj;
         }
       }

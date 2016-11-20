@@ -6,11 +6,13 @@ app.controller('Main_Controller',function($scope,$rootScope,$state,EnvService,$t
   $rootScope.$on(Events.errorInLogin,function(event,data){
       $location.hash('top');
       $anchorScroll();
+        console.log("alert data  ",data.type, data.message || Events.errorInLogout);
       Util.alertMessage(data.type, data.message || Events.errorInLogin);
   })
   $rootScope.$on(Events.errorInLogout,function(event,data){
       $location.hash('top');
       $anchorScroll();
+      console.log("alert data  ",data.type, data.message || Events.errorInLogout);
       Util.alertMessage(data.type, data.message || Events.errorInLogout);
   })
 
@@ -19,7 +21,7 @@ app.controller('Main_Controller',function($scope,$rootScope,$state,EnvService,$t
     console.log(11111);
     //var temp = validationService.getValidationMessage("required","type1","username");
   }
-  // $rootScope.is_loggedin = false;
+  // $rootScope.loggedin = false;
   // $scope.signOut = function() {
   //   $rootScope.loggedin = false;
   //   // delete $localStorage[Constants.getTokenKey()]

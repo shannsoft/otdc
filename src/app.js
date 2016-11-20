@@ -24,25 +24,55 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         };
     });
 
-    function checkLoggedin($q, $timeout, $http, $location, $rootScope, $state, $localStorage, $rootScope) {
+    function checkLoggedin($q, $timeout, $http, $location, $rootScope, $state,Constants, $localStorage, $rootScope,LoginService,UserService) {
         var deferred = $q.defer();
         // $timeout(deferred.resolve, 0);
-        if ($rootScope.is_loggedin) {
-            $timeout(function() {
-                deferred.resolve();
-                $state.go("dashboard");
-            }, 100);
-        } else {
-            $timeout(function() {
-                deferred.resolve();
-            }, 100);
+        // if ($rootScope.loggedin) {
+        //     $timeout(function() {
+        //         deferred.resolve();
+        //         $state.go("dashboard");
+        //     }, 100);
+        // } else {
+        //     $timeout(function() {
+        //         deferred.resolve();
+        //     }, 100);
+        // }
+        //
+        //
+        var obj = {
+          TokenId : $localStorage[Constants.getTokenKey()]
         }
+        LoginService.token(obj,function(response) {
+          if (response.length && response[0].TKN_STS == "VALID") {
+            $localStorage[Constants.getLoggedIn()] = true;
+            $rootScope.loggedin = $localStorage[Constants.getLoggedIn()];
+            UserService.setUser(response[0]);
+              $timeout(function () {
+                  deferred.resolve();
+                  $state.go('dashboard');
+              }, 100);
+          }
+          else {
+              $rootScope.loggedin = $localStorage[Constants.getLoggedIn()] = false;
+              $localStorage[Constants.getTokenKey()] = null;
+              $timeout(function () {
+                  deferred.resolve();
+              }, 100);
+              // $state.go('signIn');
+          }
+        },function(err) {
+          $rootScope.loggedin = $localStorage[Constants.getLoggedIn()] = false;
+          $timeout(function () {
+              deferred.resolve();
+          }, 100);
+        })
+
         return deferred.promise;
     };
 
     function checkLoggedout($q, $timeout, $http, $location, $rootScope, $state, $localStorage) {
         var deferred = $q.defer();
-        if ($rootScope.is_loggedin) {
+        if ($rootScope.loggedin) {
             $timeout(deferred.resolve, 0);
         } else {
             $timeout(function() {
@@ -68,6 +98,14 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
             templateUrl: 'src/views/login.html',
             url: '/login',
             controller: "LoginController",
+            resolve: {
+                loggedin: checkLoggedin
+            },
+        })
+        .state('profile', {
+            templateUrl: 'src/views/profile.html',
+            url: '/profile',
+            controller: "UserController",
             resolve: {
                 loggedin: checkLoggedin
             },
@@ -203,19 +241,18 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
 app.constant('CONFIG', {
     'HTTP_HOST': '../ep-portal/Server/api.php' //client staging
 })
-app.run(function($http, EnvService) {
-    // $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
-    //   $rootScope.stateName = toState.name;
-    // });
-    $http.get('env.json')
-        .success(function(response) {
-            EnvService.setEnvData(response);
-            console.log(EnvService.getEnvData());
-            return;
-        })
-        .error(function(error) {
-            return error;
-        });
+app.run(function($http, EnvService,Constants) {
+    // $http.get('env.json')
+    //     .success(function(response) {
+    //         EnvService.setEnvData(response);
+    //         console.log(EnvService.getEnvData());
+    //         return;
+    //     })
+    //     .error(function(error) {
+    //         return error;
+    //     });
+    EnvService.setEnvData(Constants.envData);
+
 });
 app.factory('Util', ['$rootScope',  '$timeout' , function( $rootScope, $timeout){
     var Util = {};

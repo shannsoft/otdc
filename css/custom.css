@@ -126,3 +126,10 @@ input.ng-valid {
 input.ng-untouched {
     border-color: #CCCCCC;
 }
+/*.alert-message{
+  position: absolute;
+  left: 230px;
+  right: 15px;
+  top: 50px;
+  z-index: 9991;
+}*/

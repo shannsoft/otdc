@@ -6,7 +6,7 @@
     <title>OTDC</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <link rel="stylesheet" href="css/vendor.css">
     <link rel="stylesheet" href="css/app-seagreen.css">
@@ -33,20 +33,23 @@
     <script src="src/modules/authentication.js"></script>
     <script src="src/modules/webService.js"></script>
     <script src="src/app.js"></script>
-    <script src="src/controller/CommonCotroller/mainController.js"></script>
-    <script src="src/controller/TenderController/TenderController.js"></script>
-    <script src="src/controller/UserController/user_controller.js"></script>
-    <script src="src/controller/VendorController/vendorcontroller.js"></script>
+    <script src="src/services/userService.js"></script>
+    <script src="src/constants.js"></script>
+
+    <script src="src/controller/Common/mainController.js"></script>
+    <script src="src/controller/Tender/TenderController.js"></script>
+    <script src="src/controller/User/userController.js"></script>
+    <script src="src/controller/Vendor/vendorcontroller.js"></script>
     <script src="src/directive/dateviewer.js"></script>
     <script src="src/services/envService.js"></script>
-    <script src="src/controller/TenderController/tenderMilestoneCtrl.js"></script>
+    <script src="src/controller/Tender/tenderMilestoneCtrl.js"></script>
     <script src="//localhost:35729/livereload.js"></script>
 </head>
 <body ng-controller="Main_Controller" ng-init="getUserDetails()">
-<div class="" ng-if="!is_loggedin">
+<div class="" ng-if="!loggedin">
   <div ui-view></div>
 </div>
-<div class="" ng-if="is_loggedin">
+<div class="" ng-if="loggedin">
   <div class="main-wrapper">
     <div class="app header-fixed sidebar-fixed" id="app">
       <div ng-include="'src/views/header.html'"></div>

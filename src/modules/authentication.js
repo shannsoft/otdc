@@ -1,44 +1,47 @@
 angular.module('Authentication', [])
     .factory('LoginService',function($http,$resource,ApiGenerator) {
       return $resource('/',null, {
-        login: {
-          method: ApiGenerator.getApi('login')['method'],
-          url:ApiGenerator.getApi('login')['url'],
-        },
-        logOut: {
-          method: ApiGenerator.getApi('logOut')['method'],
-          url:ApiGenerator.getApi('logOut')['url'],
-        },
+        login: ApiGenerator.getApi('login'),
+        logout: ApiGenerator.getApi('logout'),
+        token: ApiGenerator.getApi('token'),
       });
     })
-    .controller('LoginController',function($scope,$state,$rootScope,LoginService,Events) {
+    .controller('LoginController',function($scope,$state,$rootScope,LoginService,Events,$localStorage,Constants,UserService) {
       $scope.init = function(){
         $scope.user = {};
       }
       $scope.login = function() {
-          $rootScope.is_loggedin = true;
         LoginService.login($scope.user,function(response) {
-          $rootScope.$emit(Events.successInLogin,{type:Events.eventType.success});
+          $localStorage[Constants.getTokenKey()] = response[0].TKN_ID;
+          $localStorage[Constants.getLoggedIn()] = true;
+          $rootScope.loggedin = $localStorage[Constants.getLoggedIn()];
+          UserService.setUser(response[0]);
+          // console.log('UserService.getUser()  ',UserService.getUser());
           $state.go('dashboard');
         },function(err) {
           // $state.go('login');
           $rootScope.$emit(Events.errorInLogin,{type:Events.eventType.error});
-          $state.go('dashboard');
+          $state.go('login');
         })
       }
       $scope.logOut = function() {
-          // $rootScope.is_loggedin = false;
-          // $state.go('login');
-          LoginService.logOut({UID:1000},function(response) {
-            $rootScope.$emit(Events.successInLogout,{type:Events.eventType.success});
-            $rootScope.is_loggedin = false;
-            $state.go('login');
-          },function(err) {
-            // $state.go('login');
-            $rootScope.$emit(Events.errorInLogout,{type:Events.eventType.error});
-            $rootScope.is_loggedin = false;
-            $state.go('login');
-          })
+        $localStorage[Constants.getTokenKey()] = null;
+        $localStorage[Constants.getLoggedIn()] = false;
+        $rootScope.loggedin = $localStorage[Constants.getLoggedIn()];
+        UserService.setUser(null);
+
+          // LoginService.logOut({UID:UserService.getUser().TKN_USM_ID},function(response) {
+          //   $rootScope.$emit(Events.successInLogout,{type:Events.eventType.success});
+          //   $rootScope.loggedin = false;
+          //   $state.go('login');
+          // },function(err) {
+          //   // $state.go('login');
+          //   $rootScope.$emit(Events.errorInLogout,{type:Events.eventType.error});
+          //   $rootScope.loggedin = false;
+          //   $state.go('login');
+          // })
+
+          $state.go('login');
       }
     })
 ;

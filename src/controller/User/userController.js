@@ -1,4 +1,4 @@
-app.controller('User_Controller',function($scope,$rootScope,$state,EnvService,$timeout,$cookieStore,$localStorage){
+app.controller('UserController',function($scope,$rootScope,$state,EnvService,$timeout,$cookieStore,$localStorage){
   $scope.showModal = false;
   /***************************************************************************/
   /**************************This is use to show a pop up****************************/
