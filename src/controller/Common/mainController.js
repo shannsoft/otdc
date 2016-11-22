@@ -18,8 +18,7 @@ app.controller('Main_Controller',function($scope,$rootScope,$state,EnvService,$t
 
 
   $scope.init = function(){
-    console.log(11111);
-    //var temp = validationService.getValidationMessage("required","type1","username");
+    
   }
   // $rootScope.loggedin = false;
   // $scope.signOut = function() {

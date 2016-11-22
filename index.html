@@ -6,7 +6,7 @@
     <title>OTDC</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <link rel="stylesheet" href="css/vendor.css">
     <link rel="stylesheet" href="css/app-seagreen.css">
@@ -52,7 +52,7 @@
 <div class="" ng-if="loggedin">
   <div class="main-wrapper">
     <div class="app header-fixed sidebar-fixed" id="app">
-      <div ng-include="'src/views/header.html'"></div>
+      <div ng-include="'src/views/header.html'" ng-controller="LoginController"></div>
       <div ng-include="'src/views/sidebar.html'" ></div>
       <div ui-view ng-init="init()"></div>
       <div ng-include="'src/views/footer.html'"></div>

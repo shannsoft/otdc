@@ -33,7 +33,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
             if (response.StatusCode == 200 && response.Data[0].status == "VALID") {
                 $timeout(function() {
                     $rootScope.loggedin = $localStorage[Constants.getLoggedIn()] = true;
-                    UserService.setUser(response.Data);
+                    UserService.setUser(response.Data[0]);
                     deferred.resolve();
                     $state.go('dashboard');
                 }, 100);
@@ -62,7 +62,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         LoginService.token(obj, function(response) {
             if (response.StatusCode == 200 && response.Data[0].status == "VALID") {
                 $rootScope.loggedin = $localStorage[Constants.getLoggedIn()];
-                UserService.setUser(response.Data);
+                UserService.setUser(response.Data[0]);
                 deferred.resolve();
             } else {
                 $timeout(function() {
@@ -105,9 +105,9 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
             templateUrl: 'src/views/User/userProfile.html',
             url: '/profile',
             controller: "UserController",
-            // resolve: {
-            //     loggedin: checkLoggedin
-            // },
+            resolve: {
+                loggedin: checkLoggedout
+            },
         })
         // .state('forget-password', {
         //     templateUrl: 'src/views/forget.html',

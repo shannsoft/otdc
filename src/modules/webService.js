@@ -16,7 +16,13 @@ angular.module('WebService', [])
           "method": "GET",
           "Content-Type":"application/json",
           // "isArray" : true
-        }
+        },
+        getUser : {
+          "url" : "/api/User",
+          "method": "GET",
+          "Content-Type":"application/json",
+          // "isArray" : true
+        },
       }
     })
     .factory('ApiGenerator',function($http,$resource,API,EnvService) {
