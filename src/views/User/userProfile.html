@@ -1,0 +1,112 @@
+<article class="content dashboard-page">
+  <section class="content ng-scope">
+<div class="row">
+  <div class="col-md-12">
+    <div class="nav-tabs-custom">
+      <ul class="nav nav-tabs">
+        <li class="active"><a href="" data-toggle="tab" ng-click="changeTab('myprofile')">My Profile</a></li>
+        <li><a href="" data-toggle="tab" ng-click="changeTab('editprofile')">Edit Profile</a></li>
+        <li><a href="" data-toggle="tab" ng-click="changeTab('changepassword')">Change Password</a></li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane active" ng-class="{'active':currentTab == 'myprofile'}" ng-init="loadUserdetails()">
+          <div class="post">
+            <div class="user-block">
+            <table class="box box-primary">
+             <tbody><tr>
+                <td>Name:</td>
+                <td class="ng-binding">ghuser  </td>
+             </tr>
+             <tr>
+              <td>Email:</td>
+              <td class="ng-binding">ghuser@yopmail.com</td>
+             </tr>
+             <tr>
+                <td>User Name:</td>
+                <td class="ng-binding">ghuser</td>
+             </tr>
+             <tr>
+                <td>Roll Type:</td>
+                <td class="ng-binding">ghUser</td>
+             </tr>
+            </tbody></table>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane" ng-class="{'active':currentTab == 'editprofile'}" ng-init="loadUserbyID()">
+          <form class="form-horizontal ng-pristine ng-valid-pattern ng-invalid ng-invalid-required ng-valid-email" name="updateProfile">
+            <div class="form-group">
+              <label for="inputName" class="col-sm-2 control-label">First Name</label>
+              <div class="col-sm-10" ng-class="{'has-error': (updateProfile.first_name.$invalid &amp;&amp; updateProfile.first_name.$touched)}">
+                <input type="text" name="first_name" class="form-control ng-pristine ng-untouched ng-valid ng-valid-required ng-valid-pattern" placeholder="First Name" ng-model="userProfile.firstName" required="" ng-pattern="/^(\D)+$/">
+                <span class="help-block ng-hide" ng-show="updateProfile.first_name.$error.required &amp;&amp; updateProfile.first_name.$touched">Please enter first name</span>
+                <span class="help-block ng-hide" ng-show="updateProfile.first_name.$error.pattern &amp;&amp; updateProfile.first_name.$touched">Please enter valid name</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputName" class="col-sm-2 control-label">Middle Name</label>
+              <div class="col-sm-10" ng-class="{'has-error': (updateProfile.middle_name.$invalid &amp;&amp; updateProfile.middle_name.$touched)}">
+                <input type="text" name="middle_name" class="form-control ng-pristine ng-untouched ng-invalid ng-invalid-required ng-valid-pattern" placeholder="Middle Name" ng-model="userProfile.middleName" required="" ng-pattern="/^(\D)+$/">
+                <span class="help-block ng-hide" ng-show="updateProfile.middle_name.$error.required &amp;&amp; updateProfile.middle_name.$touched">Please enter first name</span>
+                <span class="help-block ng-hide" ng-show="updateProfile.middle_name.$error.pattern &amp;&amp; updateProfile.middle_name.$touched">Please enter valid name</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputName" class="col-sm-2 control-label">Last Name</label>
+              <div class="col-sm-10" ng-class="{'has-error': (updateProfile.last_name.$invalid &amp;&amp; updateProfile.last_name.$touched)}">
+                <input type="text" name="last_name" class="form-control ng-pristine ng-untouched ng-invalid ng-invalid-required ng-valid-pattern" placeholder="Last Name" ng-model="userProfile.lastName" required="" ng-pattern="/^(\D)+$/">
+                <span class="help-block ng-hide" ng-show="updateProfile.last_name.$error.required &amp;&amp; updateProfile.last_name.$touched">Please enter first name</span>
+                <span class="help-block ng-hide" ng-show="updateProfile.last_name.$error.pattern &amp;&amp; updateProfile.last_name.$touched">Please enter valid name</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputEmail" class="col-sm-2 control-label">Email</label>
+              <div class="col-sm-10" ng-class="{'has-error': (updateProfile.email.$invalid &amp;&amp; updateProfile.email.$touched)}">
+                <input type="email" class="form-control ng-pristine ng-untouched ng-valid ng-valid-email ng-valid-required ng-valid-pattern" name="email" placeholder="Email" ng-model="userProfile.email" required="" ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/">
+                <span class="help-block ng-hide" ng-show="updateProfile.email.$error.required &amp;&amp; updateProfile.email.$touched">Please enter emailid</span>
+                <span class="help-block ng-hide" ng-show="updateProfile.email.$error.pattern &amp;&amp; updateProfile.email.$touched">Please enter valid emailid</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-10">
+                <button type="button" class="btn btn-danger" ng-click="updateMyProfile()" ng-disabled="updateProfile.$invalid" disabled="disabled">Update</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="tab-pane" ng-class="{'active':currentTab == 'changepassword'}">
+          <form class="form-horizontal ng-pristine ng-invalid ng-invalid-required" name="changepwd">
+            <div class="form-group">
+              <label for="inputName" class="col-sm-2 control-label">Current Password</label>
+              <div class="col-sm-10" ng-class="{'has-error': changepwd.oldpwd.$touched &amp;&amp; changepwd.oldpwd.$invalid}">
+                <input type="password" name="oldpwd" class="form-control ng-pristine ng-untouched ng-invalid ng-invalid-required" placeholder="Current Passsword" ng-model="password.current" required="">
+                <span class="help-block ng-hide" ng-show="changepwd.oldpwd.$touched &amp;&amp; changepwd.oldpwd.$invalid">Please choose a password</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputName" class="col-sm-2 control-label">New Password</label>
+              <div class="col-sm-10" ng-class="{'has-error': changepwd.npwd.$touched &amp;&amp; changepwd.npwd.$invalid}">
+                <input type="password" name="npwd" class="form-control ng-pristine ng-untouched ng-invalid ng-invalid-required" placeholder="New Password" ng-model="password.new" required="">
+                <span class="help-block ng-hide" ng-show="changepwd.npwd.$touched &amp;&amp; changepwd.npwd.$invalid">Please choose a password</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputEmail" class="col-sm-2 control-label">Confirm Password</label>
+              <div class="col-sm-10" ng-class="{'has-error': changepwd.cpwd.$touched &amp;&amp; password.new != password.confirm}">
+                <input type="password" class="form-control ng-pristine ng-untouched ng-invalid ng-invalid-required" name="cpwd" placeholder="Confirm Password" ng-model="password.confirm" required="">
+                <span class="help-block ng-hide" ng-show="changepwd.cpwd.$touched &amp;&amp; password.new != password.confirm">Password do not match</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-10">
+                <button type="button" ng-click="changePassword()" class="btn btn-danger" ng-disabled="changepwd.$invalid || password.new != password.confirm" disabled="disabled">Change Password</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+</article>

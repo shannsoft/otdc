@@ -11,11 +11,13 @@ angular.module('Authentication', [])
         $scope.user = {};
       }
       $scope.login = function() {
+        // $rootScope.loggedin = $localStorage[Constants.getLoggedIn()] = true;
+        // $state.go('dashboard');
         LoginService.login($scope.user,function(response) {
-          $localStorage[Constants.getTokenKey()] = response[0].TKN_ID;
+          $localStorage[Constants.getTokenKey()] = response.Data.tokenId;
           $localStorage[Constants.getLoggedIn()] = true;
           $rootScope.loggedin = $localStorage[Constants.getLoggedIn()];
-          UserService.setUser(response[0]);
+          UserService.setUser(response.Data);
           // console.log('UserService.getUser()  ',UserService.getUser());
           $state.go('dashboard');
         },function(err) {

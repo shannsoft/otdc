@@ -5,7 +5,7 @@ angular.module('WebService', [])
           "url" : "/api/User",
           "method": "GET",
           "Content-Type":"application/json",
-          "isArray" : true
+          // "isArray" : true
         },
         logout : {
           url : "/api/User",
@@ -15,7 +15,7 @@ angular.module('WebService', [])
           "url" : "/api/User",
           "method": "GET",
           "Content-Type":"application/json",
-          "isArray" : true
+          // "isArray" : true
         }
       }
     })

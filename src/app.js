@@ -1,7 +1,7 @@
 var dependency = [];
 // lib  dependency
 var distModules = ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate', 'ngCookies', 'ngMessages'];
-var custModules = ['validation', 'EventHandler', 'Authentication','WebService'];
+var custModules = ['validation', 'EventHandler', 'Authentication', 'WebService'];
 dependency = dependency.concat(distModules).concat(custModules);
 
 var app = angular.module("teknobiz", dependency);
@@ -24,62 +24,61 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         };
     });
 
-    function checkLoggedin($q, $timeout, $http, $location, $rootScope, $state,Constants, $localStorage, $rootScope,LoginService,UserService) {
+    function checkLoggedin($q, $timeout, $http, $location, $rootScope, $state, Constants, $localStorage, $rootScope, LoginService, UserService) {
         var deferred = $q.defer();
-        // $timeout(deferred.resolve, 0);
-        // if ($rootScope.loggedin) {
-        //     $timeout(function() {
-        //         deferred.resolve();
-        //         $state.go("dashboard");
-        //     }, 100);
-        // } else {
-        //     $timeout(function() {
-        //         deferred.resolve();
-        //     }, 100);
-        // }
-        //
-        //
         var obj = {
-          TokenId : $localStorage[Constants.getTokenKey()]
+            TokenId: $localStorage[Constants.getTokenKey()]
         }
-        LoginService.token(obj,function(response) {
-          if (response.length && response[0].TKN_STS == "VALID") {
-            $localStorage[Constants.getLoggedIn()] = true;
-            $rootScope.loggedin = $localStorage[Constants.getLoggedIn()];
-            UserService.setUser(response[0]);
-              $timeout(function () {
-                  deferred.resolve();
-                  $state.go('dashboard');
-              }, 100);
-          }
-          else {
-              $rootScope.loggedin = $localStorage[Constants.getLoggedIn()] = false;
-              $localStorage[Constants.getTokenKey()] = null;
-              $timeout(function () {
-                  deferred.resolve();
-              }, 100);
-              // $state.go('signIn');
-          }
-        },function(err) {
-          $rootScope.loggedin = $localStorage[Constants.getLoggedIn()] = false;
-          $timeout(function () {
-              deferred.resolve();
-          }, 100);
+        LoginService.token(obj, function(response) {
+            if (response.StatusCode == 200 && response.Data[0].status == "VALID") {
+                $timeout(function() {
+                    $rootScope.loggedin = $localStorage[Constants.getLoggedIn()] = true;
+                    UserService.setUser(response.Data);
+                    deferred.resolve();
+                    $state.go('dashboard');
+                }, 100);
+            } else {
+                $timeout(function() {
+                    $rootScope.loggedin = $localStorage[Constants.getLoggedIn()] = false;
+                    deferred.resolve();
+                }, 100);
+            }
+
+        }, function(err) {
+            $timeout(function() {
+                $rootScope.loggedin = $localStorage[Constants.getLoggedIn()] = false;
+                deferred.resolve();
+            }, 100);
         })
 
         return deferred.promise;
     };
 
-    function checkLoggedout($q, $timeout, $http, $location, $rootScope, $state, $localStorage) {
+    function checkLoggedout($q, $timeout, $http, $location, $rootScope, $state, $localStorage, Constants, LoginService, UserService) {
         var deferred = $q.defer();
-        if ($rootScope.loggedin) {
-            $timeout(deferred.resolve, 0);
-        } else {
+        var obj = {
+            TokenId: $localStorage[Constants.getTokenKey()]
+        }
+        LoginService.token(obj, function(response) {
+            if (response.StatusCode == 200 && response.Data[0].status == "VALID") {
+                $rootScope.loggedin = $localStorage[Constants.getLoggedIn()];
+                UserService.setUser(response.Data);
+                deferred.resolve();
+            } else {
+                $timeout(function() {
+                    $rootScope.loggedin = $localStorage[Constants.getLoggedIn()] = false;
+                    deferred.resolve();
+                    $state.go('login');
+                }, 100);
+            }
+
+        }, function(err) {
             $timeout(function() {
+                $rootScope.loggedin = $localStorage[Constants.getLoggedIn()] = false;
                 deferred.resolve();
                 $state.go('login');
             }, 100);
-        }
+        })
         return deferred.promise;
     };
 
@@ -89,7 +88,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         .state('dashboard', {
             templateUrl: 'src/views/dashboard.html',
             url: '/dashboard',
-            controller: "Main_Controller",
+            controller: "UserController",
             resolve: {
                 loggedout: checkLoggedout
             },
@@ -103,12 +102,12 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
             },
         })
         .state('profile', {
-            templateUrl: 'src/views/profile.html',
+            templateUrl: 'src/views/User/userProfile.html',
             url: '/profile',
             controller: "UserController",
-            resolve: {
-                loggedin: checkLoggedin
-            },
+            // resolve: {
+            //     loggedin: checkLoggedin
+            // },
         })
         // .state('forget-password', {
         //     templateUrl: 'src/views/forget.html',
@@ -241,7 +240,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
 app.constant('CONFIG', {
     'HTTP_HOST': '../ep-portal/Server/api.php' //client staging
 })
-app.run(function($http, EnvService,Constants) {
+app.run(function($http, EnvService, Constants) {
     // $http.get('env.json')
     //     .success(function(response) {
     //         EnvService.setEnvData(response);
@@ -254,17 +253,20 @@ app.run(function($http, EnvService,Constants) {
     EnvService.setEnvData(Constants.envData);
 
 });
-app.factory('Util', ['$rootScope',  '$timeout' , function( $rootScope, $timeout){
+app.factory('Util', ['$rootScope', '$timeout', function($rootScope, $timeout) {
     var Util = {};
-    $rootScope.alerts =[];
-    Util.alertMessage = function(msgType, message){
-        if(msgType == "failed")
-          msgType = "warning";
-        var alert = { type:msgType , msg: message };
-        $rootScope.alerts.push( alert );
-         $timeout(function(){
+    $rootScope.alerts = [];
+    Util.alertMessage = function(msgType, message) {
+        if (msgType == "failed")
+            msgType = "warning";
+        var alert = {
+            type: msgType,
+            msg: message
+        };
+        $rootScope.alerts.push(alert);
+        $timeout(function() {
             $rootScope.alerts.splice($rootScope.alerts.indexOf(alert), 1);
-         }, 5000);
+        }, 5000);
     };
     return Util;
-  }]);
+}]);
