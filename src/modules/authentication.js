@@ -19,7 +19,9 @@ angular.module('Authentication', [])
         // $rootScope.loggedin = $localStorage[Constants.getLoggedIn()] = true;
         // $state.go('dashboard');
         LoginService.login($scope.user,function(response) {
+          UtilityService.showLoader();
           if(response.StatusCode == 200){
+            UtilityService.hideLoader();
             $localStorage[Constants.getTokenKey()] = response.Data.tokenId;
             $localStorage[Constants.getLoggedIn()] = true;
             $rootScope.loggedin = $localStorage[Constants.getLoggedIn()];

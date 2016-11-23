@@ -1,4 +1,4 @@
-app.factory("UtilityService", function($http,$resource,$localStorage,Constants) {
+app.factory("UtilityService", function($http,$resource,$rootScope,$localStorage,Constants) {
   var userSettings;
   var selectedRooms = [];
   var selectedTransaction;
@@ -83,6 +83,12 @@ app.factory("UtilityService", function($http,$resource,$localStorage,Constants) 
   var getTransaction = function(){
     return selectedTransaction
   }
+  var showLoader = function(){
+    $rootScope.showPreloader = true;
+  }
+  var hideLoader = function(){
+    $rootScope.showPreloader = false;
+  }
   return{
     getSelectedIds:getSelectedIds,
     getSelectedItemByProp:getSelectedItemByProp,
@@ -96,5 +102,7 @@ app.factory("UtilityService", function($http,$resource,$localStorage,Constants) 
     setSelectedRoom    :setSelectedRoom,
     setTransaction     :setTransaction,
     getTransaction     :getTransaction,
+    showLoader         :showLoader,
+    hideLoader         :hideLoader,
   }
 })
