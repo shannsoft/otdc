@@ -7,11 +7,10 @@ app.controller('UserController',function($scope,$rootScope,$state,UserService,$l
       {heading:"Edit Profile",active:false},
       {heading:"Change Password",active:false},
     ]
-    $scope.tabChange = function(tabPos){
-      for(var i in $scope.userTabs) {
-        $scope.userTabs.active = false;
+    $scope.currTab = 0;
       }
-      $scope.userTabs[tabPos].active = true;
+    $scope.tabChange = function(tabPos){
+      $scope.currTab = tabPos;
     }
     $scope.changePassword = function(){
       var obj = {
@@ -28,6 +27,6 @@ app.controller('UserController',function($scope,$rootScope,$state,UserService,$l
         }
       )
     }
-  }
+
 
 })

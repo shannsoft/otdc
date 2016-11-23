@@ -1,123 +1,144 @@
 <article class="content dashboard-page" ng-init="init()">
-    <uib-tabset ng-if="user">
-      <!-- profile details read only -->
-        <uib-tab heading="{{userTabs[0].heading}}" active="userTabs[0].active" ng-click="tabChange(0)">
-            <form role="form">
-                <div class="form-group ">
-                    <label class="control-label" for="inputSuccess1">User Id</label>
-                    <input type="text" readonly="readonly" ng-model="user.userId" class="form-control underlined" id="inputSuccess1">
-                    <!-- <span class="">Success message.</span> -->
+    <div class="col-xl-12">
+        <div class="card sameheight-item" style="height: 350px;">
+            <div class="card-block">
+                <!-- Nav tabs -->
+                <div class="card-title-block">
+                    <h3 class="title">
+                        User Profile
+                    </h3>
                 </div>
-                <div class="form-group ">
-                    <label class="control-label" for="inputSuccess1">Designation</label>
-                    <input type="text"readonly="readonly" ng-model="user.designation" class="form-control underlined" id="inputSuccess1">
-                    <!-- <span class="">Success message.</span> -->
-                </div>
-                <div class="form-group ">
-                    <label class="control-label" for="inputSuccess1">First Name</label>
-                    <input type="text"readonly="readonly" ng-model="user.fName" class="form-control underlined" id="inputSuccess1">
-                    <!-- <span class="">Success message.</span> -->
-                </div>
-                <div class="form-group ">
-                    <label class="control-label" for="inputSuccess1">Last Name</label>
-                    <input type="text"readonly="readonly" ng-model="user.lName" class="form-control underlined" id="inputSuccess1">
-                    <!-- <span class="">Success message.</span> -->
-                </div>
-                <div class="form-group ">
-                    <label class="control-label" for="inputSuccess1">Address</label>
-                    <input type="text"readonly="readonly" ng-model="user.address" class="form-control underlined" id="inputSuccess1">
-                    <!-- <span class="">Success message.</span> -->
-                </div>
-                <div class="form-group ">
-                    <label class="control-label" for="inputSuccess1">Email</label>
-                    <input type="text"readonly="readonly" ng-model="user.email" class="form-control underlined" id="inputSuccess1">
-                    <!-- <span class="">Success message.</span> -->
-                </div>
-                <div class="form-group ">
-                    <label class="control-label" for="inputSuccess1">Phone</label>
-                    <input type="text"readonly="readonly" ng-model="user.phone" class="form-control underlined" id="inputSuccess1">
-                    <!-- <span class="">Success message.</span> -->
-                </div>
-                <div class="form-group ">
-                    <label class="control-label" for="inputSuccess1">Status</label>
-                    <input type="text"readonly="readonly" ng-model="user.status" class="form-control underlined" id="inputSuccess1">
-                    <!-- <span class="">Success message.</span> -->
-                </div>
+                <ul class="nav nav-tabs nav-tabs-bordered">
+                    <li class="nav-item">
+                        <a href="" class="nav-link" ng-class="currTab == 0 ? 'active' : '' " ng-click="tabChange(0)" data-target="#profileView" data-toggle="tab" aria-controls="profileView" role="tab" aria-expanded="{{currTab == 0 ? 'true' : 'false' }}">Profile View</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link" ng-class="currTab == 1 ? 'active' : '' " ng-click="tabChange(1)" data-target="#editProfile" aria-controls="editProfile" data-toggle="tab" role="tab" aria-expanded="{{currTab == 1 ? 'true' : 'false' }}">Edit Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link" ng-class="currTab == 2 ? 'active' : '' " ng-click="tabChange(2)" data-target="#changePassword" aria-controls="changePassword" data-toggle="tab" role="tab" aria-expanded="{{currTab == 2 ? 'true' : 'false' }}">Change Password</a>
 
-            </form>
+                </ul>
+                <!-- Tab panes -->
+                <div class="tab-content tabs-bordered">
+                    <div class="tab-pane fade" ng-class="currTab == 0 ? 'active in' : '' " aria-expanded="{{currTab == 0 ? 'true' : 'false' }}" id="profileView">
+                        <form role="form">
+                            <div class="form-group ">
+                                <label class="control-label" for="inputSuccess1">User Id</label>
+                                <input type="text" readonly="readonly" ng-model="user.userId" class="form-control underlined" id="inputSuccess1">
+                                <!-- <span class="">Success message.</span> -->
+                            </div>
+                            <div class="form-group ">
+                                <label class="control-label" for="inputSuccess1">Designation</label>
+                                <input type="text" readonly="readonly" ng-model="user.designation" class="form-control underlined" id="inputSuccess1">
+                                <!-- <span class="">Success message.</span> -->
+                            </div>
+                            <div class="form-group ">
+                                <label class="control-label" for="inputSuccess1">First Name</label>
+                                <input type="text" readonly="readonly" ng-model="user.fName" class="form-control underlined" id="inputSuccess1">
+                                <!-- <span class="">Success message.</span> -->
+                            </div>
+                            <div class="form-group ">
+                                <label class="control-label" for="inputSuccess1">Last Name</label>
+                                <input type="text" readonly="readonly" ng-model="user.lName" class="form-control underlined" id="inputSuccess1">
+                                <!-- <span class="">Success message.</span> -->
+                            </div>
+                            <div class="form-group ">
+                                <label class="control-label" for="inputSuccess1">Address</label>
+                                <input type="text" readonly="readonly" ng-model="user.address" class="form-control underlined" id="inputSuccess1">
+                                <!-- <span class="">Success message.</span> -->
+                            </div>
+                            <div class="form-group ">
+                                <label class="control-label" for="inputSuccess1">Email</label>
+                                <input type="text" readonly="readonly" ng-model="user.email" class="form-control underlined" id="inputSuccess1">
+                                <!-- <span class="">Success message.</span> -->
+                            </div>
+                            <div class="form-group ">
+                                <label class="control-label" for="inputSuccess1">Phone</label>
+                                <input type="text" readonly="readonly" ng-model="user.phone" class="form-control underlined" id="inputSuccess1">
+                                <!-- <span class="">Success message.</span> -->
+                            </div>
+                            <div class="form-group ">
+                                <label class="control-label" for="inputSuccess1">Status</label>
+                                <input type="text" readonly="readonly" ng-model="user.status" class="form-control underlined" id="inputSuccess1">
+                                <!-- <span class="">Success message.</span> -->
+                            </div>
 
-        </uib-tab>
-        <!-- Profile edit  -->
-        <uib-tab heading="{{userTabs[1].heading}}" active="userTabs[1].active" ng-click="tabChange(1)">
-            <form role="form">
-                <div class="form-group ">
-                    <label class="control-label" for="inputSuccess1">User Id</label>
-                    <input type="text"  ng-model="user.userId" class="form-control underlined" id="inputSuccess1">
-                    <!-- <span class="">Success message.</span> -->
-                </div>
-                <div class="form-group ">
-                    <label class="control-label" for="inputSuccess1">Designation</label>
-                    <input type="text" ng-model="user.designation" class="form-control underlined" id="inputSuccess1">
-                    <!-- <span class="">Success message.</span> -->
-                </div>
-                <div class="form-group ">
-                    <label class="control-label" for="inputSuccess1">First Name</label>
-                    <input type="text" ng-model="user.fName" class="form-control underlined" id="inputSuccess1">
-                    <!-- <span class="">Success message.</span> -->
-                </div>
-                <div class="form-group ">
-                    <label class="control-label" for="inputSuccess1">Last Name</label>
-                    <input type="text" ng-model="user.lName" class="form-control underlined" id="inputSuccess1">
-                    <!-- <span class="">Success message.</span> -->
-                </div>
-                <div class="form-group ">
-                    <label class="control-label" for="inputSuccess1">Address</label>
-                    <input type="text" ng-model="user.address" class="form-control underlined" id="inputSuccess1">
-                    <!-- <span class="">Success message.</span> -->
-                </div>
-                <div class="form-group ">
-                    <label class="control-label" for="inputSuccess1">Email</label>
-                    <input type="text" ng-model="user.email" class="form-control underlined" id="inputSuccess1">
-                    <!-- <span class="">Success message.</span> -->
-                </div>
-                <div class="form-group ">
-                    <label class="control-label" for="inputSuccess1">Phone</label>
-                    <input type="text" ng-model="user.phone" class="form-control underlined" id="inputSuccess1">
-                    <!-- <span class="">Success message.</span> -->
-                </div>
-                <div class="form-group ">
-                    <label class="control-label" for="inputSuccess1">Status</label>
-                    <input type="text" ng-model="user.status" class="form-control underlined" id="inputSuccess1">
-                    <!-- <span class="">Success message.</span> -->
-                </div>
-                <div class="form-group">
-                  <button type="submit" class="btn btn-primary">Submit</button>
-                  <button type="button" class="btn btn-secondary-outline">Cancel</button>
-                </div>
-            </form>
+                        </form>
+                    </div>
+                    <div class="tab-pane fade" id="editProfile" ng-class="currTab == 1 ? 'active in' : '' " aria-expanded="{{currTab == 1 ? 'true' : 'false' }}" >
+                        <form role="form">
+                            <div class="form-group ">
+                                <label class="control-label" for="inputSuccess1">User Id</label>
+                                <input type="text" ng-model="user.userId" class="form-control underlined" id="inputSuccess1">
+                                <!-- <span class="">Success message.</span> -->
+                            </div>
+                            <div class="form-group ">
+                                <label class="control-label" for="inputSuccess1">Designation</label>
+                                <input type="text" ng-model="user.designation" class="form-control underlined" id="inputSuccess1">
+                                <!-- <span class="">Success message.</span> -->
+                            </div>
+                            <div class="form-group ">
+                                <label class="control-label" for="inputSuccess1">First Name</label>
+                                <input type="text" ng-model="user.fName" class="form-control underlined" id="inputSuccess1">
+                                <!-- <span class="">Success message.</span> -->
+                            </div>
+                            <div class="form-group ">
+                                <label class="control-label" for="inputSuccess1">Last Name</label>
+                                <input type="text" ng-model="user.lName" class="form-control underlined" id="inputSuccess1">
+                                <!-- <span class="">Success message.</span> -->
+                            </div>
+                            <div class="form-group ">
+                                <label class="control-label" for="inputSuccess1">Address</label>
+                                <input type="text" ng-model="user.address" class="form-control underlined" id="inputSuccess1">
+                                <!-- <span class="">Success message.</span> -->
+                            </div>
+                            <div class="form-group ">
+                                <label class="control-label" for="inputSuccess1">Email</label>
+                                <input type="text" ng-model="user.email" class="form-control underlined" id="inputSuccess1">
+                                <!-- <span class="">Success message.</span> -->
+                            </div>
+                            <div class="form-group ">
+                                <label class="control-label" for="inputSuccess1">Phone</label>
+                                <input type="text" ng-model="user.phone" class="form-control underlined" id="inputSuccess1">
+                                <!-- <span class="">Success message.</span> -->
+                            </div>
+                            <div class="form-group ">
+                                <label class="control-label" for="inputSuccess1">Status</label>
+                                <input type="text" ng-model="user.status" class="form-control underlined" id="inputSuccess1">
+                                <!-- <span class="">Success message.</span> -->
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button type="button" class="btn btn-secondary-outline">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="tab-pane fade" id="changePassword" ng-class="currTab == 2 ? 'active in' : '' " aria-expanded="{{currTab == 2 ? 'true' : 'false' }}" >
+                        <form role="form">
+                            <div class="form-group ">
+                                <label class="control-label" for="inputSuccess1">Old Password</label>
+                                <input type="password" ng-model="user.oldPassword" class="form-control underlined" id="inputSuccess1">
+                                <!-- <span class="">Success message.</span> -->
+                            </div>
+                            <div class="form-group ">
+                                <label class="control-label" for="inputSuccess1">New Password</label>
+                                <input type="password" ng-model="user.newPassword" class="form-control underlined" id="inputSuccess1">
+                                <!-- <span class="">Success message.</span> -->
+                            </div>
 
-        </uib-tab>
-        <!-- Change password -->
-        <uib-tab heading="{{userTabs[2].heading}}" active="userTabs[2].active" ng-click="tabChange(2)">
-            <form role="form">
-                <div class="form-group ">
-                    <label class="control-label" for="inputSuccess1">Old Password</label>
-                    <input type="text"  ng-model="user.oldPassword" class="form-control underlined" id="inputSuccess1">
-                    <!-- <span class="">Success message.</span> -->
-                </div>
-                <div class="form-group ">
-                    <label class="control-label" for="inputSuccess1">New Password</label>
-                    <input type="text" ng-model="user.newPassword" class="form-control underlined" id="inputSuccess1">
-                    <!-- <span class="">Success message.</span> -->
-                </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary" ng-click="changePassword()">Submit</button>
+                                <button type="button" class="btn btn-secondary-outline">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
 
-                <div class="form-group">
-                  <button type="submit" class="btn btn-primary" ng-click="changePassword()">Submit</button>
-                  <button type="button" class="btn btn-secondary-outline" >Cancel</button>
                 </div>
-            </form>
+            </div>
+            <!-- /.card-block -->
+        </div>
+        <!-- /.card -->
+    </div>
 
-        </uib-tab>
-
-    </uib-tabset>
 </article>
