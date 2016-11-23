@@ -6,7 +6,7 @@ angular.module('Authentication', [])
         token: ApiGenerator.getApi('token'),
       });
     })
-    .controller('LoginController',function($scope,$state,$rootScope,LoginService,Events,$localStorage,Constants,UserService) {
+    .controller('LoginController',function($scope,$state,$rootScope,LoginService,Events,$localStorage,Constants,UserService,Util) {
       $scope.init = function(){
         $scope.user = {};
       }
@@ -14,16 +14,21 @@ angular.module('Authentication', [])
         // $rootScope.loggedin = $localStorage[Constants.getLoggedIn()] = true;
         // $state.go('dashboard');
         LoginService.login($scope.user,function(response) {
-          $localStorage[Constants.getTokenKey()] = response.Data.tokenId;
-          $localStorage[Constants.getLoggedIn()] = true;
-          $rootScope.loggedin = $localStorage[Constants.getLoggedIn()];
-          UserService.setUser(response.Data);
-          // console.log('UserService.getUser()  ',UserService.getUser());
-          $state.go('dashboard');
+          if(response.StatusCode == 200){
+            $localStorage[Constants.getTokenKey()] = response.Data.tokenId;
+            $localStorage[Constants.getLoggedIn()] = true;
+            $rootScope.loggedin = $localStorage[Constants.getLoggedIn()];
+            UserService.setUser(response.Data);
+            // console.log('UserService.getUser()  ',UserService.getUser());
+            $state.go('dashboard');
+          }
+          else{
+            Util.alertMessage("danger", response.Message || "Error in Login");
+            // $rootScope.$emit(Events.errorInLogin,{type:Events.eventType.error,data:response});
+          }
         },function(err) {
           // $state.go('login');
           $rootScope.$emit(Events.errorInLogin,{type:Events.eventType.error});
-          $state.go('login');
         })
       }
       $scope.logOut = function() {

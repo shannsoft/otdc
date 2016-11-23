@@ -6,19 +6,17 @@ app.controller('Main_Controller',function($scope,$rootScope,$state,EnvService,$t
   $rootScope.$on(Events.errorInLogin,function(event,data){
       $location.hash('top');
       $anchorScroll();
-        console.log("alert data  ",data.type, data.message || Events.errorInLogout);
       Util.alertMessage(data.type, data.message || Events.errorInLogin);
   })
   $rootScope.$on(Events.errorInLogout,function(event,data){
       $location.hash('top');
       $anchorScroll();
-      console.log("alert data  ",data.type, data.message || Events.errorInLogout);
       Util.alertMessage(data.type, data.message || Events.errorInLogout);
   })
 
 
   $scope.init = function(){
-    
+
   }
   // $rootScope.loggedin = false;
   // $scope.signOut = function() {

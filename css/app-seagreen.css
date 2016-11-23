@@ -187,6 +187,12 @@ body {
               transform: inherit;
       margin: 40px auto; } }
 
+.alert-message {
+    position: absolute;
+    left: 50px;
+    right: 50px;
+    top: 15px;
+}
 .alert {
   background-image: none; }
   .alert.alert-primary {
@@ -221,13 +227,13 @@ body {
       border-top-color: #fe8832; }
     .alert.alert-warning .alert-link {
       color: #e6e6e6; }
-  .alert.alert-danger {
+  .alert.alert-danger,.alert.alert-error {
     background-color: #FF4444;
     border-color: #FF4444;
     color: #ffffff; }
-    .alert.alert-danger hr {
+    .alert.alert-danger, .alert.alert-error hr {
       border-top-color: #ff2b2b; }
-    .alert.alert-danger .alert-link {
+    .alert.alert-danger, .alert.alert-error .alert-link {
       color: #e6e6e6; }
   .alert.alert-inverse {
     background-color: #131e26;

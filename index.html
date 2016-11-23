@@ -59,6 +59,9 @@
     </div>
   </div>
 </div>
+<section class="alert-message">
+    <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="close()">{{alert.msg}}</alert>
+</section>
 <!-- jQuery 2.2.0 -->
   </body>
 </html>
