@@ -6,9 +6,14 @@ angular.module('Authentication', [])
         token: ApiGenerator.getApi('token'),
       });
     })
-    .controller('LoginController',function($scope,$state,$rootScope,LoginService,Events,$localStorage,Constants,UserService,Util) {
+    .controller('LoginController',function($scope,$state,$rootScope,LoginService,UtilityService,Events,$localStorage,Constants,UserService,Util) {
       $scope.init = function(){
         $scope.user = {};
+        if($localStorage[Constants.getIsRemember()]){
+          $scope.user.userId = $localStorage[Constants.getUsername()];
+          $scope.user.Password = UtilityService.decode($localStorage[Constants.getPassword()]);
+          $scope.user.remember = $localStorage[Constants.getIsRemember()];
+        }
       }
       $scope.login = function() {
         // $rootScope.loggedin = $localStorage[Constants.getLoggedIn()] = true;
@@ -19,7 +24,17 @@ angular.module('Authentication', [])
             $localStorage[Constants.getLoggedIn()] = true;
             $rootScope.loggedin = $localStorage[Constants.getLoggedIn()];
             UserService.setUser(response.Data);
-            // console.log('UserService.getUser()  ',UserService.getUser());
+            // saving / removing remember me data
+            if($scope.user.remember){
+              $localStorage[Constants.getUsername()] = $scope.user.userId;
+              $localStorage[Constants.getPassword()] = UtilityService.encode($scope.user.Password);
+              $localStorage[Constants.getIsRemember()] = true;
+            }
+            else{
+              delete $localStorage[Constants.getUsername()];
+              delete $localStorage[Constants.getPassword()];
+              delete $localStorage[Constants.getIsRemember()];
+            }
             $state.go('dashboard');
           }
           else{
@@ -31,24 +46,16 @@ angular.module('Authentication', [])
           $rootScope.$emit(Events.errorInLogin,{type:Events.eventType.error});
         })
       }
-      $scope.logOut = function() {
-        $localStorage[Constants.getTokenKey()] = null;
-        $localStorage[Constants.getLoggedIn()] = false;
-        $rootScope.loggedin = $localStorage[Constants.getLoggedIn()];
-        UserService.setUser(null);
+      $scope.logout = function() {
+          LoginService.logout({userId:UserService.getUser().userId},function(response) {
+            UserService.unsetUser();
+            Util.alertMessage("success",response.Message);
+            $rootScope.loggedin = false;
+            $state.go('login');
+          },function(err) {
+            Util.alertMessage("danger",response.Message);
+          })
 
-          // LoginService.logOut({UID:UserService.getUser().TKN_USM_ID},function(response) {
-          //   $rootScope.$emit(Events.successInLogout,{type:Events.eventType.success});
-          //   $rootScope.loggedin = false;
-          //   $state.go('login');
-          // },function(err) {
-          //   // $state.go('login');
-          //   $rootScope.$emit(Events.errorInLogout,{type:Events.eventType.error});
-          //   $rootScope.loggedin = false;
-          //   $state.go('login');
-          // })
-
-          $state.go('login');
       }
     })
 ;

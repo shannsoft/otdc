@@ -1,3 +1,7 @@
+@import "dashboard.css";
+.m-h-900{
+	min-height: 900px !important;
+}
 .m-t-5{ margin-top:5px;}
 .m-t-10{ margin-top:10px;}
 .m-t-20{ margin-top:20px;}
@@ -133,3 +137,19 @@ input.ng-untouched {
   top: 50px;
   z-index: 9991;
 }*/
+.projectAppr div:nth-child(1) {
+    font-family: 'Didact Gothic', sans-serif;
+    font-weight: normal;
+    text-align: center;
+    color: #fff;
+    float: left;
+    left: 30px;
+}
+.projectAppr div:nth-child(2) {
+    font-family: 'Didact Gothic', sans-serif;
+    font-weight: normal;
+    text-align: center;
+    color: #fff;
+    float: right;
+    right: 30px;
+}

@@ -30,7 +30,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
             TokenId: $localStorage[Constants.getTokenKey()]
         }
         LoginService.token(obj, function(response) {
-            if (response.StatusCode == 200 && response.Data[0].status == "VALID") {
+            if (response.StatusCode == 200 && response.Data[0] && response.Data[0].status == "VALID") {
                 $timeout(function() {
                     $rootScope.loggedin = $localStorage[Constants.getLoggedIn()] = true;
                     UserService.setUser(response.Data[0]);
@@ -60,7 +60,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
             TokenId: $localStorage[Constants.getTokenKey()]
         }
         LoginService.token(obj, function(response) {
-            if (response.StatusCode == 200 && response.Data[0].status == "VALID") {
+            if (response.StatusCode == 200 && response.Data[0] && response.Data[0].status == "VALID") {
                 $rootScope.loggedin = $localStorage[Constants.getLoggedIn()];
                 UserService.setUser(response.Data[0]);
                 deferred.resolve();

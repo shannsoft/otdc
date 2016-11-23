@@ -1,4 +1,4 @@
-app.factory('UserService',function($http,$localStorage,$resource,ApiGenerator){
+app.factory('UserService',function($rootScope,$http,$localStorage,$resource,ApiGenerator,Constants){
 
   var user = {};
   var UserService = {};
@@ -7,6 +7,12 @@ app.factory('UserService',function($http,$localStorage,$resource,ApiGenerator){
   };
   UserService.setUser = function(userData) {
     user = userData
+  };
+  UserService.unsetUser = function() {
+    $localStorage[Constants.getTokenKey()] = null;
+    $localStorage[Constants.getLoggedIn()] = false;
+    $rootScope.loggedin = $localStorage[Constants.getLoggedIn()];
+    this.setUser(null);
   };
   // this is used to call the web serviceCall
   UserService.serviceCall = function() {

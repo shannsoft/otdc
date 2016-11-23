@@ -13,7 +13,7 @@ app.constant("Constants", {
         "envData" : {
           "env":"dev",
           "dev" : {
-            "basePath" :"http://otdctender.in"
+            "basePath" :"http://api.otdctender.in"
           }
         }
 })
