@@ -150,7 +150,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         .state('UserList', {
             templateUrl: 'src/views/User/userList.html',
             url: '/UserList',
-            controller: "User_Controller",
+            controller: "UserController",
             resolve: {
                 loggedout: checkLoggedout
             },
@@ -158,7 +158,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         .state('addUser', {
             templateUrl: 'src/views/User/addUser.html',
             url: '/addUser',
-            controller: "User_Controller",
+            controller: "UserController",
             resolve: {
                 loggedout: checkLoggedout
             },
@@ -166,7 +166,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         .state('editUser', {
             templateUrl: 'src/views/User/editUser.html',
             url: '/editUser',
-            controller: "User_Controller",
+            controller: "UserController",
             resolve: {
                 loggedout: checkLoggedout
             },
