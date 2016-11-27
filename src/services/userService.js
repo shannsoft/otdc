@@ -1,7 +1,53 @@
-app.factory('UserService',function($rootScope,$http,$localStorage,$resource,ApiGenerator,Constants){
+app.factory('UserService',function($rootScope,$http,$localStorage,$resource,ApiGenerator,Events,Constants){
 
   var user = {};
   var UserService = {};
+  var roles = {
+    "10000":"superAdmin",
+  }
+  // side bar details mapped data with the degignation id
+  var sideBar = {
+    '10000' :[
+      {
+        "label" : "Dashboard",
+        "state" : "dashboard",
+        "fClass" : "fa fa-home",
+      },
+      {
+        "label" : "Tender Management",
+        "state" : "tenderList",
+        "fClass" : "fa fa-home",
+      },
+      {
+        "label" : "User Management",
+        "state" : "UserList",
+        "fClass" : "fa fa-th-large",
+      },
+      {
+        "label" : "Vendor Management",
+        "state" : "VendorList",
+        "fClass" : "fa fa-home",
+      },
+      {
+        "label" : "Tender Milestone",
+        "state" : "tender_milestone",
+        "fClass" : "fa fa-th-large",
+      },
+    ]
+  }
+  UserService.getRole = function(roleId) {
+    var user = this.getUser();
+    var role = roles[this.getUser().designationId];
+    if(!role)
+    {
+      // emit event to terminate redirect to login
+      $rootScope.$emit(Events.eventType.error,{message:Events.roleError})
+    }
+    else {
+      return role;
+    }
+  };
+
   UserService.getUser = function() {
     return user;
   };
@@ -19,6 +65,19 @@ app.factory('UserService',function($rootScope,$http,$localStorage,$resource,ApiG
     return $resource('/',null, {
       getUser: ApiGenerator.getApi('getUser'), // get user can be called in many form
     });
+  };
+  // used to get the side bar details according to user
+  UserService.getSideBarInfo = function() {
+    var sideBarInfo = sideBar[this.getUser().designationId];
+    if(!sideBarInfo)
+    {
+      // emit event to terminate redirect to login
+      $rootScope.$emit(Events.eventType.error,{message:Events.errorSideBarData})
+    }
+    else {
+      return sideBarInfo;
+    }
+
   };
   return UserService;
 })

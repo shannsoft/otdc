@@ -1,4 +1,4 @@
-<aside class="sidebar">
+<aside class="sidebar" ng-controller="UserController">
   <div class="sidebar-container">
     <div class="sidebar-header">
       <div class="brand">
@@ -6,21 +6,12 @@
       </div>
     </div>
     <nav class="menu">
-      <ul class="nav metismenu" id="sidebar-menu">
-        <li ng-class="{'active':stateName=='dashboard'}">
-          <a ui-sref="dashboard"> <i class="fa fa-home"></i>Dashboard</a>
+      <ul class="nav metismenu" id="sidebar-menu" >
+        <li ng-repeat="side in sideBar">
+          <a ui-sref="side.state"> <i class="{{side.fClass}}"></i>{{side.label}}</a>
         </li>
-        <li ng-class="{'active':stateName=='tenderList' || stateName=='addTender' || stateName=='editTender' || stateName=='tenderDetails'}">
+        <!-- <li ng-class="{'active':stateName=='tenderList' || stateName=='addTender' || stateName=='editTender' || stateName=='tenderDetails'}">
           <a ui-sref="tenderList"> <i class="fa fa-home"></i>Tender Management</a>
-        </li>
-        <li ng-class="{'active':stateName=='UserList'|| stateName=='addUser' || stateName=='editUser'}">
-          <a ui-sref="UserList"><i class="fa fa-th-large"></i> User Management</a>
-        </li>
-        <li ng-class="{'active':stateName=='VendorList'|| stateName=='addVendor' || stateName=='vendorDetails'|| stateName=='editVendor'}">
-          <a ui-sref="VendorList"><i class="fa fa-th-large"></i> Vendor Management</a>
-        </li>
-        <li ng-class="{'active':stateName=='tender_milestone'}">
-          <a ui-sref="tender_milestone"><i class="fa fa-th-large"></i> Tender Milestone</a>
         </li>
       </ul>
     </nav>

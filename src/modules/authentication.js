@@ -6,7 +6,7 @@ angular.module('Authentication', [])
         token: ApiGenerator.getApi('token'),
       });
     })
-    .controller('LoginController',function($scope,$state,$rootScope,LoginService,UtilityService,Events,$localStorage,Constants,UserService,Util) {
+    .controller('LoginController',function($http,$scope,$state,$rootScope,LoginService,UtilityService,Events,$localStorage,Constants,UserService,Util,ApiGenerator) {
       $scope.init = function(){
         $scope.user = {};
         if($localStorage[Constants.getIsRemember()]){
@@ -18,7 +18,9 @@ angular.module('Authentication', [])
       $scope.login = function() {
         // $rootScope.loggedin = $localStorage[Constants.getLoggedIn()] = true;
         // $state.go('dashboard');
-        LoginService.login($scope.user,function(response) {
+
+        ApiGenerator.getApi('login');
+        LoginService.login(JSON.stringify($scope.user),function(response) {
           UtilityService.showLoader();
           if(response.StatusCode == 200){
             UtilityService.hideLoader();
@@ -37,7 +39,7 @@ angular.module('Authentication', [])
               delete $localStorage[Constants.getPassword()];
               delete $localStorage[Constants.getIsRemember()];
             }
-            $state.go('dashboard');
+            $state.go('dashboard',{role:UserService.getRole()});
           }
           else{
             Util.alertMessage("danger", response.Message || "Error in Login");

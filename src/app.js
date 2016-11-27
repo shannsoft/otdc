@@ -35,7 +35,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
                     $rootScope.loggedin = $localStorage[Constants.getLoggedIn()] = true;
                     UserService.setUser(response.Data[0]);
                     deferred.resolve();
-                    $state.go('dashboard');
+                    $state.go('dashboard',{role:UserService.getRole()});
                 }, 100);
             } else {
                 $timeout(function() {
@@ -86,7 +86,12 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
     $stateProvider
     // HOME STATES AND NESTED VIEWS ========================================
         .state('dashboard', {
-            templateUrl: 'src/views/dashboard.html',
+            // templateUrl: 'src/views/dashboard.html',
+            templateUrl: function($stateParams,UserService) {
+              console.log("showing dashboard of ",$stateParams.role);
+              return 'src/views/User/'+$stateParams.role+'/dashboard.html';
+            },
+            params: { role: null },
             url: '/dashboard',
             controller: "UserController",
             resolve: {

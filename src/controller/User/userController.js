@@ -2,6 +2,9 @@ app.controller('UserController', function($scope, $rootScope, $state, UserServic
     // $scope.UserService = UserService;
     $scope.init = function() {
         $scope.user = UserService.getUser();
+        // here this is kept in $rootScope as this controller is a shared one
+        //the this value getting lost on each controller load
+        $rootScope.sideBar = UserService.getSideBarInfo();
         $scope.userTabs = [{
             heading: "View Profile",
             active: true

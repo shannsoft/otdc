@@ -15,31 +15,30 @@ app.controller('Main_Controller',function($scope,$rootScope,$state,EnvService,$t
   })
 
 
+  // Event hander for the error type message
+  $rootScope.$on(Events.eventType.error,function(event,data){
+      $location.hash('top');
+      $anchorScroll();
+      Util.alertMessage(Events.eventType.error, data.message);
+  })
+  // Event hander for the warning type message
+  $rootScope.$on(Events.eventType.warn,function(event,data){
+      $location.hash('top');
+      $anchorScroll();
+      Util.alertMessage(Events.eventType.warn, data.message);
+  })
+  // Event hander for the success type message
+  $rootScope.$on(Events.eventType.success,function(event,data){
+      $location.hash('top');
+      $anchorScroll();
+      Util.alertMessage(Events.eventType.success, data.message);
+  })
+
+
   $scope.init = function(){
 
   }
-  // $rootScope.loggedin = false;
-  // $scope.signOut = function() {
-  //   $rootScope.loggedin = false;
-  //   // delete $localStorage[Constants.getTokenKey()]
-  //   // $state.go("signIn");
-  // }
-  /***************************************************************************/
-  /**************************This is use for login****************************/
-  /***************************************************************************/
-  // $scope.login = function() {
-  //   $state.go('dashboard');
-  // }
-  /*******************************************************/
-  /*************This is use for check user login**********/
-  /*******************************************************/
-  $scope.getUserDetails = function(){
-  }
- /*******************************************************/
- /*************This is use for  user logout**************/
- /*******************************************************/
- $scope.signOut = function(){
- }
+  
  $scope.forgetpassword = function(){
    $state.go('forget_password');
  }
