@@ -1283,9 +1283,9 @@ label,
   .item-list .item-stats {
     height: 1.4rem; }
   .item-list .item-col.item-col-actions-dropdown {
-    -webkit-flex-basis: 40px;
-        -ms-flex-preferred-size: 40px;
-            flex-basis: 40px;
+    -webkit-flex-basis: 50px;
+        -ms-flex-preferred-size: 50px;
+            flex-basis: 50px;
     text-align: center;
     padding-left: 0 !important; }
     @media (max-width: 767px) {

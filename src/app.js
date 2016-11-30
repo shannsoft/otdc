@@ -155,7 +155,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         .state('UserList', {
             templateUrl: 'src/views/User/userList.html',
             url: '/UserList',
-            controller: "UserController",
+            controller: "UserListController",
             resolve: {
                 loggedout: checkLoggedout
             },
@@ -211,10 +211,10 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         .state('forget_password', {
             templateUrl: 'src/views/forgetpassword.html',
             url: '/forget_password',
-            controller: "Main_Controller",
-            resolve: {
-                loggedout: checkLoggedout
-            },
+            controller: "LoginController",
+            // resolve: {
+            //     loggedout: checkLoggedout
+            // },
         })
         .state('tender_assign', {
             templateUrl: 'src/views/Tender/assignTender.html',

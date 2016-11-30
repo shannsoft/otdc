@@ -4,6 +4,7 @@ angular.module('Authentication', [])
         login: ApiGenerator.getApi('login'),
         logout: ApiGenerator.getApi('logout'),
         token: ApiGenerator.getApi('token'),
+        forgotPassword: ApiGenerator.getApi('forgotPassword')
       });
     })
     .controller('LoginController',function($http,$scope,$state,$rootScope,LoginService,UtilityService,Events,$localStorage,Constants,UserService,Util,ApiGenerator) {
@@ -56,6 +57,19 @@ angular.module('Authentication', [])
             Util.alertMessage("success",response.Message);
             $rootScope.loggedin = false;
             $state.go('login');
+          },function(err) {
+            Util.alertMessage("danger",response.Message);
+          })
+
+      }
+      $scope.forgotPassword = function(email) {
+          var obj = {
+            "userId": 10000,
+            "name": "Mukhtar",
+            "email": "mukhtar@ssmaktak.com"
+          }
+          LoginService.forgotPassword(obj,function(response) {
+            Util.alertMessage("success",response.Message);
           },function(err) {
             Util.alertMessage("danger",response.Message);
           })

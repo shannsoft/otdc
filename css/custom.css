@@ -170,3 +170,6 @@ input.ng-untouched {
   left:45%;
   top:45%;
 }
+.item-col.fixed.item-col-actions-dropdown a {
+    margin-right: 20px;
+}
