@@ -173,3 +173,7 @@ input.ng-untouched {
 .item-col.fixed.item-col-actions-dropdown a {
     margin-right: 20px;
 }
+/*change the theme color for title*/
+h3.title {
+    color: #21B04B !important;
+}

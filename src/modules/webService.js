@@ -38,7 +38,26 @@ angular.module('WebService', [])
                 "method": "GET",
                 "Content-Type": "application/json",
                 // "isArray" : true
-            }
+            },
+            addUser: {
+                "url": "/api/User",
+                "method": "POST",
+                "Content-Type": "application/json",
+                // "isArray" : true
+            },
+            postUser: {
+                "url": "/api/User",
+                "method": "POST",
+                "Content-Type": "application/json",
+                // "isArray" : true
+            },
+            getDesignation: {
+                "url": "/api/Designation",
+                "method": "GET",
+                "Content-Type": "application/json",
+                // "isArray" : true
+            },
+
 
         }
     })
@@ -52,6 +71,14 @@ angular.module('WebService', [])
                 return obj;
             }
         }
+    })
+    .factory('ApiCall', function($http, $resource, API, EnvService,ApiGenerator) {
+
+          return $resource('/',null, {
+            getDesignation: ApiGenerator.getApi('getDesignation'),
+            postUser: ApiGenerator.getApi('postUser'),
+          });
+
     })
 
 ;

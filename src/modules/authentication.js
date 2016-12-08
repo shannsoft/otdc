@@ -16,10 +16,10 @@ angular.module('Authentication', [])
           $scope.user.remember = $localStorage[Constants.getIsRemember()];
         }
       }
-      $scope.login = function() {
+      $scope.login = function(loginfrm) {
         // $rootScope.loggedin = $localStorage[Constants.getLoggedIn()] = true;
         // $state.go('dashboard');
-
+        console.log(loginfrm);
         ApiGenerator.getApi('login');
         LoginService.login(JSON.stringify($scope.user),function(response) {
           UtilityService.showLoader();
@@ -66,7 +66,7 @@ angular.module('Authentication', [])
           var obj = {
             "userId": 10000,
             "name": "Mukhtar",
-            "email": "mukhtar@ssmaktak.com"
+            "email": "rajendrasahoodbpb@gmail.com"
           }
           LoginService.forgotPassword(obj,function(response) {
             Util.alertMessage("success",response.Message);

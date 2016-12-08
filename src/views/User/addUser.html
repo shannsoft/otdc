@@ -1,4 +1,4 @@
-<article class="content forms-page">
+<article class="content forms-page" ng-init="addUserInit()">
 <div class="row">
     <div class="col-md-12">
           <div class="card card-block sameheight-item">
@@ -7,41 +7,42 @@
 						           Add User
 				           	</h3>
                 </div>
-            <form role="userDetails">
+            <form role="addUser" >
                    <fieldset class="form-group">
                             <label class="control-label" for="formGroupExampleInput2">First Name</label>
-                            <input type="password" class="form-control" id="formGroupExampleInput2" placeholder="Placeholder text">
+                            <input type="text" ng-model="user.fName" class="form-control" id="formGroupExampleInput2" placeholder="Placeholder text">
                    </fieldset>
                    <fieldset class="form-group">
                             <label class="control-label" for="formGroupExampleInput2">Last Name</label>
-                            <input type="password" class="form-control" id="formGroupExampleInput2" placeholder="Placeholder text">
+                            <input type="text" ng-model="user.lName" class="form-control" id="formGroupExampleInput2" placeholder="Placeholder text">
                     </fieldset>
                     <fieldset class="form-group">
                               <label class="control-label" for="formGroupExampleInput2">Email</label>
-                              <input type="password" class="form-control" id="formGroupExampleInput2" placeholder="Placeholder text">
+                              <input type="text" ng-model="user.email" class="form-control" id="formGroupExampleInput2" placeholder="Placeholder text">
                      </fieldset>
                     <fieldset class="form-group">
                            <label class="control-label" for="formGroupExampleInput3">Address</label>
-                           <textarea rows="3" class="form-control" id="formGroupExampleInput7"placeholder="Placeholder text"></textarea>
+                           <textarea rows="3" ng-model="user.address" class="form-control" id="formGroupExampleInput7"placeholder="Placeholder text"></textarea>
                    </fieldset>
                   <fieldset class="form-group">
                          <label class="control-label" for="formGroupExampleInput3">Mobile No</label>
-                         <input type="password" class="form-control" id="formGroupExampleInput2" placeholder="Placeholder text">
+                         <input type="text"  ng-model="user.phone" numbers-only class="form-control" id="formGroupExampleInput2" placeholder="Placeholder text">
                  </fieldset>
                  <fieldset class="form-group">
-                        <label class="control-label" for="formGroupExampleInput3">Desingnation</label>
-                        <input type="password" class="form-control" id="formGroupExampleInput2" placeholder="Placeholder text">
+												<label class="control-label" for="formGroupExampleInput3">Desingnation</label>
+												<select  ng-options="designation as designation.designationName for designation in designations" ng-model="user.designation" class="form-control pull-left m-h-5">
+												</select>
                 </fieldset>
                 <fieldset class="form-group">
                        <label class="control-label" for="formGroupExampleInput3">Create Password</label>
-                       <input type="password" class="form-control" id="formGroupExampleInput2" placeholder="Placeholder text">
+                       <input type="password" ng-model="user.pwd" class="form-control" id="formGroupExampleInput2" placeholder="Placeholder text">
                </fieldset>
                <fieldset class="form-group">
                       <label class="control-label" for="formGroupExampleInput3">Confirm Password</label>
-                      <input type="password" class="form-control" id="formGroupExampleInput2" placeholder="Placeholder text">
+                      <input type="password" ng-model="user.confirmPwd" class="form-control" id="formGroupExampleInput2" placeholder="Placeholder text">
               </fieldset>
               <fieldset class="form-group">
-                    <button type="button" class="btn btn-success">Submit</button>
+                    <button type="button" class="btn btn-success" ng-click="addUser()">Submit</button>
              </fieldset>
             </form>
         </div>

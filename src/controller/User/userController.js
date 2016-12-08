@@ -1,4 +1,4 @@
-app.controller('UserController', function($scope, $rootScope, $state, UserService, UtilityService,Util,$localStorage, Constants) {
+app.controller('UserController', function($scope, $rootScope, $state, UserService, UtilityService,Util,$localStorage, Constants,ApiCall) {
     // $scope.UserService = UserService;
     $scope.init = function() {
         $scope.user = UserService.getUser();
@@ -38,6 +38,32 @@ app.controller('UserController', function($scope, $rootScope, $state, UserServic
             }
         )
     }
+    /**
+     * add user starts
+     *
+     */
+     $scope.addUserInit = function() {
+       ApiCall.getDesignation({TokenId:$localStorage[Constants.getTokenKey()]},function(res) {
+         $scope.designations = res.Data;
+       },function(err) {
+         Util.alertMessage("danger", err.Message || "Error in Login");
+       })
+     }
+     $scope.addUser = function(form) {
+       $scope.user.designationId = $scope.user.designation.designationId;
+       delete $scope.user['designation'];
+       console.log("user ",$scope.user);
+       $scope.user.tokenId = $localStorage[Constants.getTokenKey()];
+       ApiCall.postUser($scope.user,function(res) {
+         Util.alertMessage(res.Status.toLocaleLowerCase(), res.Message || "Error in Login");
+       },function(err) {
+         Util.alertMessage(res.Status.toLocaleLowerCase(), err.Message || "Error in Login");
+       })
+     }
+    /**
+     * add user ends
+     *
+     */
 
 
 })

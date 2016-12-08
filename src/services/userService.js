@@ -65,6 +65,7 @@ app.factory('UserService',function($rootScope,$http,$localStorage,$resource,ApiG
     return $resource('/',null, {
       getUser: ApiGenerator.getApi('getUser'), // get user can be called in many form
       getUsers: ApiGenerator.getApi('getUsers'), // get user can be called in many form
+      addUser: ApiGenerator.getApi('addUser'), // get user can be called in many form
     });
   };
   // used to get the side bar details according to user
