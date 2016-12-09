@@ -179,7 +179,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         .state('VendorList', {
             templateUrl: 'src/views/Vendor/vendorList.html',
             url: '/VendorList',
-            controller: "Vendor_controller",
+            controller: "VendorController",
             resolve: {
                 loggedout: checkLoggedout
             },
@@ -187,7 +187,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         .state('addVendor', {
             templateUrl: 'src/views/Vendor/addVendor.html',
             url: '/addVendor',
-            controller: "Vendor_controller",
+            controller: "VendorController",
             resolve: {
                 loggedout: checkLoggedout
             },

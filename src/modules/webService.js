@@ -43,13 +43,16 @@ angular.module('WebService', [])
                 "url": "/api/User",
                 "method": "POST",
                 "Content-Type": "application/json",
-                // "isArray" : true
             },
             postUser: {
                 "url": "/api/User",
                 "method": "POST",
                 "Content-Type": "application/json",
-                // "isArray" : true
+            },
+            postVendor: {
+                "url": "/api/Vendor",
+                "method": "POST",
+                "Content-Type": "application/json",
             },
             getDesignation: {
                 "url": "/api/Designation",
@@ -77,6 +80,7 @@ angular.module('WebService', [])
           return $resource('/',null, {
             getDesignation: ApiGenerator.getApi('getDesignation'),
             postUser: ApiGenerator.getApi('postUser'),
+            postVendor: ApiGenerator.getApi('postVendor'),
           });
 
     })

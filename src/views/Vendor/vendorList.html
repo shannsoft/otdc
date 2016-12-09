@@ -1,4 +1,4 @@
-<section class="content title-block forms-page add tender ">
+<section class="content title-block forms-page add tender " ng-init="initVenderList()">
   <div class="card card-block sameheight-item" style="height: 1900px;">
     <div class="section card-title-block ">
     		<button type="button" class="btn btn-pill-left btn-success right m-r-20" ui-sref="addVendor">Add New Vendor</button>
@@ -15,11 +15,10 @@
                   <thead>
                           <tr>
                                 <th># SL NO</th>
-                                <th>Table heading</th>
-                                <th>Table heading</th>
-                                <th>Table heading</th>
-                                <th>Table heading</th>
-                                <th>Table heading</th>
+                                <th>Vender Name</th>
+                                <th>Email</th>
+                                <th>Bank Name</th>
+
                                 <th></th>
                           </tr>
                     </thead>
@@ -29,8 +28,7 @@
                               <td>Table cell</td>
                               <td>Table cell</td>
                               <td>Table cell</td>
-                              <td>Table cell</td>
-                              <td>Table cell</td>
+
                               <td>
                                        <a href="" class="option-btn" ng-click="gotoEditVendor()"><i class="fa fa-pencil" ></i></a>
                                        <a class="remove" href="" data-toggle="modal" data-target="#confirm-modal" ng-click="open()"> <i class="fa fa-trash-o "></i></a>

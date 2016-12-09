@@ -7,37 +7,41 @@
 						           Add Vendor
 				           	</h3>
                 </div>
-            <form role="userDetails">
+            <form role="userDetails" name="addVendorForm" ng-submit="addVendor(addVendorForm,$scope.vendor)">
                    <fieldset class="form-group">
                             <label class="control-label" for="formGroupExampleInput2">Vendor Name</label>
-                            <input type="password" class="form-control" id="formGroupExampleInput2" placeholder="Placeholder text">
+                            <input type="text" ng-model="$scope.vendor.vendorName" class="form-control" id="formGroupExampleInput2" placeholder="Placeholder text">
                    </fieldset>
                     <fieldset class="form-group">
                               <label class="control-label" for="formGroupExampleInput2">Email</label>
-                              <input type="password" class="form-control" id="formGroupExampleInput2" placeholder="Placeholder text">
+                              <input type="text" ng-model="$scope.vendor.emailId" class="form-control" id="formGroupExampleInput2" placeholder="Placeholder text">
+                     </fieldset>
+                    <fieldset class="form-group">
+                              <label class="control-label" for="formGroupExampleInput2">Mobile</label>
+                              <input type="text" ng-model="$scope.vendor.phoneNo" numbers-only class="form-control" id="formGroupExampleInput2" placeholder="Placeholder text">
                      </fieldset>
                     <fieldset class="form-group">
                            <label class="control-label" for="formGroupExampleInput3">Address</label>
-                           <textarea rows="3" class="form-control" id="formGroupExampleInput7"placeholder="Placeholder text"></textarea>
+                           <textarea rows="3" ng-model="$scope.vendor.address" class="form-control" id="formGroupExampleInput7"placeholder="Placeholder text"></textarea>
                    </fieldset>
                   <fieldset class="form-group">
                          <label class="control-label" for="formGroupExampleInput3">Bank Name</label>
-                         <input type="password" class="form-control" id="formGroupExampleInput2" placeholder="Placeholder text">
+                         <input type="text" ng-model="$scope.vendor.bankName" class="form-control" id="formGroupExampleInput2" placeholder="Placeholder text">
                  </fieldset>
                  <fieldset class="form-group">
                         <label class="control-label" for="formGroupExampleInput3">Branch Name</label>
-                        <input type="password" class="form-control" id="formGroupExampleInput2" placeholder="Placeholder text">
+                        <input type="text" ng-model="$scope.vendor.bankBranch" class="form-control" id="formGroupExampleInput2" placeholder="Placeholder text">
                 </fieldset>
                 <fieldset class="form-group">
                        <label class="control-label" for="formGroupExampleInput3">Account No</label>
-                       <input type="password" class="form-control" id="formGroupExampleInput2" placeholder="Placeholder text">
+                       <input type="text" ng-model="$scope.vendor.accountNo" class="form-control" id="formGroupExampleInput2" placeholder="Placeholder text">
                </fieldset>
                <fieldset class="form-group">
                       <label class="control-label" for="formGroupExampleInput3">IFSC Code</label>
-                      <input type="password" class="form-control" id="formGroupExampleInput2" placeholder="Placeholder text">
+                      <input type="text" ng-model="$scope.vendor.ifscCode" class="form-control" id="formGroupExampleInput2" placeholder="Placeholder text">
               </fieldset>
               <fieldset class="form-group">
-                    <button type="button" class="btn btn-success">Submit</button>
+                    <input type="submit" class="btn btn-success" />
              </fieldset>
             </form>
         </div>
