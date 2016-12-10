@@ -14,14 +14,14 @@ module.exports = function(grunt) {
       scripts: {
         files: [
           'src/app.js',
-          'src/controller/*.js',
-          'src/controller/**/*.js'
+          'src/constants.js',
+          'src/**/*.js',
         ],
-        tasks: ['co'],
-        options: {
-          livereload: 35729,
-          spawn: false,
-        },
+        tasks: ['concat'],
+        // options: {
+        //   livereload: 35729,
+        //   spawn: false,
+        // },
       },
       css: {
         files: ['**/*.css'],
@@ -56,11 +56,8 @@ module.exports = function(grunt) {
       dist: {
         src: [
           "src/app.js",
-          "src/controller/CommonCotroller/mainController.js",
-          "src/controller/TenderController/TenderController.js",
-          "src/controller/UserController/user_controller.js",
-          "src/services/app_service.js"
-
+          "src/constants.js",
+          "src/**/*.js",
         ],
         dest: 'built.js',
       },
@@ -120,6 +117,7 @@ module.exports = function(grunt) {
   // registerTask
   // grunt.registerTask("default", ['concat','watch']);
   grunt.registerTask("default", ['concat','connect:server','open:dev','watch']);
+  grunt.registerTask("concat", ['concat','watch']);
   grunt.registerTask("co", ['copy']);
   // grunt.registerTask("conn", ['concat','open:dev','watch']);
   grunt.registerTask('something', 'Do something interesting.', function(arg) {

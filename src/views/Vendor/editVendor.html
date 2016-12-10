@@ -1,46 +1,43 @@
-<article class="content forms-page">
-<div class="row">
-    <div class="col-md-12">
-          <div class="card card-block sameheight-item">
+<article class="content forms-page" ng-init="initEditVendor()">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-block sameheight-item">
                 <div class="title-block">
-                     <h3 class="title">
-						           Vendor Details
-				           	</h3>
+                    <h3 class="title">
+                        Vendor Details
+                    </h3>
                 </div>
-            <form role="userDetails">
-                   <fieldset class="form-group">
-                            <label class="control-label" for="formGroupExampleInput2">Vendor Name</label>
-                            <input type="password" class="form-control" id="formGroupExampleInput2" placeholder="Placeholder text">
-                   </fieldset>
+                <form name="vendorDetails" ng-submit="updateVendor(vendorDetails,vendor)">
                     <fieldset class="form-group">
-                              <label class="control-label" for="formGroupExampleInput2">Email</label>
-                              <input type="password" class="form-control" id="formGroupExampleInput2" placeholder="Placeholder text">
-                     </fieldset>
+                        <label class="control-label" for="formGroupExampleInput2">Vendor Name</label>
+                        <input type="text" class="form-control" ng-model="vendor.vendorName" id="formGroupExampleInput2" placeholder="Placeholder text">
+                    </fieldset>
                     <fieldset class="form-group">
-                           <label class="control-label" for="formGroupExampleInput3">Address</label>
-                           <textarea rows="3" class="form-control" id="formGroupExampleInput7"placeholder="Placeholder text"></textarea>
-                   </fieldset>
-                  <fieldset class="form-group">
-                         <label class="control-label" for="formGroupExampleInput3">Bank Name</label>
-                         <input type="password" class="form-control" id="formGroupExampleInput2" placeholder="Placeholder text">
-                 </fieldset>
-                 <fieldset class="form-group">
-                        <label class="control-label" for="formGroupExampleInput3">Branch Name</label>
-                        <input type="password" class="form-control" id="formGroupExampleInput2" placeholder="Placeholder text">
-                </fieldset>
-                <fieldset class="form-group">
-                       <label class="control-label" for="formGroupExampleInput3">Account No</label>
-                       <input type="password" class="form-control" id="formGroupExampleInput2" placeholder="Placeholder text">
-               </fieldset>
-               <fieldset class="form-group">
-                      <label class="control-label" for="formGroupExampleInput3">IFSC Code</label>
-                      <input type="password" class="form-control" id="formGroupExampleInput2" placeholder="Placeholder text">
-              </fieldset>
-              <fieldset class="form-group">
-                    <button type="button" class="btn btn-success">Submit</button>
-             </fieldset>
-            </form>
+                        <label class="control-label" for="formGroupExampleInput2">Email</label>
+                        <input type="text" class="form-control" ng-model="vendor.emailId" id="formGroupExampleInput2" placeholder="Placeholder text">
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <label class="control-label" for="formGroupExampleInput3">Address</label>
+                        <textarea rows="3" class="form-control" ng-model="vendor.address" id="formGroupExampleInput7" placeholder="Placeholder text"></textarea>
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <label class="control-label" for="formGroupExampleInput3">Bank Name</label>
+                        <input type="text" class="form-control" ng-model="vendor.bankName" id="formGroupExampleInput2" placeholder="Placeholder text">
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <label class="control-label" for="formGroupExampleInput3">Account No</label>
+                        <input type="text" class="form-control" ng-model="vendor.accountNo" id="formGroupExampleInput2" placeholder="Placeholder text">
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <label class="control-label" for="formGroupExampleInput3">IFSC Code</label>
+                        <input type="text" class="form-control" ng-model="vendor.ifscCode" id="formGroupExampleInput2" placeholder="Placeholder text">
+                    </fieldset>
+                    <fieldset class="form-group btn-grp">
+                        <input type="submit" class="btn btn-success"/>
+                        <button type="button" ui-sref="VendorList" class="btn btn-secondary">Cancel</button>
+                    </fieldset>
+                </form>
+            </div>
         </div>
-  </div>
-</div>
+    </div>
 </article>

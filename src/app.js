@@ -203,7 +203,8 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         .state('editVendor', {
             templateUrl: 'src/views/Vendor/editVendor.html',
             url: '/editVendor',
-            controller: "Vendor_controller",
+            controller: "EditVendorController",
+            params: { vendor: null },
             resolve: {
                 loggedout: checkLoggedout
             },

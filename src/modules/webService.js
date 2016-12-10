@@ -33,12 +33,12 @@ angular.module('WebService', [])
                 "Content-Type": "application/json",
                 // "isArray" : true
             },
-            getUsers: {
-                "url": "/api/User",
-                "method": "GET",
-                "Content-Type": "application/json",
-                // "isArray" : true
-            },
+            // getUsers: {
+            //     "url": "/api/User",
+            //     "method": "GET",
+            //     "Content-Type": "application/json",
+            //     // "isArray" : true
+            // },
             addUser: {
                 "url": "/api/User",
                 "method": "POST",
@@ -49,9 +49,24 @@ angular.module('WebService', [])
                 "method": "POST",
                 "Content-Type": "application/json",
             },
+            // getUser: {
+            //     "url": "/api/User",
+            //     "method": "POST",
+            //     "Content-Type": "application/json",
+            // },
             postVendor: {
                 "url": "/api/Vendor",
                 "method": "POST",
+                "Content-Type": "application/json",
+            },
+            getVendor: {
+                "url": "/api/Vendor",
+                "method": "POST",
+                "Content-Type": "application/json",
+            },
+            deleteVendor: {
+                "url": "/api/Vendor",
+                "method": "DELETE",
                 "Content-Type": "application/json",
             },
             getDesignation: {
@@ -80,7 +95,10 @@ angular.module('WebService', [])
           return $resource('/',null, {
             getDesignation: ApiGenerator.getApi('getDesignation'),
             postUser: ApiGenerator.getApi('postUser'),
+            getUser: ApiGenerator.getApi('getUser'),
             postVendor: ApiGenerator.getApi('postVendor'),
+            getVendor: ApiGenerator.getApi('getVendor'),
+            deleteVendor: ApiGenerator.getApi('deleteVendor'),
           });
 
     })

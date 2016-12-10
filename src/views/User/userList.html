@@ -3,9 +3,9 @@
         <div class="title-block">
             <div class="row">
                 <div class="col-md-6">
-                     <a ui-sref="addUser" class="btn btn-primary btn-sm rounded-s">
-                            Add User
-                        </a>
+                    <a ui-sref="addUser" class="btn btn-primary btn-sm rounded-s">
+                        Add User
+                    </a>
 
                 </div>
             </div>
@@ -13,7 +13,7 @@
         <div class="items-search">
             <form class="form-inline ng-pristine ng-valid">
                 <div class="input-group">
-                    <input type="text" class="form-control boxed rounded-s" placeholder="Search for...">
+                    <input type="text" class="form-control boxed rounded-s" placeholder="Search for..." style="height: 38px;">
                     <span class="input-group-btn">
                         <button class="btn btn-secondary rounded-s" type="button">
                             <i class="fa fa-search"></i>
@@ -89,7 +89,7 @@
                         <div>
                             <a href="item-editor.html" class="">
                                 <h4 class="item-title">
-                                  {{user.fName}}
+                                    {{user.fName}}
                                 </h4>
                             </a>
                         </div>
@@ -103,9 +103,9 @@
                     <div class="item-col item-col-stats no-overflow">
                         <div class="item-heading">Status</div>
                         <div class="no-overflow">
-                          <div>
-                              {{user.status}}
-                          </div>
+                            <div>
+                                {{user.status}}
+                            </div>
                         </div>
                     </div>
                     <div class="item-col item-col-category no-overflow">
@@ -127,15 +127,15 @@
                         </div>
                     </div>
                     <div class="item-col fixed item-col-actions-dropdown">
-                        <a href="" class="option-btn"><i class="fa fa-pencil" ng-click="gotoEditUser()"></i></a>
-                                       <a class="remove" href="" data-toggle="modal" data-target="#confirm-modal" ng-click="open()"> <i class="fa fa-trash-o "></i> </a>
+                        <a href="" class="option-btn">
+                            <i class="fa fa-pencil" ng-click="gotoEditUser()"></i>
+                        </a>
+                        <a class="remove" href="" data-toggle="modal" data-target="#confirm-modal" ng-click="open()">
+                            <i class="fa fa-trash-o "></i>
+                        </a>
                     </div>
                 </div>
             </li>
-
-
-
-
 
         </ul>
     </div>

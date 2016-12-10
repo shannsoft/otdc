@@ -40,6 +40,7 @@
     <script src="src/controller/Tender/TenderController.js"></script>
     <script src="src/controller/User/userController.js"></script>
     <script src="src/controller/Vendor/vendorcontroller.js"></script>
+    <script src="src/controller/Vendor/editVendorController.js"></script>
     <script src="src/controller/User/userListController.js"></script>
     <script src="src/directive/dateviewer.js"></script>
     <script src="src/directive/numberOnly.js"></script>
@@ -63,7 +64,8 @@
   </div>
 </div>
 <section class="alert-message">
-    <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="close()">{{alert.msg}}</alert>
+  <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="close($index)">{{alert.msg}}</uib-alert>
+    <!-- <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="close()">{{alert.msg}}</alert> -->
 </section>
 <!-- jQuery 2.2.0 -->
   </body>

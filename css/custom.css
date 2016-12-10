@@ -177,3 +177,10 @@ input.ng-untouched {
 h3.title {
     color: #21B04B !important;
 }
+
+.crud-table tbody tr td:nth-child(5) {
+    width: 120px;
+}
+.crud-table tbody tr td:nth-child(5) a {
+    margin-left: 20px;
+}

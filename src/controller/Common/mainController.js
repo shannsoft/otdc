@@ -3,6 +3,7 @@ app.controller('Main_Controller',function($scope,$rootScope,$state,EnvService,$t
   $rootScope.$on(Events.validationFieldMissing,function(event,data) {
     alert("Event handled",data);
   });
+
   $rootScope.$on(Events.errorInLogin,function(event,data){
       $location.hash('top');
       $anchorScroll();
@@ -33,12 +34,10 @@ app.controller('Main_Controller',function($scope,$rootScope,$state,EnvService,$t
       $anchorScroll();
       Util.alertMessage(Events.eventType.success, data.message);
   })
-
-
-  $scope.init = function(){
-
-  }
-  
+ // used to close the alert
+ $scope.close = function(){
+     $rootScope.alerts.splice($rootScope.alerts.indexOf(alert), 1);
+ }
  $scope.forgetpassword = function(){
    $state.go('forget_password');
  }
