@@ -176,6 +176,7 @@
                     </fieldset> -->
                     <fieldset class="form-group">
                         <input type="submit" ng-if="!isView" class="btn btn-success"></input>
+                        <button  ng-if="isView" class="btn btn-success" ng-click="onEditTendor('edit',tender)">Edit</button>
                         <button ui-sref="tenderList" class="btn btn-secondary" ui-sref="tenderList">{{isView ? 'Back' : 'Cancel'}}</button>
                     </fieldset>
                 </form>

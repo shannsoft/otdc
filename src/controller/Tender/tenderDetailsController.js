@@ -22,4 +22,7 @@ app.controller('TenderDetailsController', function($scope, $rootScope, $state,$s
         Util.alertMessage(err.Status.toLocaleLowerCase(),err.Message);
       })
     }
+    $scope.onEditTendor = function(action,tender) {
+      $state.go("tenderDetails",{tenderId:tender.tenderId,action:action});
+    }
 })
