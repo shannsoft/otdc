@@ -184,3 +184,6 @@ h3.title {
 .crud-table tbody tr td:nth-child(5) a {
     margin-left: 20px;
 }
+.alert-message {
+    z-index: 10000;
+}

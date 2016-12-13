@@ -58,6 +58,7 @@ app.controller('VendorController',function($scope,$rootScope,$state,Constants,En
     vendorData.type = "I";
     ApiCall.postVendor(vendorData,function(res) {
       Util.alertMessage(res.Status.toLocaleLowerCase(), res.Message);
+      $state.go("VendorList");
     },function(err) {
       Util.alertMessage(err.Status.toLocaleLowerCase(), err.Message);
     })

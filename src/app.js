@@ -123,7 +123,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         .state('tenderList', {
             templateUrl: 'src/views/Tender/tenderList.html',
             url: '/tenderList',
-            controller: "Tender_controller",
+            controller: "TenderListController",
             resolve: {
                 loggedout: checkLoggedout
             },
@@ -131,7 +131,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         .state('addTender', {
             templateUrl: 'src/views/Tender/addTender.html',
             url: '/addTender',
-            controller: "Tender_controller",
+            controller: "AddTendorController",
             resolve: {
                 loggedout: checkLoggedout
             },
@@ -139,7 +139,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         .state('editTender', {
             templateUrl: 'src/views/Tender/editTenderDetails.html',
             url: '/editTender',
-            controller: "Tender_controller",
+            // controller: "Tender_controller",
             resolve: {
                 loggedout: checkLoggedout
             },
@@ -147,7 +147,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         .state('tenderDetails', {
             templateUrl: 'src/views/Tender/TenderDetails.html',
             url: '/tenderDetails',
-            controller: "Tender_controller",
+            // controller: "Tender_controller",
             resolve: {
                 loggedout: checkLoggedout
             },
@@ -220,7 +220,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         .state('tender_assign', {
             templateUrl: 'src/views/Tender/assignTender.html',
             url: '/tender_assign',
-            controller: "Tender_controller",
+            // controller: "Tender_controller",
             resolve: {
                 loggedout: checkLoggedout
             },
@@ -236,7 +236,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         .state('tender_checklist', {
             templateUrl: 'src/views/Tender/TenderCheckList.html',
             url: '/tender_checklist',
-            controller: "Tender_controller",
+            // controller: "Tender_controller",
             resolve: {
                 loggedout: checkLoggedout
             },
@@ -272,7 +272,7 @@ app.factory('Util', ['$rootScope', '$timeout', function($rootScope, $timeout) {
         $rootScope.alerts.push(alert);
         $timeout(function() {
             $rootScope.alerts.splice($rootScope.alerts.indexOf(alert), 1);
-        }, 5000);
+        }, 2000);
     };
     return Util;
 }]);

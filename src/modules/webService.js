@@ -13,7 +13,7 @@ angular.module('WebService', [])
             },
             logout: {
                 url: "/api/User",
-                method: "GET"
+                method: "POST"
             },
             token: {
                 "url": "/api/User",
@@ -73,7 +73,11 @@ angular.module('WebService', [])
                 "url": "/api/Designation",
                 "method": "GET",
                 "Content-Type": "application/json",
-                // "isArray" : true
+            },
+            postTendor: {
+                "url": "/api/Tendor",
+                "method": "POST",
+                "Content-Type": "application/json",
             },
 
 
@@ -99,6 +103,7 @@ angular.module('WebService', [])
             postVendor: ApiGenerator.getApi('postVendor'),
             getVendor: ApiGenerator.getApi('getVendor'),
             deleteVendor: ApiGenerator.getApi('deleteVendor'),
+            postTendor: ApiGenerator.getApi('postTendor'),
           });
 
     })
