@@ -7,7 +7,7 @@ angular.module('Authentication', [])
         forgotPassword: ApiGenerator.getApi('forgotPassword')
       });
     })
-    .controller('LoginController',function($http,$scope,$state,$rootScope,LoginService,UtilityService,Events,$localStorage,Constants,UserService,Util,ApiGenerator) {
+    .controller('LoginController',function($http,$scope,$state,$rootScope,LoginService,UtilityService,Events,$localStorage,Constants,UserService,Util,ApiGenerator,validationService) {
       $scope.init = function(){
         $scope.user = {};
         if($localStorage[Constants.getIsRemember()]){
@@ -15,6 +15,8 @@ angular.module('Authentication', [])
           $scope.user.Password = UtilityService.decode($localStorage[Constants.getPassword()]);
           $scope.user.remember = $localStorage[Constants.getIsRemember()];
         }
+        $scope.validationService = validationService;
+        $scope.isInit = true; // this flag used to load the form after controller init
       }
       $scope.login = function(loginfrm) {
         // $rootScope.loggedin = $localStorage[Constants.getLoggedIn()] = true;

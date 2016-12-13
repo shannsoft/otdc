@@ -24,16 +24,16 @@ angular.module('validation', [])
             $rootScope.$emit(Events.validationFieldMissing,{type:Events.eventType.warn});
             return;
           }
-          else if (!validationMessages[errorType] || !validationMessages[errorType][type]) {
+          else if (!validationMessages[errorType] || !validationMessages[errorType]['type'+type]) {
             $rootScope.$emit(Events.validationFieldInvalid,{type:Events.eventType.warn});
             return;
           }
-          else if(validationMessages[errorType][type].indexOf('%hint%') != -1 && !hint){
+          else if(validationMessages[errorType]['type'+type].indexOf('%hint%') != -1 && !hint){
                 $rootScope.$emit(Events.validationHintMissing,{type:Events.eventType.warn});
                 return;
           }
           // prepare the message
-          var message = validationMessages[errorType][type] ;
+          var message = validationMessages[errorType]['type'+type] ;
           return message.replace("%fieldName%",fieldName).replace("%hint%",hint);
         }
       }

@@ -1,4 +1,4 @@
-app.controller('AddTendorController',function($scope,$rootScope,$state,Constants,ApiCall,EnvService,$timeout,$cookieStore,$localStorage){
+app.controller('AddTendorController',function($scope,$rootScope,$state,Util,Constants,ApiCall,EnvService,$timeout,$cookieStore,$localStorage){
 
 $scope.addTendorInit = function() {
   $scope.tender = {};

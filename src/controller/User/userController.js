@@ -55,7 +55,8 @@ app.controller('UserController', function($scope, $rootScope, $state, UserServic
        console.log("user ",$scope.user);
        $scope.user.tokenId = $localStorage[Constants.getTokenKey()];
        ApiCall.postUser($scope.user,function(res) {
-         Util.alertMessage(res.Status.toLocaleLowerCase(), res.Message || "Error in Login");
+         Util.alertMessage(res.Status.toLocaleLowerCase(), res.Message);
+         $state.go("UserList");
        },function(err) {
          Util.alertMessage(res.Status.toLocaleLowerCase(), err.Message || "Error in Login");
        })

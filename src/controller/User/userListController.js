@@ -3,7 +3,7 @@ app.controller('UserListController', function($scope, $rootScope, $state, ApiCal
     $scope.init = function() {
       $scope.userList = [];
       var obj = {
-        Token:$localStorage[Constants.getTokenKey()],
+        TokenId:$localStorage[Constants.getTokenKey()],
         UserId:""
       }
         ApiCall.getUser(obj,function(response) {

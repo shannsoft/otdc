@@ -7,11 +7,12 @@ dependency = dependency.concat(distModules).concat(custModules);
 var app = angular.module("teknobiz", dependency);
 app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
     //adding http intercepter
-    $httpProvider.interceptors.push(function($q, $location, $window, $localStorage) {
+    $httpProvider.interceptors.push(function($q, $location, $window, $localStorage,Constants) {
         return {
             request: function(config) {
                 config.headers = config.headers || {};
                 // config.headers['Authorization'] = 'bearer '+$localStorage[Constants.getTokenKey()];
+                config.headers['tokenID'] = $localStorage[Constants.getTokenKey()];
                 return config;
             },
             response: function(response) {
@@ -61,9 +62,12 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         }
         LoginService.token(obj, function(response) {
             if (response.StatusCode == 200 && response.Data && response.Status == "Success") {
+              $timeout(function() {
                 $rootScope.loggedin = $localStorage[Constants.getLoggedIn()];
                 UserService.setUser(response.Data);
                 deferred.resolve();
+              }, 100);
+
             } else {
                 $timeout(function() {
                     $rootScope.loggedin = $localStorage[Constants.getLoggedIn()] = false;
@@ -128,6 +132,15 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
                 loggedout: checkLoggedout
             },
         })
+        .state('tenderDetails', {
+            templateUrl: 'src/views/Tender/TenderDetails.html',
+            url: '/tenderList/:tenderId',
+            params: { tenderId: null ,action:null},
+            controller: "TenderDetailsController",
+            resolve: {
+                loggedout: checkLoggedout
+            },
+        })
         .state('addTender', {
             templateUrl: 'src/views/Tender/addTender.html',
             url: '/addTender',
@@ -144,14 +157,14 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
                 loggedout: checkLoggedout
             },
         })
-        .state('tenderDetails', {
-            templateUrl: 'src/views/Tender/TenderDetails.html',
-            url: '/tenderDetails',
-            // controller: "Tender_controller",
-            resolve: {
-                loggedout: checkLoggedout
-            },
-        })
+        // .state('tenderDetails', {
+        //     templateUrl: 'src/views/Tender/TenderDetails.html',
+        //     url: '/tenderDetails',
+        //     // controller: "Tender_controller",
+        //     resolve: {
+        //         loggedout: checkLoggedout
+        //     },
+        // })
         .state('UserList', {
             templateUrl: 'src/views/User/userList.html',
             url: '/UserList',

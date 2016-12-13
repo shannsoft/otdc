@@ -187,3 +187,7 @@ h3.title {
 .alert-message {
     z-index: 10000;
 }
+.list-icon [class^='col'] em {
+    font-size: 20px;
+    width: 25px;
+}
