@@ -1,0 +1,34 @@
+<section class="section ng-scope">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card modal-card">
+                <div class="card-block">
+                    <div class="card-title-block">
+                        <span class="title">
+                            Boq Details :
+                        </span>
+                        <!-- <i class="fa fa-window-close pull-right" aria-hidden="true" ng-click="ok()"></i> -->
+                        <em class="fa fa-arrows-alt pull-right" ng-click="ok()"></em>
+                    </div>
+                    <section class="example">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th ng-repeat="th in getBoqHeaders()">{{th}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="boq in boqData">
+                                        <td ng-repeat="th in getBoqHeaders()">{{boq[th]}}</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
