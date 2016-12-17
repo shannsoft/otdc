@@ -79,26 +79,7 @@ module.exports = function(grunt) {
     }
   },
 
-  //   notify: {
-  //   task_name: {
-  //     options: {
-  //       // Task-specific options go here.
-  //     }
-  //   },
-  //   watch: { options: { title: '"Watch"', message: '"Snipers on the roof, sir!"' } },
-  //   server: {
-  //     options: {
-  //       message: 'Server is ready!'
-  //     }
-  //   }
-  // }
-  // notify_hooks: {
-  //     options: {
-  //       enabled: true,
-  //       max_js_hint_notifications: 5,
-  //       title: 'Notifications'
-  //     }
-  //   }
+
 
   });
 

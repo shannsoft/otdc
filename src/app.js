@@ -55,7 +55,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         return deferred.promise;
     };
 
-    function checkLoggedout($q, $timeout, $http, $location, $rootScope, $state, $localStorage, Constants, LoginService, UserService) {
+    function checkLoggedout($q, $timeout, $http, $location, $rootScope, $state, $localStorage, Constants, LoginService, UserService,Events) {
         var deferred = $q.defer();
         var obj = {
             TokenId: $localStorage[Constants.getTokenKey()]
@@ -65,6 +65,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
               $timeout(function() {
                 $rootScope.loggedin = $localStorage[Constants.getLoggedIn()];
                 UserService.setUser(response.Data);
+                $rootScope.$emit(Events.userLogged);
                 deferred.resolve();
               }, 100);
 
