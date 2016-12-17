@@ -14,10 +14,13 @@ $scope.addTendor = function(addTendorForm,tender) {
   tender.tokenID = $localStorage[Constants.getTokenKey()];
   tender.actionType = "I";
   console.log(JSON.stringify(tender));
+  $rootScope.showPreloader = true;
   ApiCall.postTendor(tender,function(res) {
     $state.go("tenderList");
+    $rootScope.showPreloader = false;
     Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
   }, function(err) {
+    $rootScope.showPreloader = false;
     Util.alertMessage(err.Status.toLocaleLowerCase(),err.Message);
   })
 }

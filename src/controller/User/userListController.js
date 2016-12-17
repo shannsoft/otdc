@@ -6,11 +6,14 @@ app.controller('UserListController', function($scope, $rootScope, $state, ApiCal
         TokenId:$localStorage[Constants.getTokenKey()],
         UserId:""
       }
+      $rootScope.showPreloader = true;
         ApiCall.getUser(obj,function(response) {
           $scope.userList = response.Data;
+          $rootScope.showPreloader = false;
         },
         function(err){
           Util.alertMessage(Events.eventType.error,err.message);
+          $rootScope.showPreloader = false;
         }
       )
     }

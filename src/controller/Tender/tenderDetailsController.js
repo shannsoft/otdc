@@ -13,13 +13,16 @@ app.controller('TenderDetailsController', function($scope, $rootScope, $state,$u
         var data = {
             tenderId: $stateParams.tenderId
         }
+        $rootScope.showPreloader = true;
         ApiCall.getTendor(data, function(res) {
 
             $scope.tender = res.Data;
             // Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
             $scope.isInit = true;
+            $rootScope.showPreloader = false;
         }, function(err) {
             Util.alertMessage(err.Status.toLocaleLowerCase(), err.Message);
+            $rootScope.showPreloader = false;
         })
     }
     $scope.onEditTendor = function(action, tender) {

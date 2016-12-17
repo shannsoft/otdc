@@ -18,11 +18,14 @@ app.controller('VendorController',function($scope,$rootScope,$state,Constants,En
     var vendorData = {};
     vendorData.tokenId = $localStorage[Constants.getTokenKey()];
     vendorData.vendorId = $scope.selectedVendor.vendorId;
+    $rootScope.showPreloader = true;
     ApiCall.deleteVendor(vendorData,function(res) {
       Util.alertMessage(res.Status.toLocaleLowerCase(), res.Message);
       $scope.initVenderList();
+      $rootScope.showPreloader = false;
     },function(err) {
       Util.alertMessage(err.Status.toLocaleLowerCase(), err.Message);
+      $rootScope.showPreloader = false;
     })
     $scope.showModal = false;
     $scope.selectedVendor = null;
@@ -45,22 +48,28 @@ app.controller('VendorController',function($scope,$rootScope,$state,Constants,En
     var vendorData = {};
     vendorData.tokenId = $localStorage[Constants.getTokenKey()];
     vendorData.type = "GET_VENDOR_ALL";
+    $rootScope.showPreloader = true;
     ApiCall.getVendor(vendorData,function(res) {
       Util.alertMessage(res.Status.toLocaleLowerCase(), res.Message);
       $scope.vendors = res.Data;
+      $rootScope.showPreloader = false;
     },function(err) {
       Util.alertMessage(err.Status.toLocaleLowerCase(), err.Message);
+      $rootScope.showPreloader = false;
     })
   }
   $scope.addVendor = function(addVendorForm,vendorData){
 
     vendorData.tokenId = $localStorage[Constants.getTokenKey()];
     vendorData.type = "I";
+    $rootScope.showPreloader = true;
     ApiCall.postVendor(vendorData,function(res) {
       Util.alertMessage(res.Status.toLocaleLowerCase(), res.Message);
       $state.go("VendorList");
+      $rootScope.showPreloader = false;
     },function(err) {
       Util.alertMessage(err.Status.toLocaleLowerCase(), err.Message);
+      $rootScope.showPreloader = false;
     })
   }
 })

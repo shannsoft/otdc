@@ -7,7 +7,7 @@
           												<div class="card-title-block">
           													<h3 class="title">Tender List</h3> </div>
           												<section class="example table-responsive">
-          													<table class="table table-bordered">
+          													<!-- <table class="table table-bordered">
           														<thead class="thead-default">
           															<tr>
           																<th>Sl No</th>
@@ -46,7 +46,32 @@
                                           </td>
           															</tr>
           														</tbody>
-          													</table>
+          													</table> -->
+                                    <table ng-table="tableParams" class="table table-bordered tenderList">
+                                      <tr ng-repeat="row in $data">
+                                        <td data-title="'Sl No'" filter="{slNo: 'text'}" sortable="'slNo'">{{$index+1}}</td>
+                                        <td data-title="'Tender Id'" filter="{tenderId: 'text'}" sortable="'tenderId'">{{row.tenderId}}</td>
+                                        <td data-title="'Reference No'" filter="{referenceNo: 'text'}" sortable="'referenceNo'">{{row.referenceNo}}</td>
+                                        <td data-title="'Reference Id'" filter="{referenceId: 'text'}" sortable="'referenceId'">{{row.referenceId}}</td>
+                                        <td data-title="'Tender Type'" filter="{tenderType: 'text'}" sortable="'tenderType'">{{row.tenderType}}</td>
+                                        <td data-title="'Category'" filter="{category: 'text'}" sortable="'category'">{{row.category}}</td>
+                                        <td data-title="'Work Title'" filter="{workTitle: 'text'}" sortable="'workTitle'">{{row.workTitle}}</td>
+                                        <td data-title="'Work Description'" filter="{workDescription: 'text'}" sortable="'workDescription'">{{row.workDescription}}</td>
+                                        <td data-title="'Action'" >
+                                          <div class="row list-icon">
+                                            <div class="col-md-3 col-sm-4" ng-click="onAction('view',row)">
+                                              <em class="fa fa-eye"></em>View
+                                            </div>
+                                            <div class="col-md-3 col-sm-4" ng-click="onAction('edit',row)">
+                                              <em class="fa fa-edit"></em>Edit
+                                            </div>
+                                            <div class="col-md-3 col-sm-4" ng-click="onAction('assign',row)">
+                                              <em class="fa fa-mail-forward"></em>Assign
+                                            </div>
+                                          </div>
+                                        </td>
+                                      </tr>
+                                    </table>
           												</section>
           											</div>
           										</div>

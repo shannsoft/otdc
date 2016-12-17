@@ -43,10 +43,13 @@ app.controller('UserController', function($scope, $rootScope, $state, UserServic
      *
      */
      $scope.addUserInit = function() {
+       $rootScope.showPreloader = true;
        ApiCall.getDesignation({TokenId:$localStorage[Constants.getTokenKey()]},function(res) {
          $scope.designations = res.Data;
+         $rootScope.showPreloader = false;
        },function(err) {
          Util.alertMessage("danger", err.Message || "Error in Login");
+         $rootScope.showPreloader = false;
        })
      }
      $scope.addUser = function(form) {

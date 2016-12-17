@@ -42,7 +42,7 @@ angular.module('Authentication', [])
               delete $localStorage[Constants.getPassword()];
               delete $localStorage[Constants.getIsRemember()];
             }
-            $state.go('dashboard',{role:UserService.getRole()});
+            $state.go('dashboard');
           }
           else{
             Util.alertMessage("danger", response.Message || "Error in Login");

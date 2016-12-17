@@ -1,6 +1,6 @@
 var dependency = [];
 // lib  dependency
-var distModules = ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate', 'ngCookies', 'ngMessages'];
+var distModules = ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate', 'ngCookies', 'ngMessages','ngTable'];
 var custModules = ['validation', 'EventHandler', 'Authentication', 'WebService'];
 dependency = dependency.concat(distModules).concat(custModules);
 
@@ -91,11 +91,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
     // HOME STATES AND NESTED VIEWS ========================================
         .state('dashboard', {
             // templateUrl: 'src/views/dashboard.html',
-            templateUrl: function($stateParams,UserService) {
-              console.log("showing dashboard of ",$stateParams.role);
-              return 'src/views/User/'+$stateParams.role+'/dashboard.html';
-            },
-            params: { role: null },
+            templateUrl: 'src/views/User/dashboard.html',
             url: '/dashboard',
             controller: "UserController",
             resolve: {
@@ -135,7 +131,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         .state('tenderDetails', {
             templateUrl: 'src/views/Tender/TenderDetails.html',
             url: '/tenderList/:tenderId',
-            params: { tenderId: null ,action:null},
+            params: { tenderId: null ,},
             controller: "TenderDetailsController",
             resolve: {
                 loggedout: checkLoggedout
@@ -157,14 +153,15 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
                 loggedout: checkLoggedout
             },
         })
-        // .state('tenderDetails', {
-        //     templateUrl: 'src/views/Tender/TenderDetails.html',
-        //     url: '/tenderDetails',
-        //     // controller: "Tender_controller",
-        //     resolve: {
-        //         loggedout: checkLoggedout
-        //     },
-        // })
+        .state('tenderAssign', {
+            templateUrl: 'src/views/Tender/tenderAssignment.html',
+            url: '/tenderAssign',
+            controller: "TenderAssignController",
+              params: { tender: null},
+            resolve: {
+                loggedout: checkLoggedout
+            },
+        })
         .state('UserList', {
             templateUrl: 'src/views/User/userList.html',
             url: '/UserList',
