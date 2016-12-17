@@ -1,5 +1,6 @@
-app.controller('UserController', function($scope, $rootScope, $state, UserService, UtilityService,Util,$localStorage, Constants,ApiCall) {
+app.controller('UserController', function($scope, $rootScope, $state, UserService, UtilityService,Util,$localStorage, Constants,ApiCall,Events) {
     // $scope.UserService = UserService;
+
     $scope.init = function() {
         $scope.user = UserService.getUser();
         // here this is kept in $rootScope as this controller is a shared one
@@ -16,6 +17,15 @@ app.controller('UserController', function($scope, $rootScope, $state, UserServic
             active: false
         }, ]
         $scope.currTab = 0;
+    }
+    $scope.updateActiveClass = function(index){
+      angular.forEach($scope.sideBar,function(v,k) {
+        if(index == k)
+          v.activeClass = 'active';
+        else {
+            v.activeClass = '';
+        }
+      })
     }
     $scope.tabChange = function(tabPos) {
         $scope.currTab = tabPos;

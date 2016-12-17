@@ -94,7 +94,6 @@ angular.module('WebService', [])
                 var obj = {};
                 obj = angular.copy(API[api]);
                 obj.url = EnvService.getBasePath() + obj.url; // prefix the base path
-                console.log(">>>>>>>>>>>>>>   ", obj);
                 return obj;
             }
         }
