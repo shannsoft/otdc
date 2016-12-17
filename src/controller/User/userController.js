@@ -1,6 +1,9 @@
 app.controller('UserController', function($scope, $rootScope, $state, UserService, UtilityService,Util,$localStorage, Constants,ApiCall,Events) {
     // $scope.UserService = UserService;
-
+    $rootScope.$on(Events.userLogged,function() {
+      if(!$scope.user)
+      $scope.user = UserService.getUser();
+    });
     $scope.init = function() {
         $scope.user = UserService.getUser();
         // here this is kept in $rootScope as this controller is a shared one

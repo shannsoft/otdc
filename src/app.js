@@ -65,6 +65,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
               $timeout(function() {
                 $rootScope.loggedin = $localStorage[Constants.getLoggedIn()];
                 UserService.setUser(response.Data);
+                $rootScope.$emit(Events.userLogged);
                 deferred.resolve();
               }, 100);
 
