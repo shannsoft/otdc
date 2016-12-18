@@ -26,7 +26,8 @@
                     </fieldset>
                     <fieldset class="form-group" ng-class="{'has-error': (tenderDetails.Tender_type.$invalid && tenderDetails.Tender_type.$touched)}">
                         <label class="control-label" for="formGroupExampleInput3">Tender Type</label>
-                        <select ng-model="tender.tenderType" class="form-control" name="Tender_Type" ng-readonly="isView">
+                        <input type="text" ng-model="tender.tenderType" ng-if="isView" ng-readonly="isView" class="form-control" name="tender_id" id="formGroupExampleInput3" placeholder="Enter Tender ID" />
+                        <select ng-model="tender.tenderType" class="form-control" name="Tender_Type" ng-if="!isView">
                             <option>Option one</option>
                             <option>Option two</option>
                             <option>Option three</option>
@@ -36,7 +37,8 @@
                     </fieldset>
                     <fieldset class="form-group" ng-class="{'has-error': (tenderDetails.Tender_category.$invalid && tenderDetails.Tender_category$touched)}">
                         <label class="control-label" for="formGroupExampleInput3">Tender Category</label>
-                        <select ng-model="tender.category" ng-readonly="isView" class="form-control" name="Tender_category">
+                        <input type="text" ng-model="tender.category" ng-if="isView" ng-readonly="isView" class="form-control" name="tender_id" id="formGroupExampleInput3" placeholder="Enter Tender ID" />
+                        <select ng-model="tender.category" ng-if="!isView" class="form-control" name="Tender_category">
                             <option>Option one</option>
                             <option>Option two</option>
                             <option>Option three</option>
@@ -46,7 +48,8 @@
                     </fieldset>
                     <fieldset class="form-group" ng-class="{'has-error': (tenderDetails.Technical_evaluation.$invalid && tenderDetails.Technical_evaluation.$touched)}">
                         <label class="control-label" for="formGroupExampleInput4">General Technical Evaluation Allowed</label>
-                        <select ng-model="tender.genTechEvlnAllow" ng-readonly="isView" class="form-control" name="Technical_evaluation">
+                          <input type="text" ng-model="tender.genTechEvlnAllow" ng-if="isView" ng-readonly="isView" class="form-control" name="tender_id" id="formGroupExampleInput3" placeholder="Enter Tender ID" />
+                        <select ng-model="tender.genTechEvlnAllow" ng-if="!isView" class="form-control" name="Technical_evaluation">
                             <option>Option one</option>
                             <option>Option two</option>
                         </select>
@@ -60,7 +63,8 @@
                     </fieldset>
                     <fieldset class="form-group" ng-class="{'has-error': (tenderDetails.Multi_currency_allowed.$invalid && tenderDetails.Multi_currency_allowed.$touched)}">
                         <label class="control-label" for="formGroupExampleInput4">Is MultiCurrency Allowed For Fee</label>
-                        <select ng-model="tender.isMultyCurrency" ng-readonly="isView" class="form-control" name="Multi_currency_allowed">
+                        <input type="text" ng-model="tender.isMultyCurrency" ng-if="isView" ng-readonly="isView" class="form-control" name="tender_id" id="formGroupExampleInput3" placeholder="Enter Tender ID" />
+                        <select ng-model="tender.isMultyCurrency" ng-if="!isView" class="form-control" name="Multi_currency_allowed">
                             <option>Select One</option>
                             <option>Yes</option>
                         </select>
@@ -80,7 +84,8 @@
                     </fieldset>
                     <fieldset class="form-group" ng-class="{'has-error': (tenderDetails.Technical_evaluation_allowed.$invalid && tenderDetails.Technical_evaluation_allowed.$touched)}">
                         <label class="control-label" for="formGroupExampleInput4">Itemwise Technical Evaluation Allowed</label>
-                        <select class="form-control" ng-model="tender.itemTechEvlnAllow" ng-readonly="isView" name="Technical_evaluation_allowed">
+                          <input type="text" ng-model="tender.itemTechEvlnAllow" ng-if="isView" ng-readonly="isView" class="form-control" name="tender_id" id="formGroupExampleInput3" placeholder="Enter Tender ID" />
+                        <select class="form-control" ng-model="tender.itemTechEvlnAllow" ng-if="!isView"  name="Technical_evaluation_allowed">
                             <option>Option one</option>
                             <option>Option two</option>
                         </select>
@@ -88,7 +93,9 @@
                     </fieldset>
                     <fieldset class="form-group" ng-class="{'has-error': (tenderDetails.BOQ_currency.$invalid && tenderDetails.BOQ_currency.$touched)}">
                         <label class="control-label" for="formGroupExampleInput4">Is Multi Currency Allowed For BOQ</label>
-                        <select ng-model="tender.isMultyCurrencyBOQ" ng-readonly="isView" class="form-control" name="BOQ_currency">
+                        <input type="text" ng-model="tender.isMultyCurrencyBOQ" ng-if="isView" ng-readonly="isView" class="form-control" name="tender_id" id="formGroupExampleInput3" placeholder="Enter Tender ID" />
+
+                        <select ng-model="tender.isMultyCurrencyBOQ" ng-if="!isView" class="form-control" name="BOQ_currency">
                             <option>Option one</option>
                             <option>Option two</option>
                         </select>
@@ -126,7 +133,9 @@
                     </fieldset>
                     <fieldset class="form-group" ng-class="{'has-error': (tenderDetails.emd_fee_type.$invalid && tenderDetails.emd_fee_type.$touched)}">
                         <label class="control-label" for="formGroupExampleInput7">EMD Fee Type</label>
-                        <select class="form-control" ng-model="tender.emdFeeType" ng-readonly="isView" name="emd_fee_type">
+                        <input type="text" ng-model="tender.emdFeeType" ng-if="isView" ng-readonly="isView" class="form-control" name="tender_id" id="formGroupExampleInput3" placeholder="Enter Tender ID" />
+
+                        <select class="form-control" ng-model="tender.emdFeeType" ng-if="!isView"  name="emd_fee_type">
                             <option>Option one</option>
                             <option>Option two</option>
                         </select>
@@ -140,7 +149,9 @@
                     </fieldset>
                     <fieldset class="form-group" ng-class="{'has-error': (tenderDetails.Exemption_allowd.$invalid && tenderDetails.Exemption_allowd.$touched)}">
                         <label class="control-label" for="formGroupExampleInput7">EMD Exemption Allowed</label>
-                        <select ng-model="tender.emdExempAllow" ng-readonly="isView" class="form-control" name="Exemption_allowd" required>
+                        <input type="text" ng-model="tender.emdExempAllow" ng-if="isView" ng-readonly="isView" class="form-control" name="tender_id" id="formGroupExampleInput3" placeholder="Enter Tender ID" />
+
+                        <select ng-model="tender.emdExempAllow" ng-if="!isView"  class="form-control" name="Exemption_allowd" required>
                             <option>Option one</option>
                             <option>Option two</option>
                         </select>
@@ -176,9 +187,9 @@
                     </fieldset> -->
                     <fieldset class="form-group">
                         <input type="submit" ng-if="!isView" class="btn btn-success"></input>
-                        <button ng-if="isView" class="btn btn-success" ng-click="onEditTendor('edit',tender)">Edit</button>
+                        <button ng-if="isView" class="btn btn-success" ui-sref="tenderDetailsEdit({tenderId: tender.tenderId,action: 'edit'})" >Edit</button>
                         <button type="button" class="btn btn-success" ng-click="showBoq()">BOQ</button>
-                        <button ui-sref="tenderList" class="btn btn-secondary" ui-sref="tenderList">{{isView ? 'Back' : 'Cancel'}}</button>
+                        <button ui-sref="tenderList" class="btn btn-secondary" ui-sref="tenderList" history>{{isView ? 'Back' : 'Cancel'}}</button>
                     </fieldset>
 
 

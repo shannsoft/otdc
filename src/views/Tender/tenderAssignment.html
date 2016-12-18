@@ -1,6 +1,9 @@
 <article class="content forms-page" ng-init="init()">
     <div class="row">
         <div class="col-md-12">
+            <div class="section card-title-block addNewCapsule">
+                <button type="button" class="btn btn-pill-left btn-success right" ui-sref="addVendor" href="#/addVendor">Add New Vendor</button>
+            </div>
             <div class="card card-block sameheight-item">
                 <div class="title-block">
                     <h3 class="title">
@@ -8,32 +11,35 @@
                     </h3>
                 </div>
                 <form role="tenderAssignForm" ng-submit="assignTender(tenderAssignForm,tender)">
-                  <fieldset class="form-group">
-                      <label class="control-label" for="formGroupExampleInput">Organisation Chain</label>
-                      <input type="text" ng-model="tender.organizationChain" ng-readonly="isView" class="form-control" id="formGroupExampleInput">
-                  </fieldset>
-                  <fieldset class="form-group" ng-class="{'has-error': (tenderAssignForm.Tender_ref_No.$invalid && tenderAssignForm.Tender_ref_No.$touched)}">
-                      <label class="control-label" for="formGroupExampleInput2">Tender Reference No</label>
-                      <input type="text" ng-model="tender.referenceNo" ng-readonly="isView" class="form-control" name="Tender_ref_No" id="formGroupExampleInput2" placeholder="Enter Tender Reference No">
-                      <!-- <span class="help-block" ng-show="tenderAssignForm.Tender_ref_No.$error.required && tenderAssignForm.Tender_ref_No.$touched">Please enter Tender Reference No</span>
+                    <fieldset class="form-group">
+                        <label class="control-label" for="formGroupExampleInput">Organisation Chain</label>
+                        <input type="text" ng-model="tender.organizationChain" ng-readonly="isView" class="form-control" id="formGroupExampleInput">
+                    </fieldset>
+                    <fieldset class="form-group" ng-class="{'has-error': (tenderAssignForm.Tender_ref_No.$invalid && tenderAssignForm.Tender_ref_No.$touched)}">
+                        <label class="control-label" for="formGroupExampleInput2">Tender Reference No</label>
+                        <input type="text" ng-model="tender.referenceNo" ng-readonly="isView" class="form-control" name="Tender_ref_No" id="formGroupExampleInput2" placeholder="Enter Tender Reference No">
+                        <!-- <span class="help-block" ng-show="tenderAssignForm.Tender_ref_No.$error.required && tenderAssignForm.Tender_ref_No.$touched">Please enter Tender Reference No</span>
                       <span class="help-block" ng-show="tenderAssignForm.Tender_ref_No.$error.pattern && tenderAssignForm.Tender_ref_No.$touched">Tender Reference No must be fill</span> -->
-                  </fieldset>
-                  <fieldset class="form-group" ng-class="{'has-error': (tenderAssignForm.Tender_ref_No.$invalid && tenderAssignForm.Tender_ref_No.$touched)}">
-                      <label class="control-label" for="formGroupExampleInput3">Tender Id</label>
-                      <input type="text" ng-model="tender.tenderId" ng-readonly="isView" class="form-control" name="tender_id" id="formGroupExampleInput3" placeholder="Enter Tender ID">
-                      <!-- <span class="help-block" ng-show="tenderAssignForm.tender_id.$error.required && tenderAssignForm.tender_id.$touched">Please enter Tender ID</span>
+                    </fieldset>
+                    <fieldset class="form-group" ng-class="{'has-error': (tenderAssignForm.Tender_ref_No.$invalid && tenderAssignForm.Tender_ref_No.$touched)}">
+                        <label class="control-label" for="formGroupExampleInput3">Tender Id</label>
+                        <input type="text" ng-model="tender.tenderId" ng-readonly="isView" class="form-control" name="tender_id" id="formGroupExampleInput3" placeholder="Enter Tender ID">
+                        <!-- <span class="help-block" ng-show="tenderAssignForm.tender_id.$error.required && tenderAssignForm.tender_id.$touched">Please enter Tender ID</span>
                    <span class="help-block" ng-show="tenderAssignForm.tender_id.$error.pattern && tenderAssignForm.tender_id.$touched">Tender Reference No must be fill</span> -->
-                  </fieldset>
-                  <fieldset class="form-group" ng-class="{'has-error': (tenderAssignForm.Tender_type.$invalid && tenderAssignForm.Tender_type.$touched)}">
-                      <label class="control-label" for="formGroupExampleInput3">Tender Type</label>
-                      <input type="text" ng-model="tender.tenderType" ng-readonly="isView" class="form-control" name="tender_id" id="formGroupExampleInput3">
-                  </fieldset>
-                  <fieldset class="form-group" ng-class="{'has-error': (tenderAssignForm.Exemption_allowd.$invalid && tenderAssignForm.Exemption_allowd.$touched)}">
-                      <label class="control-label" for="formGroupExampleInput7">Existing Vendors</label>
-                      <select ng-model="tender.vendor"  ng-options="vendor as vendor.vendorName for vendor in tender.vendors" class="form-control" name="Exemption_allowd" required>
-                      </select>
-                      <!-- <span class="help-block" ng-show="tenderAssignForm.Exemption_allowd.$error.required && tenderAssignForm.Exemption_allowd.$touched">select one</span> -->
-                  </fieldset>
+                    </fieldset>
+                    <fieldset class="form-group" ng-class="{'has-error': (tenderAssignForm.Tender_type.$invalid && tenderAssignForm.Tender_type.$touched)}">
+                        <label class="control-label" for="formGroupExampleInput3">Tender Type</label>
+                        <input type="text" ng-model="tender.tenderType" ng-readonly="isView" class="form-control" name="tender_id" id="formGroupExampleInput3">
+                    </fieldset>
+                    <fieldset class="form-group" ng-class="{'has-error': (tenderAssignForm.Exemption_allowd.$invalid && tenderAssignForm.Exemption_allowd.$touched)}">
+                        <label class="control-label" for="formGroupExampleInput7">Existing Vendors</label>
+                        <select ng-model="tender.vendor" ng-options="vendor as vendor.vendorName for vendor in tender.vendors" class="form-control" name="Exemption_allowd" required></select>
+                        <!-- <span class="help-block" ng-show="tenderAssignForm.Exemption_allowd.$error.required && tenderAssignForm.Exemption_allowd.$touched">select one</span> -->
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <input type="submit" class="btn btn-success"></input>
+                        <button  class="btn btn-secondary" history>Cancel</button>
+                    </fieldset>
                 </form>
             </div>
         </div>

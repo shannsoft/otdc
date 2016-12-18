@@ -14,13 +14,13 @@
                     </fieldset>
                     <fieldset class="form-group" ng-class="{'has-error': (addTendorForm.Tender_ref_No.$invalid && addTendorForm.Tender_ref_No.$touched)}">
                         <label class="control-label" for="formGroupExampleInput2">Tender Reference No</label>
-                        <input type="text" ng-model="tender.referenceNo" class="form-control" name="Tender_ref_No" id="formGroupExampleInput2" placeholder="Enter Tender Reference No" >
+                        <input type="text" ng-model="tender.referenceNo" class="form-control" name="Tender_ref_No" id="formGroupExampleInput2" placeholder="Enter Tender Reference No">
                         <!-- <span class="help-block" ng-show="addTendorForm.Tender_ref_No.$error.required && addTendorForm.Tender_ref_No.$touched">Please enter Tender Reference No</span>
                         <span class="help-block" ng-show="addTendorForm.Tender_ref_No.$error.pattern && addTendorForm.Tender_ref_No.$touched">Tender Reference No must be fill</span> -->
                     </fieldset>
                     <fieldset class="form-group" ng-class="{'has-error': (addTendorForm.Tender_ref_No.$invalid && addTendorForm.Tender_ref_No.$touched)}">
                         <label class="control-label" for="formGroupExampleInput3">Tender Id</label>
-                        <input type="text" ng-model="tender.tenderId" class="form-control" name="tender_id" id="formGroupExampleInput3" placeholder="Enter Tender ID" >
+                        <input type="text" ng-model="tender.tenderId" class="form-control" name="tender_id" id="formGroupExampleInput3" placeholder="Enter Tender ID">
                         <!-- <span class="help-block" ng-show="addTendorForm.tender_id.$error.required && addTendorForm.tender_id.$touched">Please enter Tender ID</span>
                      <span class="help-block" ng-show="addTendorForm.tender_id.$error.pattern && addTendorForm.tender_id.$touched">Tender Reference No must be fill</span> -->
                     </fieldset>
@@ -36,13 +36,7 @@
                     </fieldset>
                     <fieldset class="form-group" ng-class="{'has-error': (addTendorForm.Tender_category.$invalid && addTendorForm.Tender_category$touched)}">
                         <label class="control-label" for="formGroupExampleInput3">Tender Category</label>
-                        <select ng-model="tender.category" class="form-control" name="Tender_category">
-                            <option>Option one</option>
-                            <option>Option two</option>
-                            <option>Option three</option>
-                            <option>Option four</option>
-                        </select>
-                        <!-- <span class="help-block" ng-show="addTendorForm.Tender_category.$error.required && addTendorForm.Tender_category.$touched">select one</span> -->
+                        <input type="text" ng-model="tender.category" class="form-control" name="tenderCategory" id="formGroupExampleInput3" placeholder="Enter Tender category">
                     </fieldset>
                     <fieldset class="form-group" ng-class="{'has-error': (addTendorForm.Technical_evaluation.$invalid && addTendorForm.Technical_evaluation.$touched)}">
                         <label class="control-label" for="formGroupExampleInput4">General Technical Evaluation Allowed</label>
@@ -96,25 +90,25 @@
                     </fieldset>
                     <fieldset class="form-group" ng-class="{'has-error': (addTendorForm.Tender_fee.$invalid && addTendorForm.Tender_fee.$touched)}">
                         <label class="control-label" for="formGroupExampleInput4">Tender Fee</label>
-                        <input type="text" ng-model="tender.fee" name="Tender_fee" class="form-control" id="formGroupExampleInput4" placeholder="Enter Tender Fee" >
+                        <input type="text" ng-model="tender.fee" name="Tender_fee" class="form-control" id="formGroupExampleInput4" placeholder="Enter Tender Fee">
                         <!-- <span class="help-block" ng-show="addTendorForm.Tender_fee.$error.required && addTendorForm.Tender_fee.$touched">Please enter Tender Fee</span>
                 <span class="help-block" ng-show="addTendorForm.Tender_fee.$error.pattern && addTendorForm.Tender_fee.$touched">Tender Fee must be entered</span> -->
                     </fieldset>
                     <fieldset class="form-group" ng-class="{'has-error': (addTendorForm.Fee_payble_to.$invalid && addTendorForm.Fee_payble_to.$touched)}">
                         <label class="control-label" for="formGroupExampleInput4">Fee Payble To</label>
-                        <input type="text" ng-model="tender.payableTo" name="Fee_payble_to" class="form-control" id="formGroupExampleInput4" placeholder="Enter Fee Payble To" >
+                        <input type="text" ng-model="tender.payableTo" name="Fee_payble_to" class="form-control" id="formGroupExampleInput4" placeholder="Enter Fee Payble To">
                         <!-- <span class="help-block" ng-show="addTendorForm.Fee_payble_to.$error.required && addTendorForm.Fee_payble_to.$touched">Please enter Fee Payble to</span>
                   <span class="help-block" ng-show="addTendorForm.Fee_payble_to.$error.pattern && addTendorForm.Fee_payble_to.$touched">Fee Payble to must be entered</span> -->
                     </fieldset>
                     <fieldset class="form-group" ng-class="{'has-error': (addTendorForm.vat_charges.$invalid && addTendorForm.vat_charges.$touched)}">
                         <label class="control-label" for="formGroupExampleInput4">VAT Charges</label>
-                        <input type="text" ng-model="tender.vat" name="vat_charges" class="form-control" id="formGroupExampleInput4" placeholder="Enter Vat Charges" >
+                        <input type="text" ng-model="tender.vat" name="vat_charges" class="form-control" id="formGroupExampleInput4" placeholder="Enter Vat Charges">
                         <!-- <span class="help-block" ng-show="addTendorForm.vat_charges.$error.required && addTendorForm.vat_charges.$touched">Please enter vat charges</span>
                     <span class="help-block" ng-show="addTendorForm.vat_charges.$error.pattern && addTendorForm.vat_charges.$touched">vat charges must be entered</span> -->
                     </fieldset>
                     <fieldset class="form-group" ng-class="{'has-error': (addTendorForm.Fee_payble_at.$invalid && addTendorForm.Fee_payble_at.$touched)}">
                         <label class="control-label" for="formGroupExampleInput4">Fee Payble At</label>
-                        <input type="text" ng-model="tender.payableAt" class="form-control" id="formGroupExampleInput4" name="Fee_payble_at" placeholder="Enter Fee payable at" >
+                        <input type="text" ng-model="tender.payableAt" class="form-control" id="formGroupExampleInput4" name="Fee_payble_at" placeholder="Enter Fee payable at">
                         <!-- <span class="help-block" ng-show="addTendorForm.Fee_payble_at.$error.required && addTendorForm.Fee_payble_at.$touched">Please enter Fee Payble At</span>
                  <span class="help-block" ng-show="addTendorForm.Fee_payble_at.$error.pattern && addTendorForm.Fee_payble_at.$touched">Fee Payble At must be entered</span> -->
                     </fieldset>
@@ -133,7 +127,7 @@
                         <!-- <span class="help-block" ng-show="addTendorForm.emd_fee_type.$error.required && addTendorForm.emd_fee_type.$touched">select one</span> -->
                     </fieldset>
                     <fieldset class="form-group" ng-class="{'has-error': (addTendorForm.emd_payble_to.$invalid && addTendorForm.emd_payble_to.$touched)}">
-                        <label class="control-label" for="formGroupExampleInput7" name="emd_payble_to" placeholder="Enter EMD Payble To" required >EMD Payble To</label>
+                        <label class="control-label" for="formGroupExampleInput7" name="emd_payble_to" placeholder="Enter EMD Payble To" required>EMD Payble To</label>
                         <input type="text" ng-model="tender.emdPayableTo" class="form-control" id="formGroupExampleInput4" placeholder="Disabled input text">
                         <!-- <span class="help-block" ng-show="addTendorForm.emd_payble_to.$error.required && addTendorForm.emd_payble_to.$touched">Please enter EMD Payble To</span>
                 <span class="help-block" ng-show="addTendorForm.emd_payble_to.$error.pattern && addTendorForm.emd_payble_to.$touched">EMD Payble To must be entered</span> -->
@@ -148,25 +142,25 @@
                     </fieldset>
                     <fieldset class="form-group" ng-class="{'has-error': (addTendorForm.EMD_Percentage.$invalid && addTendorForm.EMD_Percentage.$touched)}">
                         <label class="control-label" for="formGroupExampleInput7">EMD Percentage</label>
-                        <input type="text" ng-model="tender.emdPercent" class="form-control" id="formGroupExampleInput4" name="EMD_Percentage" placeholder="Enter EMD Percentage" >
+                        <input type="text" ng-model="tender.emdPercent" class="form-control" id="formGroupExampleInput4" name="EMD_Percentage" placeholder="Enter EMD Percentage">
                         <!-- <span class="help-block" ng-show="addTendorForm.EMD_Percentage.$error.required && addTendorForm.EMD_Percentage.$touched">Please enter EMD Percentage</span>
                   <span class="help-block" ng-show="addTendorForm.EMD_Percentage.$error.pattern && addTendorForm.EMD_Percentage.$touched">EMD Percentage must be entered</span> -->
                     </fieldset>
                     <fieldset class="form-group" ng-class="{'has-error': (addTendorForm.EMD_payble_at.$invalid && addTendorForm.EMD_payble_at.$touched)}">
                         <label class="control-label" for="formGroupExampleInput7">EMD Payble At</label>
-                        <input type="text" ng-model="tender.emdPayableAt" class="form-control" id="formGroupExampleInput4" name="EMD_payble_at" placeholder="Enter EMD Payble At" >
+                        <input type="text" ng-model="tender.emdPayableAt" class="form-control" id="formGroupExampleInput4" name="EMD_payble_at" placeholder="Enter EMD Payble At">
                         <span class="help-block" ng-show="addTendorForm.EMD_payble_at.$error.required && addTendorForm.EMD_payble_at.$touched">Please enter EMD Payble At</span>
                         <!-- <span class="help-block" ng-show="addTendorForm.EMD_payble_at.$error.pattern && addTendorForm.EMD_payble_at.$touched">EMD Payble At must be entered</span> -->
                     </fieldset>
                     <fieldset class="form-group" ng-class="{'has-error': (addTendorForm.Title.$invalid && addTendorForm.Title.$touched)}">
                         <label class="control-label" for="formGroupExampleInput7">Title</label>
-                        <input type="text" ng-model="tender.workTitle" class="form-control" id="formGroupExampleInput4" name="Title" placeholder="Enter Tender Title" >
+                        <input type="text" ng-model="tender.workTitle" class="form-control" id="formGroupExampleInput4" name="Title" placeholder="Enter Tender Title">
                         <!-- <span class="help-block" ng-show="addTendorForm.Title.$error.required && addTendorForm.Title.$touched">Please enter Tender Title</span>
                 <span class="help-block" ng-show="addTendorForm.Title.$error.pattern && addTendorForm.Title.$touched">Tender Title must be entered</span> -->
                     </fieldset>
                     <fieldset class="form-group" ng-class="{'has-error': (addTendorForm.work_Desc.$invalid && addTendorForm.work_Desc.$touched)}">
                         <label class="control-label" for="formGroupExampleInput7">Work</label>
-                        <textarea rows="3" ng-model="tender.workDescription" class="form-control" id="formGroupExampleInput7" placeholder="Work Description" required ></textarea>
+                        <textarea rows="3" ng-model="tender.workDescription" class="form-control" id="formGroupExampleInput7" placeholder="Work Description" required></textarea>
                         <span class="help-block" ng-show="addTendorForm.work_Desc.$error.required && addTendorForm.work_Desc.$touched">Please enter payment Mode</span>
                         <!-- <span class="help-block" ng-show="addTendorForm.work_Desc.$error.pattern && addTendorForm.work_Desc.$touched">payment mode must be entered</span> -->
                     </fieldset>
@@ -176,7 +170,7 @@
                     </fieldset>
                     <fieldset class="form-group">
                         <input type="submit" class="btn btn-success"></input>
-                        <button ui-sref="tenderList" class="btn btn-secondary">Cancel</button>
+                        <button  class="btn btn-secondary" history>Cancel</button>
                     </fieldset>
                 </form>
             </div>

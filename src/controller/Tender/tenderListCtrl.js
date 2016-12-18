@@ -17,13 +17,21 @@ app.controller('TenderListController', function($scope, $rootScope, $state, ApiC
       })
     }
     $scope.onAction = function(action,tender) {
-      if(action == 'assign')
-      {
-        $state.go("tenderAssign",{tender:tender});
-      }
-      else {
-        $state.go("tenderDetails",{tenderId:tender.tenderId,action:action});
+
+      switch (action) {
+        case 'assign':
+          $state.go("tenderAssign",{tender:tender});
+          break;
+        case 'view':
+        case 'edit':
+          $state.go("tenderDetails",{tenderId:tender.tenderId,action:action});
+          break;
+        case 'freeze':
+          alert("tender need to freeze");
+          break;
+        default:
 
       }
+
     }
 })

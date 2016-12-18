@@ -7,66 +7,29 @@
           												<div class="card-title-block">
           													<h3 class="title">Tender List</h3> </div>
           												<section class="example table-responsive">
-          													<!-- <table class="table table-bordered">
-          														<thead class="thead-default">
-          															<tr>
-          																<th>Sl No</th>
-          																<th>Tender Id</th>
-          																<th>Reference No</th>
-          																<th>Reference Id</th>
-          																<th>Tender Type</th>
-          																<th>Category</th>
-          																<th>WorkTitle</th>
-          																<th>Work Description</th>
-          																<th style="text-align: center;">Action</th>
-          															</tr>
-          														</thead>
-          														<tbody>
-          															<tr ng-repeat="tender in tenders">
-          																<td>{{$index+1}}</td>
-          																<td>{{tender.tenderId}}</td>
-          																<td>{{tender.referenceNo}}</td>
-          																<td>{{tender.referenceId}}</td>
-          																<td>{{tender.tenderType}}</td>
-          																<td>{{tender.category}}</td>
-          																<td>{{tender.workTitle}}</td>
-          																<td>{{tender.workDescription}}</td>
-          																<td>
-                                            <div class="row list-icon">
-                                              <div class="col-md-3 col-sm-4" ng-click="onAction('view',tender)">
-                                                <em class="fa fa-eye"></em>View
-                                              </div>
-                                              <div class="col-md-3 col-sm-4" ng-click="onAction('edit',tender)">
-                                                <em class="fa fa-edit"></em>Edit
-                                              </div>
-                                              <div class="col-md-3 col-sm-4" ng-click="onAction('assign',tender)">
-                                                <em class="fa fa-mail-forward"></em>Assign
-                                              </div>
-                                            </div>
-                                          </td>
-          															</tr>
-          														</tbody>
-          													</table> -->
                                     <table ng-table="tableParams" class="table table-bordered tenderList">
                                       <tr ng-repeat="row in $data">
-                                        <td data-title="'Sl No'" filter="{slNo: 'text'}" sortable="'slNo'">{{$index+1}}</td>
+                                        <td data-title="'Sl No'" >{{$index+1}}</td>
                                         <td data-title="'Tender Id'" filter="{tenderId: 'text'}" sortable="'tenderId'">{{row.tenderId}}</td>
                                         <td data-title="'Reference No'" filter="{referenceNo: 'text'}" sortable="'referenceNo'">{{row.referenceNo}}</td>
                                         <td data-title="'Reference Id'" filter="{referenceId: 'text'}" sortable="'referenceId'">{{row.referenceId}}</td>
                                         <td data-title="'Tender Type'" filter="{tenderType: 'text'}" sortable="'tenderType'">{{row.tenderType}}</td>
-                                        <td data-title="'Category'" filter="{category: 'text'}" sortable="'category'">{{row.category}}</td>
+
                                         <td data-title="'Work Title'" filter="{workTitle: 'text'}" sortable="'workTitle'">{{row.workTitle}}</td>
-                                        <td data-title="'Work Description'" filter="{workDescription: 'text'}" sortable="'workDescription'">{{row.workDescription}}</td>
+
                                         <td data-title="'Action'" >
                                           <div class="row list-icon">
-                                            <div class="col-md-3 col-sm-4" ng-click="onAction('view',row)">
+                                            <div class="col-md-2 col-sm-3" ng-click="onAction('view',row)">
                                               <em class="fa fa-eye"></em>View
                                             </div>
-                                            <div class="col-md-3 col-sm-4" ng-click="onAction('edit',row)">
+                                            <div class="col-md-2 col-sm-3" ng-click="onAction('edit',row)">
                                               <em class="fa fa-edit"></em>Edit
                                             </div>
-                                            <div class="col-md-3 col-sm-4" ng-click="onAction('assign',row)">
+                                            <div class="col-md-3 col-sm-3" ng-click="onAction('assign',row)">
                                               <em class="fa fa-mail-forward"></em>Assign
+                                            </div>
+                                            <div class="col-md-4 col-sm-3" ng-click="onAction('freeze',row)">
+                                              <em class="fa fa-save"></em></em>Freeze
                                             </div>
                                           </div>
                                         </td>

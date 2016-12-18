@@ -60,7 +60,7 @@ angular.module('Authentication', [])
             $rootScope.loggedin = false;
             $state.go('login');
           },function(err) {
-            Util.alertMessage("danger",response.Message);
+            Util.alertMessage("danger",err.Message);
           })
 
       }

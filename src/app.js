@@ -132,7 +132,16 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         .state('tenderDetails', {
             templateUrl: 'src/views/Tender/TenderDetails.html',
             url: '/tenderList/:tenderId',
-            params: { tenderId: null ,},
+            params: { tenderId: null ,action:null},
+            controller: "TenderDetailsController",
+            resolve: {
+                loggedout: checkLoggedout
+            },
+        })
+        .state('tenderDetailsEdit', {
+            templateUrl: 'src/views/Tender/TenderDetails.html',
+            url: '/tenderList/:tenderId',
+            params: { tenderId: null ,action:null},
             controller: "TenderDetailsController",
             resolve: {
                 loggedout: checkLoggedout

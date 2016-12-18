@@ -201,3 +201,10 @@ h3.title {
 .tenderList th:nth-child(9) {
     width: 200px;
 }
+.addNewCapsule{
+    display: block;
+    margin-bottom: 30px;
+    position: relative;
+    top: 30px;
+    z-index: 99;
+}
