@@ -12,7 +12,7 @@ angular.module('WebService', [])
 
             },
             logout: {
-                url: "/api/User",
+                url: "/api/LogOut",
                 method: "POST"
             },
             token: {
@@ -101,6 +101,7 @@ angular.module('WebService', [])
     .factory('ApiCall', function($http, $resource, API, EnvService,ApiGenerator) {
 
           return $resource('/',null, {
+            logout: ApiGenerator.getApi('logout'),
             getDesignation: ApiGenerator.getApi('getDesignation'),
             postUser: ApiGenerator.getApi('postUser'),
             getUser: ApiGenerator.getApi('getUser'),
