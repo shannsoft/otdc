@@ -27,7 +27,7 @@ app.controller('TenderListController', function($scope, $rootScope, $state, ApiC
           $state.go("tenderDetails",{tenderId:tender.tenderId,action:action});
           break;
         case 'freeze':
-          alert("tender need to freeze");
+        
           break;
         default:
 

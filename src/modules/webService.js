@@ -79,6 +79,11 @@ angular.module('WebService', [])
                 "method": "POST",
                 "Content-Type": "application/json",
             },
+            tendorAssign: {
+                "url": "/api/TenderAssignToVendor",
+                "method": "POST",
+                "Content-Type": "application/json",
+            },
             getTendor: {
                 "url": "/api/Tendor",
                 "method": "GET",
@@ -110,6 +115,7 @@ angular.module('WebService', [])
             deleteVendor: ApiGenerator.getApi('deleteVendor'),
             postTendor: ApiGenerator.getApi('postTendor'),
             getTendor: ApiGenerator.getApi('getTendor'),
+            tendorAssign: ApiGenerator.getApi('tendorAssign'),
           });
 
     })
