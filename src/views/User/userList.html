@@ -27,27 +27,12 @@
         <ul class="item-list striped">
             <li class="item item-list-header hidden-sm-down">
                 <div class="item-row">
-                    <div class="item-col fixed item-col-check">
-                        <label class="item-check" id="select-all-items">
-                            <input type="checkbox" class="checkbox">
-                            <span></span>
-                        </label>
-                    </div>
-                    <div class="item-col item-col-header fixed item-col-img md">
-                        <div>
-                            <span>profile</span>
-                        </div>
-                    </div>
                     <div class="item-col item-col-header item-col-title">
                         <div>
                             <span>Name</span>
                         </div>
                     </div>
-                    <div class="item-col item-col-header item-col-sales">
-                        <div>
-                            <span>degignation</span>
-                        </div>
-                    </div>
+
                     <div class="item-col item-col-header item-col-stats">
                         <div class="no-overflow">
                             <span>status</span>
@@ -55,51 +40,37 @@
                     </div>
                     <div class="item-col item-col-header item-col-category">
                         <div class="no-overflow">
-                            <span>Category</span>
+                            <span>Designation</span>
                         </div>
                     </div>
-                    <div class="item-col item-col-header item-col-author">
-                        <div class="no-overflow">
-                            <span>Author</span>
-                        </div>
-                    </div>
-                    <div class="item-col item-col-header item-col-date">
-                        <div>
-                            <span>Published</span>
-                        </div>
-                    </div>
-                    <div class="item-col item-col-header fixed item-col-actions-dropdown"></div>
+
+                    <div class="item-col item-col-header fixed item-col-actions-dropdown">Action</div>
                 </div>
             </li>
             <li class="item" ng-repeat="user in userList">
                 <div class="item-row">
-                    <div class="item-col fixed item-col-check">
-                        <label class="item-check" id="select-all-items">
-                            <input type="checkbox" class="checkbox">
-                            <span></span>
-                        </label>
-                    </div>
-                    <div class="item-col fixed item-col-img md">
+
+                    <!-- <div class="item-col fixed item-col-img md">
                         <a href="item-editor.html">
                             <div class="item-img rounded" style="background-image: url(https://s3.amazonaws.com/uifaces/faces/twitter/brad_frost/128.jpg)"></div>
                         </a>
+                    </div> -->
+                    <div class="item-col fixed item-col-img md" ng-click="getUserDetails({userId:user.userId,action:'view'})">
+                      <div class="circle">
+                        {{user.fName+" "+user.lName  | getShortName}}
+                      </div>
                     </div>
-                    <div class="item-col fixed pull-left item-col-title">
+                    <div class="item-col fixed pull-left item-col-title" ng-click="getUserDetails({userId:user.userId,action:'view'})">
                         <div class="item-heading">Name</div>
                         <div>
-                            <a href="item-editor.html" class="">
+                            <a ui-sref="userDetails({userId:user.userId,action: 'view'})" class="">
                                 <h4 class="item-title">
                                     {{user.fName}}
                                 </h4>
                             </a>
                         </div>
                     </div>
-                    <div class="item-col item-col-sales">
-                        <div class="item-heading">degignation</div>
-                        <div>
-                            {{user.designation}}
-                        </div>
-                    </div>
+
                     <div class="item-col item-col-stats no-overflow">
                         <div class="item-heading">Status</div>
                         <div class="no-overflow">
@@ -109,26 +80,15 @@
                         </div>
                     </div>
                     <div class="item-col item-col-category no-overflow">
-                        <div class="item-heading">Category</div>
+                        <div class="item-heading">Designation</div>
                         <div class="no-overflow">
-                            <a href="">Software</a>
+                            <a href="">{{user.designation}}</a>
                         </div>
                     </div>
-                    <div class="item-col item-col-author">
-                        <div class="item-heading">Author</div>
-                        <div class="no-overflow">
-                            <a href="">Meadow Katheryne</a>
-                        </div>
-                    </div>
-                    <div class="item-col item-col-date">
-                        <div class="item-heading">Published</div>
-                        <div class="no-overflow">
-                            21 SEP 10:45
-                        </div>
-                    </div>
+
                     <div class="item-col fixed item-col-actions-dropdown">
                         <a href="" class="option-btn">
-                            <i class="fa fa-pencil" ng-click="gotoEditUser()"></i>
+                            <i class="fa fa-pencil" ng-click="getUserDetails({userId:user.userId,action:'edit'})"></i>
                         </a>
                         <a class="remove" href="" data-toggle="modal" data-target="#confirm-modal" ng-click="open()">
                             <i class="fa fa-trash-o "></i>
@@ -139,7 +99,7 @@
 
         </ul>
     </div>
-    <nav class="text-xs-right">
+    <!-- <nav class="text-xs-right">
         <ul class="pagination">
             <li class="page-item">
                 <a class="page-link" href="">
@@ -177,5 +137,5 @@
                 </a>
             </li>
         </ul>
-    </nav>
+    </nav> -->
 </article>

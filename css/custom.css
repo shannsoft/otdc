@@ -208,3 +208,13 @@ h3.title {
     top: 30px;
     z-index: 99;
 }
+.circle {
+    width: 50px !important;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 25px;
+    color: #fff;
+    line-height: 50px;
+    text-align: center;
+    background: #4BCF99;
+}

@@ -187,7 +187,7 @@
                     </fieldset> -->
                     <fieldset class="form-group">
                         <input type="submit" ng-if="!isView" class="btn btn-success"></input>
-                        <button ng-if="isView" class="btn btn-success" ui-sref="tenderDetailsEdit({tenderId: tender.tenderId,action: 'edit'})" >Edit</button>
+                        <button ng-if="isView" class="btn btn-success" ui-sref="tenderDetails({tenderId: tender.tenderId,action: 'edit'})" >Edit</button>
                         <button type="button" class="btn btn-success" ng-click="showBoq()">BOQ</button>
                         <button ui-sref="tenderList" class="btn btn-secondary" ui-sref="tenderList" history>{{isView ? 'Back' : 'Cancel'}}</button>
                     </fieldset>

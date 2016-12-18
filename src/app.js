@@ -65,7 +65,6 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
               $timeout(function() {
                 $rootScope.loggedin = $localStorage[Constants.getLoggedIn()];
                 UserService.setUser(response.Data);
-                $rootScope.$emit(Events.userLogged);
                 deferred.resolve();
               }, 100);
 
@@ -131,22 +130,22 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         })
         .state('tenderDetails', {
             templateUrl: 'src/views/Tender/TenderDetails.html',
-            url: '/tenderList/:tenderId',
+            url: '/tenderDetails/:tenderId',
             params: { tenderId: null ,action:null},
             controller: "TenderDetailsController",
             resolve: {
                 loggedout: checkLoggedout
             },
         })
-        .state('tenderDetailsEdit', {
-            templateUrl: 'src/views/Tender/TenderDetails.html',
-            url: '/tenderList/:tenderId',
-            params: { tenderId: null ,action:null},
-            controller: "TenderDetailsController",
-            resolve: {
-                loggedout: checkLoggedout
-            },
-        })
+        // .state('tenderDetailsEdit', {
+        //     templateUrl: 'src/views/Tender/TenderDetails.html',
+        //     url: '/tenderDetails/:tenderId',
+        //     params: { tenderId: null ,action:null},
+        //     controller: "TenderDetailsController",
+        //     resolve: {
+        //         loggedout: checkLoggedout
+        //     },
+        // })
         .state('addTender', {
             templateUrl: 'src/views/Tender/addTender.html',
             url: '/addTender',
@@ -188,14 +187,24 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
                 loggedout: checkLoggedout
             },
         })
-        .state('editUser', {
-            templateUrl: 'src/views/User/editUser.html',
-            url: '/editUser',
-            controller: "UserController",
+        .state('userDetails', {
+            templateUrl: 'src/views/User/userDetails.html',
+            url: '/userDetails/:userId',
+            controller: "UserDetailsController",
+            params: { userId: null ,action:null},
             resolve: {
                 loggedout: checkLoggedout
             },
         })
+        // .state('editUser', {
+        //     templateUrl: 'src/views/User/userDetails.html',
+        //     url: '/editUser/:userId',
+        //     controller: "UserController",
+        //     params: { userId: null ,action:null},
+        //     resolve: {
+        //         loggedout: checkLoggedout
+        //     },
+        // })
         .state('VendorList', {
             templateUrl: 'src/views/Vendor/vendorList.html',
             url: '/VendorList',

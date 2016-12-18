@@ -1,14 +1,22 @@
-app.controller('UserController', function($scope, $rootScope, $state, UserService, UtilityService,Util,$localStorage, Constants,ApiCall,Events) {
+app.controller('UserController', function($scope, $rootScope, $state,$stateParams, $timeout,UserService, UtilityService,Util,$localStorage, Constants,ApiCall,Events) {
     // $scope.UserService = UserService;
-    $rootScope.$on(Events.userLogged,function() {
-      if(!$scope.user)
-      $scope.user = UserService.getUser();
-    });
+    $scope.sideBarTimeout = null;
+    function initSideBar(){
+      $rootScope.sideBar = UserService.getSideBarInfo();
+    }
     $scope.init = function() {
         $scope.user = UserService.getUser();
         // here this is kept in $rootScope as this controller is a shared one
         //the this value getting lost on each controller load
-        $rootScope.sideBar = UserService.getSideBarInfo();
+        initSideBar();
+        if(!$rootScope.sideBar){
+          $scope.sideBarTimeout = $timeout(function() {
+
+          }, 2000);
+        }
+        else {
+          $timeout.cancel($scope.sideBarTimeout); // cancel timeout after the sidebar init
+        }
         $scope.userTabs = [{
             heading: "View Profile",
             active: true
@@ -20,6 +28,20 @@ app.controller('UserController', function($scope, $rootScope, $state, UserServic
             active: false
         }, ]
         $scope.currTab = 0;
+        // loading user information in case of the edituser, view user
+        if($stateParams.userId){
+          $scope.isView = $stateParams.action == 'edit' ? false : true;
+          var obj = {
+            userId:$stateParams.userId,
+            TokenId: $localStorage[Constants.getTokenKey()]
+          }
+          ApiCall.getUser(obj,function(response) {
+            $scope.user = response.Data[0];
+          },function(err) {
+            Util.alertMessage(Events.eventType.error,err.Message);
+          })
+
+        }
     }
     $scope.updateActiveClass = function(index){
       angular.forEach($scope.sideBar,function(v,k) {
@@ -79,6 +101,18 @@ app.controller('UserController', function($scope, $rootScope, $state, UserServic
      }
     /**
      * add user ends
+     *
+     */
+
+
+    /**
+     * view user starts
+     *
+     */
+
+
+    /**
+     * view user ends
      *
      */
 

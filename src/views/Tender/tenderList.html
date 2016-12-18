@@ -9,7 +9,7 @@
           												<section class="example table-responsive">
                                     <table ng-table="tableParams" class="table table-bordered tenderList">
                                       <tr ng-repeat="row in $data">
-                                        <td data-title="'Sl No'" >{{$index+1}}</td>
+                                        <td data-title="'Sl No'" >{{ ( (tableParams.page() - 1) * tableParams.count() )+($index + 1)}}</td>
                                         <td data-title="'Tender Id'" filter="{tenderId: 'text'}" sortable="'tenderId'">{{row.tenderId}}</td>
                                         <td data-title="'Reference No'" filter="{referenceNo: 'text'}" sortable="'referenceNo'">{{row.referenceNo}}</td>
                                         <td data-title="'Reference Id'" filter="{referenceId: 'text'}" sortable="'referenceId'">{{row.referenceId}}</td>
@@ -25,7 +25,7 @@
                                             <div class="col-md-2 col-sm-3" ng-click="onAction('edit',row)">
                                               <em class="fa fa-edit"></em>Edit
                                             </div>
-                                            <div class="col-md-3 col-sm-3" ng-click="onAction('assign',row)">
+                                            <div class="col-md-3 col-sm-3" ng-if="!row.assignedToVendor" ng-click="onAction('assign',row)">
                                               <em class="fa fa-mail-forward"></em>Assign
                                             </div>
                                             <div class="col-md-4 col-sm-3" ng-click="onAction('freeze',row)">
