@@ -7,7 +7,7 @@ app.factory('UserService',function($rootScope,$http,$localStorage,$resource,ApiG
   }
   // side bar details mapped data with the degignation id
   var sideBar = {
-    '10000' :[
+    'SUPER ADMIN' :[
       {
         "label" : "Dashboard",
         "state" : "dashboard",
@@ -33,7 +33,115 @@ app.factory('UserService',function($rootScope,$http,$localStorage,$resource,ApiG
         "state" : "tender_milestone",
         "fClass" : "fa fa-th-large",
       },
-    ]
+    ],
+    '1' :[
+      {
+        "label" : "Dashboard",
+        "state" : "dashboard",
+        "fClass" : "fa fa-home",
+      },
+      {
+        "label" : "Tender Management",
+        "state" : "tenderList",
+        "fClass" : "fa fa-home",
+      },
+      {
+        "label" : "User Management",
+        "state" : "UserList",
+        "fClass" : "fa fa-th-large",
+      },
+      {
+        "label" : "Vendor Management",
+        "state" : "VendorList",
+        "fClass" : "fa fa-home",
+      },
+      {
+        "label" : "Tender Milestone",
+        "state" : "tender_milestone",
+        "fClass" : "fa fa-th-large",
+      },
+    ],
+    'Admin' :[
+      {
+        "label" : "Dashboard",
+        "state" : "dashboard",
+        "fClass" : "fa fa-home",
+      },
+      {
+        "label" : "Tender Management",
+        "state" : "tenderList",
+        "fClass" : "fa fa-home",
+      },
+      {
+        "label" : "User Management",
+        "state" : "UserList",
+        "fClass" : "fa fa-th-large",
+      },
+      {
+        "label" : "Vendor Management",
+        "state" : "VendorList",
+        "fClass" : "fa fa-home",
+      },
+      {
+        "label" : "Tender Milestone",
+        "state" : "tender_milestone",
+        "fClass" : "fa fa-th-large",
+      },
+    ],
+    'sample string 3' :[
+      {
+        "label" : "Dashboard",
+        "state" : "dashboard",
+        "fClass" : "fa fa-home",
+      },
+      {
+        "label" : "Tender Management",
+        "state" : "tenderList",
+        "fClass" : "fa fa-home",
+      },
+      {
+        "label" : "User Management",
+        "state" : "UserList",
+        "fClass" : "fa fa-th-large",
+      },
+      {
+        "label" : "Vendor Management",
+        "state" : "VendorList",
+        "fClass" : "fa fa-home",
+      },
+      {
+        "label" : "Tender Milestone",
+        "state" : "tender_milestone",
+        "fClass" : "fa fa-th-large",
+      },
+    ],
+    'sample string 3' :[
+      {
+        "label" : "Dashboard",
+        "state" : "dashboard",
+        "fClass" : "fa fa-home",
+      },
+      {
+        "label" : "Tender Management",
+        "state" : "tenderList",
+        "fClass" : "fa fa-home",
+      },
+      {
+        "label" : "User Management",
+        "state" : "UserList",
+        "fClass" : "fa fa-th-large",
+      },
+      {
+        "label" : "Vendor Management",
+        "state" : "VendorList",
+        "fClass" : "fa fa-home",
+      },
+      {
+        "label" : "Tender Milestone",
+        "state" : "tender_milestone",
+        "fClass" : "fa fa-th-large",
+      },
+    ],
   }
   UserService.getRole = function(roleId) {
     var user = this.getUser();
@@ -70,7 +178,8 @@ app.factory('UserService',function($rootScope,$http,$localStorage,$resource,ApiG
   };
   // used to get the side bar details according to user
   UserService.getSideBarInfo = function() {
-    var sideBarInfo = sideBar[this.getUser().designationId];
+    console.log("user designation ",this.getUser().designationId);
+    var sideBarInfo = sideBar[this.getUser().designation];
     if(!sideBarInfo)
     {
       // emit event to terminate redirect to login

@@ -11,7 +11,7 @@ app.controller('UserController', function($scope, $rootScope, $state,$stateParam
         initSideBar();
         if(!$rootScope.sideBar){
           $scope.sideBarTimeout = $timeout(function() {
-
+            initSideBar();
           }, 2000);
         }
         else {
