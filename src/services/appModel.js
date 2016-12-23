@@ -1,7 +1,9 @@
 app.factory('AppModel',function($rootScope,$http,$localStorage,$resource,ApiGenerator,Events,Constants){
   var appModel = {};
   appModel.getSetting = function(key) {
-    if(key)
+    if(!appModel.setting)
+      return false;
+    else if(key)
       return appModel.setting[key] ;
     else {
       var isSetting = appModel.setting ? true : false;

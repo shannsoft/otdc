@@ -1,4 +1,4 @@
-app.controller('UserController', function($scope, $rootScope, $state,$stateParams, $timeout,UserService, UtilityService,Util,$localStorage, Constants,ApiCall,Events) {
+app.controller('UserController', function($scope, $rootScope, $state,$stateParams, AppModel,$timeout,UserService, UtilityService,Util,$localStorage, Constants,ApiCall,Events) {
     // $scope.UserService = UserService;
     $scope.sideBarTimeout = null;
     function initSideBar(){
@@ -78,14 +78,23 @@ app.controller('UserController', function($scope, $rootScope, $state,$stateParam
      *
      */
      $scope.addUserInit = function() {
-       $rootScope.showPreloader = true;
-       ApiCall.getDesignation({TokenId:$localStorage[Constants.getTokenKey()]},function(res) {
-         $scope.designations = res.Data;
-         $rootScope.showPreloader = false;
-       },function(err) {
-         Util.alertMessage("danger", err.Message || "Error in Login");
-         $rootScope.showPreloader = false;
-       })
+      //  $rootScope.showPreloader = true;
+      //  ApiCall.getDesignation({TokenId:$localStorage[Constants.getTokenKey()]},function(res) {
+      //    $scope.designations = res.Data;
+      //    $rootScope.showPreloader = false;
+      //  },function(err) {
+      //    Util.alertMessage("danger", err.Message || "Error in Login");
+      //    $rootScope.showPreloader = false;
+      //  })
+      $scope.designations = AppModel.getSetting('designation');
+      if(!AppModel.getSetting()){
+        $scope.designationsTimeout = $timeout(function() {
+          $scope.addUserInit();
+        }, 2000);
+      }
+      else {
+        $timeout.cancel($scope.designationsTimeout); // cancel timeout after the sidebar init
+      }
      }
      $scope.addUser = function(form) {
        $scope.user.designationId = $scope.user.designation.designationId;

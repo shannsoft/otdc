@@ -1,9 +1,18 @@
-app.controller('AddTendorController',function($scope,$rootScope,$state,Util,Constants,ApiCall,EnvService,$timeout,$cookieStore,$localStorage){
+app.controller('AddTendorController',function($scope,$rootScope,$state,Util,AppModel,Constants,ApiCall,EnvService,$timeout,$cookieStore,$localStorage){
 
 $scope.addTendorInit = function() {
   $scope.tender = {};
   $scope.tender.FileData = {};
   $scope.fileData = {};
+  if(!AppModel.getSetting()){
+    $scope.settingsTimeout = $timeout(function() {
+      $scope.addTendorInit();
+    }, 2000);
+  }
+  else {
+    $scope.tender.tenderTypes = AppModel.getSetting('tenderType');
+    $timeout.cancel($scope.settingsTimeout); // cancel timeout after the sidebar init
+  }
 
 }
 $scope.fileSelected = function(fileName) {
