@@ -13,7 +13,8 @@
                                         <td data-title="'Tender Id'" filter="{tenderId: 'text'}" sortable="'tenderId'">{{row.tenderId}}</td>
                                         <td data-title="'Reference No'" filter="{referenceNo: 'text'}" sortable="'referenceNo'">{{row.referenceNo}}</td>
                                         <td data-title="'Reference Id'" filter="{referenceId: 'text'}" sortable="'referenceId'">{{row.referenceId}}</td>
-                                        <td data-title="'Tender Type'" filter="{tenderType: 'text'}" sortable="'tenderType'">{{row.tenderType}}</td>
+                                        <td data-title="'Tender Type'" filter="{ tenderType: 'select'}" filter-data="tenderTypes" sortable="'tenderType'">{{row.tenderType}}</td>
+                                        <!-- <td data-title="'Tender Type'" filter="{tenderType: 'text'}" sortable="'tenderType'">{{row.tenderType}}</td> -->
 
                                         <td data-title="'Work Title'" filter="{workTitle: 'text'}" sortable="'workTitle'">{{row.workTitle}}</td>
 

@@ -21,6 +21,12 @@ angular.module('WebService', [])
                 "Content-Type": "application/json",
                 // "isArray" : true
             },
+            getSetting: {
+                "url": "/api/CommonSettings",
+                "method": "GET",
+                "Content-Type": "application/json",
+                // "isArray" : true
+            },
             getUser: {
                 "url": "/api/User",
                 "method": "GET",
@@ -106,6 +112,7 @@ angular.module('WebService', [])
     .factory('ApiCall', function($http, $resource, API, EnvService,ApiGenerator) {
 
           return $resource('/',null, {
+            getSetting: ApiGenerator.getApi('getSetting'),
             logout: ApiGenerator.getApi('logout'),
             getDesignation: ApiGenerator.getApi('getDesignation'),
             postUser: ApiGenerator.getApi('postUser'),

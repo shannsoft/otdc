@@ -55,7 +55,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         return deferred.promise;
     };
 
-    function checkLoggedout($q, $timeout, $http, $location, $rootScope, $state, $localStorage, Constants, LoginService, UserService,Events) {
+    function checkLoggedout($q, $timeout, $http,ApiCall,Util, AppModel,$location, $rootScope, $state, $localStorage, Constants, LoginService, UserService,Events) {
         var deferred = $q.defer();
         var obj = {
             TokenId: $localStorage[Constants.getTokenKey()]
@@ -65,6 +65,19 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
               $timeout(function() {
                 $rootScope.loggedin = $localStorage[Constants.getLoggedIn()];
                 UserService.setUser(response.Data);
+                if(!AppModel.getSetting())
+                {
+                  // getting the settings data
+                  console.log("calling to get settings data");
+                  ApiCall.getSetting(function(response) {
+                    AppModel.setSetting(response.Data);
+                    console.log("settings fetched  ");
+                  },function(err) {
+                    Util.alertMessage(Events.eventType.error, err.Message || Events.errorInLogin);
+                    console.log("Error in settings fetch  ");
+                  })
+
+                }
                 deferred.resolve();
               }, 100);
 

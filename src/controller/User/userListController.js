@@ -1,4 +1,4 @@
-app.controller('UserListController', function($scope, $rootScope, $state, ApiCall,UserService,Events, UtilityService,Util,$localStorage, Constants) {
+app.controller('UserListController', function($scope, $rootScope, $state,NgTableParams, ApiCall,UserService,Events, UtilityService,Util,$localStorage, Constants) {
     // $scope.UserService = UserService;
     $scope.init = function() {
       $scope.userList = [];
@@ -10,6 +10,11 @@ app.controller('UserListController', function($scope, $rootScope, $state, ApiCal
         ApiCall.getUser(obj,function(response) {
           $scope.userList = response.Data;
           $rootScope.showPreloader = false;
+          $scope.tableParams = new NgTableParams();
+            $scope.tableParams.settings({
+            dataset: response.Data,
+            // filterData: $scope.tenderTypes
+          });
         },
         function(err){
           Util.alertMessage(Events.eventType.error,err.message);

@@ -10,132 +10,29 @@
                 </div>
             </div>
         </div>
-        <div class="items-search">
-            <form class="form-inline ng-pristine ng-valid">
-                <div class="input-group">
-                    <input type="text" class="form-control boxed rounded-s" placeholder="Search for..." style="height: 38px;">
-                    <span class="input-group-btn">
-                        <button class="btn btn-secondary rounded-s" type="button">
-                            <i class="fa fa-search"></i>
-                        </button>
-                    </span>
-                </div>
-            </form>
-        </div>
     </div>
     <div class="card items">
-        <ul class="item-list striped">
-            <li class="item item-list-header hidden-sm-down">
-                <div class="item-row">
-                    <div class="item-col item-col-header item-col-title">
-                        <div>
-                            <span>Name</span>
-                        </div>
-                    </div>
+        <table ng-table="tableParams" class="table table-bordered ngTable userListTable">
+          <tr ng-repeat="row in $data">
+            <td data-title="'Sl No'" >{{ ( (tableParams.page() - 1) * tableParams.count() )+($index + 1)}}</td>
+            <td data-title="'Name'" filter="{fName: 'text'}" sortable="'fName'">
+              <span class="circle" ng-click="getUserDetails({userId:row.userId,action:'view'})">{{row.fName+" "+row.lName  | getShortName}}</span>
+              <a ui-sref="userDetails({userId:row.userId,action: 'view'})">{{row.fName}}</a>
+            </td>
+            <td data-title="'Status'" filter="{status: 'text'}" sortable="'status'">{{row.status}}</td>
+            <td data-title="'Designation'" filter="{designation: 'text'}" sortable="'designation'">{{row.designation}}</td>
 
-                    <div class="item-col item-col-header item-col-stats">
-                        <div class="no-overflow">
-                            <span>status</span>
-                        </div>
-                    </div>
-                    <div class="item-col item-col-header item-col-category">
-                        <div class="no-overflow">
-                            <span>Designation</span>
-                        </div>
-                    </div>
-
-                    <div class="item-col item-col-header fixed item-col-actions-dropdown">Action</div>
-                </div>
-            </li>
-            <li class="item" ng-repeat="user in userList">
-                <div class="item-row">
-
-                    <!-- <div class="item-col fixed item-col-img md">
-                        <a href="item-editor.html">
-                            <div class="item-img rounded" style="background-image: url(https://s3.amazonaws.com/uifaces/faces/twitter/brad_frost/128.jpg)"></div>
-                        </a>
-                    </div> -->
-                    <div class="item-col fixed item-col-img md" ng-click="getUserDetails({userId:user.userId,action:'view'})">
-                      <div class="circle">
-                        {{user.fName+" "+user.lName  | getShortName}}
-                      </div>
-                    </div>
-                    <div class="item-col fixed pull-left item-col-title" ng-click="getUserDetails({userId:user.userId,action:'view'})">
-                        <div class="item-heading">Name</div>
-                        <div>
-                            <a ui-sref="userDetails({userId:user.userId,action: 'view'})" class="">
-                                <h4 class="item-title">
-                                    {{user.fName}}
-                                </h4>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="item-col item-col-stats no-overflow">
-                        <div class="item-heading">Status</div>
-                        <div class="no-overflow">
-                            <div>
-                                {{user.status}}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="item-col item-col-category no-overflow">
-                        <div class="item-heading">Designation</div>
-                        <div class="no-overflow">
-                            <a href="">{{user.designation}}</a>
-                        </div>
-                    </div>
-
-                    <div class="item-col fixed item-col-actions-dropdown">
-                        <a href="" class="option-btn">
-                            <i class="fa fa-pencil" ng-click="getUserDetails({userId:user.userId,action:'edit'})"></i>
-                        </a>
-                        <a class="remove" href="" data-toggle="modal" data-target="#confirm-modal" ng-click="open()">
-                            <i class="fa fa-trash-o "></i>
-                        </a>
-                    </div>
-                </div>
-            </li>
-
-        </ul>
+            <td data-title="'Action'" >
+              <div class="item-col fixed item-col-actions-dropdown">
+                  <a href="" class="option-btn">
+                      <i class="fa fa-pencil" ng-click="getUserDetails({userId:user.userId,action:'edit'})"></i>
+                  </a>
+                  <a class="remove" href="" data-toggle="modal" data-target="#confirm-modal" ng-click="open()">
+                      <i class="fa fa-trash-o "></i>
+                  </a>
+              </div>
+            </td>
+          </tr>
+        </table>
     </div>
-    <!-- <nav class="text-xs-right">
-        <ul class="pagination">
-            <li class="page-item">
-                <a class="page-link" href="">
-                    Prev
-                </a>
-            </li>
-            <li class="page-item active">
-                <a class="page-link" href="">
-                    1
-                </a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="">
-                    2
-                </a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="">
-                    3
-                </a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="">
-                    4
-                </a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="">
-                    5
-                </a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="">
-                    Next
-                </a>
-            </li>
-        </ul>
-    </nav> -->
 </article>

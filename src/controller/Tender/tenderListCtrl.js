@@ -1,13 +1,19 @@
 app.controller('TenderListController', function($scope, $rootScope, $state, ApiCall, EnvService, $timeout, $cookieStore, $localStorage,NgTableParams) {
 
+  $scope.tenderTypes = [
+    'percentage rate',
+    'item rate',
+    'tonk tender',
+    'tonk tender'
+  ]
     $scope.tenderListInit = function() {
       $rootScope.showPreloader = true;
       ApiCall.getTendor(function(res) {
 
-        //$scope.tenders = res.Data;
         $scope.tableParams = new NgTableParams();
         $scope.tableParams.settings({
-        dataset: res.Data
+        dataset: res.Data,
+        // filterData: $scope.tenderTypes
       });
         // Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
         $rootScope.showPreloader = false;
@@ -27,7 +33,7 @@ app.controller('TenderListController', function($scope, $rootScope, $state, ApiC
           $state.go("tenderDetails",{tenderId:tender.tenderId,action:action});
           break;
         case 'freeze':
-        
+
           break;
         default:
 
