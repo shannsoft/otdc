@@ -7,7 +7,7 @@ angular.module('Authentication', [])
         forgotPassword: ApiGenerator.getApi('forgotPassword')
       });
     })
-    .controller('LoginController',function($http,$scope,$state,$rootScope,ApiCall,LoginService,UtilityService,Events,$localStorage,Constants,UserService,Util,ApiGenerator,validationService) {
+    .controller('LoginController',function($http,$scope,$state,$rootScope,LoginService,UtilityService,Events,$localStorage,Constants,UserService,Util,ApiGenerator,validationService) {
       $scope.init = function(){
         $scope.user = {};
         if($localStorage[Constants.getIsRemember()]){
@@ -54,22 +54,14 @@ angular.module('Authentication', [])
         })
       }
       $scope.logout = function() {
-          // LoginService.logout({userId:UserService.getUser().userId},function(response) {
-          //   UserService.unsetUser();
-          //   Util.alertMessage("success",response.Message);
-          //   $rootScope.loggedin = false;
-          //   $state.go('login');
-          // },function(err) {
-          //   Util.alertMessage("danger",err.Message);
-          // })
-         ApiCall.logout({userId:UserService.getUser().userId},function(response) {
-           UserService.unsetUser();
-           Util.alertMessage("success",response.Message);
-           $rootScope.loggedin = false;
-           $state.go('login');
-         },function(err) {
-           Util.alertMessage("danger",err.Message);
-         })
+          LoginService.logout({userId:UserService.getUser().userId},function(response) {
+            UserService.unsetUser();
+            Util.alertMessage("success",response.Message);
+            $rootScope.loggedin = false;
+            $state.go('login');
+          },function(err) {
+            Util.alertMessage("danger",err.Message);
+          })
 
       }
       $scope.forgotPassword = function(email) {

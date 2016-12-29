@@ -12,17 +12,11 @@ angular.module('WebService', [])
 
             },
             logout: {
-                url: "/api/LogOut",
+                url: "/api/User",
                 method: "POST"
             },
             token: {
                 "url": "/api/User",
-                "method": "GET",
-                "Content-Type": "application/json",
-                // "isArray" : true
-            },
-            getSetting: {
-                "url": "/api/CommonSettings",
                 "method": "GET",
                 "Content-Type": "application/json",
                 // "isArray" : true
@@ -85,13 +79,18 @@ angular.module('WebService', [])
                 "method": "POST",
                 "Content-Type": "application/json",
             },
-            tendorAssign: {
-                "url": "/api/TenderAssignToVendor",
+            getTendor: {
+                "url": "/api/Tendor",
+                "method": "GET",
+                "Content-Type": "application/json",
+            },
+            freezeTender: {
+                "url": "/api/TenderFreeze",
                 "method": "POST",
                 "Content-Type": "application/json",
             },
-            getTendor: {
-                "url": "/api/Tendor",
+            getCommonSettings: {
+                "url": "/api/CommonSettings",
                 "method": "GET",
                 "Content-Type": "application/json",
             },
@@ -112,8 +111,6 @@ angular.module('WebService', [])
     .factory('ApiCall', function($http, $resource, API, EnvService,ApiGenerator) {
 
           return $resource('/',null, {
-            getSetting: ApiGenerator.getApi('getSetting'),
-            logout: ApiGenerator.getApi('logout'),
             getDesignation: ApiGenerator.getApi('getDesignation'),
             postUser: ApiGenerator.getApi('postUser'),
             getUser: ApiGenerator.getApi('getUser'),
@@ -122,7 +119,8 @@ angular.module('WebService', [])
             deleteVendor: ApiGenerator.getApi('deleteVendor'),
             postTendor: ApiGenerator.getApi('postTendor'),
             getTendor: ApiGenerator.getApi('getTendor'),
-            tendorAssign: ApiGenerator.getApi('tendorAssign'),
+            freezeTender: ApiGenerator.getApi('freezeTender'),
+            getCommonSettings: ApiGenerator.getApi('getCommonSettings'),
           });
 
     })

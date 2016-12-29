@@ -1,6 +1,6 @@
-app.controller('Main_Controller', function($scope, $rootScope, $state, EnvService, $timeout, $cookieStore, $localStorage, validationService, Events, $location, Util, $anchorScroll,ApiCall,AppModel) {
+app.controller('Main_Controller', function($scope, $rootScope, $state, EnvService, $timeout, $cookieStore, $localStorage, validationService, Events, $location, Util, $anchorScroll) {
     // Events handling
-
+    
     $rootScope.$on(Events.validationFieldMissing, function(event, data) {
         alert("Event handled", data);
     });
@@ -30,6 +30,8 @@ $rootScope.$on(Events.errorInLogout, function(event, data) {
     $anchorScroll();
     Util.alertMessage(data.type, data.message || Events.errorInLogout);
 })
+
+
 // Event hander for the error type message
 $rootScope.$on(Events.eventType.error, function(event, data) {
         $location.hash('top');

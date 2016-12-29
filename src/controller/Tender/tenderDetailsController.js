@@ -20,6 +20,14 @@ app.controller('TenderDetailsController', function($scope, $rootScope, $state,$u
             // Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
             $scope.isInit = true;
             $rootScope.showPreloader = false;
+            // delete boq columns
+            // for(var i in $scope.tender.boqData) {
+            //   angular.forEach($scope.tender.boqData[i],function(v,k) {
+            //     var temp = ['itemDescription','quantity','units','totalAmountWithoutTaxes'];
+            //     if(temp.indexOf(k)  == -1)
+            //       delete $scope.tender.boqData[i][k];
+            //   })
+            // }
         }, function(err) {
             Util.alertMessage(err.Status.toLocaleLowerCase(), err.Message);
             $rootScope.showPreloader = false;
@@ -47,7 +55,13 @@ app.controller('TenderDetailsController', function($scope, $rootScope, $state,$u
 })
 app.controller('boqController', function ($scope,$uibModalInstance,boqData) {
   $scope.boqData = boqData;
+  // for(var i in $scope.boqData) {
+  //   angular.forEach($scope.boqData[i],function(v,k) {
+  //     delete $scope.boqData['$$hashKey'];
+  //   })
+  // }
   $scope.getBoqHeaders = function() {
+
     var temp = $scope.boqData[0];
     var arr = []
     // getting headers as keys present in the boq details array

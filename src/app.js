@@ -13,6 +13,11 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
                 config.headers = config.headers || {};
                 // config.headers['Authorization'] = 'bearer '+$localStorage[Constants.getTokenKey()];
                 config.headers['tokenID'] = $localStorage[Constants.getTokenKey()];
+                if(Constants.debug) {
+                  console.log("calling web service ->>>>>>>>>>>" , config.url);
+                  console.log("Data web service ->>>>>>>>>>>" , JSON.stringify(config.Data));
+
+                }
                 return config;
             },
             response: function(response) {
@@ -55,7 +60,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         return deferred.promise;
     };
 
-    function checkLoggedout($q, $timeout, $http,ApiCall,Util, AppModel,$location, $rootScope, $state, $localStorage, Constants, LoginService, UserService,Events) {
+    function checkLoggedout($q, $timeout, $http, $location, $rootScope, $state, $localStorage, Constants, LoginService, UserService,Events) {
         var deferred = $q.defer();
         var obj = {
             TokenId: $localStorage[Constants.getTokenKey()]
@@ -65,19 +70,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
               $timeout(function() {
                 $rootScope.loggedin = $localStorage[Constants.getLoggedIn()];
                 UserService.setUser(response.Data);
-                if(!AppModel.getSetting())
-                {
-                  // getting the settings data
-                  console.log("calling to get settings data");
-                  ApiCall.getSetting(function(response) {
-                    AppModel.setSetting(response.Data);
-                    console.log("settings fetched  ");
-                  },function(err) {
-                    Util.alertMessage(Events.eventType.error, err.Message || Events.errorInLogin);
-                    console.log("Error in settings fetch  ");
-                  })
-
-                }
+                $rootScope.$emit(Events.userLogged);
                 deferred.resolve();
               }, 100);
 
@@ -143,22 +136,22 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         })
         .state('tenderDetails', {
             templateUrl: 'src/views/Tender/TenderDetails.html',
-            url: '/tenderDetails/:tenderId',
+            url: '/tenderList/:tenderId',
             params: { tenderId: null ,action:null},
             controller: "TenderDetailsController",
             resolve: {
                 loggedout: checkLoggedout
             },
         })
-        // .state('tenderDetailsEdit', {
-        //     templateUrl: 'src/views/Tender/TenderDetails.html',
-        //     url: '/tenderDetails/:tenderId',
-        //     params: { tenderId: null ,action:null},
-        //     controller: "TenderDetailsController",
-        //     resolve: {
-        //         loggedout: checkLoggedout
-        //     },
-        // })
+        .state('tenderDetailsEdit', {
+            templateUrl: 'src/views/Tender/TenderDetails.html',
+            url: '/tenderList/:tenderId',
+            params: { tenderId: null ,action:null},
+            controller: "TenderDetailsController",
+            resolve: {
+                loggedout: checkLoggedout
+            },
+        })
         .state('addTender', {
             templateUrl: 'src/views/Tender/addTender.html',
             url: '/addTender',
@@ -212,7 +205,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         // .state('editUser', {
         //     templateUrl: 'src/views/User/userDetails.html',
         //     url: '/editUser/:userId',
-        //     controller: "UserController",
+        //     controller: "UserDetailsController",
         //     params: { userId: null ,action:null},
         //     resolve: {
         //         loggedout: checkLoggedout

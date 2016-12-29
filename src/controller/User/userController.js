@@ -1,22 +1,14 @@
-app.controller('UserController', function($scope, $rootScope, $state,$stateParams, AppModel,$timeout,UserService, UtilityService,Util,$localStorage, Constants,ApiCall,Events) {
+app.controller('UserController', function($scope, $rootScope, $state,$stateParams, UserService, UtilityService,Util,$localStorage, Constants,ApiCall,Events) {
     // $scope.UserService = UserService;
-    $scope.sideBarTimeout = null;
-    function initSideBar(){
-      $rootScope.sideBar = UserService.getSideBarInfo();
-    }
+    $rootScope.$on(Events.userLogged,function() {
+      if(!$scope.user)
+        $scope.user = UserService.getUser();
+    });
     $scope.init = function() {
         $scope.user = UserService.getUser();
         // here this is kept in $rootScope as this controller is a shared one
         //the this value getting lost on each controller load
-        initSideBar();
-        if(!$rootScope.sideBar){
-          $scope.sideBarTimeout = $timeout(function() {
-            initSideBar();
-          }, 2000);
-        }
-        else {
-          $timeout.cancel($scope.sideBarTimeout); // cancel timeout after the sidebar init
-        }
+        $rootScope.sideBar = UserService.getSideBarInfo();
         $scope.userTabs = [{
             heading: "View Profile",
             active: true
@@ -78,23 +70,14 @@ app.controller('UserController', function($scope, $rootScope, $state,$stateParam
      *
      */
      $scope.addUserInit = function() {
-      //  $rootScope.showPreloader = true;
-      //  ApiCall.getDesignation({TokenId:$localStorage[Constants.getTokenKey()]},function(res) {
-      //    $scope.designations = res.Data;
-      //    $rootScope.showPreloader = false;
-      //  },function(err) {
-      //    Util.alertMessage("danger", err.Message || "Error in Login");
-      //    $rootScope.showPreloader = false;
-      //  })
-      $scope.designations = AppModel.getSetting('designation');
-      if(!AppModel.getSetting()){
-        $scope.designationsTimeout = $timeout(function() {
-          $scope.addUserInit();
-        }, 2000);
-      }
-      else {
-        $timeout.cancel($scope.designationsTimeout); // cancel timeout after the sidebar init
-      }
+       $rootScope.showPreloader = true;
+       ApiCall.getDesignation({TokenId:$localStorage[Constants.getTokenKey()]},function(res) {
+         $scope.designations = res.Data;
+         $rootScope.showPreloader = false;
+       },function(err) {
+         Util.alertMessage("danger", err.Message || "Error in Login");
+         $rootScope.showPreloader = false;
+       })
      }
      $scope.addUser = function(form) {
        $scope.user.designationId = $scope.user.designation.designationId;

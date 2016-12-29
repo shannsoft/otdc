@@ -1,7 +1,8 @@
 <article class="content dashboard-page" ng-init="tenderListInit()">
                     <section class="section">
                         <div class="row">
-                            <div class="col-md-9">
+                            <div class="col-md-12">
+                              <button type="button" class="btn btn-pill-left btn-primary btn-capsule" ui-sref="addTender">Add Tender</button>
                               <div class="card">
           											<div class="card-block">
           												<div class="card-title-block">
@@ -13,24 +14,27 @@
                                         <td data-title="'Tender Id'" filter="{tenderId: 'text'}" sortable="'tenderId'">{{row.tenderId}}</td>
                                         <td data-title="'Reference No'" filter="{referenceNo: 'text'}" sortable="'referenceNo'">{{row.referenceNo}}</td>
                                         <td data-title="'Reference Id'" filter="{referenceId: 'text'}" sortable="'referenceId'">{{row.referenceId}}</td>
-                                        <td data-title="'Tender Type'" filter="{ tenderType: 'select'}" filter-data="tenderTypes" sortable="'tenderType'">{{row.tenderType}}</td>
+                                        <td data-title="'Tender Type'" filter="{ tenderType: 'text'}"  sortable="'tenderType'">{{row.tenderType}}</td>
                                         <!-- <td data-title="'Tender Type'" filter="{tenderType: 'text'}" sortable="'tenderType'">{{row.tenderType}}</td> -->
 
                                         <td data-title="'Work Title'" filter="{workTitle: 'text'}" sortable="'workTitle'">{{row.workTitle}}</td>
 
                                         <td data-title="'Action'" >
                                           <div class="row list-icon">
-                                            <div class="col-md-2 col-sm-3" ng-click="onAction('view',row)">
+                                            <div class="col-md-2 col-sm-2" ng-click="onAction('view',row)">
                                               <em class="fa fa-eye"></em>View
                                             </div>
-                                            <div class="col-md-2 col-sm-3" ng-click="onAction('edit',row)">
+                                            <div class="col-md-2 col-sm-2" ng-click="onAction('edit',row)">
                                               <em class="fa fa-edit"></em>Edit
                                             </div>
-                                            <div class="col-md-3 col-sm-3" ng-if="!row.assignedToVendor" ng-click="onAction('assign',row)">
+                                            <div class="col-md-2 col-sm-2" ng-if="!row.assignedToVendor" ng-click="onAction('assign',row)">
                                               <em class="fa fa-mail-forward"></em>Assign
                                             </div>
-                                            <div class="col-md-4 col-sm-3" ng-click="onAction('freeze',row)">
+                                            <div class="col-md-2 col-sm-2" ng-click="onAction('freeze',row)">
                                               <em class="fa fa-save"></em></em>Freeze
+                                            </div>
+                                            <div class="col-md-2 col-sm-2" ng-click="onAction('freeze',row)">
+                                              <em class="fa fa-bar-chart-o"></em></em>Freeze
                                             </div>
                                           </div>
                                         </td>
@@ -40,7 +44,7 @@
           											</div>
           										</div>
                             </div>
-                            <div class="col-md-3">
+                            <!-- <div class="col-md-3">
                                 <div class="card">
                                     <div class="card-block">
                                       <div class=" text-right">
@@ -72,7 +76,7 @@
                                   </div>
                                  </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </section>
 

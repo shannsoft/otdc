@@ -1,4 +1,5 @@
 app.constant("Constants", {
+        "debug":true,
         "storagePrefix": "goAppOTDC$",
         "getTokenKey" : function() {return this.storagePrefix + "token";},
         "getLoggedIn" : function() {return this.storagePrefix + "loggedin";},
@@ -13,7 +14,7 @@ app.constant("Constants", {
         "envData" : {
           "env":"dev",
           "dev" : {
-            "basePath" :"http://api.otdctender.in"
+            "basePath" :"http://api.otdctender.in",
           }
         }
 })

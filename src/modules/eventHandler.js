@@ -17,7 +17,6 @@ angular.module('EventHandler', [])
         "roleError"          : "role in Error",
         "errorSideBarData"          : "error Side Bar Data",
         "userLogged"          : "User Logged",
-        "loadSetttings"          : "load Setttings",
       }
     })
 ;
