@@ -3,7 +3,7 @@ angular.module('EventHandler', [])
       var eventType = {
         "success":"success",
         "error":"error",
-        "warn":"warn",
+        "warning":"warning",
 
       }
       return{
@@ -17,6 +17,7 @@ angular.module('EventHandler', [])
         "roleError"          : "role in Error",
         "errorSideBarData"          : "error Side Bar Data",
         "userLogged"          : "User Logged",
+        "selectTender"          : "Please select tender",
       }
     })
 ;

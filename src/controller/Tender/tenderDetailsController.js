@@ -70,6 +70,10 @@ app.controller('boqController', function ($scope,$uibModalInstance,boqData) {
     })
     return arr;
   }
+  $scope.updateAmount = function(boq) {
+    boq.isEdit = false;
+    
+  }
   $scope.ok = function () {
     $uibModalInstance.close();
   };

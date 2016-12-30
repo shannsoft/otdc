@@ -1,8 +1,21 @@
-app.controller('TenderMilestoneController', function($scope, $rootScope, $state, EnvService, $timeout, $cookieStore, $localStorage) {
+app.controller('TenderMilestoneController', function($scope, $rootScope, $state, $stateParams,ApiCall,Util,Events , EnvService, $timeout, $cookieStore, $localStorage) {
 
-    $scope.$on('$viewContentLoaded', function(event) {
-        console.log("view loaded");
-        $scope.tenderMilestone = {};
-    });
+    $scope.init = function() {
+        if (!$stateParams.tenderId) {
+          Util.alertMessage(Events.eventType.warning,Events.selectTender);
+          $state.go("tenderList");
+        }
+        else{
+          var data = {
+              tenderId: $stateParams.tenderId,
+              // requireBoq : false
+          }
+          ApiCall.getTendor(data,function(response) {
+            $scope.tenderMilestone = response.Data;
+          },function(err) {
+              Util.alertMessage(Events.eventType.error,err.Message);
+          })
+        }
 
+    }
 })

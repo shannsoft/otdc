@@ -262,11 +262,14 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         })
         .state('tender_milestone', {
             templateUrl: 'src/views/Tender/TendorMilestone.html',
-            url: '/tender_milestone',
+            url: '/tender_milestone/:tenderId',
             controller: "TenderMilestoneController",
             resolve: {
                 loggedout: checkLoggedout
             },
+            params:{
+              tenderId:null
+            }
         })
         .state('tender_checklist', {
             templateUrl: 'src/views/Tender/TenderCheckList.html',

@@ -15949,7 +15949,9 @@ pre {
 .m-h-900 {
     min-height: 900px !important;
 }
-
+.color-black{
+  color:#000 !important;
+}
 .m-t-5 {
     margin-top: 5px;
 }
@@ -16247,7 +16249,7 @@ h3.title {
 }
 
 .modal-card span {
-    color: #21B04B !important;
+    color: #21B04B;
 }
 
 .modal-card em {

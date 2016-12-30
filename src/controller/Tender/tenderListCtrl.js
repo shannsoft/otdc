@@ -35,6 +35,9 @@ app.controller('TenderListController', function($scope, $rootScope, $state, ApiC
           }
         )
           break;
+        case 'milestone':
+          $state.go("tender_milestone",{tenderId:tender.tenderId})
+          break;
         default:
 
       }
