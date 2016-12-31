@@ -67,15 +67,34 @@ app.controller('TenderDetailsController', function($scope, $rootScope, $state,$u
       })
     }
 })
-app.controller('boqController', function ($scope,$uibModalInstance,boqData) {
+app.controller('boqController', function ($scope,$uibModalInstance,boqData,$uibModal) {
+  $scope.boqUpdateArr = [];
   $scope.boqData = boqData;
-  // for(var i in $scope.boqData) {
-  //   angular.forEach($scope.boqData[i],function(v,k) {
-  //     delete $scope.boqData['$$hashKey'];
-  //   })
-  // }
+  $scope.updateBoqData = function(){
+    alert("boq to be updated  see logs for data");
+    console.log('$scope.boqUpdateArr   ',$scope.boqUpdateArr);
+  }
+  $scope.showBoqHistory = function(){
+    alert("need to call web service to get the histroy  ");
+    $uibModal.open({
+        animation: true,
+        size: 'lg',
+        controller: "boqHistoryController",
+        templateUrl:"boqHistoryModal.html",
+        // resolve:{
+        //   boqData :function() {
+        //     return $scope.tender.boqData
+        //   }
+        // }
+    });
+  }
+  $scope.focusEdit = function(boq,$event) {
+    // reset the edit mode except the selected one
+    angular.forEach($scope.boqData,function(boqData) {
+      boqData == boq ? boq.isEdit = true : boqData.isEdit = false;
+    })
+  }
   $scope.getBoqHeaders = function() {
-
     var temp = $scope.boqData[0];
     var arr = []
     // getting headers as keys present in the boq details array
@@ -86,12 +105,22 @@ app.controller('boqController', function ($scope,$uibModalInstance,boqData) {
   }
   $scope.updateAmount = function(boq) {
     boq.isEdit = false;
-
+    boq.totalAmountWithoutTaxes = boq.quantity*boq.estimateRate;
+    $scope.boqUpdateArr.push(boq); // update the array that will save in batch
   }
   $scope.ok = function () {
     $uibModalInstance.close();
   };
+  $scope.cancel = function () {
+    $uibModalInstance.dismiss('cancel');
+  };
+});
 
+
+app.controller('boqHistoryController', function ($scope,$uibModalInstance) {
+  $scope.ok = function () {
+    $uibModalInstance.close();
+  };
   $scope.cancel = function () {
     $uibModalInstance.dismiss('cancel');
   };

@@ -1,4 +1,4 @@
-/*! otdc - v1.0.0 - Sat Dec 31 2016 15:03:29 */
+/*! otdc - v1.0.0 - Sun Jan 01 2017 02:40:32 */
 var dependency = [];
 // lib  dependency
 var distModules = ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate', 'ngCookies', 'ngMessages','ngTable'];
@@ -308,7 +308,7 @@ app.factory('Util', ['$rootScope', '$timeout', function($rootScope, $timeout) {
     return Util;
 }]);
 ;app.constant("Constants", {
-        "debug":false,
+        "debug":true,
         "storagePrefix": "goAppOTDC$",
         "getTokenKey" : function() {return this.storagePrefix + "token";},
         "getLoggedIn" : function() {return this.storagePrefix + "loggedin";},
@@ -514,15 +514,34 @@ $scope.gotoTenderCheck = function(){
       })
     }
 })
-app.controller('boqController', function ($scope,$uibModalInstance,boqData) {
+app.controller('boqController', function ($scope,$uibModalInstance,boqData,$uibModal) {
+  $scope.boqUpdateArr = [];
   $scope.boqData = boqData;
-  // for(var i in $scope.boqData) {
-  //   angular.forEach($scope.boqData[i],function(v,k) {
-  //     delete $scope.boqData['$$hashKey'];
-  //   })
-  // }
+  $scope.updateBoqData = function(){
+    alert("boq to be updated  see logs for data");
+    console.log('$scope.boqUpdateArr   ',$scope.boqUpdateArr);
+  }
+  $scope.showBoqHistory = function(){
+    alert("need to call web service to get the histroy  ");
+    $uibModal.open({
+        animation: true,
+        size: 'lg',
+        controller: "boqHistoryController",
+        templateUrl:"boqHistoryModal.html",
+        // resolve:{
+        //   boqData :function() {
+        //     return $scope.tender.boqData
+        //   }
+        // }
+    });
+  }
+  $scope.focusEdit = function(boq,$event) {
+    // reset the edit mode except the selected one
+    angular.forEach($scope.boqData,function(boqData) {
+      boqData == boq ? boq.isEdit = true : boqData.isEdit = false;
+    })
+  }
   $scope.getBoqHeaders = function() {
-
     var temp = $scope.boqData[0];
     var arr = []
     // getting headers as keys present in the boq details array
@@ -533,12 +552,22 @@ app.controller('boqController', function ($scope,$uibModalInstance,boqData) {
   }
   $scope.updateAmount = function(boq) {
     boq.isEdit = false;
-
+    boq.totalAmountWithoutTaxes = boq.quantity*boq.estimateRate;
+    $scope.boqUpdateArr.push(boq); // update the array that will save in batch
   }
   $scope.ok = function () {
     $uibModalInstance.close();
   };
+  $scope.cancel = function () {
+    $uibModalInstance.dismiss('cancel');
+  };
+});
 
+
+app.controller('boqHistoryController', function ($scope,$uibModalInstance) {
+  $scope.ok = function () {
+    $uibModalInstance.close();
+  };
   $scope.cancel = function () {
     $uibModalInstance.dismiss('cancel');
   };
@@ -932,8 +961,8 @@ app.controller('deleteModalCtrl', function ($scope, $uibModalInstance,user,Util,
         // call service to delete
         var modalInstance = $uibModal.open({
           animation: true,
-          templateUrl: 'deleteModal.html',
-          controller: 'deleteModalCtrl',
+          templateUrl: 'deleteVendorModal.html',
+          controller: 'deleteVendorModalCtrl',
           size: 'md',
           resolve: {
             vendor: function () {
@@ -949,7 +978,7 @@ app.controller('deleteModalCtrl', function ($scope, $uibModalInstance,user,Util,
   $scope.initVenderList = function(){
     var vendorData = {};
     vendorData.tokenId = $localStorage[Constants.getTokenKey()];
-    vendorData.type = "GET_VENDOR_ALL";
+    vendorData.actType = "GET_VENDOR_ALL";
     $rootScope.showPreloader = true;
     ApiCall.getVendor(vendorData,function(res) {
       Util.alertMessage(res.Status.toLocaleLowerCase(), res.Message);
@@ -981,7 +1010,7 @@ app.controller('deleteModalCtrl', function ($scope, $uibModalInstance,user,Util,
 })
 
 
-app.controller('deleteModalCtrl', function ($scope, $uibModalInstance,vendor,Util,ApiCall,$state,Events ) {
+app.controller('deleteVendorModalCtrl', function ($scope, $uibModalInstance,vendor,Util,ApiCall,$state,Events ) {
   $scope.vendor = vendor;
   $scope.ok = function () {
     // calling service to delete user

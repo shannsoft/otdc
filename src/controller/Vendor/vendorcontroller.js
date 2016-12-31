@@ -52,8 +52,8 @@ app.controller('VendorController',function($scope,$rootScope,$state,Constants,$u
         // call service to delete
         var modalInstance = $uibModal.open({
           animation: true,
-          templateUrl: 'deleteModal.html',
-          controller: 'deleteModalCtrl',
+          templateUrl: 'deleteVendorModal.html',
+          controller: 'deleteVendorModalCtrl',
           size: 'md',
           resolve: {
             vendor: function () {
@@ -69,7 +69,7 @@ app.controller('VendorController',function($scope,$rootScope,$state,Constants,$u
   $scope.initVenderList = function(){
     var vendorData = {};
     vendorData.tokenId = $localStorage[Constants.getTokenKey()];
-    vendorData.type = "GET_VENDOR_ALL";
+    vendorData.actType = "GET_VENDOR_ALL";
     $rootScope.showPreloader = true;
     ApiCall.getVendor(vendorData,function(res) {
       Util.alertMessage(res.Status.toLocaleLowerCase(), res.Message);
@@ -101,7 +101,7 @@ app.controller('VendorController',function($scope,$rootScope,$state,Constants,$u
 })
 
 
-app.controller('deleteModalCtrl', function ($scope, $uibModalInstance,vendor,Util,ApiCall,$state,Events ) {
+app.controller('deleteVendorModalCtrl', function ($scope, $uibModalInstance,vendor,Util,ApiCall,$state,Events ) {
   $scope.vendor = vendor;
   $scope.ok = function () {
     // calling service to delete user
