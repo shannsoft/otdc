@@ -1,64 +1,44 @@
-<section class="content title-block forms-page add tender button ng-scope">
-  <div class="card card-block sameheight-item" style="height: 1500px;">
-          <div class="title-block">
-              <h3 class="title tenderdetailstitle" style="margin-left: 431px;">
-  					 	  Vendor Details
-  					 </h3>
-          </div>
-          <form name="TenderDetails fontclass">
-               <hr>
-               <div class="row">
-                   <div class="col-sm-12 date" >
-                       Date:11/9/2016
-                   </div>
-              </div>
-    <div class="card-block">
-          <div class="card-title-block">
-                <h3 class="title">
-							             Basic Details
-						      </h3>
+<article class="content forms-page" ng-init="init()">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-block sameheight-item">
+                <div class="title-block">
+                    <h3 class="title">
+                        Vendor Details
+                    </h3>
+                </div>
+                <form name="vendorDetails">
+                    <fieldset class="form-group">
+                        <label class="control-label" for="formGroupExampleInput2">Vendor Name</label>
+                        <input type="text" class="form-control formInput" ng-readonly="!isEdit" ng-model="vendor.vendorName" id="formGroupExampleInput2" placeholder="Placeholder text">
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <label class="control-label" for="formGroupExampleInput2">Email</label>
+                        <input type="text" class="form-control formInput" ng-readonly="!isEdit" ng-model="vendor.emailId" id="formGroupExampleInput2" placeholder="Placeholder text">
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <label class="control-label" for="formGroupExampleInput3">Address</label>
+                        <textarea rows="3" class="form-control formInput" ng-readonly="!isEdit" ng-model="vendor.address" id="formGroupExampleInput7" placeholder="Placeholder text"></textarea>
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <label class="control-label" for="formGroupExampleInput3">Bank Name</label>
+                        <input type="text" class="form-control formInput" ng-readonly="!isEdit" ng-model="vendor.bankName" id="formGroupExampleInput2" placeholder="Placeholder text">
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <label class="control-label" for="formGroupExampleInput3">Account No</label>
+                        <input type="text" class="form-control formInput" ng-readonly="!isEdit" ng-model="vendor.accountNo" id="formGroupExampleInput2" placeholder="Placeholder text">
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <label class="control-label" for="formGroupExampleInput3">IFSC Code</label>
+                        <input type="text" class="form-control formInput" ng-readonly="!isEdit" ng-model="vendor.ifscCode" id="formGroupExampleInput2" placeholder="Placeholder text">
+                    </fieldset>
+                    <fieldset class="form-group btn-grp">
+                        <input type="submit" ng-if="isEdit" class="btn btn-success" ng-click="updateVendor(vendorDetails,vendor)"/>
+                        <button type="button" ng-if="!isEdit" ui-sref="vendorDetails({action:'edit',vendor:vendor})" class="btn btn-primary">Edit</button>
+                        <button type="button" ui-sref="VendorList" class="btn btn-secondary">Back</button>
+                    </fieldset>
+                </form>
+            </div>
         </div>
-      <section class="example">
-                    <table class="table">
-                          <tbody>
-                                <tr>
-                                      <td>Name</td>
-                                      <td>Email</td>
-                                      <td>Address</td>
-                                </tr>
-                                <tr>
-                                        <td>Jacob</td>
-                                        <td>Thornton</td>
-                                        <td>@fat</td>
-                                </tr>
-                        </tbody>
-                  </table>
-      </section>
-      </div>
-      <div class="card-block">
-            <div class="card-title-block">
-                  <h3 class="title">
-                    	Bank Details
-                  </h3> </div>
-      <section class="example">
-              <table class="table">
-                     <tbody>
-                          <tr>
-                            <td>BankName</td>
-                            <td>Account No</td>
-                            <td>BranchName</td>
-                            <td>IFSC Code</td>
-                        </tr>
-                        <tr>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                            <td>@fat</td>
-                       </tr>
-                  </tbody>
-            </table>
-      </section>
-  </div>
-</div>
-</form>
-</section>
+    </div>
+</article>

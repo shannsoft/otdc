@@ -15,7 +15,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
                 config.headers['tokenID'] = $localStorage[Constants.getTokenKey()];
                 if(Constants.debug) {
                   console.log("calling web service ->>>>>>>>>>>" , config.url);
-                  console.log("Data web service ->>>>>>>>>>>" , JSON.stringify(config.Data));
+                  console.log("Data web service ->>>>>>>>>>>" , JSON.stringify(config.data));
 
                 }
                 return config;
@@ -136,7 +136,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         })
         .state('tenderDetails', {
             templateUrl: 'src/views/Tender/TenderDetails.html',
-            url: '/tenderList/:tenderId',
+            url: '/tenderDetails/:tenderId',
             params: { tenderId: null ,action:null},
             controller: "TenderDetailsController",
             resolve: {
@@ -145,7 +145,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         })
         .state('tenderDetailsEdit', {
             templateUrl: 'src/views/Tender/TenderDetails.html',
-            url: '/tenderList/:tenderId',
+            url: '/tenderDetails/:tenderId',
             params: { tenderId: null ,action:null},
             controller: "TenderDetailsController",
             resolve: {
@@ -230,16 +230,8 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         .state('vendorDetails', {
             templateUrl: 'src/views/Vendor/vendorDetails.html',
             url: '/vendorDetails',
-            controller: "Vendor_controller",
-            resolve: {
-                loggedout: checkLoggedout
-            },
-        })
-        .state('editVendor', {
-            templateUrl: 'src/views/Vendor/editVendor.html',
-            url: '/editVendor',
-            controller: "EditVendorController",
-            params: { vendor: null },
+            controller: "VendorDetailsController",
+            params: { vendor: null,action:null },
             resolve: {
                 loggedout: checkLoggedout
             },

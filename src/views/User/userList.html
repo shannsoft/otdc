@@ -25,9 +25,9 @@
             <td data-title="'Action'" >
               <div class="item-col fixed item-col-actions-dropdown">
                   <a href="" class="option-btn">
-                      <i class="fa fa-pencil" ng-click="getUserDetails({userId:user.userId,action:'edit'})"></i>
+                      <i class="fa fa-pencil" ng-click="getUserDetails({userId:row.userId,action:'edit'})"></i>
                   </a>
-                  <a class="remove" href="" data-toggle="modal" data-target="#confirm-modal" ng-click="open()">
+                  <a class="remove" href="" data-toggle="modal" data-target="#confirm-modal" ng-click="openDeleteModal(row)">
                       <i class="fa fa-trash-o "></i>
                   </a>
               </div>
@@ -36,3 +36,16 @@
         </table>
     </div>
 </article>
+
+<script type="text/ng-template" id="deleteModal.html">
+        <div class="modal-header">
+            <h3 class="modal-title">I'm a modal!</h3>
+        </div>
+        <div class="modal-body">
+           Are you sure to delete {{user.fName}} ?
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+            <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+        </div>
+</script>

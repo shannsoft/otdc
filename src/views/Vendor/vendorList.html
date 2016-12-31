@@ -11,7 +11,7 @@
           <h3 class="title titletenderlist"> Vendor List </h3>
         </div>
         <div class="table-responsive">
-            <table class="table table-striped table-bordered table-hover crud-table">
+            <!-- <table class="table table-striped table-bordered table-hover crud-table">
                   <thead>
                           <tr>
                                 <th># SL NO</th>
@@ -36,26 +36,51 @@
                                </td>
                           </tr>
                 </tbody>
+            </table> -->
+            <table ng-table="tableParams" class="table table-bordered tenderList">
+              <tr ng-repeat="row in $data">
+                <td data-title="'Sl No'" >{{ ( (tableParams.page() - 1) * tableParams.count() )+($index + 1)}}</td>
+                <td data-title="'Vender Name'" filter="{vendorName: 'text'}" sortable="'vendorName'">{{row.vendorName}}</td>
+                <td data-title="'Email'" filter="{emailId: 'text'}" sortable="'emailId'">{{row.emailId}}</td>
+                <td data-title="'Phone No'" filter="{phoneNo: 'text'}" sortable="'phoneNo'">{{row.phoneNo}}</td>
+                <td data-title="'Bank Name'" filter="{bankName: 'text'}" sortable="'bankName'">{{row.bankName}}</td>
+
+                <td data-title="'Action'" >
+                  <!-- <a href="" class="option-btn" ng-click="gotoEditVendor(vendor)"><i class="fa fa-pencil" ></i></a>
+                  <a class="remove" href="" data-toggle="modal" data-target="#confirm-modal" ng-click="onDeleteVendor(vendor)"> <i class="fa fa-trash-o "></i></a>
+                  <a href="" ui-sref="vendorDetails" class="option-btn"><i class="fa fa-eye"></i></a> -->
+                  <div class="row list-icon">
+                    <div class="col-md-2 col-sm-2" ng-click="onAction('view',row)">
+                      <em class="fa fa-eye"></em>View
+                    </div>
+                    <div class="col-md-2 col-sm-2" ng-click="onAction('edit',row)">
+                      <em class="fa fa-pencil"></em>Edit
+                    </div>
+                    <div class="col-md-2 col-sm-2" ng-click="onAction('delete',row)">
+                      <em class="fa fa-trash-o"></em>Delete
+                    </div>
+                  </div>
+
+                </td>
+              </tr>
             </table>
       </div>
       </section>
     </div>
   </div>
 </section>
-<div class="modal fade in" id="confirm-modal"  ng-model="showModal">
-     <div class="modal-dialog">
-       <div class="modal-content">
+
+
+
+ <script type="text/ng-template" id="deleteModal.html">
          <div class="modal-header">
-           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-           <h4 class="modal-title">Delete confirmation</h4>
+             <h3 class="modal-title">Delete Vendor</h3>
          </div>
          <div class="modal-body">
-           <p>Are you sure you want to delete vendor {{selectedVendor.vendorName}} ?</p>
+            Are you sure to delete {{vendor.vendorName}} ?
          </div>
          <div class="modal-footer">
-           <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="cancel()">No</button>
-           <button type="button" class="btn btn-primary" ng-click="ok()">Yes</button>
+             <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+             <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
          </div>
-       </div>
-     </div>
- </div>
+ </script>

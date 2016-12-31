@@ -1,4 +1,4 @@
-app.controller('VendorController',function($scope,$rootScope,$state,Constants,EnvService,$timeout,$cookieStore,$localStorage,ApiCall,Util){
+app.controller('VendorController',function($scope,$rootScope,$state,Constants,$uibModal,NgTableParams,EnvService,$timeout,$cookieStore,$localStorage,ApiCall,Util){
   /***************************************************************************/
   /**************************This is use to show a pop up****************************/
   /***************************************************************************/
@@ -41,8 +41,30 @@ app.controller('VendorController',function($scope,$rootScope,$state,Constants,En
   /***************************************************************************/
   /**************************This is use to go to edit vendor page****************************/
   /***************************************************************************/
-  $scope.gotoEditVendor = function(vendor){
-    $state.go('editVendor',{vendor:vendor});
+
+  $scope.onAction = function(action,vendor) {
+    switch (action) {
+      case 'view':
+      case 'edit':
+        $state.go("vendorDetails",{vendor:vendor,action:action})
+        break;
+      case 'delete':
+        // call service to delete
+        var modalInstance = $uibModal.open({
+          animation: true,
+          templateUrl: 'deleteModal.html',
+          controller: 'deleteModalCtrl',
+          size: 'md',
+          resolve: {
+            vendor: function () {
+              return vendor;
+            }
+          }
+        });
+        break;
+      default:
+
+    }
   }
   $scope.initVenderList = function(){
     var vendorData = {};
@@ -51,7 +73,11 @@ app.controller('VendorController',function($scope,$rootScope,$state,Constants,En
     $rootScope.showPreloader = true;
     ApiCall.getVendor(vendorData,function(res) {
       Util.alertMessage(res.Status.toLocaleLowerCase(), res.Message);
-      $scope.vendors = res.Data;
+      // $scope.vendors = res.Data;
+      $scope.tableParams = new NgTableParams();
+        $scope.tableParams.settings({
+        dataset: res.Data
+      });
       $rootScope.showPreloader = false;
     },function(err) {
       Util.alertMessage(err.Status.toLocaleLowerCase(), err.Message);
@@ -73,3 +99,28 @@ app.controller('VendorController',function($scope,$rootScope,$state,Constants,En
     })
   }
 })
+
+
+app.controller('deleteModalCtrl', function ($scope, $uibModalInstance,vendor,Util,ApiCall,$state,Events ) {
+  $scope.vendor = vendor;
+  $scope.ok = function () {
+    // calling service to delete user
+    var obj = {
+      actType:'D',
+      vendorId:vendor.vendorId
+    }
+    ApiCall.postVendor(obj,function(response) {
+      Util.alertMessage(Events.eventType.success,response.Message);
+      $uibModalInstance.close();
+      $state.reload();
+    },function(err) {
+      Util.alertMessage(Events.eventType.error,err.Message);
+      $uibModalInstance.close();
+    })
+
+  };
+
+  $scope.cancel = function () {
+    $uibModalInstance.dismiss('cancel');
+  };
+});

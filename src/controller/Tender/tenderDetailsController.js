@@ -4,7 +4,7 @@
  if the action is edit user can edit the items
  */
 
-app.controller('TenderDetailsController', function($scope, $rootScope, $state,$uibModal, $stateParams, ApiCall, EnvService, $timeout, $cookieStore, $localStorage) {
+app.controller('TenderDetailsController', function($scope, $rootScope, $state,$uibModal, $stateParams, ApiCall,Util, EnvService, $timeout, $cookieStore, $localStorage) {
 
     $scope.init = function() {
         $scope.isInit = false;
@@ -52,6 +52,20 @@ app.controller('TenderDetailsController', function($scope, $rootScope, $state,$u
             }
         });
     }
+    $scope.updateTender = function(tender) {
+      tender.actType = "U";
+      tender.tenderType = tender.tenderType.typeName;
+      console.log(JSON.stringify(tender));
+      $rootScope.showPreloader = true;
+      ApiCall.postTendor(tender,function(res) {
+        $state.go("tenderList");
+        $rootScope.showPreloader = false;
+        Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
+      }, function(err) {
+        $rootScope.showPreloader = false;
+        Util.alertMessage(err.Status.toLocaleLowerCase(),err.Message);
+      })
+    }
 })
 app.controller('boqController', function ($scope,$uibModalInstance,boqData) {
   $scope.boqData = boqData;
@@ -72,7 +86,7 @@ app.controller('boqController', function ($scope,$uibModalInstance,boqData) {
   }
   $scope.updateAmount = function(boq) {
     boq.isEdit = false;
-    
+
   }
   $scope.ok = function () {
     $uibModalInstance.close();
