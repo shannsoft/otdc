@@ -12571,9 +12571,9 @@ a.text-success:focus, a.text-success:hover {
   color: #449d44;
 }
 
-.text-info {
+/*.text-info {
   color: #5bc0de !important;
-}
+}*/
 
 a.text-info:focus, a.text-info:hover {
   color: #31b0d5;

@@ -1,4 +1,4 @@
-/*! otdc - v1.0.0 - Sun Jan 01 2017 02:40:32 */
+/*! otdc - v1.0.0 - Tue Jan 03 2017 01:16:43 */
 var dependency = [];
 // lib  dependency
 var distModules = ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate', 'ngCookies', 'ngMessages','ngTable'];
@@ -308,7 +308,7 @@ app.factory('Util', ['$rootScope', '$timeout', function($rootScope, $timeout) {
     return Util;
 }]);
 ;app.constant("Constants", {
-        "debug":true,
+        "debug":false,
         "storagePrefix": "goAppOTDC$",
         "getTokenKey" : function() {return this.storagePrefix + "token";},
         "getLoggedIn" : function() {return this.storagePrefix + "loggedin";},
@@ -621,6 +621,7 @@ app.controller('boqHistoryController', function ($scope,$uibModalInstance) {
 ;app.controller('TenderMilestoneController', function($scope, $rootScope, $state, $stateParams,ApiCall,Util,Events , EnvService, $timeout, $cookieStore, $localStorage) {
 
     $scope.init = function() {
+        $scope.tenderMilestone = {};
         if (!$stateParams.tenderId) {
           Util.alertMessage(Events.eventType.warning,Events.selectTender);
           $state.go("tenderList");
@@ -632,6 +633,7 @@ app.controller('boqHistoryController', function ($scope,$uibModalInstance) {
           }
           ApiCall.getTendor(data,function(response) {
             $scope.tenderMilestone = response.Data;
+
           },function(err) {
               Util.alertMessage(Events.eventType.error,err.Message);
           })
@@ -1033,6 +1035,24 @@ app.controller('deleteVendorModalCtrl', function ($scope, $uibModalInstance,vend
     $uibModalInstance.dismiss('cancel');
   };
 });
+;app.directive(
+        'dateInput',
+        function(dateFilter) {
+            return {
+                require: 'ngModel',
+                template: '<input type="date"></input>',
+                replace: true,
+                link: function(scope, elm, attrs, ngModelCtrl) {
+                    ngModelCtrl.$formatters.unshift(function (modelValue) {
+                        return dateFilter(modelValue, 'yyyy-MM-dd');
+                    });
+
+                    ngModelCtrl.$parsers.unshift(function(viewValue) {
+                        return new Date(viewValue);
+                    });
+                },
+            };
+    });
 ;app.directive('dateViewer', function () {
     return {
         require: "ngModel",
