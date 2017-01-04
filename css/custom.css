@@ -373,6 +373,19 @@ table.userListTable.ng-table tbody tr td span {
     right: 0%;
     position: relative;
 }
+.formInput-60{
+    display: inline;
+    width: 60%;
+    float: right;
+    right: 0%;
+    position: relative;
+}
+.m-r-10{
+  margin-right: 10px;
+}
+.m-l-10{
+  margin-left: 10px;
+}
 
 body .tenderMilestone tbody tr td:nth-child(2), td:nth-child(3), td:nth-child(4), td:nth-child(5) {
     width: 100px;
@@ -399,4 +412,18 @@ width: 125px;
 input[type="date"] {
     position: relative;
     right: 25px;
+}
+.card .title {
+    font-size: 25px;
+    color: #4f5f6f;
+    margin-left: -4px;
+}
+.modalClose{
+    position: relative;
+    bottom: 25px;
+    font-size: 25px;
+    cursor: pointer;
+}
+.popover{
+  width:100%;
 }

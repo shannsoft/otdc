@@ -11,15 +11,15 @@
       <div class="auth-content">
         <p class="text-xs-center">LOGIN TO CONTINUE</p>
         <form name="loginForm">
-            <div class="form-group" ng-class="{'has-error':loginForm.username.$dirty && loginForm.username.$invalid}">
+            <div class="form-group" ng-class="{'has-error':loginForm.username.$touched && loginForm.username.$invalid}">
               <label for="username">Username</label>
               <input type="text" ng-model="user.userId" ng-pattern="/^[a-zA-Z0-9_]*$/" class="form-control underlined" name="username" placeholder="please enter user name" required>
-              <span class="has-error" ng-if="loginForm.username.$dirty && loginForm.username.$invalid">User name is invalid</span>
+              <span class="has-error" ng-if="loginForm.username.$touched && loginForm.username.$invalid">User name is invalid</span>
             </div>
-            <div class="form-group" ng-class="{'has-error':loginForm.password.$dirty && loginForm.password.$invalid}">
+            <div class="form-group" ng-class="{'has-error':loginForm.password.$touched && loginForm.password.$invalid}">
               <label for="password">Password</label>
               <input type="password"  ng-model="user.Password" ng-pattern="/^[a-zA-Z0-9_]*$/"  class="form-control underlined" name="password" placeholder="Your password" required>
-              <span class="has-error" ng-if="loginForm.password.$dirty && loginForm.password.$invalid">Password is invalid</span>
+              <span class="has-error" ng-if="loginForm.password.$touched && loginForm.password.$invalid">Password is invalid</span>
             </div>
             <div class="form-group">
               <label for="remember">

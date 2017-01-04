@@ -46,8 +46,8 @@ app.controller('TenderDetailsController', function($scope, $rootScope, $state,$u
             controller: "boqController",
             templateUrl:"src/views/Tender/modals/boqDetailsModal.html",
             resolve:{
-              boqData :function() {
-                return $scope.tender.boqData
+              tender :function() {
+                return $scope.tender
               }
             }
         });
@@ -67,25 +67,33 @@ app.controller('TenderDetailsController', function($scope, $rootScope, $state,$u
       })
     }
 })
-app.controller('boqController', function ($scope,$uibModalInstance,boqData,$uibModal) {
+
+/**
+ * boqController
+ * Info : used to show the boq data in the modal
+ */
+app.controller('boqController', function ($scope,$uibModalInstance,tender,Util,ApiCall,$uibModal) {
   $scope.boqUpdateArr = [];
-  $scope.boqData = boqData;
+  $scope.boqData = tender.boqData;
+  // used to update the boq data of the indivisual row
   $scope.updateBoqData = function(){
-    alert("boq to be updated  see logs for data");
-    console.log('$scope.boqUpdateArr   ',$scope.boqUpdateArr);
+    ApiCall.postBOQHistory($scope.boqUpdateArr,function(response) {
+      Util.alertMessage(response.Status.toLocaleLowerCase(),response.Message);
+    },function(err) {
+      Util.alertMessage(err.Status.toLocaleLowerCase(),err.Message);
+    })
   }
   $scope.showBoqHistory = function(){
-    alert("need to call web service to get the histroy  ");
     $uibModal.open({
         animation: true,
         size: 'lg',
         controller: "boqHistoryController",
         templateUrl:"boqHistoryModal.html",
-        // resolve:{
-        //   boqData :function() {
-        //     return $scope.tender.boqData
-        //   }
-        // }
+        resolve:{
+          tenderId :function() {
+            return tender.tenderId
+          }
+        }
     });
   }
   $scope.focusEdit = function(boq,$event) {
@@ -117,7 +125,38 @@ app.controller('boqController', function ($scope,$uibModalInstance,boqData,$uibM
 });
 
 
-app.controller('boqHistoryController', function ($scope,$uibModalInstance) {
+/**
+ * boqHistoryController
+ * Info : used to show the boq history updated by different users
+ */
+app.controller('boqHistoryController', function ($scope,$uibModalInstance,tenderId,ApiCall,NgTableParams,Util) {
+  var data = {
+    tenderId : tenderId
+  }
+  $scope.boqHistory = [];
+  $scope.updateUserDetails = function(data) {
+    // close all the pop up
+    angular.forEach($scope.boqHistory,function(v,k) {
+      if(data == v) {
+        v.isOpen = !v.isOpen;
+      }
+      else {
+        v.isOpen = false;
+      }
+    })
+    $scope.userDetails = data;
+  }
+  ApiCall.getBOQHistory(data,function(response) {
+    $scope.boqHistory = response.Data;
+    // $scope.boqHistory = response.Data;
+    $scope.tableParams = new NgTableParams();
+    $scope.tableParams.settings({
+      dataset: response.Data
+    });
+    Util.alertMessage(response.Status.toLocaleLowerCase(),response.Message);
+  },function(err) {
+    Util.alertMessage(err.Status.toLocaleLowerCase(),err.Message);
+  })
   $scope.ok = function () {
     $uibModalInstance.close();
   };

@@ -48,13 +48,45 @@
 
 <script type="text/ng-template" id="boqHistoryModal.html">
         <div class="modal-header">
-            <h3 class="modal-title">History modal</h3>
+            <h3 class="modal-title">Boq history : </h3>
+            <em class="fa fa-arrows-alt pull-right modalClose" ng-click="ok()"></em>
         </div>
         <div class="modal-body">
-          History goes here
+
+              <table ng-table="tableParams" class="table table-bordered ngTable">
+                <tr ng-repeat="row in $data">
+                  <td data-title="'Sl No'" >{{ ( (tableParams.page() - 1) * tableParams.count() )+($index + 1)}}</td>
+                  <td data-title="'Tendor Id'" filter="{tenderId: 'text'}" sortable="'tenderId'">
+                    <span>{{row.tenderId}}</span>
+                  </td>
+                  <td data-title="'User name'" filter="{userName: 'text'}" sortable="'userName'">
+                    <a href="" ng-click="updateUserDetails(row)" uib-popover-template="'userDetails.html'" popover-title="User details" popover-is-open="row.isOpen">{{row.userName}}</a>
+
+                  </td>
+                  <td data-title="'Quantity'" filter="{quantity: 'text'}" sortable="'quantity'">{{row.quantity}}</td>
+                  <td data-title="'Units'" filter="{units: 'text'}" sortable="'units'">{{row.units}}</td>
+                  <td data-title="'Total Amount Without Taxes'" filter="{totalAmountWithoutTaxes: 'text'}" sortable="'totalAmountWithoutTaxes'">{{row.totalAmountWithoutTaxes}}</td>
+                  <td data-title="'Date'" filter="{date: 'text'}" sortable="'date'">{{row.date}}</td>
+
+
+                </tr>
+              </table>
+
         </div>
         <div class="modal-footer">
-            <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
-            <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+
+        </div>
+</script>
+
+<!-- user details pop up -->
+<script type="text/ng-template" id="userDetails.html">
+
+        <div class="form-group row">
+          <label class="m-l-10">Name:</label>
+          <input type="text" ng-model="userDetails.userName" ng-readonly="true" class="form-control formInput-60 m-r-10">
+        </div>
+        <div class="form-group row">
+          <label class="m-l-10">Designation:</label>
+          <input type="text" ng-model="userDetails.designation" ng-readonly="true" class="form-control formInput-60 m-r-10">
         </div>
 </script>

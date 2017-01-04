@@ -94,6 +94,16 @@ angular.module('WebService', [])
                 "method": "GET",
                 "Content-Type": "application/json",
             },
+            postBOQHistory: {
+                "url": "/api/BOQHistory",
+                "method": "POST",
+                "Content-Type": "application/json",
+            },
+            getBOQHistory: {
+                "url": "/api/BOQHistory",
+                "method": "GET",
+                "Content-Type": "application/json",
+            },
 
 
         }
@@ -121,6 +131,8 @@ angular.module('WebService', [])
             getTendor: ApiGenerator.getApi('getTendor'),
             freezeTender: ApiGenerator.getApi('freezeTender'),
             getCommonSettings: ApiGenerator.getApi('getCommonSettings'),
+            postBOQHistory: ApiGenerator.getApi('postBOQHistory'),
+            getBOQHistory: ApiGenerator.getApi('getBOQHistory'),
           });
 
     })

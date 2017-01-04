@@ -1,4 +1,4 @@
-/*! otdc - v1.0.0 - Tue Jan 03 2017 01:16:43 */
+/*! otdc - v1.0.0 - Wed Jan 04 2017 09:45:14 */
 var dependency = [];
 // lib  dependency
 var distModules = ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate', 'ngCookies', 'ngMessages','ngTable'];
@@ -493,8 +493,8 @@ $scope.gotoTenderCheck = function(){
             controller: "boqController",
             templateUrl:"src/views/Tender/modals/boqDetailsModal.html",
             resolve:{
-              boqData :function() {
-                return $scope.tender.boqData
+              tender :function() {
+                return $scope.tender
               }
             }
         });
@@ -514,25 +514,33 @@ $scope.gotoTenderCheck = function(){
       })
     }
 })
-app.controller('boqController', function ($scope,$uibModalInstance,boqData,$uibModal) {
+
+/**
+ * boqController
+ * Info : used to show the boq data in the modal
+ */
+app.controller('boqController', function ($scope,$uibModalInstance,tender,Util,ApiCall,$uibModal) {
   $scope.boqUpdateArr = [];
-  $scope.boqData = boqData;
+  $scope.boqData = tender.boqData;
+  // used to update the boq data of the indivisual row
   $scope.updateBoqData = function(){
-    alert("boq to be updated  see logs for data");
-    console.log('$scope.boqUpdateArr   ',$scope.boqUpdateArr);
+    ApiCall.postBOQHistory($scope.boqUpdateArr,function(response) {
+      Util.alertMessage(response.Status.toLocaleLowerCase(),response.Message);
+    },function(err) {
+      Util.alertMessage(err.Status.toLocaleLowerCase(),err.Message);
+    })
   }
   $scope.showBoqHistory = function(){
-    alert("need to call web service to get the histroy  ");
     $uibModal.open({
         animation: true,
         size: 'lg',
         controller: "boqHistoryController",
         templateUrl:"boqHistoryModal.html",
-        // resolve:{
-        //   boqData :function() {
-        //     return $scope.tender.boqData
-        //   }
-        // }
+        resolve:{
+          tenderId :function() {
+            return tender.tenderId
+          }
+        }
     });
   }
   $scope.focusEdit = function(boq,$event) {
@@ -564,7 +572,38 @@ app.controller('boqController', function ($scope,$uibModalInstance,boqData,$uibM
 });
 
 
-app.controller('boqHistoryController', function ($scope,$uibModalInstance) {
+/**
+ * boqHistoryController
+ * Info : used to show the boq history updated by different users
+ */
+app.controller('boqHistoryController', function ($scope,$uibModalInstance,tenderId,ApiCall,NgTableParams,Util) {
+  var data = {
+    tenderId : tenderId
+  }
+  $scope.boqHistory = [];
+  $scope.updateUserDetails = function(data) {
+    // close all the pop up
+    angular.forEach($scope.boqHistory,function(v,k) {
+      if(data == v) {
+        v.isOpen = !v.isOpen;
+      }
+      else {
+        v.isOpen = false;
+      }
+    })
+    $scope.userDetails = data;
+  }
+  ApiCall.getBOQHistory(data,function(response) {
+    $scope.boqHistory = response.Data;
+    // $scope.boqHistory = response.Data;
+    $scope.tableParams = new NgTableParams();
+    $scope.tableParams.settings({
+      dataset: response.Data
+    });
+    Util.alertMessage(response.Status.toLocaleLowerCase(),response.Message);
+  },function(err) {
+    Util.alertMessage(err.Status.toLocaleLowerCase(),err.Message);
+  })
   $scope.ok = function () {
     $uibModalInstance.close();
   };
@@ -1436,6 +1475,16 @@ app.controller('deleteVendorModalCtrl', function ($scope, $uibModalInstance,vend
                 "method": "GET",
                 "Content-Type": "application/json",
             },
+            postBOQHistory: {
+                "url": "/api/BOQHistory",
+                "method": "POST",
+                "Content-Type": "application/json",
+            },
+            getBOQHistory: {
+                "url": "/api/BOQHistory",
+                "method": "GET",
+                "Content-Type": "application/json",
+            },
 
 
         }
@@ -1463,6 +1512,8 @@ app.controller('deleteVendorModalCtrl', function ($scope, $uibModalInstance,vend
             getTendor: ApiGenerator.getApi('getTendor'),
             freezeTender: ApiGenerator.getApi('freezeTender'),
             getCommonSettings: ApiGenerator.getApi('getCommonSettings'),
+            postBOQHistory: ApiGenerator.getApi('postBOQHistory'),
+            getBOQHistory: ApiGenerator.getApi('getBOQHistory'),
           });
 
     })
