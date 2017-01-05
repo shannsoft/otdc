@@ -181,7 +181,7 @@
                         <span class="help-block" ng-show="tenderDetails.work_Desc.$error.required && tenderDetails.work_Desc.$touched">Please enter payment Mode</span>
                         <!-- <span class="help-block" ng-show="tenderDetails.work_Desc.$error.pattern && tenderDetails.work_Desc.$touched">payment mode must be entered</span> -->
                     </fieldset>
-                    <fieldset class="form-group" ng-class="{'has-error': (tenderDetails.work_Desc.$invalid && tenderDetails.work_Desc.$touched)}">
+                    <fieldset class="form-group" ng-if="tenderDetails.isFreeze == 'NO'" ng-class="{'has-error': (tenderDetails.work_Desc.$invalid && tenderDetails.work_Desc.$touched)}">
                         <label class="control-label" for="formGroupExampleInput7">Upload BOQ file</label>
                         <input type="file" class="form-control formInput" ng-model="tenderDetails.boqFile" file-select file-selected="fileSelected(fileName)"/>
                     </fieldset>

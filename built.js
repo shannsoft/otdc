@@ -1,4 +1,4 @@
-/*! otdc - v1.0.0 - Wed Jan 04 2017 09:45:14 */
+/*! otdc - v1.0.0 - Thu Jan 05 2017 09:32:25 */
 var dependency = [];
 // lib  dependency
 var distModules = ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate', 'ngCookies', 'ngMessages','ngTable'];
@@ -14,6 +14,8 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
                 config.headers = config.headers || {};
                 // config.headers['Authorization'] = 'bearer '+$localStorage[Constants.getTokenKey()];
                 config.headers['tokenID'] = $localStorage[Constants.getTokenKey()];
+                config.headers['Access-Control-Allow-Origin'] = '*';
+
                 if(Constants.debug) {
                   console.log("calling web service ->>>>>>>>>>>" , config.url);
                   console.log("Data web service ->>>>>>>>>>>" , JSON.stringify(config.data));
@@ -486,6 +488,10 @@ $scope.gotoTenderCheck = function(){
             action: action
         });
     }
+    $scope.fileSelected = function(fileName) {
+      console.log(">>>>>>>>>>>>>>>>>>>>>>",window.fileData);
+      $scope.FileData = window.fileData;
+    }
     $scope.showBoq = function() {
         $uibModal.open({
             animation: true,
@@ -502,6 +508,7 @@ $scope.gotoTenderCheck = function(){
     $scope.updateTender = function(tender) {
       tender.actType = "U";
       tender.tenderType = tender.tenderType.typeName;
+      tender.fileData = $scope.FileData;
       console.log(JSON.stringify(tender));
       $rootScope.showPreloader = true;
       ApiCall.postTendor(tender,function(res) {
@@ -642,6 +649,7 @@ app.controller('boqHistoryController', function ($scope,$uibModalInstance,tender
         case 'freeze':
           ApiCall.freezeTender({tenderId:tender.tenderId},function(response) {
             Util.alertMessage(Events.eventType.success, response.Message);
+            $state.reload();
           },
           function(err) {
             Util.alertMessage(Events.eventType.error, err.Message);

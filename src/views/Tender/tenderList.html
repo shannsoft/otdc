@@ -30,7 +30,7 @@
                                             <div class="col-md-2 col-sm-2" ng-if="!row.assignedToVendor" ng-click="onAction('assign',row)">
                                               <em class="fa fa-mail-forward"></em>Assign
                                             </div>
-                                            <div class="col-md-2 col-sm-2" ng-click="onAction('freeze',row)">
+                                            <div class="col-md-2 col-sm-2" ng-if="row.isFreeze == 'NO'" ng-click="onAction('freeze',row)">
                                               <em class="fa fa-save"></em></em>Freeze
                                             </div>
                                             <div class="col-md-2 col-sm-2" ng-click="onAction('milestone',row)">

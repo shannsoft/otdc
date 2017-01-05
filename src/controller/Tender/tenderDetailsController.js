@@ -39,6 +39,10 @@ app.controller('TenderDetailsController', function($scope, $rootScope, $state,$u
             action: action
         });
     }
+    $scope.fileSelected = function(fileName) {
+      console.log(">>>>>>>>>>>>>>>>>>>>>>",window.fileData);
+      $scope.FileData = window.fileData;
+    }
     $scope.showBoq = function() {
         $uibModal.open({
             animation: true,
@@ -55,6 +59,7 @@ app.controller('TenderDetailsController', function($scope, $rootScope, $state,$u
     $scope.updateTender = function(tender) {
       tender.actType = "U";
       tender.tenderType = tender.tenderType.typeName;
+      tender.fileData = $scope.FileData;
       console.log(JSON.stringify(tender));
       $rootScope.showPreloader = true;
       ApiCall.postTendor(tender,function(res) {

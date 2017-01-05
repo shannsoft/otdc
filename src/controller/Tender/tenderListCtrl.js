@@ -29,6 +29,7 @@ app.controller('TenderListController', function($scope, $rootScope, $state, ApiC
         case 'freeze':
           ApiCall.freezeTender({tenderId:tender.tenderId},function(response) {
             Util.alertMessage(Events.eventType.success, response.Message);
+            $state.reload();
           },
           function(err) {
             Util.alertMessage(Events.eventType.error, err.Message);
