@@ -7,46 +7,63 @@
 						           Add User
 				           	</h3>
                 </div>
-            <form role="addUser" >
-                   <fieldset class="form-group">
+            <form role="addUser" name="addUserForm">
+                   <fieldset class="form-group" ng-class="{'has-error':addUserForm.userName.$touched && addUserForm.userName.$invalid}">
                             <label class="control-label" for="formGroupExampleInput2">Username</label>
-                            <input type="text" ng-model="user.userName" class="form-control formInput" id="formGroupExampleInput2" placeholder="Placeholder text">
+                            <input type="text" ng-model="user.userName" ng-pattern="/^[a-zA-Z0-9_]*$/" name="userName" required class="form-control formInput" id="formGroupExampleInput2" placeholder="Placeholder text">
+                            <span class="has-error formInput" ng-if="addUserForm.userName.$touched && addUserForm.userName.$invalid">Username is invalid</span>
                    </fieldset>
-                   <fieldset class="form-group">
+                   <fieldset class="form-group" ng-class="{'has-error':addUserForm.firstName.$touched && addUserForm.firstName.$invalid}">
                             <label class="control-label" for="formGroupExampleInput2">First Name</label>
-                            <input type="text" ng-model="user.fName" class="form-control formInput" id="formGroupExampleInput2" placeholder="Placeholder text">
+                            <input type="text" ng-model="user.fName" name="firstName" required class="form-control formInput" id="formGroupExampleInput2" placeholder="Placeholder text">
+                            <span class="has-error formInput" ng-if="addUserForm.firstName.$touched && addUserForm.firstName.$invalid">firstName is invalid</span>
+
                    </fieldset>
-                   <fieldset class="form-group">
+                   <fieldset class="form-group" ng-class="{'has-error':addUserForm.lastName.$touched && addUserForm.lastName.$invalid}">
                             <label class="control-label" for="formGroupExampleInput2">Last Name</label>
-                            <input type="text" ng-model="user.lName" class="form-control formInput" id="formGroupExampleInput2" placeholder="Placeholder text">
+                            <input type="text" ng-model="user.lName" name="lastName" required class="form-control formInput" id="formGroupExampleInput2" placeholder="Placeholder text">
+                            <span class="has-error formInput" ng-if="addUserForm.lastName.$touched && addUserForm.lastName.$invalid">lastName is invalid</span>
+
                     </fieldset>
-                    <fieldset class="form-group">
+                    <fieldset class="form-group" ng-class="{'has-error':addUserForm.email.$touched && addUserForm.email.$invalid}">
                               <label class="control-label" for="formGroupExampleInput2">Email</label>
-                              <input type="text" ng-model="user.email" class="form-control formInput" id="formGroupExampleInput2" placeholder="Placeholder text">
+                              <input type="text" ng-model="user.email" name="email" required class="form-control formInput" id="formGroupExampleInput2" placeholder="Placeholder text">
+                              <span class="has-error formInput" ng-if="addUserForm.email.$touched && addUserForm.email.$invalid">email is invalid</span>
+
                      </fieldset>
-                    <fieldset class="form-group">
+                    <fieldset class="form-group" ng-class="{'has-error':addUserForm.address.$touched && addUserForm.address.$invalid}">
                            <label class="control-label" for="formGroupExampleInput3">Address</label>
-                           <textarea rows="3" ng-model="user.address" class="form-control formInput" id="formGroupExampleInput7"placeholder="Placeholder text"></textarea>
+                           <textarea rows="3" ng-model="user.address" name="address" required class="form-control formInput" id="formGroupExampleInput7"placeholder="Placeholder text"></textarea>
+                           <span class="has-error formInput" ng-if="addUserForm.address.$touched && addUserForm.address.$invalid">address is invalid</span>
+
                    </fieldset>
-                  <fieldset class="form-group">
+                  <fieldset class="form-group" ng-class="{'has-error':addUserForm.phone.$touched && addUserForm.phone.$invalid}">
                          <label class="control-label" for="formGroupExampleInput3">Mobile No</label>
-                         <input type="text"  ng-model="user.phone" numbers-only class="form-control formInput" id="formGroupExampleInput2" placeholder="Placeholder text">
+                         <input type="text"  ng-model="user.phone" name="phone" required numbers-only class="form-control formInput" id="formGroupExampleInput2" placeholder="Placeholder text">
+                         <span class="has-error formInput" ng-if="addUserForm.phone.$touched && addUserForm.phone.$invalid">phone is invalid</span>
+
                  </fieldset>
-                 <fieldset class="form-group">
+                 <fieldset class="form-group" ng-class="{'has-error':addUserForm.designation.$touched && addUserForm.designation.$invalid}">
 												<label class="control-label" for="formGroupExampleInput3">Desingnation</label>
-												<select  ng-options="designation as designation.designationName for designation in designations" ng-model="user.designation" class="form-control formInput">
+												<select  name="designation" required ng-options="designation as designation.designationName for designation in designations" ng-model="user.designation" class="form-control formInput">
 												</select>
+                        <span class="has-error formInput" ng-if="addUserForm.designation.$touched && addUserForm.designation.$invalid">designation is invalid</span>
+
                 </fieldset>
-                <fieldset class="form-group">
+                <fieldset class="form-group" ng-class="{'has-error':addUserForm.pwd.$touched && addUserForm.pwd.$invalid}">
                        <label class="control-label" for="formGroupExampleInput3">Create Password</label>
-                       <input type="password" ng-model="user.pwd" class="form-control formInput" id="formGroupExampleInput2" placeholder="Placeholder text">
+                       <input type="password" name="pwd" required ng-model="user.pwd" class="form-control formInput" id="formGroupExampleInput2" placeholder="Placeholder text">
+                       <span class="has-error formInput" ng-if="addUserForm.pwd.$touched && addUserForm.pwd.$invalid">password is invalid</span>
+
                </fieldset>
-               <fieldset class="form-group">
+               <fieldset class="form-group" ng-class="{'has-error':addUserForm.confirmPwd.$touched && addUserForm.confirmPwd.$invalid}">
                       <label class="control-label" for="formGroupExampleInput3">Confirm Password</label>
-                      <input type="password" ng-model="user.confirmPwd" class="form-control formInput" id="formGroupExampleInput2" placeholder="Placeholder text">
+                      <input type="password" name="confirmPwd" required ng-model="user.confirmPwd" class="form-control formInput" id="formGroupExampleInput2" placeholder="Placeholder text">
+                      <span class="has-error formInput" ng-if="addUserForm.confirmPwd.$touched && addUserForm.confirmPwd.$invalid">confirm password is invalid</span>
+
               </fieldset>
               <fieldset class="form-group">
-                    <button type="button" class="btn btn-success" ng-click="addUser()">Submit</button>
+                    <button type="button" class="btn btn-success" ng-click="addUser()" ng-disabled="addUserForm.$invalid">Submit</button>
              </fieldset>
             </form>
         </div>

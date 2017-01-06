@@ -118,8 +118,21 @@ app.controller('boqController', function ($scope,$uibModalInstance,tender,Util,A
   }
   $scope.updateAmount = function(boq) {
     boq.isEdit = false;
+    // removing the duplicate boq if exist
+    var found = false;
+    for(var i in $scope.boqUpdateArr){
+      if($scope.boqUpdateArr[i].id == boq.id){
+        $scope.boqUpdateArr[i] = boq;
+        found = true;
+        break;
+      }
+    }
+    if(!found){
+      // update the array that will save in batch
+      $scope.boqUpdateArr.push(boq);
+    }
     boq.totalAmountWithoutTaxes = boq.quantity*boq.estimateRate;
-    $scope.boqUpdateArr.push(boq); // update the array that will save in batch
+
   }
   $scope.ok = function () {
     $uibModalInstance.close();
