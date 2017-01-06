@@ -1,51 +1,55 @@
-<article class="content items-list-page ng-scope" ng-init="init()">
-    <div class="title-search-block">
-        <div class="title-block">
-            <div class="row">
-                <div class="col-md-6">
-                    <a ui-sref="addUser" class="btn btn-primary btn-sm rounded-s">
-                        Add User
-                    </a>
+<article class="content dashboard-page" ng-init="init()">
+    <section class="section">
+        <div class="row">
+            <div class="col-md-12">
+                <button type="button" class="btn btn-pill-left btn-primary btn-capsule" ui-sref="addUser">Add User</button>
+                <div class="card">
+                    <div class="card-block">
+                        <div class="card-title-block">
+                            <h3 class="title">User List</h3>
+                        </div>
+                        <section class="example table-responsive">
+                            <table ng-table="tableParams" class="table table-bordered ngTable userListTable">
+                                <tr ng-repeat="row in $data">
+                                    <td data-title="'Sl No'">{{ ( (tableParams.page() - 1) * tableParams.count() )+($index + 1)}}</td>
+                                    <td data-title="'Name'" filter="{fName: 'text'}" sortable="'fName'">
+                                        <span class="circle" ng-click="getUserDetails({userId:row.userId,action:'view'})">{{row.fName+" "+row.lName  | getShortName}}</span>
+                                        <a ui-sref="userDetails({userId:row.userId,action: 'view'})">{{row.fName}}</a>
+                                    </td>
+                                    <td data-title="'Status'" filter="{status: 'text'}" sortable="'status'">{{row.status}}</td>
+                                    <td data-title="'Designation'" filter="{designation: 'text'}" sortable="'designation'">{{row.designation}}</td>
 
+                                    <td data-title="'Action'">
+                                        <div class="item-col fixed item-col-actions-dropdown">
+                                            <a href="" class="option-btn">
+                                                <i class="fa fa-pencil" ng-click="getUserDetails({userId:row.userId,action:'edit'})"></i>
+                                            </a>
+                                            <a class="remove" href="" data-toggle="modal" data-target="#confirm-modal" ng-click="openDeleteModal(row)">
+                                                <i class="fa fa-trash-o "></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </section>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="card items">
-        <table ng-table="tableParams" class="table table-bordered ngTable userListTable">
-          <tr ng-repeat="row in $data">
-            <td data-title="'Sl No'" >{{ ( (tableParams.page() - 1) * tableParams.count() )+($index + 1)}}</td>
-            <td data-title="'Name'" filter="{fName: 'text'}" sortable="'fName'">
-              <span class="circle" ng-click="getUserDetails({userId:row.userId,action:'view'})">{{row.fName+" "+row.lName  | getShortName}}</span>
-              <a ui-sref="userDetails({userId:row.userId,action: 'view'})">{{row.fName}}</a>
-            </td>
-            <td data-title="'Status'" filter="{status: 'text'}" sortable="'status'">{{row.status}}</td>
-            <td data-title="'Designation'" filter="{designation: 'text'}" sortable="'designation'">{{row.designation}}</td>
 
-            <td data-title="'Action'" >
-              <div class="item-col fixed item-col-actions-dropdown">
-                  <a href="" class="option-btn">
-                      <i class="fa fa-pencil" ng-click="getUserDetails({userId:row.userId,action:'edit'})"></i>
-                  </a>
-                  <a class="remove" href="" data-toggle="modal" data-target="#confirm-modal" ng-click="openDeleteModal(row)">
-                      <i class="fa fa-trash-o "></i>
-                  </a>
-              </div>
-            </td>
-          </tr>
-        </table>
-    </div>
+        </div>
+    </section>
+
 </article>
 
 <script type="text/ng-template" id="deleteModal.html">
-        <div class="modal-header">
-            <h3 class="modal-title">I'm a modal!</h3>
-        </div>
-        <div class="modal-body">
-           Are you sure to delete {{user.fName}} ?
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
-            <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
-        </div>
+    <div class="modal-header">
+        <h3 class="modal-title">I'm a modal!</h3>
+    </div>
+    <div class="modal-body">
+        Are you sure to delete {{user.fName}}?
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+    </div>
 </script>

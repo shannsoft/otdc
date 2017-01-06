@@ -1,4 +1,4 @@
-/*! otdc - v1.0.0 - Thu Jan 05 2017 09:32:25 */
+/*! otdc - v1.0.0 - Sat Jan 07 2017 01:48:21 */
 var dependency = [];
 // lib  dependency
 var distModules = ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate', 'ngCookies', 'ngMessages','ngTable'];
@@ -14,8 +14,6 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
                 config.headers = config.headers || {};
                 // config.headers['Authorization'] = 'bearer '+$localStorage[Constants.getTokenKey()];
                 config.headers['tokenID'] = $localStorage[Constants.getTokenKey()];
-                config.headers['Access-Control-Allow-Origin'] = '*';
-
                 if(Constants.debug) {
                   console.log("calling web service ->>>>>>>>>>>" , config.url);
                   console.log("Data web service ->>>>>>>>>>>" , JSON.stringify(config.data));

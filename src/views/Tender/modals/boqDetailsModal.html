@@ -28,8 +28,8 @@
                                         <td ng-repeat="th in getBoqHeaders()" ng-if="th!='$$hashKey' && th!='isEdit'">
                                             <div ng-if="th == 'quantity'">
                                                 <span ng-if="!boq.isEdit" class="color-black ng-binding">{{boq[th]}}</span>
-                                                <em class="fa fa-edit pull-right" ng-if="!boq.isEdit" ng-click="focusEdit(boq,$event)"></em>
-                                                <input type="text" ng-if="boq.isEdit" ng-model="boq[th]" ng-blur="updateAmount(boq)">
+                                                <em  class="fa fa-edit pull-right" ng-if="!boq.isEdit" ng-click="focusEdit(boq,$event)"></em>
+                                                <input type="text" ng-if="boq.isEdit"  ng-model="boq[th]" ng-blur="updateAmount(boq)">
                                             </div>
                                             <span ng-if="th != 'quantity'" class="color-black">{{boq[th]}}</span>
                                             <!-- <span class="color-black">{{boq[th]}}</span>  -->
