@@ -5,15 +5,12 @@ app.controller('UserDetailsController', function($scope, $rootScope, $state,$sta
       // get the designation to update
       if($scope.isEdit){
         if(!AppModel.getSetting()) {
-          ApiCall.getCommonSettings(function(response) {
-            AppModel.setSetting(response.Data);
-            $scope.designations = AppModel.getSetting('designation');
-
-          },function(err) {
-            Util.alertMessage(err.Status.toLocaleLowerCase(),err.Message);
-          })
+          $scope.timeout = $timeout(function() {
+            $scope.init();
+          }, 2000);
         }
         else {
+          $timeout.cancel($scope.timeout);
           $scope.designations = AppModel.getSetting('designation');
         }
       }

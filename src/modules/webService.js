@@ -74,6 +74,11 @@ angular.module('WebService', [])
                 "method": "GET",
                 "Content-Type": "application/json",
             },
+            postDesignation: {
+                "url": "/api/Designation",
+                "method": "POST",
+                "Content-Type": "application/json",
+            },
             postTendor: {
                 "url": "/api/Tendor",
                 "method": "POST",
@@ -131,6 +136,7 @@ angular.module('WebService', [])
             getTendor: ApiGenerator.getApi('getTendor'),
             freezeTender: ApiGenerator.getApi('freezeTender'),
             getCommonSettings: ApiGenerator.getApi('getCommonSettings'),
+            postDesignation: ApiGenerator.getApi('postDesignation'),
             postBOQHistory: ApiGenerator.getApi('postBOQHistory'),
             getBOQHistory: ApiGenerator.getApi('getBOQHistory'),
           });

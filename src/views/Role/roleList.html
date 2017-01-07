@@ -1,0 +1,88 @@
+<article class="content dashboard-page" ng-init="init()">
+    <section class="section">
+        <div class="row">
+            <div class="col-md-12">
+                <button type="button" class="btn btn-pill-left btn-primary btn-capsule" ui-sref="addTender">Add Role</button>
+                <div class="card">
+                    <div class="card-block">
+                        <div class="card-title-block">
+                            <h3 class="title">Role Mangement</h3>
+                        </div>
+                        <section class="example table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>designation Id</th>
+                                        <th>designation name</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="designation in roles.designation">
+                                        <th scope="row">{{designation.designationId}}</th>
+                                        <td>{{designation.designationName}}</td>
+                                        <td>
+                                            <div class="row list-icon">
+                                                <!-- <div class="col-md-2 col-sm-2" ng-click="onAction('view',designation)">
+                                                      <em class="fa fa-eye"></em>View
+                                                  </div> -->
+                                                <div class="col-md-2 col-sm-2" ng-click="onAction('edit',designation)">
+                                                    <em class="fa fa-edit"></em>Edit
+                                                </div>
+                                                <!-- ngIf: !row.assignedToVendor -->
+                                                <div class="col-md-2 col-sm-2 " ng-click="onAction('delete',designation)">
+                                                    <em class="fa fa-trash-o"></em>Delete
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </section>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+</article>
+
+<!-- modal for designation Edit view -->
+<script type="text/ng-template" id="designationEdit.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Designation Edit</h3>
+    </div>
+    <div class="modal-body">
+
+            <div class="form-group row ">
+                <label class="m-l-10">Designation Id:</label>
+                <input type="text" ng-model="designation.designationId" ng-readonly="true" class="form-control formInput">
+            </div>
+            <div class="form-group row ">
+                <label class="m-l-10">Designation:</label>
+                <input type="text" ng-model="designation.designationName"  class="form-control formInput">
+            </div>
+
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+</script>
+
+<!-- modal for designation Delete view -->
+<script type="text/ng-template" id="designationDelete.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Designation Delete</h3>
+    </div>
+    <div class="modal-body">
+        Are you sure to delete
+        <b>{{designation.designationName}} </b> ?
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+</script>

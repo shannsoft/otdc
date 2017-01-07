@@ -1,8 +1,9 @@
-app.controller('UserController', function($scope, $rootScope, $state,$stateParams, UserService, UtilityService,Util,$localStorage, Constants,ApiCall,Events) {
+app.controller('UserController', function($scope, $rootScope, $state,$stateParams, UserService,AppModel, UtilityService,Util,$localStorage, Constants,ApiCall,Events) {
     // $scope.UserService = UserService;
     $rootScope.$on(Events.userLogged,function() {
-      if(!$scope.user)
+      if(!$scope.user){
         $scope.user = UserService.getUser();
+      }
     });
     $scope.init = function() {
         $scope.user = UserService.getUser();

@@ -1,4 +1,4 @@
-/*! otdc - v1.0.0 - Sat Jan 07 2017 02:51:13 */
+/*! otdc - v1.0.0 - Sun Jan 08 2017 03:03:03 */
 var dependency = [];
 // lib  dependency
 var distModules = ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate', 'ngCookies', 'ngMessages','ngTable'];
@@ -61,7 +61,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         return deferred.promise;
     };
 
-    function checkLoggedout($q, $timeout, $http, $location, $rootScope, $state, $localStorage, Constants, LoginService, UserService,Events) {
+    function checkLoggedout($q, $timeout, $http, $location, $rootScope, $state, ApiCall,$localStorage, AppModel,Constants, LoginService, UserService,Events) {
         var deferred = $q.defer();
         var obj = {
             TokenId: $localStorage[Constants.getTokenKey()]
@@ -72,6 +72,14 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
                 $rootScope.loggedin = $localStorage[Constants.getLoggedIn()];
                 UserService.setUser(response.Data);
                 $rootScope.$emit(Events.userLogged);
+                // fetching the details of the settings
+                if(!AppModel.getSetting()) {
+                  ApiCall.getCommonSettings(function(response) {
+                    AppModel.setSetting(response.Data);
+                  },function(err) {
+                    Util.alertMessage(err.Status.toLocaleLowerCase(),err.Message);
+                  })
+                }
                 deferred.resolve();
               }, 100);
 
@@ -264,6 +272,14 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
               tenderId:null
             }
         })
+        .state('role_management', {
+            templateUrl: 'src/views/Role/roleList.html',
+            url: '/roles',
+            controller: "RoleListController",
+            resolve: {
+                loggedout: checkLoggedout
+            }
+        })
         .state('tender_checklist', {
             templateUrl: 'src/views/Tender/TenderCheckList.html',
             url: '/tender_checklist',
@@ -387,6 +403,88 @@ $scope.forgetpassword = function() {
 $state.go('forget_password');
 }
 })
+;app.controller('RoleListController', function($scope, $rootScope, $state, ApiCall,$uibModal, AppModel,EnvService, $timeout, $cookieStore, $localStorage,NgTableParams) {
+  $scope.init = function() {
+    $scope.roles = {};
+    if(AppModel.getSetting()) {
+      $timeout.cancel($scope.timeout); // cancel timeout if exist
+      $scope.roles.designation = AppModel.getSetting('designation');
+    }
+    else {
+        $scope.timeout = $timeout(function() {
+        $scope.init();
+      }, 2000);
+    }
+  }
+ $scope.onAction = function(action,designation) {
+   var templateUrl;
+   switch (action) {
+     case 'view':
+       templateUrl = 'designationView.html';
+       break;
+     case 'edit':
+      templateUrl = 'designationEdit.html';
+       break;
+     case 'delete':
+      templateUrl = 'designationDelete.html';
+       break;
+     default:
+
+   }
+   var modalInstance = $uibModal.open({
+     animation: true,
+     templateUrl: templateUrl,
+     controller: 'designationModalCtrl',
+     size: 'lg',
+     resolve: {
+       action: function () {
+         return action;
+       },
+       designation: function () {
+         return designation;
+       }
+     }
+   });
+ }
+});
+
+app.controller('designationModalCtrl', function ($scope, $uibModalInstance,Util,ApiCall,$state,Events,action,designation ) {
+  $scope.action = action;
+  $scope.designation = designation;
+  $scope.ok = function () {
+    var obj = {};
+    // calling service to delete user
+    switch ($scope.action) {
+      case 'view':
+       obj.actType = 'V';
+        break;
+      case 'edit':
+        obj.actType = 'U';
+
+        break;
+      case 'delete':
+          obj.actType = 'D';
+
+        break;
+      default:
+
+    }
+    obj = Object.assign(obj, $scope.designation);
+    ApiCall.postDesignation(obj,function(response) {
+      Util.alertMessage(Events.eventType.success,response.Message);
+      $state.reload();
+      $uibModalInstance.close();
+    },function(err) {
+      Util.alertMessage(Events.eventType.error,err.Message);
+      $uibModalInstance.close();
+    })
+
+  };
+
+  $scope.cancel = function () {
+    $uibModalInstance.dismiss('cancel');
+  };
+});
 ;app.controller('AddTendorController',function($scope,$rootScope,$state,Util,Constants,ApiCall,EnvService,$timeout,$cookieStore,$localStorage,AppModel){
 
 $scope.addTendorInit = function() {
@@ -394,14 +492,12 @@ $scope.addTendorInit = function() {
   $scope.tender.FileData = {};
   $scope.fileData = {};
   if(!AppModel.getSetting()) {
-    ApiCall.getCommonSettings(function(response) {
-      AppModel.setSetting(response.Data);
-      $scope.tender.tenderTypes = AppModel.getSetting('tenderType');
-    },function(err) {
-      Util.alertMessage(err.Status.toLocaleLowerCase(),err.Message);
-    })
+    $scope.timeout = $timeout(function() {
+      $scope.addTendorInit();
+    }, 2000);
   }
   else {
+    $timeout.cancel($scope.timeout)
     $scope.tender.tenderTypes = AppModel.getSetting('tenderType');
   }
 }
@@ -699,11 +795,12 @@ app.controller('boqHistoryController', function ($scope,$uibModalInstance,tender
 
     }
 })
-;app.controller('UserController', function($scope, $rootScope, $state,$stateParams, UserService, UtilityService,Util,$localStorage, Constants,ApiCall,Events) {
+;app.controller('UserController', function($scope, $rootScope, $state,$stateParams, UserService,AppModel, UtilityService,Util,$localStorage, Constants,ApiCall,Events) {
     // $scope.UserService = UserService;
     $rootScope.$on(Events.userLogged,function() {
-      if(!$scope.user)
+      if(!$scope.user){
         $scope.user = UserService.getUser();
+      }
     });
     $scope.init = function() {
         $scope.user = UserService.getUser();
@@ -818,15 +915,12 @@ app.controller('boqHistoryController', function ($scope,$uibModalInstance,tender
       // get the designation to update
       if($scope.isEdit){
         if(!AppModel.getSetting()) {
-          ApiCall.getCommonSettings(function(response) {
-            AppModel.setSetting(response.Data);
-            $scope.designations = AppModel.getSetting('designation');
-
-          },function(err) {
-            Util.alertMessage(err.Status.toLocaleLowerCase(),err.Message);
-          })
+          $scope.timeout = $timeout(function() {
+            $scope.init();
+          }, 2000);
         }
         else {
+          $timeout.cancel($scope.timeout);
           $scope.designations = AppModel.getSetting('designation');
         }
       }
@@ -1474,6 +1568,11 @@ app.controller('deleteVendorModalCtrl', function ($scope, $uibModalInstance,vend
                 "method": "GET",
                 "Content-Type": "application/json",
             },
+            postDesignation: {
+                "url": "/api/Designation",
+                "method": "POST",
+                "Content-Type": "application/json",
+            },
             postTendor: {
                 "url": "/api/Tendor",
                 "method": "POST",
@@ -1531,6 +1630,7 @@ app.controller('deleteVendorModalCtrl', function ($scope, $uibModalInstance,vend
             getTendor: ApiGenerator.getApi('getTendor'),
             freezeTender: ApiGenerator.getApi('freezeTender'),
             getCommonSettings: ApiGenerator.getApi('getCommonSettings'),
+            postDesignation: ApiGenerator.getApi('postDesignation'),
             postBOQHistory: ApiGenerator.getApi('postBOQHistory'),
             getBOQHistory: ApiGenerator.getApi('getBOQHistory'),
           });
@@ -1603,6 +1703,11 @@ app.controller('deleteVendorModalCtrl', function ($scope, $uibModalInstance,vend
       {
         "label" : "Tender Milestone",
         "state" : "tender_milestone",
+        "fClass" : "fa fa-th-large",
+      },
+      {
+        "label" : "Role Management",
+        "state" : "role_management",
         "fClass" : "fa fa-th-large",
       },
     ]

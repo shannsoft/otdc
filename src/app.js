@@ -60,7 +60,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         return deferred.promise;
     };
 
-    function checkLoggedout($q, $timeout, $http, $location, $rootScope, $state, $localStorage, Constants, LoginService, UserService,Events) {
+    function checkLoggedout($q, $timeout, $http, $location, $rootScope, $state, ApiCall,$localStorage, AppModel,Constants, LoginService, UserService,Events) {
         var deferred = $q.defer();
         var obj = {
             TokenId: $localStorage[Constants.getTokenKey()]
@@ -71,6 +71,14 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
                 $rootScope.loggedin = $localStorage[Constants.getLoggedIn()];
                 UserService.setUser(response.Data);
                 $rootScope.$emit(Events.userLogged);
+                // fetching the details of the settings
+                if(!AppModel.getSetting()) {
+                  ApiCall.getCommonSettings(function(response) {
+                    AppModel.setSetting(response.Data);
+                  },function(err) {
+                    Util.alertMessage(err.Status.toLocaleLowerCase(),err.Message);
+                  })
+                }
                 deferred.resolve();
               }, 100);
 
@@ -261,6 +269,14 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
             },
             params:{
               tenderId:null
+            }
+        })
+        .state('role_management', {
+            templateUrl: 'src/views/Role/roleList.html',
+            url: '/roles',
+            controller: "RoleListController",
+            resolve: {
+                loggedout: checkLoggedout
             }
         })
         .state('tender_checklist', {

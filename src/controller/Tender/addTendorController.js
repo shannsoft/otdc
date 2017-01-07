@@ -5,14 +5,12 @@ $scope.addTendorInit = function() {
   $scope.tender.FileData = {};
   $scope.fileData = {};
   if(!AppModel.getSetting()) {
-    ApiCall.getCommonSettings(function(response) {
-      AppModel.setSetting(response.Data);
-      $scope.tender.tenderTypes = AppModel.getSetting('tenderType');
-    },function(err) {
-      Util.alertMessage(err.Status.toLocaleLowerCase(),err.Message);
-    })
+    $scope.timeout = $timeout(function() {
+      $scope.addTendorInit();
+    }, 2000);
   }
   else {
+    $timeout.cancel($scope.timeout)
     $scope.tender.tenderTypes = AppModel.getSetting('tenderType');
   }
 }
