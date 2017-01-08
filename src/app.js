@@ -73,9 +73,12 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
                 $rootScope.$emit(Events.userLogged);
                 // fetching the details of the settings
                 if(!AppModel.getSetting()) {
+                  $rootScope.showPreloader = true;
                   ApiCall.getCommonSettings(function(response) {
+                    $rootScope.showPreloader = false;
                     AppModel.setSetting(response.Data);
                   },function(err) {
+                    $rootScope.showPreloader = false;
                     Util.alertMessage(err.Status.toLocaleLowerCase(),err.Message);
                   })
                 }

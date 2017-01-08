@@ -1,4 +1,4 @@
-/*! otdc - v1.0.0 - Sun Jan 08 2017 03:03:03 */
+/*! otdc - v1.0.0 - Sun Jan 08 2017 22:43:04 */
 var dependency = [];
 // lib  dependency
 var distModules = ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate', 'ngCookies', 'ngMessages','ngTable'];
@@ -74,9 +74,12 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
                 $rootScope.$emit(Events.userLogged);
                 // fetching the details of the settings
                 if(!AppModel.getSetting()) {
+                  $rootScope.showPreloader = true;
                   ApiCall.getCommonSettings(function(response) {
+                    $rootScope.showPreloader = false;
                     AppModel.setSetting(response.Data);
                   },function(err) {
+                    $rootScope.showPreloader = false;
                     Util.alertMessage(err.Status.toLocaleLowerCase(),err.Message);
                   })
                 }
@@ -421,6 +424,9 @@ $state.go('forget_password');
    switch (action) {
      case 'view':
        templateUrl = 'designationView.html';
+     case 'add':
+       templateUrl = 'designationAdd.html';
+       designation = {} ; // incase of add init blank object
        break;
      case 'edit':
       templateUrl = 'designationEdit.html';
@@ -458,6 +464,9 @@ app.controller('designationModalCtrl', function ($scope, $uibModalInstance,Util,
       case 'view':
        obj.actType = 'V';
         break;
+      case 'add':
+       obj.actType = 'I';
+        break;
       case 'edit':
         obj.actType = 'U';
 
@@ -470,11 +479,14 @@ app.controller('designationModalCtrl', function ($scope, $uibModalInstance,Util,
 
     }
     obj = Object.assign(obj, $scope.designation);
+    $rootScope.showPreloader = true;
     ApiCall.postDesignation(obj,function(response) {
+      $rootScope.showPreloader = false;
       Util.alertMessage(Events.eventType.success,response.Message);
       $state.reload();
       $uibModalInstance.close();
     },function(err) {
+      $rootScope.showPreloader = false;
       Util.alertMessage(Events.eventType.error,err.Message);
       $uibModalInstance.close();
     })

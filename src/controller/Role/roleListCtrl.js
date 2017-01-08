@@ -16,6 +16,9 @@ app.controller('RoleListController', function($scope, $rootScope, $state, ApiCal
    switch (action) {
      case 'view':
        templateUrl = 'designationView.html';
+     case 'add':
+       templateUrl = 'designationAdd.html';
+       designation = {} ; // incase of add init blank object
        break;
      case 'edit':
       templateUrl = 'designationEdit.html';
@@ -53,6 +56,9 @@ app.controller('designationModalCtrl', function ($scope, $uibModalInstance,Util,
       case 'view':
        obj.actType = 'V';
         break;
+      case 'add':
+       obj.actType = 'I';
+        break;
       case 'edit':
         obj.actType = 'U';
 
@@ -65,11 +71,14 @@ app.controller('designationModalCtrl', function ($scope, $uibModalInstance,Util,
 
     }
     obj = Object.assign(obj, $scope.designation);
+    $rootScope.showPreloader = true;
     ApiCall.postDesignation(obj,function(response) {
+      $rootScope.showPreloader = false;
       Util.alertMessage(Events.eventType.success,response.Message);
       $state.reload();
       $uibModalInstance.close();
     },function(err) {
+      $rootScope.showPreloader = false;
       Util.alertMessage(Events.eventType.error,err.Message);
       $uibModalInstance.close();
     })
