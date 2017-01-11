@@ -1,9 +1,9 @@
 <div >
      <p class="input-group">
 
-      <input type="text" class="form-control" placeholder="Date" uib-datepicker-popup ng-model="ngModel"  is-open="popup.opened" min-date="minDate"  ng-required close-text="Close" />
+      <input type="text" class="form-control" placeholder="Date" uib-datepicker-popup ng-model="ngModel" ng-readonly="disable" is-open="popup.opened" min-date="minDate"  ng-required close-text="Close" />
       <span class="input-group-btn">
-        <button type="button" class="btn btn-default" ng-click="open()"><i class="fa fa-calendar"></i></button>
+        <button type="button" class="btn btn-default" ng-disabled="disable" ng-click="open()"><i class="fa fa-calendar"></i></button>
       </span>
     </p>
 </div>

@@ -73,6 +73,7 @@ module.exports = function(grunt) {
                   "lib/angular/ngStorage.min.js",
                   "lib/angular/angular-cookies.min.js",
                   "lib/angular/angular-messages.js",
+                  "lib/dist/moment.min.js",
                   "js/vendor.js",
                   "js/app.js",
                 ],

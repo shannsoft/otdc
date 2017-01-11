@@ -15,7 +15,8 @@ app.directive('dateViewer', function () {
         scope:{
           ngModel:'=',
           minDate:'=',
-          className:"="
+          className:"=",
+          disable:"="
         }
     };
 })

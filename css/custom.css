@@ -197,7 +197,7 @@ height: 10px;
 border-color: #000;
 position: relative;
 top: 0px;
-right: 25px;
+
 }
 
 .circular {
@@ -351,9 +351,9 @@ h3.title {
     padding: 0 0 0 0;
 }
 
-table.userListTable tbody tr td:nth-child(1), td:nth-child(3), td:nth-child(4), td:nth-child(5) {
+/*table.userListTable tbody tr td:nth-child(1), td:nth-child(3), td:nth-child(4), td:nth-child(5) {
     width: 65px;
-}
+}*/
 
 table.userListTable.ng-table tbody tr td span {
     cursor: pointer;
@@ -387,9 +387,9 @@ table.userListTable.ng-table tbody tr td span {
   margin-left: 10px;
 }
 
-body .tenderMilestone tbody tr td:nth-child(2), td:nth-child(3), td:nth-child(4), td:nth-child(5) {
+/*body .tenderMilestone tbody tr td:nth-child(2), td:nth-child(3), td:nth-child(4), td:nth-child(5) {
     width: 100px;
-}
+}*/
 
 
 /*.boqDetailsTable th:nth-child(5), tr td:nth-child(5) {
@@ -406,9 +406,9 @@ position: relative;
 z-index: 10;
 width: 125px;
 }
-.tenderMilestone tbody tr td {
+/*.tenderMilestone tbody tr td {
     vertical-align: middle;
-}
+}*/
 input[type="date"] {
     position: relative;
     right: 25px;
@@ -426,4 +426,8 @@ input[type="date"] {
 }
 .popover{
   width:100%;
+}
+.overDue{
+  color: red;
+  font-weight: bold;
 }

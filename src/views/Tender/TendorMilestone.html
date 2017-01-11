@@ -8,12 +8,16 @@
     <form name="item" class="ng-pristine ng-valid">
         <div class="card card-block">
             <fieldset class="form-group">
+                <label class="control-label" for="formGroupExampleInput2">Tender Ref No:</label>
+                <input type="text" ng-model="tender.referenceNo" class="form-control boxed formInput" readonly="readonly" placeholder="">
+            </fieldset>
+            <fieldset class="form-group">
                 <label class="control-label" for="formGroupExampleInput2">Tender Type:</label>
-                <input type="text" ng-model="tenderMilestone.tenderType" class="form-control boxed formInput" readonly="readonly" placeholder="">
+                <input type="text" ng-model="tender.tenderType" class="form-control boxed formInput" readonly="readonly" placeholder="">
             </fieldset>
             <fieldset class="form-group">
                 <label class="control-label" for="formGroupExampleInput2">Tender Category:</label>
-                <input type="text" ng-model="tenderMilestone.category" class="form-control boxed formInput" readonly="readonly" placeholder="">
+                <input type="text" ng-model="tender.category" class="form-control boxed formInput" readonly="readonly" placeholder="">
             </fieldset>
         </div>
     </form>
@@ -27,115 +31,113 @@
         <div class="card card-block">
             <div class="form-group row">
                 <label class="col-sm-1 form-control-label text-xs-right">
-                    Recept of Document:
+                    {{tenderMilestone[0].description}}:
                 </label>
                 <div class="col-sm-10">
-                    <date-viewer ng-model="tenderMilestone.docReceiveDate"></date-viewer>
-                    <button type="button" class="btn btn-success">Close ticket</button>
+                    <date-viewer ng-model="tenderMilestone[0].startDate"></date-viewer>
+                    <button type="button" class="btn btn-success" ng-disabled="tenderMilestone[0].completionDate == '' || !tenderMilestone[0].completionDate" ng-click="closeTicket(0)">Close ticket</button>
                 </div>
             </div>
             <div class="form-group row">
-                <table class="table tenderMilestone" cellspacing="0" cellpadding="0">
-                    <!-- <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Username</th>
-                        </tr>
-                    </thead> -->
+                <table class="table tenderMilestone" cellspacing="0" cellpadding="0" ng-if="tenderMilestone.length">
+
                     <tbody>
                       <tr>
-                        <td>Techical Bid<td>
+                        <td>{{tenderMilestone[1].description}}<td>
                           <td>
-                            <input date-input ng-model="tenderMilestone.techBid_od" />
-                            <span class="circular m-l-20pr" uib-tooltip="Techical Bid Open date">OD</span>
+                            <date-viewer ng-model="tenderMilestone[1].startDate" disable="true"></date-viewer>
+                            <span class="circular m-l-20pr" uib-tooltip="{{tenderMilestone[1].description}} Open date" >OD</span>
                           </td>
                           <td><hr/></td>
                           <td>
-                            <input date-input ng-model="tenderMilestone.techBid_cd" />
-                            <span class="circular m-l-20pr" uib-tooltip="Techical Bid Close date">CD</span>
+                            <date-viewer ng-model="tenderMilestone[1].completionDate" ></date-viewer>
+                            <span class="circular m-l-20pr" uib-tooltip="{{tenderMilestone[1].description}} Close date">CD</span>
                           </td>
                           <td><hr/></td>
                           <td>
-                            <input date-input ng-model="tenderMilestone.techBid_ed" />
-                            <span class="circular m-l-20pr" uib-tooltip="Techical Bid End date">ED</span>
+                            <date-viewer ng-model="tenderMilestone[1].endDate" disable="true"></date-viewer>
+                            <span class="circular m-l-20pr" uib-tooltip="{{tenderMilestone[1].description}} End date">ED</span>
                           </td>
-                          <td><button type="button" class="btn btn-success">Close ticket</button></td>
+                          <td><button type="button" class="btn btn-success" ng-click="closeTicket(1)">Close ticket</button></td>
+                          <td><span class="overDue" ng-if="tenderMilestone[1].dueDayCount">{{tenderMilestone[1].dueDayCount}} day overdue</span></td>
                       </tr>
                       <tr>
-                        <td>Opening of the financial bid<td>
+                        <td>{{tenderMilestone[2].description}}<td>
                           <td>
-                            <input date-input ng-model="tenderMilestone.finance_od" />
-                            <span class="circular m-l-20pr" uib-tooltip="financial Bid Open date">OD</span>
+                            <date-viewer ng-model="tenderMilestone[2].startDate" disable="true"></date-viewer>
+                            <span class="circular m-l-20pr" uib-tooltip="{{tenderMilestone[2].description}} Open date">OD</span>
                           </td>
                           <td><hr/></td>
                           <td>
-                          <input date-input ng-model="tenderMilestone.finance_cd" />
-                            <span class="circular m-l-20pr" uib-tooltip="financial Bid close date">CD</span>
+                            <date-viewer ng-model="tenderMilestone[2].completionDate"></date-viewer>
+                            <span class="circular m-l-20pr" uib-tooltip="{{tenderMilestone[2].description}} Close date">CD</span>
                           </td>
                           <td><hr/></td>
                           <td>
-                            <input date-input ng-model="tenderMilestone.finance_ed" />
-                            <span class="circular m-l-20pr" uib-tooltip="financial Bid End date">ED</span>
+                            <date-viewer ng-model="tenderMilestone[2].endDate" disable="true"></date-viewer>
+                            <span class="circular m-l-20pr" uib-tooltip="{{tenderMilestone[2].description}} End date">ED</span>
                           </td>
-                          <td><button type="button" class="btn btn-success">Close ticket</button></td>
+                          <td><button type="button" class="btn btn-success" ng-click="closeTicket(2)">Close ticket</button></td>
+                          <td><span class="overDue" ng-if="tenderMilestone[2].dueDayCount">{{tenderMilestone[2].dueDayCount}} day overdue</span></td>
                       </tr>
                       <tr>
-                        <td>Approval of the tender date <td>
+                        <td>{{tenderMilestone[3].description}}<td>
                           <td>
-                            <input date-input ng-model="tenderMilestone.tenderApp_od" />
-                            <span class="circular m-l-20pr" uib-tooltip="tender approval open date">OD</span>
+                            <date-viewer ng-model="tenderMilestone[3].startDate" disable="true"></date-viewer>
+                            <span class="circular m-l-20pr" uib-tooltip="{{tenderMilestone[3].description}} Open date">OD</span>
                           </td>
                           <td><hr/></td>
                           <td>
-                            <input date-input ng-model="tenderMilestone.tenderApp_cd" />
-                            <span class="circular m-l-20pr" uib-tooltip="tender approval close date">CD</span>
+                            <date-viewer ng-model="tenderMilestone[3].completionDate"></date-viewer>
+                            <span class="circular m-l-20pr" uib-tooltip="{{tenderMilestone[3].description}} Close date">CD</span>
                           </td>
                           <td><hr/></td>
                           <td>
-                            <input date-input ng-model="tenderMilestone.tenderApp_ed" />
-                            <span class="circular m-l-20pr" uib-tooltip="ftender approval End date">ED</span>
+                            <date-viewer ng-model="tenderMilestone[3].endDate" disable="true"></date-viewer>
+                            <span class="circular m-l-20pr" uib-tooltip="{{tenderMilestone[3].description}} End date">ED</span>
                           </td>
-                          <td><button type="button" class="btn btn-success">Close ticket</button></td>
+                          <td><button type="button" class="btn btn-success" ng-click="closeTicket(3)">Close ticket</button></td>
+                          <td><span class="overDue" ng-if="tenderMilestone[3].dueDayCount">{{tenderMilestone[3].dueDayCount}} day overdue</span></td>
+                      </tr>
+                      <tr>
+                        <td>{{tenderMilestone[4].description}}<td>
+                          <td>
+                            <date-viewer ng-model="tenderMilestone[4].startDate" disable="true"></date-viewer>
+                            <span class="circular m-l-20pr" uib-tooltip="{{tenderMilestone[4].description}} Open date">OD</span>
+                          </td>
+                          <td><hr/></td>
+                          <td>
+                            <date-viewer ng-model="tenderMilestone[4].completionDate"></date-viewer>
+                            <span class="circular m-l-20pr" uib-tooltip="{{tenderMilestone[4].description}} Close date">CD</span>
+                          </td>
+                          <td><hr/></td>
+                          <td>
+                            <date-viewer ng-model="tenderMilestone[4].endDate" disable="true"></date-viewer>
+                            <span class="circular m-l-20pr" uib-tooltip="{{tenderMilestone[4].description}} End date">ED</span>
+                          </td>
+                          <td><button type="button" class="btn btn-success" ng-click="closeTicket(4)">Close ticket</button></td>
+                          <td><span class="overDue" ng-if="tenderMilestone[4].dueDayCount">{{tenderMilestone[4].dueDayCount}} day overdue</span></td>
+                      </tr>
+                      <tr>
+                        <td>{{tenderMilestone[5].description}}<td>
+                          <td>
+                            <date-viewer ng-model="tenderMilestone[5].startDate" disable="true"></date-viewer>
+                            <span class="circular m-l-20pr" uib-tooltip="{{tenderMilestone[5].description}} Open date">OD</span>
+                          </td>
+                          <td><hr/></td>
+                          <td>
+                            <date-viewer ng-model="tenderMilestone[5].completionDate"></date-viewer>
+                            <span class="circular m-l-20pr" uib-tooltip="{{tenderMilestone[5].description}} Close date">CD</span>
+                          </td>
+                          <td><hr/></td>
+                          <td>
+                            <date-viewer ng-model="tenderMilestone[5].endDate" disable="true"></date-viewer>
+                            <span class="circular m-l-20pr" uib-tooltip="{{tenderMilestone[5].description}} End date">ED</span>
+                          </td>
+                          <td><button type="button" class="btn btn-success" ng-click="closeTicket(5)">Close ticket</button></td>
+                          <td><span class="overDue" ng-if="tenderMilestone[5].dueDayCount">{{tenderMilestone[5].dueDayCount}} day overdue</span></td>
                       </tr>
 
-                      <tr>
-                        <td>Signing aggrement <td>
-                          <td>
-                            <input date-input ng-model="tenderMilestone.tenderApp_od" />
-                            <span class="circular m-l-20pr" uib-tooltip="Signing aggrement open date">OD</span>
-                          </td>
-                          <td><hr/></td>
-                          <td>
-                            <input date-input ng-model="tenderMilestone.tenderApp_cd" />
-                            <span class="circular m-l-20pr" uib-tooltip="Signing aggrement close date">CD</span>
-                          </td>
-                          <td><hr/></td>
-                          <td>
-                            <input date-input ng-model="tenderMilestone.tenderApp_ed" />
-                            <span class="circular m-l-20pr" uib-tooltip="Signing aggrement End date">ED</span>
-                          </td>
-                          <td><button type="button" class="btn btn-success">Close ticket</button></td>
-                      </tr>
-                      <tr>
-                        <td>Handing over the site <td>
-                          <td>
-                            <input date-input ng-model="tenderMilestone.tenderApp_od" />
-                            <span class="circular m-l-20pr" uib-tooltip="Handing over the site open date">OD</span>
-                          </td>
-                          <td><hr/></td>
-                          <td>
-                            <input date-input ng-model="tenderMilestone.tenderApp_cd" />
-                            <span class="circular m-l-20pr" uib-tooltip="Handing over the site close date">CD</span>
-                          </td>
-                          <td><hr/></td>
-                          <td>
-                            <input date-input ng-model="tenderMilestone.tenderApp_ed" />
-                            <span class="circular m-l-20pr" uib-tooltip="Handing over the site End date">ED</span>
-                          </td>
-                          <td><button type="button" class="btn btn-success">Close ticket</button></td>
-                      </tr>
 
                     </tbody>
                 </table>

@@ -271,7 +271,8 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
                 loggedout: checkLoggedout
             },
             params:{
-              tenderId:null
+              tenderId:null,
+              tender:null
             }
         })
         .state('role_management', {

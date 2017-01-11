@@ -64,6 +64,16 @@ angular.module('WebService', [])
                 "method": "POST",
                 "Content-Type": "application/json",
             },
+            getMilestone: {
+                "url": "/api/TendorMileStone",
+                "method": "GET",
+                "Content-Type": "application/json",
+            },
+            postMilestone: {
+                "url": "/api/TendorMileStone",
+                "method": "POST",
+                "Content-Type": "application/json",
+            },
             deleteVendor: {
                 "url": "/api/Vendor",
                 "method": "DELETE",
@@ -139,6 +149,8 @@ angular.module('WebService', [])
             postDesignation: ApiGenerator.getApi('postDesignation'),
             postBOQHistory: ApiGenerator.getApi('postBOQHistory'),
             getBOQHistory: ApiGenerator.getApi('getBOQHistory'),
+            getMilestone: ApiGenerator.getApi('getMilestone'),
+            postMilestone: ApiGenerator.getApi('postMilestone'),
           });
 
     })
