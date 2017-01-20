@@ -1,4 +1,4 @@
-/*! otdc - v1.0.0 - Wed Jan 11 2017 03:47:04 */
+/*! otdc - v1.0.0 - Fri Jan 20 2017 12:48:43 */
 var dependency = [];
 // lib  dependency
 var distModules = ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate', 'ngCookies', 'ngMessages','ngTable'];
@@ -514,10 +514,10 @@ $scope.addTendorInit = function() {
     $scope.tender.tenderTypes = AppModel.getSetting('tenderType');
   }
 }
-$scope.fileSelected = function(fileName) {
+/* $scope.fileSelected = function(fileName) {
   console.log(">>>>>>>>>>>>>>>>>>>>>>",window.fileData);
   $scope.tender.FileData = window.fileData;
-}
+} */
 $scope.addTendor = function(addTendorForm,tender) {
   tender.tokenID = $localStorage[Constants.getTokenKey()];
   tender.actType = "I";
@@ -538,6 +538,9 @@ $scope.goTenderAssign = function(){
 }
 $scope.gotoTenderCheck = function(){
   $state.go('tender_checklist');
+}
+$scope.test = function(){
+	console.log($scope.tender.FileData);
 }
 })
 ;app.controller('TenderAssignController', function($scope, $rootScope, $state, $stateParams, ApiCall, EnvService, $timeout, $cookieStore, $localStorage,Constants,Util) {
@@ -1408,39 +1411,29 @@ app.controller('deleteVendorModalCtrl', function ($scope, $uibModalInstance,vend
     return '';
   }
 }])
-;app.directive('fileSelect', [function () {
-    return {
-        restrict:"EA",
-        link: function (scope, element, attrs) {
-            element.on('change', function  (evt) {
-              console.log("attrs  ",attrs.fileData);
-               var fr = new FileReader();
-                var file = evt.target.files[0];
-                fr.onloadend = function () {
-                   var result = this.result;
-                  //  var hex = "";
-                  //  for (var i = 0; i < this.result.length; i++) {
-                  //      var byteStr = result.charCodeAt(i).toString(16);
-                  //      if (byteStr.length < 2) {
-                  //          byteStr = "0" + byteStr;
-                  //      }
-                  //      hex += " " + byteStr;
-                  //  }
-                   window.fileData = {
-                     FileName:file.name,
-                     InputStream:result.split(";base64,")[1]
-                   }
-                   scope.fileSelected(window.fileData);
-               };
-               fr.readAsDataURL(file);
-
-            });
-        },
-        scope:{
-          fileSelected :"&",
-          fileData :"=",
-        }
-    }
+;app.directive('fileSelect', ['$parse', function ($parse) {
+	return {
+	   restrict: 'EA',
+	   link: function(scope, element, attrs) {
+		  var model = $parse(attrs.fileSelect);
+		  var modelSetter = model.assign;
+		  element.bind('change', function(){
+			 var fr = new FileReader();
+			 var file  = element[0].files[0];
+			 fr.onloadend = function () {
+                var result = this.result;
+				var obj = {
+					fileName : file.name,
+					InputStream : result.split(";base64,")[1]
+				}
+				scope.$apply(function(){
+					modelSetter(scope, obj);
+				});
+			 };
+			 fr.readAsDataURL(file);
+		  });
+	   }
+	};
 }]);
 ;app.directive('history', function () {
     return {

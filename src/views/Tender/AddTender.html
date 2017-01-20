@@ -194,13 +194,14 @@
                     </fieldset>
                     <fieldset class="form-group" ng-class="{'has-error': (addTendorForm.boqFile.$invalid && addTendorForm.boqFile.$touched)}">
                         <label class="control-label" for="formGroupExampleInput7">Upload BOQ file</label>
-                        <input type="file" name="boqFile" class="form-control formInput" ng-model="tender.boqFile" file-select file-selected="fileSelected(fileName)" required/>
+                        <!-- <input type="file" name="boqFile" class="form-control formInput" file-select="myFile" file-selected="fileSelected(fileName)" required/> -->
+						<input type="file" class="form-control formInput" file-select="tender.FileData"/>
                         <span class="has-error formInput" ng-show="addTendorForm.boqFile.$error.required && addTendorForm.boqFile.$touched">Please enter boqFile</span>
 
                     </fieldset>
                     <fieldset class="form-group">
                         <input type="submit" class="btn btn-success" ng-disabled="addTendorForm.$invalid"></input>
-                        <button class="btn btn-secondary" history>Cancel{{addTendorForm.$invalid}}</button>
+                        <button class="btn btn-secondary" history ng-click="test()">Cancel</button>
                     </fieldset>
                 </form>
             </div>

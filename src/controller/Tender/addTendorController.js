@@ -14,10 +14,10 @@ $scope.addTendorInit = function() {
     $scope.tender.tenderTypes = AppModel.getSetting('tenderType');
   }
 }
-$scope.fileSelected = function(fileName) {
+/* $scope.fileSelected = function(fileName) {
   console.log(">>>>>>>>>>>>>>>>>>>>>>",window.fileData);
   $scope.tender.FileData = window.fileData;
-}
+} */
 $scope.addTendor = function(addTendorForm,tender) {
   tender.tokenID = $localStorage[Constants.getTokenKey()];
   tender.actType = "I";
@@ -38,5 +38,8 @@ $scope.goTenderAssign = function(){
 }
 $scope.gotoTenderCheck = function(){
   $state.go('tender_checklist');
+}
+$scope.test = function(){
+	console.log($scope.tender.FileData);
 }
 })
