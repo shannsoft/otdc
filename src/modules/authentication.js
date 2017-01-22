@@ -1,13 +1,13 @@
 angular.module('Authentication', [])
-    .factory('LoginService',function($http,$resource,ApiGenerator) {
-      return $resource('/',null, {
-        login: ApiGenerator.getApi('login'),
-        logout: ApiGenerator.getApi('logout'),
-        token: ApiGenerator.getApi('token'),
-        forgotPassword: ApiGenerator.getApi('forgotPassword')
-      });
-    })
-    .controller('LoginController',function($http,$scope,$state,$rootScope,LoginService,UtilityService,Events,$localStorage,Constants,UserService,Util,ApiGenerator,validationService) {
+    // .factory('LoginService',function($http,$resource,ApiGenerator) {
+    //   return $resource('/',null, {
+    //     login: ApiGenerator.getApi('login'),
+    //     logout: ApiGenerator.getApi('logout'),
+    //     token: ApiGenerator.getApi('token'),
+    //     forgotPassword: ApiGenerator.getApi('forgotPassword')
+    //   });
+    // })
+    .controller('LoginController',function($http,$scope,$state,$rootScope,ApiCall,UtilityService,Events,$localStorage,Constants,UserService,Util,ApiGenerator,validationService) {
       $scope.init = function(){
         $scope.user = {};
         if($localStorage[Constants.getIsRemember()]){
@@ -23,8 +23,8 @@ angular.module('Authentication', [])
         // $state.go('dashboard');
         console.log(loginfrm);
         ApiGenerator.getApi('login');
-        LoginService.login(JSON.stringify($scope.user),function(response) {
-          UtilityService.showLoader();
+        UtilityService.showLoader();
+        ApiCall.login(JSON.stringify($scope.user),function(response) {
           if(response.StatusCode == 200){
             UtilityService.hideLoader();
             $localStorage[Constants.getTokenKey()] = response.Data.tokenId;
@@ -54,7 +54,7 @@ angular.module('Authentication', [])
         })
       }
       $scope.logout = function() {
-          LoginService.logout({userId:UserService.getUser().userId},function(response) {
+          ApiCall.logout({userId:UserService.getUser().userId},function(response) {
             UserService.unsetUser();
             Util.alertMessage("success",response.Message);
             $rootScope.loggedin = false;
@@ -70,7 +70,7 @@ angular.module('Authentication', [])
             "name": "Mukhtar",
             "email": "rajendrasahoodbpb@gmail.com"
           }
-          LoginService.forgotPassword(obj,function(response) {
+          ApiCall.forgotPassword(obj,function(response) {
             Util.alertMessage("success",response.Message);
           },function(err) {
             Util.alertMessage("danger",response.Message);

@@ -46,7 +46,7 @@ app.controller('VendorController',function($scope,$rootScope,$state,Constants,$u
     switch (action) {
       case 'view':
       case 'edit':
-        $state.go("vendorDetails",{vendor:vendor,action:action})
+        $state.go("vendorDetails",{vendorId:vendor.vendorId,vendor:vendor,action:action})
         break;
       case 'delete':
         // call service to delete
@@ -68,8 +68,8 @@ app.controller('VendorController',function($scope,$rootScope,$state,Constants,$u
   }
   $scope.initVenderList = function(){
     var vendorData = {};
-    vendorData.tokenId = $localStorage[Constants.getTokenKey()];
-    vendorData.actType = "GET_VENDOR_ALL";
+    // vendorData.tokenId = $localStorage[Constants.getTokenKey()];
+    // vendorData.actType = "GET_VENDOR_ALL";
     $rootScope.showPreloader = true;
     ApiCall.getVendor(vendorData,function(res) {
       Util.alertMessage(res.Status.toLocaleLowerCase(), res.Message);
@@ -86,7 +86,7 @@ app.controller('VendorController',function($scope,$rootScope,$state,Constants,$u
   }
   $scope.addVendor = function(addVendorForm,vendorData){
 
-    vendorData.tokenId = $localStorage[Constants.getTokenKey()];
+    // vendorData.tokenId = $localStorage[Constants.getTokenKey()];
     vendorData.type = "I";
     $rootScope.showPreloader = true;
     ApiCall.postVendor(vendorData,function(res) {

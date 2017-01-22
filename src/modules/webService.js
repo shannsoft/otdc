@@ -49,6 +49,11 @@ angular.module('WebService', [])
                 "method": "POST",
                 "Content-Type": "application/json",
             },
+            deleteUser: {
+                "url": "/api/User",
+                "method": "DELETE",
+                "Content-Type": "application/json",
+            },
             // getUser: {
             //     "url": "/api/User",
             //     "method": "POST",
@@ -61,7 +66,7 @@ angular.module('WebService', [])
             },
             getVendor: {
                 "url": "/api/Vendor",
-                "method": "POST",
+                "method": "GET",
                 "Content-Type": "application/json",
             },
             getMilestone: {
@@ -69,7 +74,7 @@ angular.module('WebService', [])
                 "method": "GET",
                 "Content-Type": "application/json",
             },
-            postMilestone: {
+            posttMilestone: {
                 "url": "/api/TendorMileStone",
                 "method": "POST",
                 "Content-Type": "application/json",
@@ -128,6 +133,7 @@ angular.module('WebService', [])
             getApi: function(api) {
                 var obj = {};
                 obj = angular.copy(API[api]);
+                // console.log("obj  ",obj,api);
                 obj.url = EnvService.getBasePath() + obj.url; // prefix the base path
                 return obj;
             }
@@ -136,8 +142,13 @@ angular.module('WebService', [])
     .factory('ApiCall', function($http, $resource, API, EnvService,ApiGenerator) {
 
           return $resource('/',null, {
+            login: ApiGenerator.getApi('login'),
+            logout: ApiGenerator.getApi('logout'),
+            token: ApiGenerator.getApi('token'),
+            forgotPassword: ApiGenerator.getApi('forgotPassword'),
             getDesignation: ApiGenerator.getApi('getDesignation'),
             postUser: ApiGenerator.getApi('postUser'),
+            deleteUser: ApiGenerator.getApi('deleteUser'),
             getUser: ApiGenerator.getApi('getUser'),
             postVendor: ApiGenerator.getApi('postVendor'),
             getVendor: ApiGenerator.getApi('getVendor'),
@@ -150,7 +161,7 @@ angular.module('WebService', [])
             postBOQHistory: ApiGenerator.getApi('postBOQHistory'),
             getBOQHistory: ApiGenerator.getApi('getBOQHistory'),
             getMilestone: ApiGenerator.getApi('getMilestone'),
-            postMilestone: ApiGenerator.getApi('postMilestone'),
+            postMilestone: ApiGenerator.getApi('posttMilestone'),
           });
 
     })

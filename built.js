@@ -1,4 +1,4 @@
-/*! otdc - v1.0.0 - Fri Jan 20 2017 12:48:43 */
+/*! otdc - v1.0.0 - Sun Jan 22 2017 15:19:25 */
 var dependency = [];
 // lib  dependency
 var distModules = ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate', 'ngCookies', 'ngMessages','ngTable'];
@@ -31,12 +31,12 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         };
     });
 
-    function checkLoggedin($q, $timeout, $http, $location, $rootScope, $state, Constants, $localStorage, $rootScope, LoginService, UserService) {
+    function checkLoggedin($q, $timeout, $http, $location, $rootScope, $state, ApiCall,Constants, $localStorage, $rootScope, UserService) {
         var deferred = $q.defer();
         var obj = {
             TokenId: $localStorage[Constants.getTokenKey()]
         }
-        LoginService.token(obj, function(response) {
+        ApiCall.token(obj, function(response) {
             if (response.StatusCode == 200 && response.Data && response.Status == "Success") {
                 $timeout(function() {
                     $rootScope.loggedin = $localStorage[Constants.getLoggedIn()] = true;
@@ -61,12 +61,12 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         return deferred.promise;
     };
 
-    function checkLoggedout($q, $timeout, $http, $location, $rootScope, $state, ApiCall,$localStorage, AppModel,Constants, LoginService, UserService,Events) {
+    function checkLoggedout($q, $timeout, $http, $location, $rootScope, $state, ApiCall,$localStorage, AppModel,Constants, UserService,Events) {
         var deferred = $q.defer();
         var obj = {
             TokenId: $localStorage[Constants.getTokenKey()]
         }
-        LoginService.token(obj, function(response) {
+        ApiCall.token(obj, function(response) {
             if (response.StatusCode == 200 && response.Data && response.Status == "Success") {
               $timeout(function() {
                 $rootScope.loggedin = $localStorage[Constants.getLoggedIn()];
@@ -241,9 +241,9 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         })
         .state('vendorDetails', {
             templateUrl: 'src/views/Vendor/vendorDetails.html',
-            url: '/vendorDetails',
+            url: '/vendorDetails/:vendorId',
             controller: "VendorDetailsController",
-            params: { vendor: null,action:null },
+            params: { vendorId:null,vendor: null,action:null },
             resolve: {
                 loggedout: checkLoggedout
             },
@@ -284,10 +284,10 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
                 loggedout: checkLoggedout
             }
         })
-        .state('tender_checklist', {
-            templateUrl: 'src/views/Tender/TenderCheckList.html',
-            url: '/tender_checklist',
-            // controller: "Tender_controller",
+        .state('vendor_checklist', {
+            templateUrl: 'src/views/Vendor/addCheckList.html',
+            url: '/vendor_checklist',
+            controller: "VendorChecklistController",
             resolve: {
                 loggedout: checkLoggedout
             },
@@ -519,7 +519,7 @@ $scope.addTendorInit = function() {
   $scope.tender.FileData = window.fileData;
 } */
 $scope.addTendor = function(addTendorForm,tender) {
-  tender.tokenID = $localStorage[Constants.getTokenKey()];
+  // tender.tokenID = $localStorage[Constants.getTokenKey()];
   tender.actType = "I";
   tender.tenderType = tender.tenderType.typeName;
   console.log(JSON.stringify(tender));
@@ -539,9 +539,7 @@ $scope.goTenderAssign = function(){
 $scope.gotoTenderCheck = function(){
   $state.go('tender_checklist');
 }
-$scope.test = function(){
-	console.log($scope.tender.FileData);
-}
+
 })
 ;app.controller('TenderAssignController', function($scope, $rootScope, $state, $stateParams, ApiCall, EnvService, $timeout, $cookieStore, $localStorage,Constants,Util) {
   $scope.init = function() {
@@ -552,7 +550,7 @@ $scope.test = function(){
     // loading vendorList
     $rootScope.showPreloader = true;
     var vendorData = {};
-    vendorData.tokenId = $localStorage[Constants.getTokenKey()];
+    // vendorData.tokenId = $localStorage[Constants.getTokenKey()];
     vendorData.type = "GET_VENDOR_ALL";
     ApiCall.getVendor(vendorData,function(res) {
       $scope.tender.vendors = res.Data;
@@ -598,6 +596,7 @@ $scope.test = function(){
             action: action
         });
     }
+    $scope.tender.fileData = {a:'a'};
     $scope.fileSelected = function(fileName) {
       console.log(">>>>>>>>>>>>>>>>>>>>>>",window.fileData);
       $scope.FileData = window.fileData;
@@ -1021,7 +1020,7 @@ app.controller('boqHistoryController', function ($scope,$uibModalInstance,tender
        $scope.user.designationId = $scope.user.designation.designationId;
        delete $scope.user['designation'];
        console.log("user ",$scope.user);
-       $scope.user.tokenId = $localStorage[Constants.getTokenKey()];
+      //  $scope.user.tokenId = $localStorage[Constants.getTokenKey()];
        ApiCall.postUser($scope.user,function(res) {
          Util.alertMessage(res.Status.toLocaleLowerCase(), res.Message);
          $state.go("UserList");
@@ -1148,10 +1147,10 @@ app.controller('deleteModalCtrl', function ($scope, $uibModalInstance,user,Util,
   $scope.ok = function () {
     // calling service to delete user
     var obj = {
-      actType:'D',
+      // actType:'D',
       userId:user.userId
     }
-    ApiCall.postUser(obj,function(response) {
+    ApiCall.deleteUser(obj,function(response) {
       Util.alertMessage(Events.eventType.success,response.Message);
       $uibModalInstance.close();
       $state.reload();
@@ -1178,10 +1177,42 @@ app.controller('deleteModalCtrl', function ($scope, $uibModalInstance,user,Util,
     console.log(vendorDetails,vendor);
   }
 })
+;app.controller('VendorChecklistController',function($scope,$rootScope,$state,$stateParams,Constants,Events,EnvService,$timeout,$cookieStore,$localStorage,ApiCall,Util){
+  $scope.currTab = 0;
+  $scope.init = function() {
+    Util.alertMessage(Events.eventType.warning,Events.noVendorSelected);
+    if(!$stateParams.vendorId) {
+      $state.go("VendorList");
+    }
+    else {
+      $scope.vendorChecklist.vendorId = $stateParams.vendorId;
+
+    }
+  }
+  $scope.tabChange = function(tabPos) {
+      $scope.currTab = tabPos;
+  }
+
+})
 ;app.controller('VendorDetailsController',function($scope,$rootScope,$state,$stateParams,Constants,EnvService,$timeout,$cookieStore,$localStorage,ApiCall,Util){
   $scope.init = function() {
     if(!$stateParams.vendor)
-      $state.go("VendorList"); // move to vendor list if no vendor selected to edit data
+    {
+      if(!$stateParams.vendorId)
+        $state.go("VendorList"); // move to vendor list if no vendor selected to edit data
+      else{
+        $rootScope.showPreloader = true;
+        ApiCall.getVendor({vendorId:$stateParams.vendorId},function(res) {
+          Util.alertMessage(res.Status.toLocaleLowerCase(), res.Message);
+          $scope.isEdit = $stateParams.action == 'edit' ? true : false;
+          $scope.vendor = res.Data;
+          $rootScope.showPreloader = false;
+        },function(err) {
+          Util.alertMessage(err.Status.toLocaleLowerCase(), err.Message);
+          $rootScope.showPreloader = false;
+        })
+      }
+    }
     else {
       $scope.isEdit = $stateParams.action == 'edit' ? true : false;
       $scope.vendor = $stateParams.vendor;
@@ -1249,7 +1280,7 @@ app.controller('deleteModalCtrl', function ($scope, $uibModalInstance,user,Util,
     switch (action) {
       case 'view':
       case 'edit':
-        $state.go("vendorDetails",{vendor:vendor,action:action})
+        $state.go("vendorDetails",{vendorId:vendor.vendorId,vendor:vendor,action:action})
         break;
       case 'delete':
         // call service to delete
@@ -1271,8 +1302,8 @@ app.controller('deleteModalCtrl', function ($scope, $uibModalInstance,user,Util,
   }
   $scope.initVenderList = function(){
     var vendorData = {};
-    vendorData.tokenId = $localStorage[Constants.getTokenKey()];
-    vendorData.actType = "GET_VENDOR_ALL";
+    // vendorData.tokenId = $localStorage[Constants.getTokenKey()];
+    // vendorData.actType = "GET_VENDOR_ALL";
     $rootScope.showPreloader = true;
     ApiCall.getVendor(vendorData,function(res) {
       Util.alertMessage(res.Status.toLocaleLowerCase(), res.Message);
@@ -1289,7 +1320,7 @@ app.controller('deleteModalCtrl', function ($scope, $uibModalInstance,user,Util,
   }
   $scope.addVendor = function(addVendorForm,vendorData){
 
-    vendorData.tokenId = $localStorage[Constants.getTokenKey()];
+    // vendorData.tokenId = $localStorage[Constants.getTokenKey()];
     vendorData.type = "I";
     $rootScope.showPreloader = true;
     ApiCall.postVendor(vendorData,function(res) {
@@ -1411,7 +1442,8 @@ app.controller('deleteVendorModalCtrl', function ($scope, $uibModalInstance,vend
     return '';
   }
 }])
-;app.directive('fileSelect', ['$parse', function ($parse) {
+;
+app.directive('fileSelect', ['$parse', function ($parse) {
 	return {
 	   restrict: 'EA',
 	   link: function(scope, element, attrs) {
@@ -1434,7 +1466,50 @@ app.controller('deleteVendorModalCtrl', function ($scope, $uibModalInstance,vend
 		  });
 	   }
 	};
-}]);
+//
+// app.directive('fileSelect', [function () {
+//     return {
+//         restrict:"EA",
+//         require: 'ngModel',
+//         link: function (scope, element, attrs,ngModelCtrl) {
+//             element.on('change', function  (evt) {
+//               console.log("attrs  ",attrs.fileData,ngModelCtrl.$modelValue);
+//                var fr = new FileReader();
+//                 var file = evt.target.files[0];
+//                 fr.onloadend = function () {
+//                    var result = this.result;
+//                   //  var hex = "";
+//                   //  for (var i = 0; i < this.result.length; i++) {
+//                   //      var byteStr = result.charCodeAt(i).toString(16);
+//                   //      if (byteStr.length < 2) {
+//                   //          byteStr = "0" + byteStr;
+//                   //      }
+//                   //      hex += " " + byteStr;
+//                   //  }
+//                    window.fileData = {
+//                      FileName:file.name,
+//                      InputStream:result.split(";base64,")[1]
+//                    }
+//                    scope.fileData = window.fileData;
+//                    scope.fileSelected(scope.fileData);
+//                };
+//                fr.readAsDataURL(file);
+//
+//             });
+//         },
+//         scope:{
+//           fileSelected :"&",
+//           fileData :"=",
+//         },
+//         controller:function($scope) {
+//           console.log('fileData   ',$scope.fileData);
+//         }
+//     }
+//
+}]
+
+
+);
 ;app.directive('history', function () {
     return {
         restrict: 'EA',
@@ -1479,15 +1554,15 @@ app.controller('deleteVendorModalCtrl', function ($scope, $uibModalInstance,vend
     };
 });
 ;angular.module('Authentication', [])
-    .factory('LoginService',function($http,$resource,ApiGenerator) {
-      return $resource('/',null, {
-        login: ApiGenerator.getApi('login'),
-        logout: ApiGenerator.getApi('logout'),
-        token: ApiGenerator.getApi('token'),
-        forgotPassword: ApiGenerator.getApi('forgotPassword')
-      });
-    })
-    .controller('LoginController',function($http,$scope,$state,$rootScope,LoginService,UtilityService,Events,$localStorage,Constants,UserService,Util,ApiGenerator,validationService) {
+    // .factory('LoginService',function($http,$resource,ApiGenerator) {
+    //   return $resource('/',null, {
+    //     login: ApiGenerator.getApi('login'),
+    //     logout: ApiGenerator.getApi('logout'),
+    //     token: ApiGenerator.getApi('token'),
+    //     forgotPassword: ApiGenerator.getApi('forgotPassword')
+    //   });
+    // })
+    .controller('LoginController',function($http,$scope,$state,$rootScope,ApiCall,UtilityService,Events,$localStorage,Constants,UserService,Util,ApiGenerator,validationService) {
       $scope.init = function(){
         $scope.user = {};
         if($localStorage[Constants.getIsRemember()]){
@@ -1503,8 +1578,8 @@ app.controller('deleteVendorModalCtrl', function ($scope, $uibModalInstance,vend
         // $state.go('dashboard');
         console.log(loginfrm);
         ApiGenerator.getApi('login');
-        LoginService.login(JSON.stringify($scope.user),function(response) {
-          UtilityService.showLoader();
+        UtilityService.showLoader();
+        ApiCall.login(JSON.stringify($scope.user),function(response) {
           if(response.StatusCode == 200){
             UtilityService.hideLoader();
             $localStorage[Constants.getTokenKey()] = response.Data.tokenId;
@@ -1534,7 +1609,7 @@ app.controller('deleteVendorModalCtrl', function ($scope, $uibModalInstance,vend
         })
       }
       $scope.logout = function() {
-          LoginService.logout({userId:UserService.getUser().userId},function(response) {
+          ApiCall.logout({userId:UserService.getUser().userId},function(response) {
             UserService.unsetUser();
             Util.alertMessage("success",response.Message);
             $rootScope.loggedin = false;
@@ -1550,7 +1625,7 @@ app.controller('deleteVendorModalCtrl', function ($scope, $uibModalInstance,vend
             "name": "Mukhtar",
             "email": "rajendrasahoodbpb@gmail.com"
           }
-          LoginService.forgotPassword(obj,function(response) {
+          ApiCall.forgotPassword(obj,function(response) {
             Util.alertMessage("success",response.Message);
           },function(err) {
             Util.alertMessage("danger",response.Message);
@@ -1579,6 +1654,7 @@ app.controller('deleteVendorModalCtrl', function ($scope, $uibModalInstance,vend
         "errorSideBarData"          : "error Side Bar Data",
         "userLogged"          : "User Logged",
         "selectTender"          : "Please select tender",
+        "noVendorSelected"          : "Please select Vendor",
         "invalidOperation"          : "Invalid Operation",
       }
     })
@@ -1675,6 +1751,11 @@ app.controller('deleteVendorModalCtrl', function ($scope, $uibModalInstance,vend
                 "method": "POST",
                 "Content-Type": "application/json",
             },
+            deleteUser: {
+                "url": "/api/User",
+                "method": "DELETE",
+                "Content-Type": "application/json",
+            },
             // getUser: {
             //     "url": "/api/User",
             //     "method": "POST",
@@ -1687,7 +1768,7 @@ app.controller('deleteVendorModalCtrl', function ($scope, $uibModalInstance,vend
             },
             getVendor: {
                 "url": "/api/Vendor",
-                "method": "POST",
+                "method": "GET",
                 "Content-Type": "application/json",
             },
             getMilestone: {
@@ -1695,7 +1776,7 @@ app.controller('deleteVendorModalCtrl', function ($scope, $uibModalInstance,vend
                 "method": "GET",
                 "Content-Type": "application/json",
             },
-            postMilestone: {
+            posttMilestone: {
                 "url": "/api/TendorMileStone",
                 "method": "POST",
                 "Content-Type": "application/json",
@@ -1754,6 +1835,7 @@ app.controller('deleteVendorModalCtrl', function ($scope, $uibModalInstance,vend
             getApi: function(api) {
                 var obj = {};
                 obj = angular.copy(API[api]);
+                // console.log("obj  ",obj,api);
                 obj.url = EnvService.getBasePath() + obj.url; // prefix the base path
                 return obj;
             }
@@ -1762,8 +1844,13 @@ app.controller('deleteVendorModalCtrl', function ($scope, $uibModalInstance,vend
     .factory('ApiCall', function($http, $resource, API, EnvService,ApiGenerator) {
 
           return $resource('/',null, {
+            login: ApiGenerator.getApi('login'),
+            logout: ApiGenerator.getApi('logout'),
+            token: ApiGenerator.getApi('token'),
+            forgotPassword: ApiGenerator.getApi('forgotPassword'),
             getDesignation: ApiGenerator.getApi('getDesignation'),
             postUser: ApiGenerator.getApi('postUser'),
+            deleteUser: ApiGenerator.getApi('deleteUser'),
             getUser: ApiGenerator.getApi('getUser'),
             postVendor: ApiGenerator.getApi('postVendor'),
             getVendor: ApiGenerator.getApi('getVendor'),
@@ -1776,7 +1863,7 @@ app.controller('deleteVendorModalCtrl', function ($scope, $uibModalInstance,vend
             postBOQHistory: ApiGenerator.getApi('postBOQHistory'),
             getBOQHistory: ApiGenerator.getApi('getBOQHistory'),
             getMilestone: ApiGenerator.getApi('getMilestone'),
-            postMilestone: ApiGenerator.getApi('postMilestone'),
+            postMilestone: ApiGenerator.getApi('posttMilestone'),
           });
 
     })

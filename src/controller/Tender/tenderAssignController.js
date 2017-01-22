@@ -7,7 +7,7 @@ app.controller('TenderAssignController', function($scope, $rootScope, $state, $s
     // loading vendorList
     $rootScope.showPreloader = true;
     var vendorData = {};
-    vendorData.tokenId = $localStorage[Constants.getTokenKey()];
+    // vendorData.tokenId = $localStorage[Constants.getTokenKey()];
     vendorData.type = "GET_VENDOR_ALL";
     ApiCall.getVendor(vendorData,function(res) {
       $scope.tender.vendors = res.Data;

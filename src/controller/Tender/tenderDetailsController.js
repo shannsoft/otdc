@@ -39,6 +39,7 @@ app.controller('TenderDetailsController', function($scope, $rootScope, $state,$u
             action: action
         });
     }
+    $scope.tender.fileData = {a:'a'};
     $scope.fileSelected = function(fileName) {
       console.log(">>>>>>>>>>>>>>>>>>>>>>",window.fileData);
       $scope.FileData = window.fileData;

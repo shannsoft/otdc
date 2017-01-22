@@ -1,0 +1,67 @@
+<article class="content dashboard-page" ng-init="init()">
+    <div class="col-xl-12">
+        <div class="card sameheight-item">
+            <div class="card-block">
+                <!-- Nav tabs -->
+                <div class="card-title-block">
+                    <h3 class="title">
+                        Vendor Checklist
+                    </h3>
+                </div>
+                <form>
+                    <ul class="nav nav-tabs nav-tabs-bordered">
+                        <li class="nav-item">
+                            <a href="" class="nav-link" ng-class="currTab == 0 ? 'active' : '' " ng-click="tabChange(0)" data-target="#regdCert" data-toggle="tab" aria-controls="profileView" role="tab" aria-expanded="{{currTab == 0 ? 'true' : 'false' }}">Registration Details</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="" class="nav-link" ng-class="currTab == 1 ? 'active' : '' " ng-click="tabChange(1)" data-target="#panCard" aria-controls="panCard" data-toggle="tab" role="tab" aria-expanded="{{currTab == 1 ? 'true' : 'false' }}">PAN details</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="" class="nav-link" ng-class="currTab == 2 ? 'active' : '' " ng-click="tabChange(2)" data-target="#turnOver" aria-controls="turnOver" data-toggle="tab" role="tab" aria-expanded="{{currTab == 2 ? 'true' : 'false' }}">Turn Over details</a>
+                        </li>
+                    </ul>
+                    <!-- Tab panes -->
+                    <div class="tab-content tabs-bordered">
+                        <div class="tab-pane fade" id="regdCert" ng-class="currTab == 0 ? 'active in' : '' " aria-expanded="{{currTab == 0 ? 'true' : 'false' }}">
+                            <fieldset class="form-group">
+                                <label class="control-label" for="formGroupExampleInput7">Registration certificate Name :</label>
+                                <input type="text" ng-model="vendorChecklist.regdName" class="form-control formInput" id="formGroupExampleInput4" name="regdCertName" required>
+                            </fieldset>
+                            <fieldset class="form-group">
+                                <label class="control-label" for="formGroupExampleInput7">Registration certificate file</label>
+                                <input type="file" class="form-control formInput" file-select="vendorChecklist.regdCertFile"/>
+                            </fieldset>
+                        </div>
+                        <div class="tab-pane fade" id="panCard" ng-class="currTab == 1 ? 'active in' : '' " aria-expanded="{{currTab == 1 ? 'true' : 'false' }}">
+
+                            <fieldset class="form-group">
+                                <label class="control-label" for="formGroupExampleInput7">Pan card Name :</label>
+                                <input type="text" ng-model="vendorChecklist.panCardName" class="form-control formInput" id="formGroupExampleInput4" name="panCardName" required>
+                            </fieldset>
+                            <fieldset class="form-group">
+                                <label class="control-label" for="formGroupExampleInput7">Pan card file</label>
+                                <input type="file" class="form-control formInput" file-select="vendorChecklist.panCardFile"/>
+                            </fieldset>
+
+                        </div>
+                        <div class="tab-pane fade" id="turnOver" ng-class="currTab == 2 ? 'active in' : '' " aria-expanded="{{currTab == 2 ? 'true' : 'false' }}">
+                            <fieldset class="form-group">
+                                <label class="control-label" for="formGroupExampleInput7">turn over details :</label>
+                                <input type="text" ng-model="vendorChecklist.turnOverName" class="form-control formInput" id="formGroupExampleInput4" name="turnOverName" required>
+                            </fieldset>
+                            <fieldset class="form-group">
+                                <label class="control-label" for="formGroupExampleInput7">turn over details file</label>
+                                <input type="file" class="form-control formInput" file-select="vendorChecklist.turnOverFile"/>
+                            </fieldset>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.card-block -->
+            </div>
+            <fieldset class="form-group">
+                <input type="submit" class="btn btn-success" ng-disabled="addTendorForm.$invalid"></input>
+                <button class="btn btn-secondary" history>Cancel</button>
+            </fieldset>
+            <!-- /.card -->
+        </div>
+    </article>

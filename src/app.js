@@ -30,12 +30,12 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         };
     });
 
-    function checkLoggedin($q, $timeout, $http, $location, $rootScope, $state, Constants, $localStorage, $rootScope, LoginService, UserService) {
+    function checkLoggedin($q, $timeout, $http, $location, $rootScope, $state, ApiCall,Constants, $localStorage, $rootScope, UserService) {
         var deferred = $q.defer();
         var obj = {
             TokenId: $localStorage[Constants.getTokenKey()]
         }
-        LoginService.token(obj, function(response) {
+        ApiCall.token(obj, function(response) {
             if (response.StatusCode == 200 && response.Data && response.Status == "Success") {
                 $timeout(function() {
                     $rootScope.loggedin = $localStorage[Constants.getLoggedIn()] = true;
@@ -60,12 +60,12 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         return deferred.promise;
     };
 
-    function checkLoggedout($q, $timeout, $http, $location, $rootScope, $state, ApiCall,$localStorage, AppModel,Constants, LoginService, UserService,Events) {
+    function checkLoggedout($q, $timeout, $http, $location, $rootScope, $state, ApiCall,$localStorage, AppModel,Constants, UserService,Events) {
         var deferred = $q.defer();
         var obj = {
             TokenId: $localStorage[Constants.getTokenKey()]
         }
-        LoginService.token(obj, function(response) {
+        ApiCall.token(obj, function(response) {
             if (response.StatusCode == 200 && response.Data && response.Status == "Success") {
               $timeout(function() {
                 $rootScope.loggedin = $localStorage[Constants.getLoggedIn()];
@@ -240,9 +240,9 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         })
         .state('vendorDetails', {
             templateUrl: 'src/views/Vendor/vendorDetails.html',
-            url: '/vendorDetails',
+            url: '/vendorDetails/:vendorId',
             controller: "VendorDetailsController",
-            params: { vendor: null,action:null },
+            params: { vendorId:null,vendor: null,action:null },
             resolve: {
                 loggedout: checkLoggedout
             },
@@ -283,10 +283,10 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
                 loggedout: checkLoggedout
             }
         })
-        .state('tender_checklist', {
-            templateUrl: 'src/views/Tender/TenderCheckList.html',
-            url: '/tender_checklist',
-            // controller: "Tender_controller",
+        .state('vendor_checklist', {
+            templateUrl: 'src/views/Vendor/addCheckList.html',
+            url: '/vendor_checklist',
+            controller: "VendorChecklistController",
             resolve: {
                 loggedout: checkLoggedout
             },

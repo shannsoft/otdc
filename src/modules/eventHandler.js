@@ -18,6 +18,7 @@ angular.module('EventHandler', [])
         "errorSideBarData"          : "error Side Bar Data",
         "userLogged"          : "User Logged",
         "selectTender"          : "Please select tender",
+        "noVendorSelected"          : "Please select Vendor",
         "invalidOperation"          : "Invalid Operation",
       }
     })

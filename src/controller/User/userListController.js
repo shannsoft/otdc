@@ -46,10 +46,10 @@ app.controller('deleteModalCtrl', function ($scope, $uibModalInstance,user,Util,
   $scope.ok = function () {
     // calling service to delete user
     var obj = {
-      actType:'D',
+      // actType:'D',
       userId:user.userId
     }
-    ApiCall.postUser(obj,function(response) {
+    ApiCall.deleteUser(obj,function(response) {
       Util.alertMessage(Events.eventType.success,response.Message);
       $uibModalInstance.close();
       $state.reload();
