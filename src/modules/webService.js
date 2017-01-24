@@ -49,11 +49,11 @@ angular.module('WebService', [])
                 "method": "POST",
                 "Content-Type": "application/json",
             },
-            deleteUser: {
-                "url": "/api/User",
-                "method": "DELETE",
-                "Content-Type": "application/json",
-            },
+            // deleteUser: {
+            //     "url": "/api/User",
+            //     "method": "DELETE",
+            //     "Content-Type": "application/json",
+            // },
             // getUser: {
             //     "url": "/api/User",
             //     "method": "POST",
@@ -148,7 +148,7 @@ angular.module('WebService', [])
             forgotPassword: ApiGenerator.getApi('forgotPassword'),
             getDesignation: ApiGenerator.getApi('getDesignation'),
             postUser: ApiGenerator.getApi('postUser'),
-            deleteUser: ApiGenerator.getApi('deleteUser'),
+            // deleteUser: ApiGenerator.getApi('deleteUser'),
             getUser: ApiGenerator.getApi('getUser'),
             postVendor: ApiGenerator.getApi('postVendor'),
             getVendor: ApiGenerator.getApi('getVendor'),

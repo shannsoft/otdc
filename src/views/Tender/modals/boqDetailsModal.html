@@ -29,7 +29,14 @@
                                             <div ng-if="th == 'quantity'">
                                                 <span ng-if="!boq.isEdit" class="color-black ng-binding">{{boq[th]}}</span>
                                                 <em  class="fa fa-edit pull-right" ng-if="!boq.isEdit" ng-click="focusEdit(boq,$event)"></em>
-                                                <input type="text" ng-if="boq.isEdit"  ng-model="boq[th]" ng-blur="updateAmount(boq)">
+                                                <div ng-if="boq.isEdit">
+                                                  <span>New Values : </span>
+                                                  <input type="text" ng-if="boq.isEdit"  ng-model="boq[th]" ng-blur="updateAmount(boq,'value1')">
+                                                </div>
+                                                <div ng-if="boq.isEdit">
+                                                  <span>Add comments : </span>
+                                                  <input type="text" ng-model="boq['comment']" ng-blur="updateAmount(boq,'value2')">
+                                                </div>
                                             </div>
                                             <span ng-if="th != 'quantity'" class="color-black">{{boq[th]}}</span>
                                             <!-- <span class="color-black">{{boq[th]}}</span>  -->
@@ -64,6 +71,8 @@
 
                   </td>
                   <td data-title="'Quantity'" filter="{quantity: 'text'}" sortable="'quantity'">{{row.quantity}}</td>
+                  <td data-title="'Old Quantity'" filter="{quantity: 'text'}" sortable="'oldQuantity'">{{row.oldQuantity}}</td>
+                  <td data-title="'Comment'" filter="{quantity: 'text'}" sortable="'comment'">{{row.comment}}</td>
                   <td data-title="'Units'" filter="{units: 'text'}" sortable="'units'">{{row.units}}</td>
                   <td data-title="'Total Amount Without Taxes'" filter="{totalAmountWithoutTaxes: 'text'}" sortable="'totalAmountWithoutTaxes'">{{row.totalAmountWithoutTaxes}}</td>
                   <td data-title="'Date'" filter="{date: 'text'}" sortable="'date'">{{row.date}}</td>

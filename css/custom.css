@@ -2,9 +2,11 @@
 .m-h-900 {
     min-height: 900px !important;
 }
-.color-black{
-  color:#000 !important;
+
+.color-black {
+    color: #000 !important;
 }
+
 .m-t-5 {
     margin-top: 5px;
 }
@@ -192,12 +194,11 @@
 }
 
 hr {
-  width: 100px;
-height: 10px;
-border-color: #000;
-position: relative;
-top: 0px;
-
+    width: 100px;
+    height: 10px;
+    border-color: #000;
+    position: relative;
+    top: 0px;
 }
 
 .circular {
@@ -351,6 +352,7 @@ h3.title {
     padding: 0 0 0 0;
 }
 
+
 /*table.userListTable tbody tr td:nth-child(1), td:nth-child(3), td:nth-child(4), td:nth-child(5) {
     width: 65px;
 }*/
@@ -373,19 +375,23 @@ table.userListTable.ng-table tbody tr td span {
     right: 0%;
     position: relative;
 }
-.formInput-60{
+
+.formInput-60 {
     display: inline;
     width: 60%;
     float: right;
     right: 0%;
     position: relative;
 }
-.m-r-10{
-  margin-right: 10px;
+
+.m-r-10 {
+    margin-right: 10px;
 }
-.m-l-10{
-  margin-left: 10px;
+
+.m-l-10 {
+    margin-left: 10px;
 }
+
 
 /*body .tenderMilestone tbody tr td:nth-child(2), td:nth-child(3), td:nth-child(4), td:nth-child(5) {
     width: 100px;
@@ -400,34 +406,42 @@ table.userListTable.ng-table tbody tr td span {
     float: right;
     margin-right: 10px;
 }
-.btn-capsule{
-	float: right;
-position: relative;
-z-index: 10;
-width: 125px;
+
+.btn-capsule {
+    float: right;
+    position: relative;
+    z-index: 9;
+    width: 125px;
 }
+
+
 /*.tenderMilestone tbody tr td {
     vertical-align: middle;
 }*/
+
 input[type="date"] {
     position: relative;
     right: 25px;
 }
+
 .card .title {
     font-size: 25px;
     color: #4f5f6f;
     margin-left: -4px;
 }
-.modalClose{
+
+.modalClose {
     position: relative;
     bottom: 25px;
     font-size: 25px;
     cursor: pointer;
 }
-.popover{
-  width:100%;
+
+.popover {
+    width: 100%;
 }
-.overDue{
-  color: red;
-  font-weight: bold;
+
+.overDue {
+    color: red;
+    font-weight: bold;
 }

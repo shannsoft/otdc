@@ -283,10 +283,11 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
                 loggedout: checkLoggedout
             }
         })
-        .state('vendor_checklist', {
+        .state('vendorChecklist', {
             templateUrl: 'src/views/Vendor/addCheckList.html',
-            url: '/vendor_checklist',
+            url: '/vendorChecklist/:vendorId',
             controller: "VendorChecklistController",
+            params: { vendorId:null,vendor: null},
             resolve: {
                 loggedout: checkLoggedout
             },

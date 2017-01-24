@@ -1,4 +1,4 @@
-/*! otdc - v1.0.0 - Sun Jan 22 2017 15:19:25 */
+/*! otdc - v1.0.0 - Tue Jan 24 2017 02:39:56 */
 var dependency = [];
 // lib  dependency
 var distModules = ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate', 'ngCookies', 'ngMessages','ngTable'];
@@ -284,10 +284,11 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
                 loggedout: checkLoggedout
             }
         })
-        .state('vendor_checklist', {
+        .state('vendorChecklist', {
             templateUrl: 'src/views/Vendor/addCheckList.html',
-            url: '/vendor_checklist',
+            url: '/vendorChecklist/:vendorId',
             controller: "VendorChecklistController",
+            params: { vendorId:null,vendor: null},
             resolve: {
                 loggedout: checkLoggedout
             },
@@ -328,7 +329,7 @@ app.factory('Util', ['$rootScope', '$timeout', function($rootScope, $timeout) {
     return Util;
 }]);
 ;app.constant("Constants", {
-        "debug":false,
+        "debug":true,
         "storagePrefix": "goAppOTDC$",
         "getTokenKey" : function() {return this.storagePrefix + "token";},
         "getLoggedIn" : function() {return this.storagePrefix + "loggedin";},
@@ -596,7 +597,6 @@ $scope.gotoTenderCheck = function(){
             action: action
         });
     }
-    $scope.tender.fileData = {a:'a'};
     $scope.fileSelected = function(fileName) {
       console.log(">>>>>>>>>>>>>>>>>>>>>>",window.fileData);
       $scope.FileData = window.fileData;
@@ -674,8 +674,18 @@ app.controller('boqController', function ($scope,$uibModalInstance,tender,Util,A
     })
     return arr;
   }
-  $scope.updateAmount = function(boq) {
-    boq.isEdit = false;
+  $scope.updateAmount = function(boq,param) {
+    if(!boq.count || isNaN(boq.count)){
+      boq.count = 0;
+    }
+    if(!boq[param]){
+      boq.count++;
+    }
+    if(boq.count >=2){
+      boq.count = 0;
+      boq.isEdit = false; // here the values
+    }
+
     // removing the duplicate boq if exist
     var found = false;
     for(var i in $scope.boqUpdateArr){
@@ -1147,10 +1157,10 @@ app.controller('deleteModalCtrl', function ($scope, $uibModalInstance,user,Util,
   $scope.ok = function () {
     // calling service to delete user
     var obj = {
-      // actType:'D',
+      actType:'D',
       userId:user.userId
     }
-    ApiCall.deleteUser(obj,function(response) {
+    ApiCall.postUser(obj,function(response) {
       Util.alertMessage(Events.eventType.success,response.Message);
       $uibModalInstance.close();
       $state.reload();
@@ -1751,11 +1761,11 @@ app.directive('fileSelect', ['$parse', function ($parse) {
                 "method": "POST",
                 "Content-Type": "application/json",
             },
-            deleteUser: {
-                "url": "/api/User",
-                "method": "DELETE",
-                "Content-Type": "application/json",
-            },
+            // deleteUser: {
+            //     "url": "/api/User",
+            //     "method": "DELETE",
+            //     "Content-Type": "application/json",
+            // },
             // getUser: {
             //     "url": "/api/User",
             //     "method": "POST",
@@ -1850,7 +1860,7 @@ app.directive('fileSelect', ['$parse', function ($parse) {
             forgotPassword: ApiGenerator.getApi('forgotPassword'),
             getDesignation: ApiGenerator.getApi('getDesignation'),
             postUser: ApiGenerator.getApi('postUser'),
-            deleteUser: ApiGenerator.getApi('deleteUser'),
+            // deleteUser: ApiGenerator.getApi('deleteUser'),
             getUser: ApiGenerator.getApi('getUser'),
             postVendor: ApiGenerator.getApi('postVendor'),
             getVendor: ApiGenerator.getApi('getVendor'),

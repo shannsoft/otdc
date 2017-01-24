@@ -39,7 +39,6 @@ app.controller('TenderDetailsController', function($scope, $rootScope, $state,$u
             action: action
         });
     }
-    $scope.tender.fileData = {a:'a'};
     $scope.fileSelected = function(fileName) {
       console.log(">>>>>>>>>>>>>>>>>>>>>>",window.fileData);
       $scope.FileData = window.fileData;
@@ -117,8 +116,18 @@ app.controller('boqController', function ($scope,$uibModalInstance,tender,Util,A
     })
     return arr;
   }
-  $scope.updateAmount = function(boq) {
-    boq.isEdit = false;
+  $scope.updateAmount = function(boq,param) {
+    if(!boq.count || isNaN(boq.count)){
+      boq.count = 0;
+    }
+    if(!boq[param]){
+      boq.count++;
+    }
+    if(boq.count >=2){
+      boq.count = 0;
+      boq.isEdit = false; // here the values
+    }
+
     // removing the duplicate boq if exist
     var found = false;
     for(var i in $scope.boqUpdateArr){
