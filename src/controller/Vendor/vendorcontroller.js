@@ -48,6 +48,9 @@ app.controller('VendorController',function($scope,$rootScope,$state,Constants,$u
       case 'edit':
         $state.go("vendorDetails",{vendorId:vendor.vendorId,vendor:vendor,action:action})
         break;
+      case 'checklist':
+        $state.go("vendorChecklist",{vendorId:vendor.vendorId,vendor: vendor});
+        break;
       case 'delete':
         // call service to delete
         var modalInstance = $uibModal.open({

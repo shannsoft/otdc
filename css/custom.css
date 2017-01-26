@@ -445,3 +445,15 @@ input[type="date"] {
     color: red;
     font-weight: bold;
 }
+
+/*preview image starts*/
+.previewImg{
+  position: relative;
+    left: 110px;
+}
+.previewImg button{
+    position: relative;
+    left: 90px;
+}
+
+/*preview image stop*/

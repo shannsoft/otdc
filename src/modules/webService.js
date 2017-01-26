@@ -124,6 +124,16 @@ angular.module('WebService', [])
                 "method": "GET",
                 "Content-Type": "application/json",
             },
+            postVendorCheckList: {
+                "url": "/api/VendorCheckList",
+                "method": "POST",
+                "Content-Type": "application/json",
+            },
+            getVendorCheckList: {
+                "url": "/api/VendorCheckList",
+                "method": "GET",
+                "Content-Type": "application/json",
+            },
 
 
         }
@@ -162,6 +172,8 @@ angular.module('WebService', [])
             getBOQHistory: ApiGenerator.getApi('getBOQHistory'),
             getMilestone: ApiGenerator.getApi('getMilestone'),
             postMilestone: ApiGenerator.getApi('posttMilestone'),
+            postVendorCheckList: ApiGenerator.getApi('postVendorCheckList'),
+            getVendorCheckList: ApiGenerator.getApi('getVendorCheckList'),
           });
 
     })

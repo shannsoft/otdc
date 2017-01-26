@@ -1,4 +1,4 @@
-/*! otdc - v1.0.0 - Tue Jan 24 2017 02:39:56 */
+/*! otdc - v1.0.0 - Thu Jan 26 2017 04:59:05 */
 var dependency = [];
 // lib  dependency
 var distModules = ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate', 'ngCookies', 'ngMessages','ngTable'];
@@ -284,6 +284,14 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
                 loggedout: checkLoggedout
             }
         })
+        .state('permission_management', {
+            templateUrl: 'src/views/User/permission.html',
+            url: '/permission',
+            controller: "PermissionController",
+            resolve: {
+                loggedout: checkLoggedout
+            }
+        })
         .state('vendorChecklist', {
             templateUrl: 'src/views/Vendor/addCheckList.html',
             url: '/vendorChecklist/:vendorId',
@@ -308,7 +316,7 @@ app.run(function($http, EnvService, Constants) {
     //     .error(function(error) {
     //         return error;
     //     });
-    EnvService.setEnvData(Constants.envData);
+    EnvService.setSettings(Constants);
 
 });
 app.factory('Util', ['$rootScope', '$timeout', function($rootScope, $timeout) {
@@ -329,7 +337,7 @@ app.factory('Util', ['$rootScope', '$timeout', function($rootScope, $timeout) {
     return Util;
 }]);
 ;app.constant("Constants", {
-        "debug":true,
+        "debug":false,
         "storagePrefix": "goAppOTDC$",
         "getTokenKey" : function() {return this.storagePrefix + "token";},
         "getLoggedIn" : function() {return this.storagePrefix + "loggedin";},
@@ -346,6 +354,17 @@ app.factory('Util', ['$rootScope', '$timeout', function($rootScope, $timeout) {
           "dev" : {
             "basePath" :"http://api.otdctender.in",
           }
+        },
+        // this will be used to validate client side operation as per the user role
+        "apiAuth" : {
+          "super_admin" : { // we need to manipulate the role name to match this key
+            "user":["get","getById","post","update","delete"],
+            "vendor":["get","getById","post","update","delete"]
+          },
+          "admin" : { // we need to manipulate the role name to match this key
+            "user":["get","getById","post","update"],
+            "vendor":["get","getById","post","update"]
+          },
         }
 })
 ;app.controller('Main_Controller', function($scope, $rootScope, $state, EnvService, $timeout, $cookieStore, $localStorage, validationService, Events, $location, Util, $anchorScroll) {
@@ -944,6 +963,28 @@ app.controller('boqHistoryController', function ($scope,$uibModalInstance,tender
         }
     }
 })
+;app.controller('PermissionController', function($scope, $rootScope, $state,$timeout,AppModel,$uibModal,ApiCall,Events,Util,$localStorage,UtilityService, Constants) {
+  $scope.init = function() {
+    $scope.permission = {};
+
+    $scope.permission.designation = AppModel.getSetting('designation');
+    $scope.UtilityService = UtilityService;
+    if(!$scope.permission.designation)
+    {
+      $scope.permission.timeout = $timeout(function(){
+        $scope.init()
+      },2000);
+    }
+    else{
+      $timeout.cancel($scope.permission.timeout);
+      $scope.permission.currTab = 0;
+      $scope.permission.designation.isActive = true;
+    }
+  }
+  $scope.tabChange = function(designation,index) {
+    $scope.permission.currTab = index;
+  }
+})
 ;app.controller('UserController', function($scope, $rootScope, $state,$stateParams, UserService,AppModel, UtilityService,Util,$localStorage, Constants,ApiCall,Events) {
     // $scope.UserService = UserService;
     $rootScope.$on(Events.userLogged,function() {
@@ -1189,20 +1230,70 @@ app.controller('deleteModalCtrl', function ($scope, $uibModalInstance,user,Util,
 })
 ;app.controller('VendorChecklistController',function($scope,$rootScope,$state,$stateParams,Constants,Events,EnvService,$timeout,$cookieStore,$localStorage,ApiCall,Util){
   $scope.currTab = 0;
+  $scope.vendorChecklist = {};
+  $scope.vendorChecklist.checklist = [
+    {
+      name : "regdName",
+      chkId:null,
+    },
+    {
+      name : "pan",
+      chkId:null,
+    },
+    {
+      name : "turnOver",
+      chkId:null,
+    },
+  ];
   $scope.init = function() {
-    Util.alertMessage(Events.eventType.warning,Events.noVendorSelected);
-    if(!$stateParams.vendorId) {
+    if(!$stateParams || !$stateParams.vendorId) {
+      Util.alertMessage(Events.eventType.warning,Events.noVendorSelected);
       $state.go("VendorList");
     }
     else {
       $scope.vendorChecklist.vendorId = $stateParams.vendorId;
-
+      // getting checklist details
+      ApiCall.getVendorCheckList({vendorId:$stateParams.vendorId},function(res){
+        Util.alertMessage(Events.eventType.success,res.Message);
+        if(res.Data.length){
+          $scope.vendorChecklist.isUpdate = true;
+          $scope.vendorChecklist.checklist = res.Data;
+        }
+        else {
+          $scope.vendorChecklist.isUpdate = false;
+        }
+      },function(err) {
+        Util.alertMessage(Events.eventType.error,err.Message);
+      })
     }
   }
   $scope.tabChange = function(tabPos) {
       $scope.currTab = tabPos;
   }
-
+  $scope.submitChecklist = function(form) {
+    // structuring multiple file upload
+    for(var i in $scope.vendorChecklist.checklist){
+      if($scope.vendorChecklist.checklist[i].fileData) {
+        $scope.vendorChecklist.checklist[i].file = $scope.vendorChecklist.checklist[i].fileData.InputStream;
+        $scope.vendorChecklist.checklist[i].fileName = $scope.vendorChecklist.checklist[i].fileData.fileName;
+        delete $scope.vendorChecklist.checklist[i]['fileData']; // deleting file data as not required in the json
+      }
+      else {
+        $scope.vendorChecklist.checklist[i].file = null;
+        $scope.vendorChecklist.checklist[i].fileName = null;
+      }
+    }
+    $scope.vendorChecklist.actType = "I"; // here note that actType = I represents both insert and update
+    //$scope.vendorChecklist.isUpdate ? $scope.vendorChecklist.actType = "U" : $scope.vendorChecklist.actType = "I";
+    $rootScope.showPreloader = true;
+    ApiCall.postVendorCheckList($scope.vendorChecklist,function(res) {
+      $rootScope.showPreloader = false;
+      Util.alertMessage(Events.eventType.success,res.Message);
+    },function(err) {
+      $rootScope.showPreloader = false;
+      Util.alertMessage(Events.eventType.error,res.Message);
+    })
+  }
 })
 ;app.controller('VendorDetailsController',function($scope,$rootScope,$state,$stateParams,Constants,EnvService,$timeout,$cookieStore,$localStorage,ApiCall,Util){
   $scope.init = function() {
@@ -1291,6 +1382,9 @@ app.controller('deleteModalCtrl', function ($scope, $uibModalInstance,user,Util,
       case 'view':
       case 'edit':
         $state.go("vendorDetails",{vendorId:vendor.vendorId,vendor:vendor,action:action})
+        break;
+      case 'checklist':
+        $state.go("vendorChecklist",{vendorId:vendor.vendorId,vendor: vendor});
         break;
       case 'delete':
         // call service to delete
@@ -1836,6 +1930,16 @@ app.directive('fileSelect', ['$parse', function ($parse) {
                 "method": "GET",
                 "Content-Type": "application/json",
             },
+            postVendorCheckList: {
+                "url": "/api/VendorCheckList",
+                "method": "POST",
+                "Content-Type": "application/json",
+            },
+            getVendorCheckList: {
+                "url": "/api/VendorCheckList",
+                "method": "GET",
+                "Content-Type": "application/json",
+            },
 
 
         }
@@ -1874,6 +1978,8 @@ app.directive('fileSelect', ['$parse', function ($parse) {
             getBOQHistory: ApiGenerator.getApi('getBOQHistory'),
             getMilestone: ApiGenerator.getApi('getMilestone'),
             postMilestone: ApiGenerator.getApi('posttMilestone'),
+            postVendorCheckList: ApiGenerator.getApi('postVendorCheckList'),
+            getVendorCheckList: ApiGenerator.getApi('getVendorCheckList'),
           });
 
     })
@@ -1898,7 +2004,24 @@ app.directive('fileSelect', ['$parse', function ($parse) {
 })
 ;app.factory('EnvService',function($http,CONFIG,$localStorage){
   var envData = env = {};
+  var settings =  {};
+
   return{
+    setSettings : function(setting) {
+      settings = setting;
+      // setting env
+      this.setEnvData(setting.envData);
+    },
+    getSettings : function(param) {
+      if(param){
+        return settings[param];
+      }
+      return null; // default
+    },
+    validateApiAuth : function(role,api,operation) {
+      var apiAuth = this.getSettings("apiAuth")[role];
+
+    },
     setEnvData: function (data) {
       envData = data[data.env];
     },
@@ -1949,6 +2072,11 @@ app.directive('fileSelect', ['$parse', function ($parse) {
       {
         "label" : "Role Management",
         "state" : "role_management",
+        "fClass" : "fa fa-th-large",
+      },
+      {
+        "label" : "Permission Management",
+        "state" : "permission_management",
         "fClass" : "fa fa-th-large",
       },
     ]
@@ -2092,6 +2220,9 @@ app.directive('fileSelect', ['$parse', function ($parse) {
   var hideLoader = function(){
     $rootScope.showPreloader = false;
   }
+  var strReplace = function(str,find,replace){
+    return str.replace(new RegExp(find, 'g'), replace);
+  }
   return{
     getSelectedIds:getSelectedIds,
     getSelectedItemByProp:getSelectedItemByProp,
@@ -2107,5 +2238,6 @@ app.directive('fileSelect', ['$parse', function ($parse) {
     getTransaction     :getTransaction,
     showLoader         :showLoader,
     hideLoader         :hideLoader,
+    strReplace         :strReplace,
   }
 })

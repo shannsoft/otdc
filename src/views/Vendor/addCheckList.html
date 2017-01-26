@@ -1,23 +1,24 @@
 <article class="content dashboard-page" ng-init="init()">
     <div class="col-xl-12">
         <div class="card sameheight-item">
-            <div class="card-block">
-                <!-- Nav tabs -->
-                <div class="card-title-block">
-                    <h3 class="title">
-                        Vendor Checklist
-                    </h3>
-                </div>
-                <form>
+            <form name="vendorChecklistForm" ng-submit="submitChecklist(vendorChecklistForm)">
+                <div class="card-block">
+                    <!-- Nav tabs -->
+                    <div class="card-title-block">
+                        <h3 class="title">
+                            Vendor Checklist
+                        </h3>
+                    </div>
+
                     <ul class="nav nav-tabs nav-tabs-bordered">
                         <li class="nav-item">
-                            <a href="" class="nav-link" ng-class="currTab == 0 ? 'active' : '' " ng-click="tabChange(0)" data-target="#regdCert" data-toggle="tab" aria-controls="profileView" role="tab" aria-expanded="{{currTab == 0 ? 'true' : 'false' }}">Registration Details</a>
+                            <a href="" class="nav-link" ng-class="currTab == 0 ? 'active' : '' " ng-click="tabChange(0)" data-target="#regdCert" data-toggle="tab"  role="tab" aria-expanded="{{currTab == 0 ? 'true' : 'false' }}">Registration Details</a>
                         </li>
                         <li class="nav-item">
-                            <a href="" class="nav-link" ng-class="currTab == 1 ? 'active' : '' " ng-click="tabChange(1)" data-target="#panCard" aria-controls="panCard" data-toggle="tab" role="tab" aria-expanded="{{currTab == 1 ? 'true' : 'false' }}">PAN details</a>
+                            <a href="" class="nav-link" ng-class="currTab == 1 ? 'active' : '' " ng-click="tabChange(1)" data-target="#panCard"  data-toggle="tab" role="tab" aria-expanded="{{currTab == 1 ? 'true' : 'false' }}">PAN details</a>
                         </li>
                         <li class="nav-item">
-                            <a href="" class="nav-link" ng-class="currTab == 2 ? 'active' : '' " ng-click="tabChange(2)" data-target="#turnOver" aria-controls="turnOver" data-toggle="tab" role="tab" aria-expanded="{{currTab == 2 ? 'true' : 'false' }}">Turn Over details</a>
+                            <a href="" class="nav-link" ng-class="currTab == 2 ? 'active' : '' " ng-click="tabChange(2)" data-target="#turnOver"  data-toggle="tab" role="tab" aria-expanded="{{currTab == 2 ? 'true' : 'false' }}">Turn Over details</a>
                         </li>
                     </ul>
                     <!-- Tab panes -->
@@ -25,43 +26,62 @@
                         <div class="tab-pane fade" id="regdCert" ng-class="currTab == 0 ? 'active in' : '' " aria-expanded="{{currTab == 0 ? 'true' : 'false' }}">
                             <fieldset class="form-group">
                                 <label class="control-label" for="formGroupExampleInput7">Registration certificate Name :</label>
-                                <input type="text" ng-model="vendorChecklist.regdName" class="form-control formInput" id="formGroupExampleInput4" name="regdCertName" required>
+                                <input type="text" ng-model="vendorChecklist.checklist[0].name" class="form-control formInput" id="formGroupExampleInput4" name="regdCertName" required>
                             </fieldset>
                             <fieldset class="form-group">
                                 <label class="control-label" for="formGroupExampleInput7">Registration certificate file</label>
-                                <input type="file" class="form-control formInput" file-select="vendorChecklist.regdCertFile"/>
+                                <input type="file" class="form-control formInput" file-select="vendorChecklist.checklist[0].fileData"/>
                             </fieldset>
+
+                            <fieldset class="form-group" ng-if="vendorChecklist.checklist[0].fileName">
+                              <a class="previewImg" href="{{vendorChecklist.checklist[0].fileName}}" target="_blank">
+                                <!-- <img src="{{vendorChecklist.checklist[1].fileName}}"/> -->
+                                <button type="button" class="btn btn-oval btn-primary">View Uploaded file</button>
+                              </a>
+                            </fieldset>
+
                         </div>
                         <div class="tab-pane fade" id="panCard" ng-class="currTab == 1 ? 'active in' : '' " aria-expanded="{{currTab == 1 ? 'true' : 'false' }}">
 
                             <fieldset class="form-group">
                                 <label class="control-label" for="formGroupExampleInput7">Pan card Name :</label>
-                                <input type="text" ng-model="vendorChecklist.panCardName" class="form-control formInput" id="formGroupExampleInput4" name="panCardName" required>
+                                <input type="text" ng-model="vendorChecklist.checklist[1].name" class="form-control formInput" id="formGroupExampleInput4" name="panCardName" required>
                             </fieldset>
                             <fieldset class="form-group">
                                 <label class="control-label" for="formGroupExampleInput7">Pan card file</label>
-                                <input type="file" class="form-control formInput" file-select="vendorChecklist.panCardFile"/>
+                                <input type="file" class="form-control formInput" file-select="vendorChecklist.checklist[1].fileData"/>
                             </fieldset>
-
+                            <fieldset class="form-group" ng-if="vendorChecklist.checklist[1].fileName">
+                              <a class="previewImg" href="{{vendorChecklist.checklist[1].fileName}}" target="_blank">
+                                <!-- <img src="{{vendorChecklist.checklist[1].fileName}}"/> -->
+                                <button type="button" class="btn btn-oval btn-primary">View Uploaded file</button>
+                              </a>
+                            </fieldset>
                         </div>
                         <div class="tab-pane fade" id="turnOver" ng-class="currTab == 2 ? 'active in' : '' " aria-expanded="{{currTab == 2 ? 'true' : 'false' }}">
                             <fieldset class="form-group">
                                 <label class="control-label" for="formGroupExampleInput7">turn over details :</label>
-                                <input type="text" ng-model="vendorChecklist.turnOverName" class="form-control formInput" id="formGroupExampleInput4" name="turnOverName" required>
+                                <input type="text" ng-model="vendorChecklist.checklist[2].name" class="form-control formInput" id="formGroupExampleInput4" name="turnOverName" required>
                             </fieldset>
                             <fieldset class="form-group">
                                 <label class="control-label" for="formGroupExampleInput7">turn over details file</label>
-                                <input type="file" class="form-control formInput" file-select="vendorChecklist.turnOverFile"/>
+                                <input type="file" class="form-control formInput" file-select="vendorChecklist.checklist[2].fileData"/>
+                            </fieldset>
+                            <fieldset class="form-group" ng-if="vendorChecklist.checklist[2].fileName">
+                              <a class="previewImg" href="{{vendorChecklist.checklist[2].fileName}}" target="_blank">
+                                <!-- <img src="{{vendorChecklist.checklist[1].fileName}}"/> -->
+                                <button type="button" class="btn btn-oval btn-primary">View Uploaded file</button>
+                              </a>
                             </fieldset>
                         </div>
-                    </form>
+
+                    </div>
+                    <!-- /.card-block -->
                 </div>
-                <!-- /.card-block -->
-            </div>
-            <fieldset class="form-group">
-                <input type="submit" class="btn btn-success" ng-disabled="addTendorForm.$invalid"></input>
-                <button class="btn btn-secondary" history>Cancel</button>
-            </fieldset>
-            <!-- /.card -->
+                <fieldset class="form-group">
+                    <input type="submit" class="btn btn-success" ng-disabled="vendorChecklistForm.$invalid"></input>
+                    <button class="btn btn-secondary" history>Cancel</button>
+                </fieldset>
+            </form>
         </div>
     </article>

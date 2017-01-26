@@ -1,0 +1,138 @@
+<article class="content dashboard-page" ng-init="init()">
+    <div class="col-xl-12">
+        <div class="card sameheight-item">
+            <form name="vendorChecklistForm">
+                <div class="card-block">
+                    <!-- Nav tabs -->
+                    <div class="card-title-block">
+                        <h3 class="title">
+                            Permission Management
+                        </h3>
+                    </div>
+
+                    <ul class="nav nav-tabs nav-tabs-bordered" ng-if="permission.designation.length">
+                        <li class="nav-item" ng-repeat="designation in permission.designation" ng-class="permission.currTab == $index ? 'active' : '' " aria-expanded="{{permission.currTab == $index ? 'true' : 'false' }}">
+                            <a href="" class="nav-link" ng-click="tabChange($index)" data-target="#{{UtilityService.strReplace(designation.designationName,' ','_')}}" data-toggle="tab" role="tab" aria-expanded="{{permission.currTab == $index ? 'true' : 'false' }}">{{designation.designationName}}</a>
+                        </li>
+
+                    </ul>
+                    <!-- Tab panes -->
+                    <div class="tab-content tabs-bordered" ng-if="permission.designation.length">
+                        <div
+                            class="tab-pane fade"
+                            id="{{UtilityService.strReplace(designation.designationName,' ','_')}}"
+                            ng-repeat="designation in permission.designation"
+                            ng-class="permission.currTab == $index ? 'active in' : '' "
+                            aria-expanded="{{permission.currTab == $index ? 'true' : 'false' }}">
+
+                            <!-- Note : the we need to put tables as per the count in the designation statically
+                               as content will be dynamic as per the user role
+                             -->
+                            <table class="table table-striped" ng-if="$index == 0">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Username</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                            <table class="table table-striped" ng-if="$index == 1">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Username</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">1</th>
+                                        <td>
+                                            <label>
+                                                <input class="checkbox" type="checkbox" checked="checked">
+                                                <span/>
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <label>
+                                                <input class="checkbox" type="checkbox" checked="checked">
+                                                <span/></td>
+                                            <td>
+                                                <label>
+                                                    <input class="checkbox" type="checkbox" checked="checked">
+                                                    <span/></td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                    <table class="table table-striped" ng-if="$index == 2">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>First Name</th>
+                                                <th>Last Name</th>
+                                                <th>Username</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row">1</th>
+                                                <td>Mark</td>
+                                                <td>Otto</td>
+                                                <td>@mdo</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">2</th>
+                                                <td>Jacob</td>
+                                                <td>Thornton</td>
+                                                <td>@fat</td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                    <table class="table table-striped" ng-if="$index == 3">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>First Name</th>
+                                                <th>Last Name</th>
+                                                <th>Username</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row">1</th>
+                                                <td>Mark</td>
+                                                <td>Otto</td>
+                                                <td>@mdo</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">2</th>
+                                                <td>Jacob</td>
+                                                <td>Thornton</td>
+                                                <td>@fat</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">2</th>
+                                                <td>Jacob</td>
+                                                <td>Thornton</td>
+                                                <td>@fat</td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+
+                                </div>
+
+                            </div>
+                            <fieldset class="form-group">
+                                <input type="submit" class="btn btn-success" ng-disabled="vendorChecklistForm.$invalid"></input>
+                                <button class="btn btn-secondary" history>Cancel</button>
+                            </fieldset>
+                        </form>
+                    </div>
+                </article>

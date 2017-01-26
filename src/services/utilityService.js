@@ -89,6 +89,9 @@ app.factory("UtilityService", function($http,$resource,$rootScope,$localStorage,
   var hideLoader = function(){
     $rootScope.showPreloader = false;
   }
+  var strReplace = function(str,find,replace){
+    return str.replace(new RegExp(find, 'g'), replace);
+  }
   return{
     getSelectedIds:getSelectedIds,
     getSelectedItemByProp:getSelectedItemByProp,
@@ -104,5 +107,6 @@ app.factory("UtilityService", function($http,$resource,$rootScope,$localStorage,
     getTransaction     :getTransaction,
     showLoader         :showLoader,
     hideLoader         :hideLoader,
+    strReplace         :strReplace,
   }
 })

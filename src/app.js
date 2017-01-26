@@ -283,6 +283,14 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
                 loggedout: checkLoggedout
             }
         })
+        .state('permission_management', {
+            templateUrl: 'src/views/User/permission.html',
+            url: '/permission',
+            controller: "PermissionController",
+            resolve: {
+                loggedout: checkLoggedout
+            }
+        })
         .state('vendorChecklist', {
             templateUrl: 'src/views/Vendor/addCheckList.html',
             url: '/vendorChecklist/:vendorId',
@@ -307,7 +315,7 @@ app.run(function($http, EnvService, Constants) {
     //     .error(function(error) {
     //         return error;
     //     });
-    EnvService.setEnvData(Constants.envData);
+    EnvService.setSettings(Constants);
 
 });
 app.factory('Util', ['$rootScope', '$timeout', function($rootScope, $timeout) {

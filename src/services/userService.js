@@ -38,6 +38,11 @@ app.factory('UserService',function($rootScope,$http,$localStorage,$resource,ApiG
         "state" : "role_management",
         "fClass" : "fa fa-th-large",
       },
+      {
+        "label" : "Permission Management",
+        "state" : "permission_management",
+        "fClass" : "fa fa-th-large",
+      },
     ]
   }
   UserService.getRole = function(roleId) {
