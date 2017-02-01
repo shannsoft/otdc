@@ -1,4 +1,4 @@
-/*! otdc - v1.0.0 - Thu Feb 02 2017 00:58:26 */
+/*! otdc - v1.0.0 - Thu Feb 02 2017 01:04:38 */
 var dependency = [];
 // lib  dependency
 var distModules = ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate', 'ngCookies', 'ngMessages','ngTable'];
@@ -380,6 +380,7 @@ app.factory('Util', ['$rootScope', '$timeout', function($rootScope, $timeout) {
           "env":"dev",
           "dev" : {
             "basePath" :"http://api.otdctender.in",
+			//"basePath" :"http://localhost:9040",
           }
         },
         // this will be used to validate client side operation as per the user role
