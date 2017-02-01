@@ -15,6 +15,7 @@ app.constant("Constants", {
           "env":"dev",
           "dev" : {
             "basePath" :"http://api.otdctender.in",
+			//"basePath" :"http://localhost:9040",
           }
         },
         // this will be used to validate client side operation as per the user role
