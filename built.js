@@ -1,4 +1,4 @@
-/*! otdc - v1.0.0 - Wed Feb 01 2017 09:02:13 */
+/*! otdc - v1.0.0 - Thu Feb 02 2017 00:58:26 */
 var dependency = [];
 // lib  dependency
 var distModules = ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate', 'ngCookies', 'ngMessages','ngTable'];
@@ -592,24 +592,19 @@ $scope.gotoTenderCheck = function(){
   $scope.projectMilestoneInit = function() {
     $scope.projectMilestone = {};
     if($stateParams.tenderId && $stateParams.tenderList){
-      // $scope.projectMilestone.tenderList = $stateParams.tenderList;
-      // //$scope.projectMilestone.tenderList = $rootScope.tenderList;
-      // for(var i in $scope.projectMilestone.tenderList) {
-      //
-      //   if($scope.projectMilestone.tenderList[i].tenderId == $stateParams.tenderId){
-      //
-      //     $scope.projectMilestone.selectedTender = $scope.projectMilestone.tenderList[i];
-      //     break;
-      //   }
-      // }
-      //
-      // ApiCall.getProjectMileStone({tenderId:$scope.projectMilestone.selectedTender.tenderId},function(res) {
-      //   $scope.projectMilestone.milestoneList = res.Data;
-      //   Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
-      // },function(err) {
-      //   Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
-      // })
-      $window.location.reload();
+      $scope.projectMilestone.tenderList = $stateParams.tenderList;
+      //$scope.projectMilestone.tenderList = $rootScope.tenderList;
+      var index = getSelectedTenderIndex($stateParams.tenderId,$scope.projectMilestone.tenderList);
+      $timeout(function() {
+        $scope.projectMilestone.selectedTender = $scope.projectMilestone.tenderList[index];
+        ApiCall.getProjectMileStone({tenderId:$scope.projectMilestone.selectedTender.tenderId},function(res) {
+          $scope.projectMilestone.milestoneList = res.Data;
+          Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
+        },function(err) {
+          Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
+        })
+      })
+      //$window.location.reload();
     }
     else{
       // call the tender list api and select the first option
@@ -619,17 +614,8 @@ $scope.gotoTenderCheck = function(){
         $scope.projectMilestone.tenderList = res.Data;
         if($stateParams.tenderId) {
           // select match option with the tender id
-          var found = false;
-          for(var i in $scope.projectMilestone.tenderList) {
-
-            if($scope.projectMilestone.tenderList[i].tenderId == $stateParams.tenderId){
-              found = true;
-              $scope.projectMilestone.selectedTender = $scope.projectMilestone.tenderList[i];
-            }
-          }
-          if(!found) {
-            $scope.projectMilestone.selectedTender = $scope.projectMilestone.tenderList[0];
-          }
+          var index = getSelectedTenderIndex($stateParams.tenderId,$scope.projectMilestone.tenderList);
+          $scope.projectMilestone.selectedTender = $scope.projectMilestone.tenderList[index];
           // calling to get the Milestone details
           ApiCall.getProjectMileStone({tenderId:$scope.projectMilestone.selectedTender.tenderId},function(res) {
             $scope.projectMilestone.milestoneList = res.Data;
@@ -645,6 +631,17 @@ $scope.gotoTenderCheck = function(){
         $state.go("tenderList");
       })
     }
+  }
+  function getSelectedTenderIndex(tenderId,tenderList) {
+    var index = 0;
+    for(var i in tenderList) {
+
+      if(tenderList[i].tenderId == tenderId){
+        index = i;
+        break;
+      }
+    }
+    return index;
   }
  $scope.onAction = function(action,milestone) {
    switch (action) {
