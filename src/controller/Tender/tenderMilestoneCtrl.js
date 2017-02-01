@@ -1,92 +1,98 @@
-app.controller('TenderMilestoneController', function($scope, $rootScope, $state, $stateParams, ApiCall, Util, Events, EnvService, $timeout, $cookieStore, $localStorage) {
+app.controller('TenderMilestoneController', function($scope, $rootScope, $state, $filter,$stateParams, ApiCall, Util, Events, EnvService, $timeout, $cookieStore, $localStorage) {
     $scope.dateChange = function(data) {
         console.log("data  ", $scope.tenderMilestone, data);
     }
     $scope.init = function() {
         $scope.tenderMilestone = {};
-        if (!$stateParams.tenderId) {
+        if (!$stateParams.tenderId || !$stateParams.tender) {
             Util.alertMessage(Events.eventType.warning, Events.selectTender);
             $state.go("tenderList");
         } else {
-            $scope.tenderMilestone = [{
-                    "actType": null,
-                    "mileStoneId": 1,
-                    "date": null,
-                    "userId": 10015,
-                    "tenderId": 100000,
-                    "description": "Receipt Of Doc",
-                    "startDate": "",
-                    "endDate": "",
-                    "completionDate": "1/10/2017",
-                    "isClosed": "False"
-                }, {
-                    "actType": null,
-                    "mileStoneId": 2,
-                    "date": null,
-                    "userId": 10015,
-                    "tenderId": 100000,
-                    "description": "Technical Bid",
-                    "startDate": "1/10/2017",
-                    "endDate": "1/6/2017",
-                    "completionDate": "",
-                    "isClosed": "False"
-                }, {
-                    "actType": null,
-                    "mileStoneId": 3,
-                    "date": null,
-                    "userId": 10015,
-                    "tenderId": 100000,
-                    "description": "Opening Of Financial Bid",
-                    "startDate": "1/15/2017",
-                    "endDate": "1/7/2017",
-                    "completionDate": "",
-                    "isClosed": "False"
-                }, {
-                    "actType": null,
-                    "mileStoneId": 4,
-                    "date": null,
-                    "userId": 10015,
-                    "tenderId": 100000,
-                    "description": "Approval Of The Tender Date",
-                    "startDate": "1/18/2017",
-                    "endDate": "1/2/2017",
-                    "completionDate": "",
-                    "isClosed": "False"
-                }, {
-                    "actType": null,
-                    "mileStoneId": 5,
-                    "date": null,
-                    "userId": 10015,
-                    "tenderId": 100000,
-                    "description": "Singing Of Agreement Date",
-                    "startDate": "1/10/2017",
-                    "endDate": "1/3/2017",
-                    "completionDate": "",
-                    "isClosed": "False"
-                }, {
-                    "actType": null,
-                    "mileStoneId": 6,
-                    "date": null,
-                    "userId": 10015,
-                    "tenderId": 100000,
-                    "description": "Handing Over Of the Site",
-                    "startDate": "1/10/2017",
-                    "endDate": "1/4/2017",
-                    "completionDate": "",
-                    "isClosed": "False"
-                }]
-                $scope.updateDueDate($scope.tenderMilestone);
-                // $scope.tender = $stateParams.tender;
-                // ApiCall.getMilestone({
-                //         TenderId: $stateParams.tenderId
-                //     }, function(response) {
-                //         Util.alertMessage(Events.eventType.success, response.Message);
-                //         $scope.tenderMilestone = response.Data;
-                //     },
-                //     function(err) {
-                //         Util.alertMessage(Events.eventType.error, err.Message);
-                //     }
-                // )
+            // $scope.tenderMilestone = [{
+            //         "actType": null,
+            //         "mileStoneId": 1,
+            //         "date": null,
+            //         "userId": 10015,
+            //         "tenderId": 100000,
+            //         "description": "Receipt Of Doc",
+            //         "startDate": "",
+            //         "endDate": "",
+            //         "completionDate": "1/10/2017",
+            //         "isClosed": "False"
+            //     }, {
+            //         "actType": null,
+            //         "mileStoneId": 2,
+            //         "date": null,
+            //         "userId": 10015,
+            //         "tenderId": 100000,
+            //         "description": "Technical Bid",
+            //         "startDate": "1/10/2017",
+            //         "endDate": "1/6/2017",
+            //         "completionDate": "",
+            //         "isClosed": "False"
+            //     }, {
+            //         "actType": null,
+            //         "mileStoneId": 3,
+            //         "date": null,
+            //         "userId": 10015,
+            //         "tenderId": 100000,
+            //         "description": "Opening Of Financial Bid",
+            //         "startDate": "1/15/2017",
+            //         "endDate": "1/7/2017",
+            //         "completionDate": "",
+            //         "isClosed": "False"
+            //     }, {
+            //         "actType": null,
+            //         "mileStoneId": 4,
+            //         "date": null,
+            //         "userId": 10015,
+            //         "tenderId": 100000,
+            //         "description": "Approval Of The Tender Date",
+            //         "startDate": "1/18/2017",
+            //         "endDate": "1/2/2017",
+            //         "completionDate": "",
+            //         "isClosed": "False"
+            //     }, {
+            //         "actType": null,
+            //         "mileStoneId": 5,
+            //         "date": null,
+            //         "userId": 10015,
+            //         "tenderId": 100000,
+            //         "description": "Singing Of Agreement Date",
+            //         "startDate": "1/10/2017",
+            //         "endDate": "1/3/2017",
+            //         "completionDate": "",
+            //         "isClosed": "False"
+            //     }, {
+            //         "actType": null,
+            //         "mileStoneId": 6,
+            //         "date": null,
+            //         "userId": 10015,
+            //         "tenderId": 100000,
+            //         "description": "Handing Over Of the Site",
+            //         "startDate": "1/10/2017",
+            //         "endDate": "1/4/2017",
+            //         "completionDate": "",
+            //         "isClosed": "False"
+            //     }]
+            //     $scope.updateDueDate($scope.tenderMilestone);
+                $scope.tender = $stateParams.tender;
+                ApiCall.getMilestone({
+                        tenderId: $stateParams.tenderId
+                    }, function(response) {
+                        Util.alertMessage(Events.eventType.success, response.Message);
+                        $scope.tenderMilestone = response.Data;
+                        // filtering out the time from the date
+                        for(var i in $scope.tenderMilestone) {
+                          $scope.tenderMilestone[i].startDate = $filter('filterDate')($scope.tenderMilestone[i].startDate);
+                          $scope.tenderMilestone[i].endDate = $filter('filterDate')($scope.tenderMilestone[i].endDate);
+                        }
+                        $scope.updateDueDate($scope.tenderMilestone);
+                    },
+                    function(err) {
+                        Util.alertMessage(Events.eventType.error, err.Message);
+                    }
+                )
         }
 
     }

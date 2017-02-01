@@ -37,7 +37,7 @@ app.controller('TenderListController', function($scope, $rootScope, $state, ApiC
         )
           break;
         case 'tenderMile':
-          $state.go("tender_milestone",{tenderId:tender.tenderId,tender:tender})
+          $state.go("tenderMilestone",{tenderId:tender.tenderId,tender:tender})
           break;
         case 'projMile':
           $state.go("projectMilestone",{tenderId:tender.tenderId,tenderList:$scope.tenders})

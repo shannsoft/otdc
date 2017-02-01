@@ -32,7 +32,7 @@ module.exports = function(grunt) {
                 // },
             },
             css: {
-                files: ['css/*.css','!css/built*.css'],
+                files: ['css/*.css', '!css/built*.css'],
                 tasks: ['buildCss'],
                 options: {
                     livereload: true,
@@ -64,18 +64,18 @@ module.exports = function(grunt) {
             },
             lib: {
                 src: [
-                  "lib/angular/angular.js",
-                  "lib/angular/ng-table.min.js",
-                  "lib/angular/angular-ui-router.js",
-                  "lib/angular/angular-resource.js",
-                  "lib/angular/ng-animate.js",
-                  "lib/angular/ui-bootstrap-tpls-0.14.3.min.js",
-                  "lib/angular/ngStorage.min.js",
-                  "lib/angular/angular-cookies.min.js",
-                  "lib/angular/angular-messages.js",
-                  "lib/dist/moment.min.js",
-                  "js/vendor.js",
-                  "js/app.js",
+                    "lib/angular/angular.js",
+                    "lib/angular/ng-table.min.js",
+                    "lib/angular/angular-ui-router.js",
+                    "lib/angular/angular-resource.js",
+                    "lib/angular/ng-animate.js",
+                    "lib/angular/ui-bootstrap-tpls-0.14.3.min.js",
+                    "lib/angular/ngStorage.min.js",
+                    "lib/angular/angular-cookies.min.js",
+                    "lib/angular/angular-messages.js",
+                    "lib/dist/moment.min.js",
+                    "js/vendor.js",
+                    "js/app.js",
                 ],
                 dest: 'lib.js',
             },
@@ -101,19 +101,10 @@ module.exports = function(grunt) {
                 }
             }
         },
-        copy: {
-            main: {
-                cwd: '.',
-                src: 'src/**',
-                dest: 'ssapp',
-                expand: true,
-                // flatten: true,
-                // filter: 'isFile',
-            }
-        },
+
         clean: {
-            ssapp: {
-                src: ['ssapp']
+            build: {
+                src: ['build']
             }
         },
         cssmin: {
@@ -133,20 +124,122 @@ module.exports = function(grunt) {
             },
             all: {
                 src: [
-                  'css/bootstrap.min.css',
-                  'css/vendor.css',
-                  'css/app-seagreen.css',
-                  'css/custom.css',
-                  'css/ng-table.min.css',
+                    'css/bootstrap.min.css',
+                    'css/vendor.css',
+                    'css/app-seagreen.css',
+                    'css/custom.css',
+                    'css/ng-table.min.css',
                 ],
                 dest: "css/built.css"
             },
         },
+        copy: {
+            html: {
+                files: [
+                    // flattens results to a single level
+                    {
+                        expand: true,
+                        // flatten: true,
+                        src: ['index.html'],
+                        dest: 'build/',
+                        filter: 'isFile'
+                    }, {
+                        expand: true,
+                        // flatten: true,
+                        src: ['src/**/*.html'],
+                        dest: 'build/',
+                        filter: 'isFile'
+                    },
+                ],
+            },
+            js: {
+                files: [
+                    // adding root js files
+                    {
+                        expand: true,
+                        // flatten: true,
+                        src: ['*.js'],
+                        dest: 'build/',
+                        filter: 'isFile'
+                    },
+                    // adding root js folder
+                    {
+                        expand: true,
+                        // flatten: true,
+                        src: ['js/*'],
+                        dest: 'build/',
+                        filter: 'isFile'
+                    },
+                    // adding root lib folder
+                    {
+                        expand: true,
+                        // flatten: true,
+                        src: ['lib/*'],
+                        dest: 'build/',
+                        filter: 'isFile'
+                    },
+                    {
+                        expand: true,
+                        // flatten: true,
+                        src: ['lib/**'],
+                        dest: 'build/',
+                        filter: 'isFile'
+                    },
+                ],
+            },
+            css: {
+                files: [
+                    // adding css folder
+                    {
+                        expand: true,
+                        // flatten: true,
+                        src: ['css/*'],
+                        dest: 'build/',
+                        filter: 'isFile'
+                    },
+                    // adding fonts folder
+                    {
+                        expand: true,
+                        // flatten: true,
+                        src: ['fonts/*'],
+                        dest: 'build/',
+                        filter: 'isFile'
+                    },
+                    {
+                        expand: true,
+                        // flatten: true,
+                        src: ['fonts/**'],
+                        dest: 'build/',
+                        filter: 'isFile'
+                    },
+                    // adding assets folder
+                    {
+                        expand: true,
+                        // flatten: true,
+                        src: ['assets/*'],
+                        dest: 'build/',
+                        filter: 'isFile'
+                    }
+                ],
+            },
+        },
+        compress: {
+            main: {
+                options: {
+                    archive: 'clientApp.zip'
+                },
+                files: [{
+                        src: ['build/*','build/**'],
+                        dest: '.',
+                        filter: 'isFile'
+                    }
 
+                ]
+            }
+        }
 
 
     });
-
     // loading tasks modules
     grunt.loadNpmTasks('grunt-contrib-watch');
     // grunt.loadNpmTasks('grunt-contrib-jshint');
@@ -160,14 +253,15 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-concat-css');
+    grunt.loadNpmTasks('grunt-contrib-compress');
     // grunt.loadNpmTasks("grunt-concurrent")
     // grunt.task.run('notify_hooks');
     // registerTask
     // grunt.registerTask("default", ['concat','watch']);
     grunt.registerTask("default", ['concat', 'connect:server', 'open:dev', 'watch']);
     grunt.registerTask("con", ['concat', 'watch']);
-    grunt.registerTask("buildCss", ['concat_css','cssmin']);
-    grunt.registerTask("co", ['copy']);
+    grunt.registerTask("buildCss", ['concat_css', 'cssmin']);
+    grunt.registerTask("build", ['copy','compress','clean']);
     // grunt.registerTask("conn", ['concat','open:dev','watch']);
     grunt.registerTask('something', 'Do something interesting.', function(arg) {
         var msg = 'Doing something...';

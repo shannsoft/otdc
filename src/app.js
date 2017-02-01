@@ -263,9 +263,9 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
                 loggedout: checkLoggedout
             },
         })
-        .state('tender_milestone', {
+        .state('tenderMilestone', {
             templateUrl: 'src/views/Tender/TendorMilestone.html',
-            url: '/tender_milestone/:tenderId',
+            url: '/tenderMilestone/:tenderId',
             controller: "TenderMilestoneController",
             resolve: {
                 loggedout: checkLoggedout
