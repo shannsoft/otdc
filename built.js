@@ -1,4 +1,4 @@
-/*! otdc - v1.0.0 - Thu Jan 26 2017 04:59:05 */
+/*! otdc - v1.0.0 - Wed Feb 01 2017 09:02:13 */
 var dependency = [];
 // lib  dependency
 var distModules = ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate', 'ngCookies', 'ngMessages','ngTable'];
@@ -301,6 +301,33 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
                 loggedout: checkLoggedout
             },
         })
+        .state('projectMilestone', {
+            templateUrl: 'src/views/Tender/projectMilestone.html',
+            url: '/projectMilestone/:tenderId',
+            controller: "ProjectMilestoneController",
+            params: { tenderId:null,tenderList:null},
+            resolve: {
+                loggedout: checkLoggedout
+            },
+        })
+        .state('projectMilestoneDetails', {
+            templateUrl: 'src/views/Tender/projectMilestoneDetails.html',
+            url: '/projectMilestoneDetails/:tenderId',
+            controller: "ProjectMilestoneController",
+            params: { tenderId:null,milestone:null,action:null},
+            resolve: {
+                loggedout: checkLoggedout
+            },
+        })
+        .state('addProjectMilestone', {
+            templateUrl: 'src/views/Tender/addProjectMilestone.html',
+            url: '/addProjectMilestone/:tenderId',
+            controller: "ProjectMilestoneController",
+            params: { tenderId:null},
+            resolve: {
+                loggedout: checkLoggedout
+            },
+        })
 
 });
 app.constant('CONFIG', {
@@ -561,6 +588,183 @@ $scope.gotoTenderCheck = function(){
 }
 
 })
+;app.controller('ProjectMilestoneController', function($scope, $rootScope,$window, $state,$uibModal, $stateParams, ApiCall,Util, EnvService, $timeout, $cookieStore, $localStorage) {
+  $scope.projectMilestoneInit = function() {
+    $scope.projectMilestone = {};
+    if($stateParams.tenderId && $stateParams.tenderList){
+      // $scope.projectMilestone.tenderList = $stateParams.tenderList;
+      // //$scope.projectMilestone.tenderList = $rootScope.tenderList;
+      // for(var i in $scope.projectMilestone.tenderList) {
+      //
+      //   if($scope.projectMilestone.tenderList[i].tenderId == $stateParams.tenderId){
+      //
+      //     $scope.projectMilestone.selectedTender = $scope.projectMilestone.tenderList[i];
+      //     break;
+      //   }
+      // }
+      //
+      // ApiCall.getProjectMileStone({tenderId:$scope.projectMilestone.selectedTender.tenderId},function(res) {
+      //   $scope.projectMilestone.milestoneList = res.Data;
+      //   Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
+      // },function(err) {
+      //   Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
+      // })
+      $window.location.reload();
+    }
+    else{
+      // call the tender list api and select the first option
+      $rootScope.showPreloader = true;
+      ApiCall.getTendor(function(res) {
+        $rootScope.showPreloader = false;
+        $scope.projectMilestone.tenderList = res.Data;
+        if($stateParams.tenderId) {
+          // select match option with the tender id
+          var found = false;
+          for(var i in $scope.projectMilestone.tenderList) {
+
+            if($scope.projectMilestone.tenderList[i].tenderId == $stateParams.tenderId){
+              found = true;
+              $scope.projectMilestone.selectedTender = $scope.projectMilestone.tenderList[i];
+            }
+          }
+          if(!found) {
+            $scope.projectMilestone.selectedTender = $scope.projectMilestone.tenderList[0];
+          }
+          // calling to get the Milestone details
+          ApiCall.getProjectMileStone({tenderId:$scope.projectMilestone.selectedTender.tenderId},function(res) {
+            $scope.projectMilestone.milestoneList = res.Data;
+            Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
+          },function(err) {
+            Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
+          })
+        }
+
+      }, function(err) {
+        Util.alertMessage(err.Status.toLocaleLowerCase(),err.Message);
+        $rootScope.showPreloader = false;
+        $state.go("tenderList");
+      })
+    }
+  }
+ $scope.onAction = function(action,milestone) {
+   switch (action) {
+     case "view":
+     case "edit":
+      $state.go("projectMilestoneDetails",{tenderId:$scope.projectMilestone.selectedTender.tenderId,milestone:milestone,action:action})
+       break;
+     case "delete":
+     $scope.openMilestoneDeleteModal(milestone);
+       break;
+     default:
+
+   }
+ }
+
+ $scope.openMilestoneDeleteModal = function(milestone) {
+   var modalInstance = $uibModal.open({
+     animation: true,
+     templateUrl: 'deleteMilestoneModal.html',
+     controller: 'deleteMilestoneCtrl',
+     size: 'md',
+     resolve: {
+       milestone: function () {
+         return milestone;
+       }
+     }
+   });
+ }
+/**
+  add project Milestone details starts
+ */
+$scope.projectMilestoneDetailsInit = function(){
+  $scope.projectMilestoneDetails = {};
+    if(!$stateParams.tenderId){
+        $state.go("projectMilestone");
+      }
+      else if($stateParams.tenderId && !$stateParams.milestone ){
+        $state.go("projectMilestone",{tenderId:$stateParams.tenderId});
+      }
+      else{
+        $scope.projectMilestoneDetails = $stateParams.milestone;
+      }
+      $scope.isEdit = $stateParams.action == "edit" ? true : false;
+
+
+}
+$scope.updateMilestone = function(form){
+  $scope.projectMilestoneDetails.actType = 'U';
+  ApiCall.postProjectMileStone($scope.projectMilestoneDetails,function(res) {
+    Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
+  },function(err) {
+    Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
+  })
+}
+/**
+  add project Milestone details ends
+ */
+
+
+/**
+ * add project milestone starts
+ */
+$scope.addProjectMilestoneInit = function() {
+  $scope.addProjectMilestone = {};
+  if(!$stateParams.tenderId){
+    $state.go("projectMilestone");
+  }
+  else {
+    $scope.addProjectMilestone.tenderId = $stateParams.tenderId;
+    $scope.addProjectMilestone.actType = "I";
+  }
+}
+$scope.submitProjectMilestone = function(form){
+  ApiCall.postProjectMileStone($scope.addProjectMilestone,function(res) {
+    Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
+  },function(err) {
+    Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
+  })
+}
+
+/**
+  add project Milestone ends
+ */
+
+
+});
+
+/**
+ * modal controller for the delete milestone
+ */1
+app.controller('deleteMilestoneCtrl', function ($scope, $state,$uibModalInstance,milestone,Events,ApiCall,Util) {
+  // $scope.user = user;
+  $scope.ok = function () {
+    // calling service to delete user
+    var obj = {
+      actType:'D',
+      code:milestone.code
+    }
+    // ApiCall.postUser(obj,function(response) {
+    //   Util.alertMessage(Events.eventType.success,response.Message);e
+    //   $uibModalInstance.close();
+    //   $state.reload();
+    // },function(err) {
+    //   Util.alertMessage(Events.eventType.error,err.Message);
+    //   $uibModalInstance.close();
+    // })
+    ApiCall.postProjectMileStone(obj,function(res) {
+      Util.alertMessage(Events.eventType.success,res.Message);
+      $uibModalInstance.close();
+      $state.reload();
+    },function(err) {
+      Util.alertMessage(erre.Status.toLocaleLowerCase(),err.Message);
+    })
+
+  };
+
+  $scope.cancel = function () {
+    $uibModalInstance.dismiss('cancel');
+  };
+});
 ;app.controller('TenderAssignController', function($scope, $rootScope, $state, $stateParams, ApiCall, EnvService, $timeout, $cookieStore, $localStorage,Constants,Util) {
   $scope.init = function() {
     if(!$stateParams.tender)
@@ -775,7 +979,7 @@ app.controller('boqHistoryController', function ($scope,$uibModalInstance,tender
       $rootScope.showPreloader = true;
       ApiCall.getTendor(function(res) {
 
-        //$scope.tenders = res.Data;
+        $scope.tenders = res.Data;
         $scope.tableParams = new NgTableParams();
         $scope.tableParams.settings({
         dataset: res.Data
@@ -787,7 +991,7 @@ app.controller('boqHistoryController', function ($scope,$uibModalInstance,tender
         $rootScope.showPreloader = false;
       })
     }
-    $scope.onAction = function(action,tender) {
+    $scope.onAction = function(action,tender,tenderList) {
 
       switch (action) {
         case 'assign':
@@ -807,8 +1011,11 @@ app.controller('boqHistoryController', function ($scope,$uibModalInstance,tender
           }
         )
           break;
-        case 'milestone':
+        case 'tenderMile':
           $state.go("tender_milestone",{tenderId:tender.tenderId,tender:tender})
+          break;
+        case 'projMile':
+          $state.go("projectMilestone",{tenderId:tender.tenderId,tenderList:$scope.tenders})
           break;
         default:
 
@@ -1288,7 +1495,7 @@ app.controller('deleteModalCtrl', function ($scope, $uibModalInstance,user,Util,
     $rootScope.showPreloader = true;
     ApiCall.postVendorCheckList($scope.vendorChecklist,function(res) {
       $rootScope.showPreloader = false;
-      Util.alertMessage(Events.eventType.success,res.Message);
+      $state.reload();
     },function(err) {
       $rootScope.showPreloader = false;
       Util.alertMessage(Events.eventType.error,res.Message);
@@ -1657,6 +1864,13 @@ app.directive('fileSelect', ['$parse', function ($parse) {
       }
     };
 });
+app.filter('filterDate', function () {
+    return function (value) {
+      if(value){
+        return value.split(" ")[0];
+      }
+    };
+});
 ;angular.module('Authentication', [])
     // .factory('LoginService',function($http,$resource,ApiGenerator) {
     //   return $resource('/',null, {
@@ -1940,6 +2154,16 @@ app.directive('fileSelect', ['$parse', function ($parse) {
                 "method": "GET",
                 "Content-Type": "application/json",
             },
+            postProjectMileStone: {
+                "url": "/api/ProjectMileStone",
+                "method": "POST",
+                "Content-Type": "application/json",
+            },
+            getProjectMileStone: {
+                "url": "/api/ProjectMileStone",
+                "method": "GET",
+                "Content-Type": "application/json",
+            },
 
 
         }
@@ -1980,6 +2204,8 @@ app.directive('fileSelect', ['$parse', function ($parse) {
             postMilestone: ApiGenerator.getApi('posttMilestone'),
             postVendorCheckList: ApiGenerator.getApi('postVendorCheckList'),
             getVendorCheckList: ApiGenerator.getApi('getVendorCheckList'),
+            postProjectMileStone: ApiGenerator.getApi('postProjectMileStone'),
+            getProjectMileStone: ApiGenerator.getApi('getProjectMileStone'),
           });
 
     })
@@ -2077,6 +2303,11 @@ app.directive('fileSelect', ['$parse', function ($parse) {
       {
         "label" : "Permission Management",
         "state" : "permission_management",
+        "fClass" : "fa fa-th-large",
+      },
+      {
+        "label" : "Project Milestone",
+        "state" : "projectMilestone",
         "fClass" : "fa fa-th-large",
       },
     ]

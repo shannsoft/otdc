@@ -134,6 +134,16 @@ angular.module('WebService', [])
                 "method": "GET",
                 "Content-Type": "application/json",
             },
+            postProjectMileStone: {
+                "url": "/api/ProjectMileStone",
+                "method": "POST",
+                "Content-Type": "application/json",
+            },
+            getProjectMileStone: {
+                "url": "/api/ProjectMileStone",
+                "method": "GET",
+                "Content-Type": "application/json",
+            },
 
 
         }
@@ -174,6 +184,8 @@ angular.module('WebService', [])
             postMilestone: ApiGenerator.getApi('posttMilestone'),
             postVendorCheckList: ApiGenerator.getApi('postVendorCheckList'),
             getVendorCheckList: ApiGenerator.getApi('getVendorCheckList'),
+            postProjectMileStone: ApiGenerator.getApi('postProjectMileStone'),
+            getProjectMileStone: ApiGenerator.getApi('getProjectMileStone'),
           });
 
     })

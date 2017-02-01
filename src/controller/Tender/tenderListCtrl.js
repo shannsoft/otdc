@@ -4,7 +4,7 @@ app.controller('TenderListController', function($scope, $rootScope, $state, ApiC
       $rootScope.showPreloader = true;
       ApiCall.getTendor(function(res) {
 
-        //$scope.tenders = res.Data;
+        $scope.tenders = res.Data;
         $scope.tableParams = new NgTableParams();
         $scope.tableParams.settings({
         dataset: res.Data
@@ -16,7 +16,7 @@ app.controller('TenderListController', function($scope, $rootScope, $state, ApiC
         $rootScope.showPreloader = false;
       })
     }
-    $scope.onAction = function(action,tender) {
+    $scope.onAction = function(action,tender,tenderList) {
 
       switch (action) {
         case 'assign':
@@ -36,8 +36,11 @@ app.controller('TenderListController', function($scope, $rootScope, $state, ApiC
           }
         )
           break;
-        case 'milestone':
+        case 'tenderMile':
           $state.go("tender_milestone",{tenderId:tender.tenderId,tender:tender})
+          break;
+        case 'projMile':
+          $state.go("projectMilestone",{tenderId:tender.tenderId,tenderList:$scope.tenders})
           break;
         default:
 

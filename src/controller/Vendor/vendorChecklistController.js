@@ -58,7 +58,7 @@ app.controller('VendorChecklistController',function($scope,$rootScope,$state,$st
     $rootScope.showPreloader = true;
     ApiCall.postVendorCheckList($scope.vendorChecklist,function(res) {
       $rootScope.showPreloader = false;
-      Util.alertMessage(Events.eventType.success,res.Message);
+      $state.reload();
     },function(err) {
       $rootScope.showPreloader = false;
       Util.alertMessage(Events.eventType.error,res.Message);

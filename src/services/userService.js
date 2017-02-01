@@ -43,6 +43,11 @@ app.factory('UserService',function($rootScope,$http,$localStorage,$resource,ApiG
         "state" : "permission_management",
         "fClass" : "fa fa-th-large",
       },
+      {
+        "label" : "Project Milestone",
+        "state" : "projectMilestone",
+        "fClass" : "fa fa-th-large",
+      },
     ]
   }
   UserService.getRole = function(roleId) {

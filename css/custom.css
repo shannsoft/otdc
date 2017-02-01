@@ -375,6 +375,12 @@ table.userListTable.ng-table tbody tr td span {
     right: 0%;
     position: relative;
 }
+.formInput-date {
+  width: 80%;
+  float: right;
+  position: relative;
+  bottom: 32px;
+}
 
 .formInput-60 {
     display: inline;
@@ -457,3 +463,6 @@ input[type="date"] {
 }
 
 /*preview image stop*/
+.pending{
+  color:red;
+}

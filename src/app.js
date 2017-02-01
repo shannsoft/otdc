@@ -300,6 +300,33 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
                 loggedout: checkLoggedout
             },
         })
+        .state('projectMilestone', {
+            templateUrl: 'src/views/Tender/projectMilestone.html',
+            url: '/projectMilestone/:tenderId',
+            controller: "ProjectMilestoneController",
+            params: { tenderId:null,tenderList:null},
+            resolve: {
+                loggedout: checkLoggedout
+            },
+        })
+        .state('projectMilestoneDetails', {
+            templateUrl: 'src/views/Tender/projectMilestoneDetails.html',
+            url: '/projectMilestoneDetails/:tenderId',
+            controller: "ProjectMilestoneController",
+            params: { tenderId:null,milestone:null,action:null},
+            resolve: {
+                loggedout: checkLoggedout
+            },
+        })
+        .state('addProjectMilestone', {
+            templateUrl: 'src/views/Tender/addProjectMilestone.html',
+            url: '/addProjectMilestone/:tenderId',
+            controller: "ProjectMilestoneController",
+            params: { tenderId:null},
+            resolve: {
+                loggedout: checkLoggedout
+            },
+        })
 
 });
 app.constant('CONFIG', {

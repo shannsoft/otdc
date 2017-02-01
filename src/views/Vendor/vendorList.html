@@ -30,7 +30,7 @@
                     <div class="col-md-2 col-sm-2" ng-click="onAction('delete',row)">
                       <em class="fa fa-trash-o"></em>Delete
                     </div>
-                    <div class="col-md-2 col-sm-2" ng-click="onAction('checklist',row)">
+                    <div class="col-md-2 col-sm-2" ng-click="onAction('checklist',row)" ng-class="{'pending':!row.isChecklist}">
                       <em class="fa fa-cloud-upload"></em>Checklist
                     </div>
                   </div>

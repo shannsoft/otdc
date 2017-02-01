@@ -8,3 +8,10 @@ app.filter('getShortName', function () {
       }
     };
 });
+app.filter('filterDate', function () {
+    return function (value) {
+      if(value){
+        return value.split(" ")[0];
+      }
+    };
+});

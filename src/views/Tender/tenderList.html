@@ -33,8 +33,11 @@
                                             <div class="col-md-2 col-sm-2" ng-if="row.isFreeze == 'NO'" ng-click="onAction('freeze',row)">
                                               <em class="fa fa-save"></em></em>Freeze
                                             </div>
-                                            <div class="col-md-2 col-sm-2" ng-click="onAction('milestone',row)">
-                                              <em class="fa fa-bar-chart-o"></em></em>Milestone
+                                            <div class="col-md-2 col-sm-2" ng-click="onAction('tenderMile',row)">
+                                              <em class="fa fa-bar-chart-o"></em></em>Tender Milestone
+                                            </div>
+                                            <div class="col-md-2 col-sm-2" ng-click="onAction('projMile',row,$data)">
+                                              <em class="fa fa-bar-chart-o"></em></em>Project Milestone
                                             </div>
                                           </div>
                                         </td>
