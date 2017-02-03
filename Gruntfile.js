@@ -261,7 +261,8 @@ module.exports = function(grunt) {
     grunt.registerTask("default", ['concat', 'connect:server', 'open:dev', 'watch']);
     grunt.registerTask("con", ['concat', 'watch']);
     grunt.registerTask("buildCss", ['concat_css', 'cssmin']);
-    grunt.registerTask("build", ['copy','compress','clean']);
+    grunt.registerTask("build-compress", ['copy','compress','clean']);
+    grunt.registerTask("build", ['clean','copy']);
     // grunt.registerTask("conn", ['concat','open:dev','watch']);
     grunt.registerTask('something', 'Do something interesting.', function(arg) {
         var msg = 'Doing something...';

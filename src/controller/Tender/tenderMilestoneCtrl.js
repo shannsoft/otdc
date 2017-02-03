@@ -86,6 +86,7 @@ app.controller('TenderMilestoneController', function($scope, $rootScope, $state,
                         for(var i in $scope.tenderMilestone) {
                           $scope.tenderMilestone[i].startDate = $filter('filterDate')($scope.tenderMilestone[i].startDate);
                           $scope.tenderMilestone[i].endDate = $filter('filterDate')($scope.tenderMilestone[i].endDate);
+                          $scope.tenderMilestone[i].completionDate = $filter('filterDate')($scope.tenderMilestone[i].completionDate);
                         }
                         $scope.updateDueDate($scope.tenderMilestone);
                     },
@@ -104,33 +105,31 @@ app.controller('TenderMilestoneController', function($scope, $rootScope, $state,
         var mEnd = moment(new Date(tenderMilestone[i].endDate));
         var mToday = moment(new Date());
         var diff = mToday.diff(mEnd, 'days');
-        if(diff){
+        if(diff > 0){
           tenderMilestone[i].dueDayCount = diff;
+        }
+        else {
+          tenderMilestone[i].dueDayCount = 0;
         }
       }
     }
     $scope.closeTicket = function(index) {
         var isValid = true;
-        switch ($scope.tenderMilestone[index].description) {
-            case "Receipt Of Doc":
+        switch (index) {
+           /*
+           * Note : Only in case of the doc received the acttype = 'RECEPT_DOC' , in all other cases it will be 'U'
+           */
+            case 0: //"Receipt Of Doc"
                 $scope.tenderMilestone[index].actType = 'RECEPT_DOC';
                 $scope.tenderMilestone[index].isClosed = true;
-
                 break;
-            case "Technical Bid":
-
-                break;
-            case "Opening Of Financial Bid":
-
-                break;
-            case "Approval Of The Tender Date":
-
-                break;
-            case "Singing Of Agreement Date":
-
-                break;
-            case "Handing Over Of the Site":
-
+            case 1 : //"Technical Bid":
+            case 2 : //"Opening Of Financial Bid":
+            case 3 : //"Approval Of The Tender Date":
+            case 4 : //"Singing Of Agreement Date":
+            case 5 : //"Handing Over Of the Site":
+            $scope.tenderMilestone[index].actType = 'U';
+            $scope.tenderMilestone[index].isClosed = true;
                 break;
 
             default:
@@ -143,6 +142,7 @@ app.controller('TenderMilestoneController', function($scope, $rootScope, $state,
             ApiCall.postMilestone($scope.tenderMilestone[index], function(response) {
                     Util.alertMessage(Events.eventType.success, response.Message);
                     //$scope.tenderMilestone = response.Data;
+                    $state.reload();
                 },
                 function(err) {
                     Util.alertMessage(Events.eventType.error, err.Message);

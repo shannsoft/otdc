@@ -35,7 +35,7 @@
                 </label>
                 <div class="col-sm-10">
                     <date-viewer ng-model="tenderMilestone[0].startDate"></date-viewer>
-                    <button type="button" class="btn btn-success" ng-disabled="tenderMilestone[0].completionDate == '' || !tenderMilestone[0].completionDate" ng-click="closeTicket(0)">Close ticket</button>
+                    <button type="button" class="btn btn-success" ng-disabled="tenderMilestone[0].isClosed == 'True'" ng-click="closeTicket(0)" >Close ticket</button>
                 </div>
             </div>
             <div class="form-group row">
@@ -58,26 +58,26 @@
                             <date-viewer ng-model="tenderMilestone[1].endDate" disable="true"></date-viewer>
                             <span class="circular m-l-20pr" uib-tooltip="{{tenderMilestone[1].description}} End date">ED</span>
                           </td>
-                          <td><button type="button" class="btn btn-success" ng-click="closeTicket(1)">Close ticket</button></td>
+                          <td><button type="button" class="btn btn-success" ng-disabled="tenderMilestone[1].isClosed == 'True'" ng-click="closeTicket(1)">Close ticket</button></td>
                           <td><span class="overDue" ng-if="tenderMilestone[1].dueDayCount">{{tenderMilestone[1].dueDayCount}} day overdue</span></td>
                       </tr>
                       <tr>
-                        <td>{{tenderMilestone[2].description}}<td>
+                        <td>{{tenderMilestone[2].description}}-{{tenderMilestone[2].completionDate}}<td>
                           <td>
                             <date-viewer ng-model="tenderMilestone[2].startDate" disable="true"></date-viewer>
                             <span class="circular m-l-20pr" uib-tooltip="{{tenderMilestone[2].description}} Open date">OD</span>
                           </td>
                           <td><hr/></td>
                           <td>
-                            <date-viewer ng-model="tenderMilestone[2].completionDate"></date-viewer>
-                            <span class="circular m-l-20pr" uib-tooltip="{{tenderMilestone[2].description}} Close date">CD</span>
+                            <date-viewer ng-model="tenderMilestone[2].completionDate" ></date-viewer>
+                            <span class="circular m-l-20pr" uib-tooltip="{{tenderMilestone[2].description}} Close date" >CD</span>
                           </td>
                           <td><hr/></td>
                           <td>
                             <date-viewer ng-model="tenderMilestone[2].endDate" disable="true"></date-viewer>
                             <span class="circular m-l-20pr" uib-tooltip="{{tenderMilestone[2].description}} End date">ED</span>
                           </td>
-                          <td><button type="button" class="btn btn-success" ng-click="closeTicket(2)">Close ticket</button></td>
+                          <td><button type="button" class="btn btn-success" ng-disabled="tenderMilestone[2].isClosed == 'True'" ng-click="closeTicket(2)">Close ticket</button></td>
                           <td><span class="overDue" ng-if="tenderMilestone[2].dueDayCount">{{tenderMilestone[2].dueDayCount}} day overdue</span></td>
                       </tr>
                       <tr>
@@ -88,7 +88,7 @@
                           </td>
                           <td><hr/></td>
                           <td>
-                            <date-viewer ng-model="tenderMilestone[3].completionDate"></date-viewer>
+                            <date-viewer ng-model="tenderMilestone[3].completionDate" ></date-viewer>
                             <span class="circular m-l-20pr" uib-tooltip="{{tenderMilestone[3].description}} Close date">CD</span>
                           </td>
                           <td><hr/></td>
@@ -96,7 +96,7 @@
                             <date-viewer ng-model="tenderMilestone[3].endDate" disable="true"></date-viewer>
                             <span class="circular m-l-20pr" uib-tooltip="{{tenderMilestone[3].description}} End date">ED</span>
                           </td>
-                          <td><button type="button" class="btn btn-success" ng-click="closeTicket(3)">Close ticket</button></td>
+                          <td><button type="button" class="btn btn-success" ng-disabled="tenderMilestone[3].isClosed == 'True'" ng-click="closeTicket(3)">Close ticket</button></td>
                           <td><span class="overDue" ng-if="tenderMilestone[3].dueDayCount">{{tenderMilestone[3].dueDayCount}} day overdue</span></td>
                       </tr>
                       <tr>
@@ -107,7 +107,7 @@
                           </td>
                           <td><hr/></td>
                           <td>
-                            <date-viewer ng-model="tenderMilestone[4].completionDate"></date-viewer>
+                            <date-viewer ng-model="tenderMilestone[4].completionDate" ></date-viewer>
                             <span class="circular m-l-20pr" uib-tooltip="{{tenderMilestone[4].description}} Close date">CD</span>
                           </td>
                           <td><hr/></td>
@@ -115,7 +115,7 @@
                             <date-viewer ng-model="tenderMilestone[4].endDate" disable="true"></date-viewer>
                             <span class="circular m-l-20pr" uib-tooltip="{{tenderMilestone[4].description}} End date">ED</span>
                           </td>
-                          <td><button type="button" class="btn btn-success" ng-click="closeTicket(4)">Close ticket</button></td>
+                          <td><button type="button" class="btn btn-success" ng-disabled="tenderMilestone[4].isClosed == 'True'" ng-click="closeTicket(4)">Close ticket</button></td>
                           <td><span class="overDue" ng-if="tenderMilestone[4].dueDayCount">{{tenderMilestone[4].dueDayCount}} day overdue</span></td>
                       </tr>
                       <tr>
@@ -126,7 +126,7 @@
                           </td>
                           <td><hr/></td>
                           <td>
-                            <date-viewer ng-model="tenderMilestone[5].completionDate"></date-viewer>
+                            <date-viewer ng-model="tenderMilestone[5].completionDate" ></date-viewer>
                             <span class="circular m-l-20pr" uib-tooltip="{{tenderMilestone[5].description}} Close date">CD</span>
                           </td>
                           <td><hr/></td>
@@ -134,7 +134,7 @@
                             <date-viewer ng-model="tenderMilestone[5].endDate" disable="true"></date-viewer>
                             <span class="circular m-l-20pr" uib-tooltip="{{tenderMilestone[5].description}} End date">ED</span>
                           </td>
-                          <td><button type="button" class="btn btn-success" ng-click="closeTicket(5)">Close ticket</button></td>
+                          <td><button type="button" class="btn btn-success" ng-disabled="tenderMilestone[5].isClosed == 'True'" ng-click="closeTicket(5)">Close ticket</button></td>
                           <td><span class="overDue" ng-if="tenderMilestone[5].dueDayCount">{{tenderMilestone[5].dueDayCount}} day overdue</span></td>
                       </tr>
 
