@@ -1,4 +1,4 @@
-/*! otdc - v1.0.0 - Sat Feb 04 2017 02:10:39 */
+/*! otdc - v1.0.0 - Tue Feb 07 2017 00:24:31 */
 var dependency = [];
 // lib  dependency
 var distModules = ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate', 'ngCookies', 'ngMessages','ngTable'];
@@ -458,15 +458,22 @@ $state.go('forget_password');
 ;app.controller('RoleListController', function($scope, $rootScope, $state, ApiCall,$uibModal, AppModel,EnvService, $timeout, $cookieStore, $localStorage,NgTableParams) {
   $scope.init = function() {
     $scope.roles = {};
-    if(AppModel.getSetting()) {
-      $timeout.cancel($scope.timeout); // cancel timeout if exist
-      $scope.roles.designation = AppModel.getSetting('designation');
-    }
-    else {
-        $scope.timeout = $timeout(function() {
-        $scope.init();
-      }, 2000);
-    }
+    ApiCall.getDesignation(function(response) {
+      $rootScope.showPreloader = false;
+      $scope.roles.designation = response.Data;
+    },function(err) {
+      $rootScope.showPreloader = false;
+      Util.alertMessage(Events.eventType.error,err.Message);
+    })
+    // if(AppModel.getSetting()) {
+    //   $timeout.cancel($scope.timeout); // cancel timeout if exist
+    //   $scope.roles.designation = AppModel.getSetting('designation');
+    // }
+    // else {
+    //     $scope.timeout = $timeout(function() {
+    //     $scope.init();
+    //   }, 2000);
+    // }
   }
  $scope.onAction = function(action,designation) {
    var templateUrl;
@@ -503,7 +510,7 @@ $state.go('forget_password');
  }
 });
 
-app.controller('designationModalCtrl', function ($scope, $uibModalInstance,Util,ApiCall,$state,Events,action,designation ) {
+app.controller('designationModalCtrl', function ($rootScope,$scope, $uibModalInstance,Util,ApiCall,$state,Events,action,designation ) {
   $scope.action = action;
   $scope.designation = designation;
   $scope.ok = function () {
@@ -511,25 +518,25 @@ app.controller('designationModalCtrl', function ($scope, $uibModalInstance,Util,
     // calling service to delete user
     switch ($scope.action) {
       case 'view':
-       obj.actType = 'V';
+       $scope.designation.actType = 'V';
         break;
       case 'add':
-       obj.actType = 'I';
+       $scope.designation.actType = 'I';
         break;
       case 'edit':
-        obj.actType = 'U';
+        $scope.designation.actType = 'U';
 
         break;
       case 'delete':
-          obj.actType = 'D';
+          $scope.designation.actType = 'D';
 
         break;
       default:
 
     }
-    obj = Object.assign(obj, $scope.designation);
+    // obj = Object.assign(obj, $scope.designation);
     $rootScope.showPreloader = true;
-    ApiCall.postDesignation(obj,function(response) {
+    ApiCall.postDesignation($scope.designation,function(response) {
       $rootScope.showPreloader = false;
       Util.alertMessage(Events.eventType.success,response.Message);
       $state.reload();
