@@ -1,4 +1,4 @@
-/*! otdc - v1.0.0 - Tue Feb 07 2017 00:24:31 */
+/*! otdc - v1.0.0 - Tue Feb 07 2017 01:06:26 */
 var dependency = [];
 // lib  dependency
 var distModules = ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate', 'ngCookies', 'ngMessages','ngTable'];
@@ -2043,7 +2043,7 @@ app.filter('filterDate', function () {
 
             },
             logout: {
-                url: "/api/User",
+                url: "/api/LogOut",
                 method: "POST"
             },
             token: {

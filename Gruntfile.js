@@ -226,7 +226,7 @@ module.exports = function(grunt) {
         compress: {
             main: {
                 options: {
-                    archive: 'clientApp.zip'
+                    archive: 'build.zip'
                 },
                 files: [{
                         src: ['build/*','build/**'],

@@ -12,7 +12,7 @@ angular.module('WebService', [])
 
             },
             logout: {
-                url: "/api/User",
+                url: "/api/LogOut",
                 method: "POST"
             },
             token: {
