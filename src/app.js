@@ -70,6 +70,9 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
               $timeout(function() {
                 $rootScope.loggedin = $localStorage[Constants.getLoggedIn()];
                 UserService.setUser(response.Data);
+                // UserService.authorisedApi('Login','post',function(result) {
+                //   console.log("web serviceCall validated as ",result);
+                // });
                 $rootScope.$emit(Events.userLogged);
                 // fetching the details of the settings
                 if(!AppModel.getSetting()) {

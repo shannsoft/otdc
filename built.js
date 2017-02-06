@@ -1,4 +1,4 @@
-/*! otdc - v1.0.0 - Tue Feb 07 2017 01:06:26 */
+/*! otdc - v1.0.0 - Tue Feb 07 2017 02:08:54 */
 var dependency = [];
 // lib  dependency
 var distModules = ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate', 'ngCookies', 'ngMessages','ngTable'];
@@ -71,6 +71,9 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
               $timeout(function() {
                 $rootScope.loggedin = $localStorage[Constants.getLoggedIn()];
                 UserService.setUser(response.Data);
+                // UserService.authorisedApi('Login','post',function(result) {
+                //   console.log("web serviceCall validated as ",result);
+                // });
                 $rootScope.$emit(Events.userLogged);
                 // fetching the details of the settings
                 if(!AppModel.getSetting()) {
@@ -2368,6 +2371,25 @@ app.filter('filterDate', function () {
       return sideBarInfo;
     }
 
+  };
+  /**
+   * This is used to autorise api based on the user Designation
+   *
+   */
+  UserService.authorisedApi = function(api,type,callback) {
+    var authetication = user.authentication;
+    var keys = Object.keys(authetication);
+    var len = keys.length;
+    var counter = 0;
+    angular.forEach(authetication,function(value,key) {
+      if(value['name'] == api) {
+        return callback(value[type] || false);
+      }
+      if(counter >=  len-1) {
+        return callback( false);
+      }
+      counter++;
+    })
   };
   return UserService;
 })

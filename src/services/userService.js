@@ -96,5 +96,24 @@ app.factory('UserService',function($rootScope,$http,$localStorage,$resource,ApiG
     }
 
   };
+  /**
+   * This is used to autorise api based on the user Designation
+   *
+   */
+  UserService.authorisedApi = function(api,type,callback) {
+    var authetication = user.authentication;
+    var keys = Object.keys(authetication);
+    var len = keys.length;
+    var counter = 0;
+    angular.forEach(authetication,function(value,key) {
+      if(value['name'] == api) {
+        return callback(value[type] || false);
+      }
+      if(counter >=  len-1) {
+        return callback( false);
+      }
+      counter++;
+    })
+  };
   return UserService;
 })

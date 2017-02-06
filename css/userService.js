@@ -8,12 +8,6 @@ app.factory('UserService',function($http,$localStorage){
   UserService.setUser = function(userData) {
     user = userData
   };
-  /**
-   * This is used to autorise api based on the user Designation
-   *
-   */
-  UserService.authorisedApi = function(api) {
-    user = userData
-  };
+  
   return UserService;
 })

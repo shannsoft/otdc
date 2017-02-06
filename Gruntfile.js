@@ -177,8 +177,7 @@ module.exports = function(grunt) {
                         src: ['lib/*'],
                         dest: 'build/',
                         filter: 'isFile'
-                    },
-                    {
+                    }, {
                         expand: true,
                         // flatten: true,
                         src: ['lib/**'],
@@ -204,8 +203,7 @@ module.exports = function(grunt) {
                         src: ['fonts/*'],
                         dest: 'build/',
                         filter: 'isFile'
-                    },
-                    {
+                    }, {
                         expand: true,
                         // flatten: true,
                         src: ['fonts/**'],
@@ -229,14 +227,34 @@ module.exports = function(grunt) {
                     archive: 'build.zip'
                 },
                 files: [{
-                        src: ['build/*','build/**'],
+                        src: ['build/*', 'build/**'],
                         dest: '.',
                         filter: 'isFile'
                     }
 
                 ]
             }
-        }
+        },
+        jscrambler: {
+            main: {
+                options: {
+                    keys: {
+                        accessKey: '',
+                        secretKey: ''
+                    },
+                    applicationId: '',
+                    params: [{
+                        name: 'whitespaceRemoval'
+                    }, {
+                        name: 'charToTernaryOperator'
+                    }]
+                },
+                files: [{
+                    src: ['lib.js','built.js'],
+                    dest: 'scrambler/'
+                }, ]
+            }
+        },
 
 
     });
@@ -254,6 +272,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-concat-css');
     grunt.loadNpmTasks('grunt-contrib-compress');
+    grunt.loadNpmTasks('grunt-jscrambler');
     // grunt.loadNpmTasks("grunt-concurrent")
     // grunt.task.run('notify_hooks');
     // registerTask
@@ -261,8 +280,9 @@ module.exports = function(grunt) {
     grunt.registerTask("default", ['concat', 'connect:server', 'open:dev', 'watch']);
     grunt.registerTask("con", ['concat', 'watch']);
     grunt.registerTask("buildCss", ['concat_css', 'cssmin']);
-    grunt.registerTask("build-compress", ['copy','compress','clean']);
-    grunt.registerTask("build", ['clean','copy']);
+    grunt.registerTask("build-compress", ['copy', 'compress', 'clean']);
+    grunt.registerTask("build", ['clean', 'copy']);
+    grunt.registerTask("jscrambler", ['jscrambler']);
     // grunt.registerTask("conn", ['concat','open:dev','watch']);
     grunt.registerTask('something', 'Do something interesting.', function(arg) {
         var msg = 'Doing something...';
