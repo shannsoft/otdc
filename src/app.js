@@ -286,9 +286,17 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
                 loggedout: checkLoggedout
             }
         })
-        .state('permission_management', {
+        .state('permissionManagement', {
             templateUrl: 'src/views/User/permission.html',
             url: '/permission',
+            controller: "PermissionController",
+            resolve: {
+                loggedout: checkLoggedout
+            }
+        })
+        .state('addPermission', {
+            templateUrl: 'src/views/User/addPermission.html',
+            url: '/addPermission',
             controller: "PermissionController",
             resolve: {
                 loggedout: checkLoggedout

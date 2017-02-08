@@ -30,7 +30,7 @@ app.factory('UserService',function($rootScope,$http,$localStorage,$resource,ApiG
       },
       {
         "label" : "Tender Milestone",
-        "state" : "tender_milestone",
+        "state" : "tenderMilestone",
         "fClass" : "fa fa-th-large",
       },
       {
@@ -40,7 +40,7 @@ app.factory('UserService',function($rootScope,$http,$localStorage,$resource,ApiG
       },
       {
         "label" : "Permission Management",
-        "state" : "permission_management",
+        "state" : "permissionManagement",
         "fClass" : "fa fa-th-large",
       },
       {

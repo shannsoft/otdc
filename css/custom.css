@@ -419,6 +419,12 @@ table.userListTable.ng-table tbody tr td span {
     z-index: 9;
     width: 125px;
 }
+.btn-capsule-lg {
+    float: right;
+    position: relative;
+    z-index: 9;
+    width:140px;
+}
 
 
 /*.tenderMilestone tbody tr td {

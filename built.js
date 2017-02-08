@@ -1,4 +1,4 @@
-/*! otdc - v1.0.0 - Tue Feb 07 2017 02:08:54 */
+/*! otdc - v1.0.0 - Thu Feb 09 2017 03:13:27 */
 var dependency = [];
 // lib  dependency
 var distModules = ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate', 'ngCookies', 'ngMessages','ngTable'];
@@ -287,9 +287,17 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
                 loggedout: checkLoggedout
             }
         })
-        .state('permission_management', {
+        .state('permissionManagement', {
             templateUrl: 'src/views/User/permission.html',
             url: '/permission',
+            controller: "PermissionController",
+            resolve: {
+                loggedout: checkLoggedout
+            }
+        })
+        .state('addPermission', {
+            templateUrl: 'src/views/User/addPermission.html',
+            url: '/addPermission',
             controller: "PermissionController",
             resolve: {
                 loggedout: checkLoggedout
@@ -367,7 +375,7 @@ app.factory('Util', ['$rootScope', '$timeout', function($rootScope, $timeout) {
     return Util;
 }]);
 ;app.constant("Constants", {
-        "debug":false,
+        "debug":true,
         "storagePrefix": "goAppOTDC$",
         "getTokenKey" : function() {return this.storagePrefix + "token";},
         "getLoggedIn" : function() {return this.storagePrefix + "loggedin";},
@@ -1185,26 +1193,68 @@ app.controller('boqHistoryController', function ($scope,$uibModalInstance,tender
     }
 })
 ;app.controller('PermissionController', function($scope, $rootScope, $state,$timeout,AppModel,$uibModal,ApiCall,Events,Util,$localStorage,UtilityService, Constants) {
-  $scope.init = function() {
+  $scope.permissionInit = function(fromAddService) {
     $scope.permission = {};
 
-    $scope.permission.designation = AppModel.getSetting('designation');
-    $scope.UtilityService = UtilityService;
-    if(!$scope.permission.designation)
-    {
-      $scope.permission.timeout = $timeout(function(){
-        $scope.init()
-      },2000);
-    }
-    else{
-      $timeout.cancel($scope.permission.timeout);
-      $scope.permission.currTab = 0;
-      $scope.permission.designation.isActive = true;
-    }
+    // $scope.permission.designation = AppModel.getSetting('designation');
+    // $scope.UtilityService = UtilityService;
+    $rootScope.showLoader = true;
+    ApiCall.getDesignation(function(response) {
+      $rootScope.showLoader = false;
+      Util.alertMessage(Events.eventType.success,response.Message);
+      $scope.permission.designations = response.Data;
+      $scope.permission.selectedDesignation = $scope.permission.designations[0];
+      // calling for the web service for selected designation
+      if(!fromAddService)
+        $scope.fetchWebServiceDetails();
+
+    },function(err) {
+      $rootScope.showLoader = false;
+        Util.alertMessage(Events.eventType.error,err.Message);
+    })
+
   }
-  $scope.tabChange = function(designation,index) {
-    $scope.permission.currTab = index;
+  $scope.fetchWebServiceDetails = function() {
+    $rootScope.showLoader = true;
+    ApiCall.getAuthentication({designation:$scope.permission.selectedDesignation.designationId},function(response) {
+      // Util.alertMessage(Events.eventType.success,response.Message);
+      $rootScope.showLoader = false;
+      $scope.permission.webServices = response;
+    },function(err) {
+      $rootScope.showLoader = false;
+        Util.alertMessage(Events.eventType.error,err.Message);
+    })
+
   }
+  $scope.savePermission = function(permission) {
+    console.log(permission.webServices == $scope.permission.webServices);
+    // permission.actType = 'U';
+    var obj = {
+      authenticaiton:permission.webServices,
+      actType : 'U'
+    }
+    ApiCall.postAuthentication(obj,function(response) {
+      Util.alertMessage(Events.eventType.success,response.Message);
+      // $scope.permission.webServices = response;
+    },function(err) {
+        Util.alertMessage(Events.eventType.error,err.Message);
+    })
+  }
+
+
+
+  /**
+  * code for the add permission starts
+   */
+   $scope.addPermissionInit = function() {
+     if(!$scope.permission.designations) {
+       $scope.permissionInit(true);
+     }
+   }
+  /**
+  * code for the add permission ends
+   */
+
 })
 ;app.controller('UserController', function($scope, $rootScope, $state,$stateParams, UserService,AppModel, UtilityService,Util,$localStorage, Constants,ApiCall,Events) {
     // $scope.UserService = UserService;
@@ -2178,6 +2228,17 @@ app.filter('filterDate', function () {
                 "method": "GET",
                 "Content-Type": "application/json",
             },
+            getAuthentication: {
+                "url": "/api/Authentication",
+                "method": "GET",
+                "Content-Type": "application/json",
+                "isArray" : true
+            },
+            postAuthentication: {
+                "url": "/api/Authentication",
+                "method": "POST",
+                "Content-Type": "application/json",
+            },
 
 
         }
@@ -2220,6 +2281,8 @@ app.filter('filterDate', function () {
             getVendorCheckList: ApiGenerator.getApi('getVendorCheckList'),
             postProjectMileStone: ApiGenerator.getApi('postProjectMileStone'),
             getProjectMileStone: ApiGenerator.getApi('getProjectMileStone'),
+            getAuthentication: ApiGenerator.getApi('getAuthentication'),
+            postAuthentication: ApiGenerator.getApi('postAuthentication'),
           });
 
     })
@@ -2306,7 +2369,7 @@ app.filter('filterDate', function () {
       },
       {
         "label" : "Tender Milestone",
-        "state" : "tender_milestone",
+        "state" : "tenderMilestone",
         "fClass" : "fa fa-th-large",
       },
       {
@@ -2316,7 +2379,7 @@ app.filter('filterDate', function () {
       },
       {
         "label" : "Permission Management",
-        "state" : "permission_management",
+        "state" : "permissionManagement",
         "fClass" : "fa fa-th-large",
       },
       {
