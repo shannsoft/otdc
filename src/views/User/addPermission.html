@@ -4,27 +4,17 @@
             <div class="card card-block sameheight-item">
                 <div class="title-block">
                     <h3 class="title">
-                        Add Permission
+                        Permission Mannagement
                     </h3>
                 </div>
-                <form name="addPermissionForm" role="addPermissionForm">
+                <form name="addPermissionInitForm" role="addPermissionInitForm">
 
                     <fieldset class="form-group">
                         <label class="control-label" for="formGroupExampleInput3">Select Designation</label>
-                        <select ng-change="fetchWebServiceDetails()" ng-options="designation as designation.designationName for designation in permission.designations track by designation.designationId" ng-model="permission.selectedDesignation" class="form-control formInput" name="Tender_Type"></select>
-                        <!-- <span class="help-block" ng-show="permission.Tender_Type.$error.required && permission.Tender_Type.$touched">select one</span> -->
-                    </fieldset>
-                    <fieldset class="form-group">
-                        <label class="control-label" for="formGroupExampleInput3">Select Web service</label>
-                        <!-- <select ng-change="fetchWebServiceDetails()" ng-options="designation as designation.designationName for designation in permission.designations track by designation.designationId" ng-model="permission.selectedDesignation" class="form-control formInput" name="Tender_Type"></select> -->
-                        <!-- <span class="help-block" ng-show="permission.Tender_Type.$error.required && permission.Tender_Type.$touched">select one</span> -->
+                        <select ng-change="fetchWebServiceDetails()" ng-options="designation as designation.designationName for designation in addPermission.designations track by designation.designationId" ng-model="addPermission.selectedDesignation" class="form-control formInput" name="Tender_Type"></select>
                     </fieldset>
                     <!-- tender details a custom html tag to show  the tender details -->
                     <permissions ng-if="addPermission.webServices">
-                        <!-- <fieldset class="form-group">
-                            <label class="control-label" for="formGroupExampleInput">Tender Id</label>
-                            <input type="text" ng-model="permission.selectedTender.tenderId" ng-readonly="true" class="form-control formInput" id="formGroupExampleInput">
-                        </fieldset> -->
                         <div class="card card-primary" ng-repeat="webservice in addPermission.webServices">
                             <div class="card-header">
                                 <div class="header-block">
@@ -35,17 +25,17 @@
                             </div>
                             <div class="card-block">
                               <!-- Iterating over the object of the web service details of each web service -->
-                                <div ng-repeat="(key, value) in webservice" ng-if="key!='name' && key!='id'">
+                                <div ng-repeat="(key, value) in webservice" ng-if="key!='name' && key!='designation' && key!='id'">
                                     <label>
-                                        <input class="checkbox" type="checkbox" ng-checked="value">
-                                        <span>{{key}}</span>
+                                        <input class="checkbox" type="checkbox" ng-checked="value" ng-model="webservice[key]">
+                                        <span>{{key}}-{{value}}</span>
                                     </label>
                                 </div>
                             </div>
                         </div>
                     </permissions>
-                    <fieldset class="form-group" ng-if="addPermission.selectedDesignation">
-                        <input type="submit" class="btn btn-success" ng-disabled="addPermissionForm.$invalid" ng-click="savePermission(addPermission)">
+                    <fieldset class="form-group" >
+                        <input type="submit" class="btn btn-success" ng-disabled="addPermissionInitForm.$invalid" ng-click="saveAddPermission(permission)">
                         <button class="btn btn-secondary" history="">Cancel</button>
                     </fieldset>
                 </form>

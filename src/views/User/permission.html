@@ -17,10 +17,6 @@
                     </fieldset>
                     <!-- tender details a custom html tag to show  the tender details -->
                     <permissions ng-if="permission.webServices">
-                        <!-- <fieldset class="form-group">
-                            <label class="control-label" for="formGroupExampleInput">Tender Id</label>
-                            <input type="text" ng-model="permission.selectedTender.tenderId" ng-readonly="true" class="form-control formInput" id="formGroupExampleInput">
-                        </fieldset> -->
                         <div class="card card-primary" ng-repeat="webservice in permission.webServices">
                             <div class="card-header">
                                 <div class="header-block">
