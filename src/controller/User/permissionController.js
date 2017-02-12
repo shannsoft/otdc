@@ -1,9 +1,12 @@
-app.controller('PermissionController', function($scope, $rootScope, $state, $timeout, AppModel, $uibModal, ApiCall, Events, Util, $localStorage, UtilityService, Constants) {
+app.controller('PermissionController', function($scope, $rootScope, $state, $timeout, AppModel, $uibModal, ApiCall, Events, Util, $localStorage, UtilityService, Constants,UserService) {
   $scope.permission = {};
   $scope.addPermission = {};
+  $scope.checkPermission = UserService.checkPermission;
     $scope.permissionInit = function(fromAddService) {
         // $scope.permission.designation = AppModel.getSetting('designation');
         // $scope.UtilityService = UtilityService;
+        var temp = '';
+        // $scope.checkPermission('Login','POST');
         $rootScope.showLoader = true;
         ApiCall.getDesignation(function(response) {
             $rootScope.showLoader = false;
@@ -23,6 +26,8 @@ app.controller('PermissionController', function($scope, $rootScope, $state, $tim
         })
 
     }
+
+
     $scope.fetchWebServiceDetails = function() {
         $rootScope.showLoader = true;
         ApiCall.getAuthentication({
@@ -51,9 +56,6 @@ app.controller('PermissionController', function($scope, $rootScope, $state, $tim
             Util.alertMessage(Events.eventType.error, err.Message);
         })
     }
-
-
-
     /**
      * code for the add permission starts
      */
@@ -62,7 +64,6 @@ app.controller('PermissionController', function($scope, $rootScope, $state, $tim
         if (!$scope.permission.designations) {
             $scope.permissionInit(true);
         }
-        //
         $scope.addPermission.webServices = [{
             "name": "Login",
             "get": false,

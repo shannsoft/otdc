@@ -1,4 +1,4 @@
-app.factory('UserService',function($rootScope,$http,$localStorage,$resource,ApiGenerator,Events,Constants){
+app.factory('UserService',function($rootScope,$http,$localStorage,$resource,ApiGenerator,Events,Constants,$q){
 
   var user = {};
   var UserService = {};
@@ -76,13 +76,13 @@ app.factory('UserService',function($rootScope,$http,$localStorage,$resource,ApiG
     this.setUser(null);
   };
   // this is used to call the web serviceCall
-  UserService.serviceCall = function() {
-    return $resource('/',null, {
-      getUser: ApiGenerator.getApi('getUser'), // get user can be called in many form
-      getUsers: ApiGenerator.getApi('getUsers'), // get user can be called in many form
-      addUser: ApiGenerator.getApi('addUser'), // get user can be called in many form
-    });
-  };
+  // UserService.serviceCall = function() {
+  //   return $resource('/',null, {
+  //     getUser: ApiGenerator.getApi('getUser'), // get user can be called in many form
+  //     getUsers: ApiGenerator.getApi('getUsers'), // get user can be called in many form
+  //     addUser: ApiGenerator.getApi('addUser'), // get user can be called in many form
+  //   });
+  // };
   // used to get the side bar details according to user
   UserService.getSideBarInfo = function() {
     var sideBarInfo = sideBar[this.getUser().designationId];
@@ -98,22 +98,43 @@ app.factory('UserService',function($rootScope,$http,$localStorage,$resource,ApiG
   };
   /**
    * This is used to autorise api based on the user Designation
+   @param -
+    api - api name
+    type - type of the method need to access
+    callback - callback function
    *
    */
-  UserService.authorisedApi = function(api,type,callback) {
+  var authorisedApi = function(api,type,callback) {
+    var deferred = $q.defer();
     var authetication = user.authentication;
     var keys = Object.keys(authetication);
     var len = keys.length;
     var counter = 0;
     angular.forEach(authetication,function(value,key) {
       if(value['name'] == api) {
-        return callback(value[type] || false);
+        deferred.resolve(value[type.toLocaleLowerCase()] || false);
       }
       if(counter >=  len-1) {
-        return callback( false);
+        deferred.resolve(false);
       }
       counter++;
     })
+    return deferred.promise;
   };
+  /**
+   * functionName :checkPermission
+   * Info : used to get the info for the authenticaiton of particular web services
+   * @param
+   api - api name
+   type- type of web service
+   */
+  UserService.checkPermission = function(api,type) {
+    var auth = authorisedApi(api,type);
+    var auth = auth.$$state.value;
+    // console.log("********** ",typeof auth);
+    return auth;
+  }
+
+
   return UserService;
 })

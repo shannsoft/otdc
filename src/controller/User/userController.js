@@ -56,7 +56,7 @@ app.controller('UserController', function($scope, $rootScope, $state,$stateParam
             NewPassword: $scope.user.newPassword,
         }
         UtilityService.showLoader();
-        UserService.serviceCall().getUser(obj, function(response) {
+        ApiCall.getUser(obj, function(response) {
                 UtilityService.hideLoader();
                 Util.alertMessage("success", "Password Changed");
             },

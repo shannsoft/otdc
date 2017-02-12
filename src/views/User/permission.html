@@ -30,14 +30,14 @@
                                 <div ng-repeat="(key, value) in webservice" ng-if="key!='name' && key!='designation' && key!='id'">
                                     <label>
                                         <input class="checkbox" type="checkbox" ng-checked="value" ng-model="webservice[key]">
-                                        <span>{{key}}-{{value}}</span>
+                                        <span>{{key}}</span>
                                     </label>
                                 </div>
                             </div>
                         </div>
                     </permissions>
                     <fieldset class="form-group" ng-if="permission.selectedDesignation">
-                        <input type="submit" class="btn btn-success" ng-disabled="permissionMannagementForm.$invalid" ng-click="savePermission(permission)">
+                        <input type="submit" class="btn btn-success" ng-disabled="permissionMannagementForm.$invalid || !checkPermission('Login','post')" ng-click="savePermission(permission)">
                         <button class="btn btn-secondary" history="">Cancel</button>
                     </fieldset>
                 </form>
