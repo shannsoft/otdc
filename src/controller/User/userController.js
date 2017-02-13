@@ -81,8 +81,9 @@ app.controller('UserController', function($scope, $rootScope, $state,$stateParam
        })
      }
      $scope.addUser = function(form) {
+       $scope.user.actType = "I";
        $scope.user.designationId = $scope.user.designation.designationId;
-       delete $scope.user['designation'];
+      //  delete $scope.user['designation'];
        console.log("user ",$scope.user);
       //  $scope.user.tokenId = $localStorage[Constants.getTokenKey()];
        ApiCall.postUser($scope.user,function(res) {

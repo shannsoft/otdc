@@ -369,7 +369,7 @@ app.factory('Util', ['$rootScope', '$timeout', function($rootScope, $timeout) {
         $rootScope.alerts.push(alert);
         $timeout(function() {
             $rootScope.alerts.splice($rootScope.alerts.indexOf(alert), 1);
-        }, 2000);
+        }, 10000);
     };
     return Util;
 }]);

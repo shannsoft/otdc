@@ -1,4 +1,4 @@
-app.controller('TenderListController', function($scope, $rootScope, $state, ApiCall, EnvService, $timeout, $cookieStore, $localStorage,NgTableParams) {
+app.controller('TenderListController', function($scope, $rootScope, $state, ApiCall, EnvService, $timeout, $cookieStore, $localStorage,NgTableParams,Util,Events) {
 
     $scope.tenderListInit = function() {
       $rootScope.showPreloader = true;

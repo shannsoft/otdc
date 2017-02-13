@@ -1,4 +1,4 @@
-/*! otdc - v1.0.0 - Mon Feb 13 2017 01:18:41 */
+/*! otdc - v1.0.0 - Tue Feb 14 2017 01:41:03 */
 var dependency = [];
 // lib  dependency
 var distModules = ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate', 'ngCookies', 'ngMessages','ngTable'];
@@ -370,12 +370,12 @@ app.factory('Util', ['$rootScope', '$timeout', function($rootScope, $timeout) {
         $rootScope.alerts.push(alert);
         $timeout(function() {
             $rootScope.alerts.splice($rootScope.alerts.indexOf(alert), 1);
-        }, 2000);
+        }, 10000);
     };
     return Util;
 }]);
 ;app.constant("Constants", {
-        "debug":false,
+        "debug":true,
         "storagePrefix": "goAppOTDC$",
         "getTokenKey" : function() {return this.storagePrefix + "token";},
         "getLoggedIn" : function() {return this.storagePrefix + "loggedin";},
@@ -989,7 +989,7 @@ app.controller('boqHistoryController', function ($scope,$uibModalInstance,tender
     $uibModalInstance.dismiss('cancel');
   };
 });
-;app.controller('TenderListController', function($scope, $rootScope, $state, ApiCall, EnvService, $timeout, $cookieStore, $localStorage,NgTableParams) {
+;app.controller('TenderListController', function($scope, $rootScope, $state, ApiCall, EnvService, $timeout, $cookieStore, $localStorage,NgTableParams,Util,Events) {
 
     $scope.tenderListInit = function() {
       $rootScope.showPreloader = true;
@@ -1386,8 +1386,9 @@ app.controller('boqHistoryController', function ($scope,$uibModalInstance,tender
        })
      }
      $scope.addUser = function(form) {
+       $scope.user.actType = "I";
        $scope.user.designationId = $scope.user.designation.designationId;
-       delete $scope.user['designation'];
+      //  delete $scope.user['designation'];
        console.log("user ",$scope.user);
       //  $scope.user.tokenId = $localStorage[Constants.getTokenKey()];
        ApiCall.postUser($scope.user,function(res) {

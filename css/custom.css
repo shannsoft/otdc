@@ -472,3 +472,6 @@ input[type="date"] {
 .pending{
   color:red;
 }
+.activeTheme{
+  color:#31B680;
+}
