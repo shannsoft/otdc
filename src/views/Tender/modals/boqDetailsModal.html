@@ -19,13 +19,13 @@
                             <table class="table table-striped table-bordered table-hover boqDetailsTable">
                                 <thead>
                                     <tr>
-                                        <th ng-repeat="th in getBoqHeaders()" ng-if="th!='$$hashKey' && th!='isEdit'">{{th}}</th>
+                                        <th ng-repeat="th in getBoqHeaders()" ng-if="th!='$$hashKey' && th!='isEdit' && th!='id'">{{th}}</th>
                                         <!--to avoid $$hashKey in the object-->
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="boq in boqData">
-                                        <td ng-repeat="th in getBoqHeaders()" ng-if="th!='$$hashKey' && th!='isEdit'">
+                                        <td ng-repeat="th in getBoqHeaders()" ng-if="th!='$$hashKey' && th!='isEdit' && th!='id'">
                                             <div ng-if="th == 'quantity'">
                                                 <span ng-if="!boq.isEdit" class="color-black ng-binding">{{boq[th]}}</span>
                                                 <em  class="fa fa-edit pull-right" ng-if="!boq.isEdit" ng-click="focusEdit(boq,$event)"></em>

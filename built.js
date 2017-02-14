@@ -1,4 +1,4 @@
-/*! otdc - v1.0.0 - Tue Feb 14 2017 01:41:03 */
+/*! otdc - v1.0.0 - Tue Feb 14 2017 09:16:02 */
 var dependency = [];
 // lib  dependency
 var distModules = ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate', 'ngCookies', 'ngMessages','ngTable'];
@@ -367,6 +367,20 @@ app.factory('Util', ['$rootScope', '$timeout', function($rootScope, $timeout) {
             type: msgType,
             msg: message
         };
+        switch (msgType) {
+          case "success":
+            alert.msg = alert.msg || "success";
+            break;
+          case "failed":
+          case "warning":
+            alert.msg = alert.msg || "failed";
+            break;
+          case "error":
+            alert.msg = alert.msg || "error";
+            break;
+          default:
+
+        }
         $rootScope.alerts.push(alert);
         $timeout(function() {
             $rootScope.alerts.splice($rootScope.alerts.indexOf(alert), 1);
@@ -375,7 +389,7 @@ app.factory('Util', ['$rootScope', '$timeout', function($rootScope, $timeout) {
     return Util;
 }]);
 ;app.constant("Constants", {
-        "debug":true,
+        "debug":false,
         "storagePrefix": "goAppOTDC$",
         "getTokenKey" : function() {return this.storagePrefix + "token";},
         "getLoggedIn" : function() {return this.storagePrefix + "loggedin";},
@@ -2051,9 +2065,8 @@ app.filter('filterDate', function () {
       }
       $scope.forgotPassword = function(email) {
           var obj = {
-            "userId": 10000,
-            "name": "Mukhtar",
-            "email": "rajendrasahoodbpb@gmail.com"
+            
+            "email":email
           }
           ApiCall.forgotPassword(obj,function(response) {
             Util.alertMessage("success",response.Message);

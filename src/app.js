@@ -366,6 +366,20 @@ app.factory('Util', ['$rootScope', '$timeout', function($rootScope, $timeout) {
             type: msgType,
             msg: message
         };
+        switch (msgType) {
+          case "success":
+            alert.msg = alert.msg || "success";
+            break;
+          case "failed":
+          case "warning":
+            alert.msg = alert.msg || "failed";
+            break;
+          case "error":
+            alert.msg = alert.msg || "error";
+            break;
+          default:
+
+        }
         $rootScope.alerts.push(alert);
         $timeout(function() {
             $rootScope.alerts.splice($rootScope.alerts.indexOf(alert), 1);

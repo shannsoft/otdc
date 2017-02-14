@@ -66,9 +66,8 @@ angular.module('Authentication', [])
       }
       $scope.forgotPassword = function(email) {
           var obj = {
-            "userId": 10000,
-            "name": "Mukhtar",
-            "email": "rajendrasahoodbpb@gmail.com"
+            
+            "email":email
           }
           ApiCall.forgotPassword(obj,function(response) {
             Util.alertMessage("success",response.Message);
