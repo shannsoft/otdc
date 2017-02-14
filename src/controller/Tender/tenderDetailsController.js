@@ -79,6 +79,7 @@ app.controller('TenderDetailsController', function($scope, $rootScope, $state,$u
  */
 app.controller('boqController', function ($scope,$uibModalInstance,tender,Util,ApiCall,$uibModal) {
   $scope.boqUpdateArr = [];
+  $scope.tender = tender;
   $scope.boqData = tender.boqData;
   // used to update the boq data of the indivisual row
   $scope.updateBoqData = function(){
@@ -143,6 +144,12 @@ app.controller('boqController', function ($scope,$uibModalInstance,tender,Util,A
     }
     boq.totalAmountWithoutTaxes = boq.quantity*boq.estimateRate;
 
+    // update the totalAmountWithoutTaxes for all enrty
+     var total = 0;
+     for(var i in $scope.tender.boqData) {
+       total += $scope.tender.boqData[i].totalAmountWithoutTaxes;
+     }
+     $scope.tender.totalAmountWithoutTaxes = total;
   }
   $scope.ok = function () {
     $uibModalInstance.close();

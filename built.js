@@ -1,4 +1,4 @@
-/*! otdc - v1.0.0 - Tue Feb 14 2017 09:45:23 */
+/*! otdc - v1.0.0 - Tue Feb 14 2017 10:14:46 */
 var dependency = [];
 // lib  dependency
 var distModules = ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate', 'ngCookies', 'ngMessages','ngTable'];
@@ -890,6 +890,7 @@ app.controller('deleteMilestoneCtrl', function ($scope, $state,$uibModalInstance
  */
 app.controller('boqController', function ($scope,$uibModalInstance,tender,Util,ApiCall,$uibModal) {
   $scope.boqUpdateArr = [];
+  $scope.tender = tender;
   $scope.boqData = tender.boqData;
   // used to update the boq data of the indivisual row
   $scope.updateBoqData = function(){
@@ -954,6 +955,12 @@ app.controller('boqController', function ($scope,$uibModalInstance,tender,Util,A
     }
     boq.totalAmountWithoutTaxes = boq.quantity*boq.estimateRate;
 
+    // update the totalAmountWithoutTaxes for all enrty
+     var total = 0;
+     for(var i in $scope.tender.boqData) {
+       total += $scope.tender.boqData[i].totalAmountWithoutTaxes;
+     }
+     $scope.tender.totalAmountWithoutTaxes = total;
   }
   $scope.ok = function () {
     $uibModalInstance.close();
