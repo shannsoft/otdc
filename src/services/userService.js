@@ -48,7 +48,184 @@ app.factory('UserService',function($rootScope,$http,$localStorage,$resource,ApiG
         "state" : "projectMilestone",
         "fClass" : "fa fa-th-large",
       },
-    ]
+    ],
+    '10005' :[
+      {
+        "label" : "Dashboard",
+        "state" : "dashboard",
+        "fClass" : "fa fa-home",
+      },
+      {
+        "label" : "Tender Management",
+        "state" : "tenderList",
+        "fClass" : "fa fa-home",
+      },
+      {
+        "label" : "Tender Milestone",
+        "state" : "tenderMilestone",
+        "fClass" : "fa fa-th-large",
+      },
+      {
+        "label" : "Project Milestone",
+        "state" : "projectMilestone",
+        "fClass" : "fa fa-th-large",
+      },
+    ],
+    ///////////
+    '10002' :[
+      {
+        "label" : "Dashboard",
+        "state" : "dashboard",
+        "fClass" : "fa fa-home",
+      },
+      {
+        "label" : "Tender Management",
+        "state" : "tenderList",
+        "fClass" : "fa fa-home",
+      },
+      {
+        "label" : "Tender Milestone",
+        "state" : "tenderMilestone",
+        "fClass" : "fa fa-th-large",
+      },
+      {
+        "label" : "Project Milestone",
+        "state" : "projectMilestone",
+        "fClass" : "fa fa-th-large",
+      },
+    ],
+    '10006' :[
+      {
+        "label" : "Dashboard",
+        "state" : "dashboard",
+        "fClass" : "fa fa-home",
+      },
+      {
+        "label" : "Tender Management",
+        "state" : "tenderList",
+        "fClass" : "fa fa-home",
+      },
+      {
+        "label" : "Tender Milestone",
+        "state" : "tenderMilestone",
+        "fClass" : "fa fa-th-large",
+      },
+      {
+        "label" : "Project Milestone",
+        "state" : "projectMilestone",
+        "fClass" : "fa fa-th-large",
+      },
+    ],
+    '10007' :[
+      {
+        "label" : "Dashboard",
+        "state" : "dashboard",
+        "fClass" : "fa fa-home",
+      },
+      {
+        "label" : "Tender Management",
+        "state" : "tenderList",
+        "fClass" : "fa fa-home",
+      },
+      {
+        "label" : "Tender Milestone",
+        "state" : "tenderMilestone",
+        "fClass" : "fa fa-th-large",
+      },
+      {
+        "label" : "Project Milestone",
+        "state" : "projectMilestone",
+        "fClass" : "fa fa-th-large",
+      },
+    ],
+    '10008' :[
+      {
+        "label" : "Dashboard",
+        "state" : "dashboard",
+        "fClass" : "fa fa-home",
+      },
+      {
+        "label" : "Tender Management",
+        "state" : "tenderList",
+        "fClass" : "fa fa-home",
+      },
+      {
+        "label" : "Tender Milestone",
+        "state" : "tenderMilestone",
+        "fClass" : "fa fa-th-large",
+      },
+      {
+        "label" : "Project Milestone",
+        "state" : "projectMilestone",
+        "fClass" : "fa fa-th-large",
+      },
+    ],
+    '10009' :[
+      {
+        "label" : "Dashboard",
+        "state" : "dashboard",
+        "fClass" : "fa fa-home",
+      },
+      {
+        "label" : "Tender Management",
+        "state" : "tenderList",
+        "fClass" : "fa fa-home",
+      },
+      {
+        "label" : "Tender Milestone",
+        "state" : "tenderMilestone",
+        "fClass" : "fa fa-th-large",
+      },
+      {
+        "label" : "Project Milestone",
+        "state" : "projectMilestone",
+        "fClass" : "fa fa-th-large",
+      },
+    ],
+    '10010' :[
+      {
+        "label" : "Dashboard",
+        "state" : "dashboard",
+        "fClass" : "fa fa-home",
+      },
+      {
+        "label" : "Tender Management",
+        "state" : "tenderList",
+        "fClass" : "fa fa-home",
+      },
+      {
+        "label" : "Tender Milestone",
+        "state" : "tenderMilestone",
+        "fClass" : "fa fa-th-large",
+      },
+      {
+        "label" : "Project Milestone",
+        "state" : "projectMilestone",
+        "fClass" : "fa fa-th-large",
+      },
+    ],
+    '10011' :[
+      {
+        "label" : "Dashboard",
+        "state" : "dashboard",
+        "fClass" : "fa fa-home",
+      },
+      {
+        "label" : "Tender Management",
+        "state" : "tenderList",
+        "fClass" : "fa fa-home",
+      },
+      {
+        "label" : "Tender Milestone",
+        "state" : "tenderMilestone",
+        "fClass" : "fa fa-th-large",
+      },
+      {
+        "label" : "Project Milestone",
+        "state" : "projectMilestone",
+        "fClass" : "fa fa-th-large",
+      },
+    ],
   }
   UserService.getRole = function(roleId) {
     var user = this.getUser();
