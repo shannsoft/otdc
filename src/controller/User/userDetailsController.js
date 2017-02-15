@@ -1,4 +1,4 @@
-app.controller('UserDetailsController', function($scope, $rootScope, $state,$stateParams, AppModel,ApiCall,UserService,Events, UtilityService,Util,$localStorage, Constants) {
+app.controller('UserDetailsController', function($scope, $rootScope, $state,$stateParams,$timeout, AppModel,ApiCall,UserService,Events, UtilityService,Util,$localStorage, Constants) {
     // $scope.UserService = UserService;
     $scope.init = function() {
       $scope.isEdit = $stateParams.action == "edit" ? true : false;

@@ -1,4 +1,4 @@
-/*! otdc - v1.0.0 - Tue Feb 14 2017 10:14:46 */
+/*! otdc - v1.0.0 - Thu Feb 16 2017 00:26:49 */
 var dependency = [];
 // lib  dependency
 var distModules = ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate', 'ngCookies', 'ngMessages','ngTable'];
@@ -1176,6 +1176,10 @@ app.controller('boqHistoryController', function ($scope,$uibModalInstance,tender
       }
     }
     $scope.closeTicket = function(index) {
+        if(!$scope.tenderMilestone[index].completionDate || $scope.tenderMilestone[index].completionDate){
+          Util.alertMessage(Events.eventType.warning, "Please select Date");
+          return;
+        }
         var isValid = true;
         switch (index) {
            /*
@@ -1438,7 +1442,7 @@ app.controller('boqHistoryController', function ($scope,$uibModalInstance,tender
 
 
 })
-;app.controller('UserDetailsController', function($scope, $rootScope, $state,$stateParams, AppModel,ApiCall,UserService,Events, UtilityService,Util,$localStorage, Constants) {
+;app.controller('UserDetailsController', function($scope, $rootScope, $state,$stateParams,$timeout, AppModel,ApiCall,UserService,Events, UtilityService,Util,$localStorage, Constants) {
     // $scope.UserService = UserService;
     $scope.init = function() {
       $scope.isEdit = $stateParams.action == "edit" ? true : false;
@@ -2415,7 +2419,7 @@ app.filter('filterDate', function () {
   }
   // side bar details mapped data with the degignation id
   var sideBar = {
-    '10000' :[
+    'SUPER ADMIN' :[
       {
         "label" : "Dashboard",
         "state" : "dashboard",
@@ -2457,7 +2461,7 @@ app.filter('filterDate', function () {
         "fClass" : "fa fa-th-large",
       },
     ],
-    '10005' :[
+    'Executive Engineer' :[
       {
         "label" : "Dashboard",
         "state" : "dashboard",
@@ -2480,7 +2484,7 @@ app.filter('filterDate', function () {
       },
     ],
     ///////////
-    '10002' :[
+    'Admin-test' :[
       {
         "label" : "Dashboard",
         "state" : "dashboard",
@@ -2502,7 +2506,7 @@ app.filter('filterDate', function () {
         "fClass" : "fa fa-th-large",
       },
     ],
-    '10006' :[
+    'Junior Engineer' :[
       {
         "label" : "Dashboard",
         "state" : "dashboard",
@@ -2524,7 +2528,7 @@ app.filter('filterDate', function () {
         "fClass" : "fa fa-th-large",
       },
     ],
-    '10007' :[
+    'Assistant Engineer' :[
       {
         "label" : "Dashboard",
         "state" : "dashboard",
@@ -2546,7 +2550,7 @@ app.filter('filterDate', function () {
         "fClass" : "fa fa-th-large",
       },
     ],
-    '10008' :[
+    'Assistant Engineer Accounts' :[
       {
         "label" : "Dashboard",
         "state" : "dashboard",
@@ -2568,7 +2572,7 @@ app.filter('filterDate', function () {
         "fClass" : "fa fa-th-large",
       },
     ],
-    '10009' :[
+    'Superintendent Engineer' :[
       {
         "label" : "Dashboard",
         "state" : "dashboard",
@@ -2590,7 +2594,7 @@ app.filter('filterDate', function () {
         "fClass" : "fa fa-th-large",
       },
     ],
-    '10010' :[
+    'Financial Controler' :[
       {
         "label" : "Dashboard",
         "state" : "dashboard",
@@ -2612,7 +2616,7 @@ app.filter('filterDate', function () {
         "fClass" : "fa fa-th-large",
       },
     ],
-    '10011' :[
+    'Managing Director' :[
       {
         "label" : "Dashboard",
         "state" : "dashboard",
@@ -2670,7 +2674,7 @@ app.filter('filterDate', function () {
   // };
   // used to get the side bar details according to user
   UserService.getSideBarInfo = function() {
-    var sideBarInfo = sideBar[this.getUser().designationId];
+    var sideBarInfo = sideBar[this.getUser().designation];
     if(!sideBarInfo)
     {
       // emit event to terminate redirect to login

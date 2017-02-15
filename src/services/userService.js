@@ -7,7 +7,7 @@ app.factory('UserService',function($rootScope,$http,$localStorage,$resource,ApiG
   }
   // side bar details mapped data with the degignation id
   var sideBar = {
-    '10000' :[
+    'SUPER ADMIN' :[
       {
         "label" : "Dashboard",
         "state" : "dashboard",
@@ -49,7 +49,7 @@ app.factory('UserService',function($rootScope,$http,$localStorage,$resource,ApiG
         "fClass" : "fa fa-th-large",
       },
     ],
-    '10005' :[
+    'Executive Engineer' :[
       {
         "label" : "Dashboard",
         "state" : "dashboard",
@@ -72,7 +72,7 @@ app.factory('UserService',function($rootScope,$http,$localStorage,$resource,ApiG
       },
     ],
     ///////////
-    '10002' :[
+    'Admin-test' :[
       {
         "label" : "Dashboard",
         "state" : "dashboard",
@@ -94,7 +94,7 @@ app.factory('UserService',function($rootScope,$http,$localStorage,$resource,ApiG
         "fClass" : "fa fa-th-large",
       },
     ],
-    '10006' :[
+    'Junior Engineer' :[
       {
         "label" : "Dashboard",
         "state" : "dashboard",
@@ -116,7 +116,7 @@ app.factory('UserService',function($rootScope,$http,$localStorage,$resource,ApiG
         "fClass" : "fa fa-th-large",
       },
     ],
-    '10007' :[
+    'Assistant Engineer' :[
       {
         "label" : "Dashboard",
         "state" : "dashboard",
@@ -138,7 +138,7 @@ app.factory('UserService',function($rootScope,$http,$localStorage,$resource,ApiG
         "fClass" : "fa fa-th-large",
       },
     ],
-    '10008' :[
+    'Assistant Engineer Accounts' :[
       {
         "label" : "Dashboard",
         "state" : "dashboard",
@@ -160,7 +160,7 @@ app.factory('UserService',function($rootScope,$http,$localStorage,$resource,ApiG
         "fClass" : "fa fa-th-large",
       },
     ],
-    '10009' :[
+    'Superintendent Engineer' :[
       {
         "label" : "Dashboard",
         "state" : "dashboard",
@@ -182,7 +182,7 @@ app.factory('UserService',function($rootScope,$http,$localStorage,$resource,ApiG
         "fClass" : "fa fa-th-large",
       },
     ],
-    '10010' :[
+    'Financial Controler' :[
       {
         "label" : "Dashboard",
         "state" : "dashboard",
@@ -204,7 +204,7 @@ app.factory('UserService',function($rootScope,$http,$localStorage,$resource,ApiG
         "fClass" : "fa fa-th-large",
       },
     ],
-    '10011' :[
+    'Managing Director' :[
       {
         "label" : "Dashboard",
         "state" : "dashboard",
@@ -262,7 +262,7 @@ app.factory('UserService',function($rootScope,$http,$localStorage,$resource,ApiG
   // };
   // used to get the side bar details according to user
   UserService.getSideBarInfo = function() {
-    var sideBarInfo = sideBar[this.getUser().designationId];
+    var sideBarInfo = sideBar[this.getUser().designation];
     if(!sideBarInfo)
     {
       // emit event to terminate redirect to login

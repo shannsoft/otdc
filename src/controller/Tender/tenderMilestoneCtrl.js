@@ -114,6 +114,10 @@ app.controller('TenderMilestoneController', function($scope, $rootScope, $state,
       }
     }
     $scope.closeTicket = function(index) {
+        if(!$scope.tenderMilestone[index].completionDate || $scope.tenderMilestone[index].completionDate){
+          Util.alertMessage(Events.eventType.warning, "Please select Date");
+          return;
+        }
         var isValid = true;
         switch (index) {
            /*
