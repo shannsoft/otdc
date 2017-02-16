@@ -15,3 +15,27 @@ app.filter('filterDate', function () {
       }
     };
 });
+app.filter('webServiceName', function () {
+    return function (value) {
+      var filterValue;
+      if(value){
+        switch (value) {
+          case "get":
+            filterValue = "Get Data";
+            break;
+          case "post":
+            filterValue = "Save Data";
+            break;
+          case "put":
+            filterValue = "Update Data";
+            break;
+          case "delete":
+            filterValue = "Delete Data";
+            break;
+          default:
+
+        }
+      }
+      return filterValue;
+    };
+});

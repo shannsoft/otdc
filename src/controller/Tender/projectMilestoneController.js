@@ -53,6 +53,14 @@ app.controller('ProjectMilestoneController', function($scope, $rootScope,$window
     }
     return index;
   }
+  $scope.selectTender = function(selectedTender) {
+    ApiCall.getProjectMileStone({tenderId:selectedTender.tenderId},function(res) {
+      $scope.projectMilestone.milestoneList = res.Data;
+      Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
+    },function(err) {
+      Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
+    })
+  }
  $scope.onAction = function(action,milestone) {
    switch (action) {
      case "view":

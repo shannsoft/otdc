@@ -27,10 +27,10 @@
                             </div>
                             <div class="card-block">
                               <!-- Iterating over the object of the web service details of each web service -->
-                                <div ng-repeat="(key, value) in webservice" ng-if="key!='name' && key!='designation' && key!='id'">
+                                <div ng-repeat="(key, value) in webservice" ng-if="key!='name' && key!='designation' && key!='id' && key!='options'">
                                     <label>
                                         <input class="checkbox" type="checkbox" ng-checked="value" ng-model="webservice[key]">
-                                        <span>{{key}}</span>
+                                        <span>{{key|webServiceName}}</span>
                                     </label>
                                 </div>
                             </div>

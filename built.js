@@ -1,4 +1,4 @@
-/*! otdc - v1.0.0 - Thu Feb 16 2017 00:26:49 */
+/*! otdc - v1.0.0 - Thu Feb 16 2017 09:21:18 */
 var dependency = [];
 // lib  dependency
 var distModules = ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate', 'ngCookies', 'ngMessages','ngTable'];
@@ -675,6 +675,14 @@ $scope.gotoTenderCheck = function(){
       }
     }
     return index;
+  }
+  $scope.selectTender = function(selectedTender) {
+    ApiCall.getProjectMileStone({tenderId:selectedTender.tenderId},function(res) {
+      $scope.projectMilestone.milestoneList = res.Data;
+      Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
+    },function(err) {
+      Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
+    })
   }
  $scope.onAction = function(action,milestone) {
    switch (action) {
@@ -2006,6 +2014,30 @@ app.filter('filterDate', function () {
       if(value){
         return value.split(" ")[0];
       }
+    };
+});
+app.filter('webServiceName', function () {
+    return function (value) {
+      var filterValue;
+      if(value){
+        switch (value) {
+          case "get":
+            filterValue = "Get Data";
+            break;
+          case "post":
+            filterValue = "Save Data";
+            break;
+          case "put":
+            filterValue = "Update Data";
+            break;
+          case "delete":
+            filterValue = "Delete Data";
+            break;
+          default:
+
+        }
+      }
+      return filterValue;
     };
 });
 ;angular.module('Authentication', [])

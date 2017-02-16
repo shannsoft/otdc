@@ -12,7 +12,7 @@
 
                     <fieldset class="form-group">
                         <label class="control-label" for="formGroupExampleInput3">Select Tender</label>
-                        <select ng-options="tender as tender.tenderId+'  -  '+tender.tenderType for tender in projectMilestone.tenderList track by tender.tenderId" ng-model="projectMilestone.selectedTender" class="form-control formInput" name="Tender_Type"></select>
+                        <select ng-options="tender as tender.tenderId+'  -  '+tender.tenderType for tender in projectMilestone.tenderList track by tender.tenderId" ng-model="projectMilestone.selectedTender" ng-change="selectTender(projectMilestone.selectedTender)" class="form-control formInput" name="Tender_Type"></select>
                         <!-- <span class="help-block" ng-show="projectMilestone.Tender_Type.$error.required && projectMilestone.Tender_Type.$touched">select one</span> -->
                     </fieldset>
                     <!-- tender details a custom html tag to show  the tender details -->
