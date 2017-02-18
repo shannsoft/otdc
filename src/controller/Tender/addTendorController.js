@@ -12,6 +12,7 @@ $scope.addTendorInit = function() {
   else {
     $timeout.cancel($scope.timeout)
     $scope.tender.tenderTypes = AppModel.getSetting('tenderType');
+    tender.tenderType = $scope.tender.tenderTypes[0] // default value
   }
 }
 /* $scope.fileSelected = function(fileName) {

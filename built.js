@@ -1,4 +1,4 @@
-/*! otdc - v1.0.0 - Sun Feb 19 2017 05:06:11 */
+/*! otdc - v1.0.0 - Sun Feb 19 2017 05:21:27 */
 var dependency = [];
 // lib  dependency
 var distModules = ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate', 'ngCookies', 'ngMessages','ngTable'];
@@ -597,6 +597,7 @@ $scope.addTendorInit = function() {
   else {
     $timeout.cancel($scope.timeout)
     $scope.tender.tenderTypes = AppModel.getSetting('tenderType');
+    tender.tenderType = $scope.tender.tenderTypes[0] // default value
   }
 }
 /* $scope.fileSelected = function(fileName) {
