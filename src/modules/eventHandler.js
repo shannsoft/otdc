@@ -20,6 +20,7 @@ angular.module('EventHandler', [])
         "selectTender"          : "Please select tender",
         "noVendorSelected"          : "Please select Vendor",
         "invalidOperation"          : "Invalid Operation",
+        "updateSideBar"             :"Update Sidebar"
       }
     })
 ;

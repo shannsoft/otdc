@@ -1,4 +1,4 @@
-/*! otdc - v1.0.0 - Thu Feb 16 2017 09:21:18 */
+/*! otdc - v1.0.0 - Sun Feb 19 2017 05:06:11 */
 var dependency = [];
 // lib  dependency
 var distModules = ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate', 'ngCookies', 'ngMessages','ngTable'];
@@ -422,10 +422,15 @@ app.factory('Util', ['$rootScope', '$timeout', function($rootScope, $timeout) {
 })
 ;app.controller('Main_Controller', function($scope, $rootScope, $state, EnvService, $timeout, $cookieStore, $localStorage, validationService, Events, $location, Util, $anchorScroll) {
     // Events handling
-    
+
     $rootScope.$on(Events.validationFieldMissing, function(event, data) {
         alert("Event handled", data);
     });
+    $rootScope.$on('$stateChangeSuccess',
+      function(event, toState, toParams, fromState, fromParams){
+        // emit event to activate menu link
+        $scope.$emit(Events.updateSideBar,{state:toState.name})
+       })
     $scope.users = [{
             name: "Suresh Dasari",
             age: 30,
@@ -624,6 +629,7 @@ $scope.gotoTenderCheck = function(){
 ;app.controller('ProjectMilestoneController', function($scope, $rootScope,$window, $state,$uibModal, $stateParams, ApiCall,Util, EnvService, $timeout, $cookieStore, $localStorage) {
   $scope.projectMilestoneInit = function() {
     $scope.projectMilestone = {};
+    // if both the tenderId and tender data is present
     if($stateParams.tenderId && $stateParams.tenderList){
       $scope.projectMilestone.tenderList = $stateParams.tenderList;
       //$scope.projectMilestone.tenderList = $rootScope.tenderList;
@@ -639,25 +645,23 @@ $scope.gotoTenderCheck = function(){
       })
       //$window.location.reload();
     }
+    else if ($stateParams.tenderId && !$stateParams.tenderList) {
+      // fetch the tender details and recall the state with tender list and the tender Id
+      ApiCall.getTendor(function(res) {
+        $rootScope.showPreloader = false;
+        $scope.projectMilestone.tenderList = res.Data;
+        $state.go($state.current, {tenderId:$stateParams.tenderId,tenderList:$scope.projectMilestone.tenderList}, {reload: true});
+        // $state.go("projectMilestone",{tenderId:$stateParams.tenderId,tenderList:$scope.projectMilestone.tenderList})
+      },function(err) {
+        Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
+      })
+    }
     else{
-      // call the tender list api and select the first option
+      // call the tender list api
       $rootScope.showPreloader = true;
       ApiCall.getTendor(function(res) {
         $rootScope.showPreloader = false;
         $scope.projectMilestone.tenderList = res.Data;
-        if($stateParams.tenderId) {
-          // select match option with the tender id
-          var index = getSelectedTenderIndex($stateParams.tenderId,$scope.projectMilestone.tenderList);
-          $scope.projectMilestone.selectedTender = $scope.projectMilestone.tenderList[index];
-          // calling to get the Milestone details
-          ApiCall.getProjectMileStone({tenderId:$scope.projectMilestone.selectedTender.tenderId},function(res) {
-            $scope.projectMilestone.milestoneList = res.Data;
-            Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
-          },function(err) {
-            Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
-          })
-        }
-
       }, function(err) {
         Util.alertMessage(err.Status.toLocaleLowerCase(),err.Message);
         $rootScope.showPreloader = false;
@@ -677,12 +681,9 @@ $scope.gotoTenderCheck = function(){
     return index;
   }
   $scope.selectTender = function(selectedTender) {
-    ApiCall.getProjectMileStone({tenderId:selectedTender.tenderId},function(res) {
-      $scope.projectMilestone.milestoneList = res.Data;
-      Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
-    },function(err) {
-      Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
-    })
+    // reload the state with new data
+    $state.go($state.current, {tenderId:selectedTender.tenderId,tenderList:$scope.projectMilestone.tenderList}, {reload: true});
+
   }
  $scope.onAction = function(action,milestone) {
    switch (action) {
@@ -1184,7 +1185,7 @@ app.controller('boqHistoryController', function ($scope,$uibModalInstance,tender
       }
     }
     $scope.closeTicket = function(index) {
-        if(!$scope.tenderMilestone[index].completionDate || $scope.tenderMilestone[index].completionDate){
+        if(index != 0 && !$scope.tenderMilestone[index].completionDate){
           Util.alertMessage(Events.eventType.warning, "Please select Date");
           return;
         }
@@ -1374,9 +1375,13 @@ app.controller('boqHistoryController', function ($scope,$uibModalInstance,tender
 
         }
     }
-    $scope.updateActiveClass = function(index){
+    $rootScope.$on(Events.updateSideBar,function(event,data) {
+      // get the index of the sideBar to be activeated after state change
+      $scope.updateActiveClass(null,data.state);
+    })
+    $scope.updateActiveClass = function(index,state){
       angular.forEach($scope.sideBar,function(v,k) {
-        if(index == k)
+        if(index == k || state == v.state)
           v.activeClass = 'active';
         else {
             v.activeClass = '';
@@ -1836,17 +1841,59 @@ app.controller('deleteVendorModalCtrl', function ($scope, $uibModalInstance,vend
     return {
         require: "ngModel",
         restrict: 'EA',
+        link: function(scope, element, attrs) {
+          scope.minDate = attrs.minDate || null;
+          scope.maxDate = attrs.maxDate|| null;
+          scope.disable = scope.disable == "true" ? true : false;
+          scope.disablingDate();
+        },
         templateUrl: 'src/directive/views/datepicker.html',
         controller:'dateViewerController',
         scope:{
           ngModel:'=',
-          minDate:'=',
+          // minDate:'=', // if true then disable prev date , else disable given date
+          // maxDate:'=',// if true then disable next date , else disable given date
           className:"=",
           disable:"="
         }
     };
 })
 .controller("dateViewerController",["$scope",function($scope) {
+  // disabling dates based on condition , self executing function
+  console.log("$scope.disable  ",typeof $scope.disable);
+  $scope.disable = $scope.disable == "true" ? true : false;
+  $scope.disablingDate = function(){
+    if($scope.minDate && $scope.minDate!="") {
+      $scope.minDate = $scope.minDate == "true" ? true : false;
+      if(typeof $scope.minDate == "boolean") {
+        $scope.minDate = new Date();
+      }
+      else if(typeof $scope.minDate == "string") {
+        $scope.minDate = new Date($scope.minDate);
+      }
+
+    }
+    else {
+      $scope.minDate = null;
+    }
+
+    if($scope.maxDate && $scope.maxDate!="") {
+      $scope.maxDate = $scope.maxDate == "true" ? true : false;
+      if(typeof $scope.maxDate == "boolean") {
+        $scope.maxDate = new Date();
+      }
+      else if(typeof $scope.maxDate == "string") {
+        $scope.maxDate = new Date($scope.maxDate);
+      }
+
+    }
+    else {
+      $scope.maxDate = null;
+    }
+
+  }
+  $scope.disablingDate();
+
   $scope.open2 = function() {
    $scope.popup2.opened = true;
   };
@@ -2142,6 +2189,7 @@ app.filter('webServiceName', function () {
         "selectTender"          : "Please select tender",
         "noVendorSelected"          : "Please select Vendor",
         "invalidOperation"          : "Invalid Operation",
+        "updateSideBar"             :"Update Sidebar"
       }
     })
 ;

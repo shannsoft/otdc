@@ -1,6 +1,7 @@
 app.controller('ProjectMilestoneController', function($scope, $rootScope,$window, $state,$uibModal, $stateParams, ApiCall,Util, EnvService, $timeout, $cookieStore, $localStorage) {
   $scope.projectMilestoneInit = function() {
     $scope.projectMilestone = {};
+    // if both the tenderId and tender data is present
     if($stateParams.tenderId && $stateParams.tenderList){
       $scope.projectMilestone.tenderList = $stateParams.tenderList;
       //$scope.projectMilestone.tenderList = $rootScope.tenderList;
@@ -16,25 +17,23 @@ app.controller('ProjectMilestoneController', function($scope, $rootScope,$window
       })
       //$window.location.reload();
     }
+    else if ($stateParams.tenderId && !$stateParams.tenderList) {
+      // fetch the tender details and recall the state with tender list and the tender Id
+      ApiCall.getTendor(function(res) {
+        $rootScope.showPreloader = false;
+        $scope.projectMilestone.tenderList = res.Data;
+        $state.go($state.current, {tenderId:$stateParams.tenderId,tenderList:$scope.projectMilestone.tenderList}, {reload: true});
+        // $state.go("projectMilestone",{tenderId:$stateParams.tenderId,tenderList:$scope.projectMilestone.tenderList})
+      },function(err) {
+        Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
+      })
+    }
     else{
-      // call the tender list api and select the first option
+      // call the tender list api
       $rootScope.showPreloader = true;
       ApiCall.getTendor(function(res) {
         $rootScope.showPreloader = false;
         $scope.projectMilestone.tenderList = res.Data;
-        if($stateParams.tenderId) {
-          // select match option with the tender id
-          var index = getSelectedTenderIndex($stateParams.tenderId,$scope.projectMilestone.tenderList);
-          $scope.projectMilestone.selectedTender = $scope.projectMilestone.tenderList[index];
-          // calling to get the Milestone details
-          ApiCall.getProjectMileStone({tenderId:$scope.projectMilestone.selectedTender.tenderId},function(res) {
-            $scope.projectMilestone.milestoneList = res.Data;
-            Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
-          },function(err) {
-            Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
-          })
-        }
-
       }, function(err) {
         Util.alertMessage(err.Status.toLocaleLowerCase(),err.Message);
         $rootScope.showPreloader = false;
@@ -54,12 +53,9 @@ app.controller('ProjectMilestoneController', function($scope, $rootScope,$window
     return index;
   }
   $scope.selectTender = function(selectedTender) {
-    ApiCall.getProjectMileStone({tenderId:selectedTender.tenderId},function(res) {
-      $scope.projectMilestone.milestoneList = res.Data;
-      Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
-    },function(err) {
-      Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
-    })
+    // reload the state with new data
+    $state.go($state.current, {tenderId:selectedTender.tenderId,tenderList:$scope.projectMilestone.tenderList}, {reload: true});
+
   }
  $scope.onAction = function(action,milestone) {
    switch (action) {

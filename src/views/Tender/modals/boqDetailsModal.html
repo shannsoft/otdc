@@ -66,8 +66,8 @@
               <table ng-table="tableParams" class="table table-bordered ngTable">
                 <tr ng-repeat="row in $data">
                   <td data-title="'Sl No'" >{{ ( (tableParams.page() - 1) * tableParams.count() )+($index + 1)}}</td>
-                  <td data-title="'Tendor Id'" filter="{tenderId: 'text'}" sortable="'tenderId'">
-                    <span>{{row.tenderId}}</span>
+                  <td data-title="'Tendor Id'" filter="{tndId: 'text'}" sortable="'tndId'">
+                    <span>{{row.tndId}}</span>
                   </td>
                   <td data-title="'User name'" filter="{userName: 'text'}" sortable="'userName'">
                     <a href="" ng-click="updateUserDetails(row)" uib-popover-template="'userDetails.html'" popover-title="User details" popover-is-open="row.isOpen">{{row.userName}}</a>

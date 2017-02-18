@@ -18,10 +18,10 @@
                         <input type="text" name="referenceNo" ng-model="tender.referenceNo" required class="form-control formInput" name="Tender_ref_No" id="formGroupExampleInput2" placeholder="Enter Tender Reference No">
                         <span class="has-error formInput" ng-if="addTendorForm.referenceNo.$touched && addTendorForm.referenceNo.$invalid">refernce No is invalid</span>
                     </fieldset>
-                    <fieldset class="form-group" ng-class="{'has-error': (addTendorForm.tenderId.$invalid && addTendorForm.tenderId.$touched)}">
+                    <fieldset class="form-group" ng-class="{'has-error': (addTendorForm.tndId.$invalid && addTendorForm.tndId.$touched)}">
                         <label class="control-label" for="formGroupExampleInput3">Tender Id</label>
-                        <input type="text" ng-model="tender.tenderId" required class="form-control formInput" name="tenderId" id="formGroupExampleInput3" placeholder="Enter Tender ID">
-                        <span class="has-error formInput" ng-if="addTendorForm.tenderId.$touched && addTendorForm.tenderId.$invalid">Tender id is invalid
+                        <input type="text" ng-model="tender.tndId" required class="form-control formInput" name="tndId" id="formGroupExampleInput3" placeholder="Enter Tender ID">
+                        <span class="has-error formInput" ng-if="addTendorForm.tndId.$touched && addTendorForm.tndId.$invalid">Tender id is invalid
                         </span>
                         <!-- <span class="has-error formInput" ng-show="addTendorForm.tender_id.$error.required && addTendorForm.tender_id.$touched">Please enter Tender ID</span>
                      <span class="has-error formInput" ng-show="addTendorForm.tender_id.$error.pattern && addTendorForm.tender_id.$touched">Tender Reference No must be fill</span> -->
@@ -42,11 +42,11 @@
                         <label class="control-label" for="formGroupExampleInput4">General Technical Evaluation Allowed</label>
                         <div class="radio-wrap">
                             <label>
-                                <input class="radio" ng-model="tender.genTechEvlnAllow" name="genTechEvlnAllow-radios" type="radio">
+                                <input class="radio" ng-model="tender.genTechEvlnAllow" name="genTechEvlnAllow-radios" type="radio" value="Yes" ng-checked="true">
                                 <span>Yes</span>
                             </label>
                             <label>
-                                <input class="radio" ng-model="tender.genTechEvlnAllow" name="genTechEvlnAllow-radios" type="radio">
+                                <input class="radio" ng-model="tender.genTechEvlnAllow" name="genTechEvlnAllow-radios" type="radio" value="No">
                                 <span>No</span>
                             </label>
                         </div>
@@ -65,11 +65,11 @@
                         <label class="control-label" for="formGroupExampleInput4">Is MultiCurrency Allowed For Fee</label>
                         <div class="radio-wrap">
                             <label>
-                                <input class="radio" ng-model="tender.isMultyCurrency" name="isMultyCurrency-radios" type="radio">
+                                <input class="radio" ng-model="tender.isMultyCurrency" name="isMultyCurrency-radios" type="radio"  value="Yes" ng-checked="true">
                                 <span>Yes</span>
                             </label>
                             <label>
-                                <input class="radio" ng-model="tender.isMultyCurrency" name="isMultyCurrency-radios" type="radio">
+                                <input class="radio" ng-model="tender.isMultyCurrency" name="isMultyCurrency-radios" type="radio" value="No" >
                                 <span>No</span>
                             </label>
 
@@ -96,11 +96,11 @@
                         <label class="control-label" for="formGroupExampleInput4">Itemwise Technical Evaluation Allowed</label>
                         <div class="radio-wrap">
                             <label>
-                                <input class="radio" ng-model="tender.itemTechEvlnAllow" name="itemTechEvlnAllow-radios" type="radio">
+                                <input class="radio" ng-model="tender.itemTechEvlnAllow" name="itemTechEvlnAllow-radios" type="radio" value="Yes" ng-checked="true">
                                 <span>Yes</span>
                             </label>
                             <label>
-                                <input class="radio" ng-model="tender.itemTechEvlnAllow" name="itemTechEvlnAllow-radios" type="radio">
+                                <input class="radio" ng-model="tender.itemTechEvlnAllow" name="itemTechEvlnAllow-radios" type="radio" value="No">
                                 <span>No</span>
                             </label>
 
@@ -110,11 +110,11 @@
                         <label class="control-label" for="formGroupExampleInput4">Is Multi Currency Allowed For BOQ</label>
                         <div class="radio-wrap">
                             <label>
-                                <input class="radio" ng-model="tender.isMultyCurrencyBOQ" name="isMultyCurrencyBOQ-radios" type="radio">
+                                <input class="radio" ng-model="tender.isMultyCurrencyBOQ" name="isMultyCurrencyBOQ-radios" type="radio" value="Yes" ng-checked="true">
                                 <span>Yes</span>
                             </label>
                             <label>
-                                <input class="radio" ng-model="tender.isMultyCurrencyBOQ" name="isMultyCurrencyBOQ-radios" type="radio">
+                                <input class="radio" ng-model="tender.isMultyCurrencyBOQ" name="isMultyCurrencyBOQ-radios" type="radio" value="No">
                                 <span>No</span>
                             </label>
 
@@ -178,11 +178,11 @@
                         <label class="control-label" for="formGroupExampleInput7">EMD Exemption Allowed</label>
                         <div class="radio-wrap">
                             <label>
-                                <input class="radio" ng-model="tender.emdExempAllow" name="emdExempAllow-radios" type="radio">
+                                <input class="radio" ng-model="tender.emdExempAllow" name="emdExempAllow-radios" type="radio" value="Yes" ng-checked="true">
                                 <span>Yes</span>
                             </label>
                             <label>
-                                <input class="radio" ng-model="tender.emdExempAllow" name="emdExempAllow-radios" type="radio">
+                                <input class="radio" ng-model="tender.emdExempAllow" name="emdExempAllow-radios" type="radio" value="No">
                                 <span>No</span>
                             </label>
 
@@ -190,7 +190,7 @@
                     </fieldset>
                     <fieldset class="form-group" ng-class="{'has-error': (addTendorForm.emdPercent.$invalid && addTendorForm.emdPercent.$touched)}">
                         <label class="control-label" for="formGroupExampleInput7">EMD Percentage</label>
-                        <input type="text" ng-model="tender.emdPercent" class="form-control formInput" id="formGroupExampleInput4" name="emdPercent" placeholder="Enter EMD Percentage" required>
+                        <input type="text" numbers-only ng-model="tender.emdPercent" class="form-control formInput" id="formGroupExampleInput4" name="emdPercent" placeholder="Enter EMD Percentage" required>
                         <span class="has-error formInput" ng-if="addTendorForm.emdPercent.$touched && addTendorForm.emdPercent.$invalid">
                             emdPercent is invalid
                         </span>

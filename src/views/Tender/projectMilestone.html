@@ -12,14 +12,14 @@
 
                     <fieldset class="form-group">
                         <label class="control-label" for="formGroupExampleInput3">Select Tender</label>
-                        <select ng-options="tender as tender.tenderId+'  -  '+tender.tenderType for tender in projectMilestone.tenderList track by tender.tenderId" ng-model="projectMilestone.selectedTender" ng-change="selectTender(projectMilestone.selectedTender)" class="form-control formInput" name="Tender_Type"></select>
+                        <select ng-options="tender as tender.tndId+'  -  '+tender.tenderType for tender in projectMilestone.tenderList track by tender.tenderId" ng-model="projectMilestone.selectedTender" ng-change="selectTender(projectMilestone.selectedTender)" class="form-control formInput" name="Tender_Type"></select>
                         <!-- <span class="help-block" ng-show="projectMilestone.Tender_Type.$error.required && projectMilestone.Tender_Type.$touched">select one</span> -->
                     </fieldset>
                     <!-- tender details a custom html tag to show  the tender details -->
                     <tender-details ng-if="projectMilestone.selectedTender">
                         <fieldset class="form-group">
                             <label class="control-label" for="formGroupExampleInput">Tender Id</label>
-                            <input type="text" ng-model="projectMilestone.selectedTender.tenderId" ng-readonly="true" class="form-control formInput" id="formGroupExampleInput">
+                            <input type="text" ng-model="projectMilestone.selectedTender.tndId" ng-readonly="true" class="form-control formInput" id="formGroupExampleInput">
                         </fieldset>
                         <fieldset class="form-group">
                             <label class="control-label" for="formGroupExampleInput">Tender category</label>
@@ -57,7 +57,7 @@
                                     <tbody>
                                         <tr ng-repeat="milestone in projectMilestone.milestoneList">
                                             <td>{{$index+1}}</td>
-                                            <td>{{milestone.tenderId}}</td>
+                                            <td>{{milestone.tndId}}</td>
                                             <td>{{milestone.name}}</td>
                                             <td>{{milestone.estimation}}</td>
                                             <td>{{milestone.startDate|filterDate}}</td>

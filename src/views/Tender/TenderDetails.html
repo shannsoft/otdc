@@ -20,7 +20,7 @@
                     </fieldset>
                     <fieldset class="form-group" ng-class="{'has-error': (tenderDetails.Tender_ref_No.$invalid && tenderDetails.Tender_ref_No.$touched)}">
                         <label class="control-label" for="formGroupExampleInput3">Tender Id</label>
-                        <input type="text" ng-model="tender.tenderId" ng-readonly="isView" class="form-control formInput" name="tender_id" id="formGroupExampleInput3" placeholder="Enter Tender ID">
+                        <input type="text" ng-model="tender.tndId" ng-readonly="isView" class="form-control formInput" name="tender_id" id="formGroupExampleInput3" placeholder="Enter Tender ID">
                         <!-- <span class="help-block" ng-show="tenderDetails.tender_id.$error.required && tenderDetails.tender_id.$touched">Please enter Tender ID</span>
                      <span class="help-block" ng-show="tenderDetails.tender_id.$error.pattern && tenderDetails.tender_id.$touched">Tender Reference No must be fill</span> -->
                     </fieldset>
@@ -46,29 +46,55 @@
                         </select>
                         <!-- <span class="help-block" ng-show="tenderDetails.Tender_category.$error.required && tenderDetails.Tender_category.$touched">select one</span> -->
                     </fieldset>
-                    <fieldset class="form-group" ng-class="{'has-error': (tenderDetails.Technical_evaluation.$invalid && tenderDetails.Technical_evaluation.$touched)}">
+                    <!-- <fieldset class="form-group" ng-class="{'has-error': (tenderDetails.Technical_evaluation.$invalid && tenderDetails.Technical_evaluation.$touched)}">
                         <label class="control-label" for="formGroupExampleInput4">General Technical Evaluation Allowed</label>
                           <input type="text" ng-model="tender.genTechEvlnAllow" ng-if="isView" ng-readonly="isView" class="form-control formInput" name="tender_id" id="formGroupExampleInput3" placeholder="Enter Tender ID" />
                         <select ng-model="tender.genTechEvlnAllow" ng-if="!isView" class="form-control formInput" name="Technical_evaluation">
                             <option>Option one</option>
                             <option>Option two</option>
                         </select>
-                        <!-- <span class="help-block" ng-show="tenderDetails.Technical_evaluation.$error.required && tenderDetails.Technical_evaluation.$touched">select one</span> -->
+                    </fieldset> -->
+                    <fieldset class="form-group">
+                        <label class="control-label" for="formGroupExampleInput4">General Technical Evaluation Allowed</label>
+                        <div class="radio-wrap">
+                            <label>
+                                <input class="radio" ng-model="tender.genTechEvlnAllow"  name="genTechEvlnAllow-radios" type="radio" value="Yes" ng-disabled="isView" ng-checked="tender.genTechEvlnAllow == 'Yes'">
+                                <span>Yes</span>
+                            </label>
+                            <label>
+                                <input class="radio" ng-model="tender.genTechEvlnAllow"  name="genTechEvlnAllow-radios" type="radio" value="No" ng-disabled="isView" ng-checked="tender.genTechEvlnAllow == 'No'">
+                                <span>No</span>
+                            </label>
+                        </div>
                     </fieldset>
+
                     <fieldset class="form-group" ng-class="{'has-error': (tenderDetails.payment_mode.$invalid && tenderDetails.payment_mode.$touched)}">
                         <label class="control-label" for="formGroupExampleInput4">Payment Mode</label>
                         <input type="text" ng-model="tender.paymentMode" ng-readonly="isView" name="payment_mode" class="form-control formInput" id="formGroupExampleInput4" placeholder="Enter Payment Mode">
                         <!-- <span class="help-block" ng-show="tenderDetails.payment_mode.$error.required && tenderDetails.payment_mode.$touched">Please enter payment Mode</span>
                 <span class="help-block" ng-show="tenderDetails.payment_mode.$error.pattern && tenderDetails.payment_mode.$touched">payment mode must be entered</span> -->
                     </fieldset>
-                    <fieldset class="form-group" ng-class="{'has-error': (tenderDetails.Multi_currency_allowed.$invalid && tenderDetails.Multi_currency_allowed.$touched)}">
+                    <!-- <fieldset class="form-group" ng-class="{'has-error': (tenderDetails.Multi_currency_allowed.$invalid && tenderDetails.Multi_currency_allowed.$touched)}">
                         <label class="control-label" for="formGroupExampleInput4">Is MultiCurrency Allowed For Fee</label>
                         <input type="text" ng-model="tender.isMultyCurrency" ng-if="isView" ng-readonly="isView" class="form-control formInput" name="tender_id" id="formGroupExampleInput3" placeholder="Enter Tender ID" />
                         <select ng-model="tender.isMultyCurrency" ng-if="!isView" class="form-control formInput" name="Multi_currency_allowed">
                             <option>Select One</option>
                             <option>Yes</option>
                         </select>
-                        <!-- <span class="help-block" ng-show="tenderDetails.Multi_currency_allowed.$error.required && tenderDetails.Multi_currency_allowed.$touched">select one</span> -->
+                    </fieldset> -->
+                    <fieldset class="form-group">
+                        <label class="control-label" for="formGroupExampleInput4">Is MultiCurrency Allowed For Fee</label>
+                        <div class="radio-wrap">
+                            <label>
+                                <input class="radio" ng-model="tender.isMultyCurrency" name="isMultyCurrency-radios" type="radio"  value="Yes" ng-disabled="isView" ng-checked="tender.isMultyCurrency == 'Yes'">
+                                <span>Yes</span>
+                            </label>
+                            <label>
+                                <input class="radio" ng-model="tender.isMultyCurrency" name="isMultyCurrency-radios" type="radio" value="No" ng-disabled="isView" ng-checked="tender.isMultyCurrency == 'No'">
+                                <span>No</span>
+                            </label>
+
+                        </div>
                     </fieldset>
                     <fieldset class="form-group" ng-class="{'has-error': (tenderDetails.Form_of_contact.$invalid && tenderDetails.Form_of_contact.$touched)}">
                         <label class="control-label" for="formGroupExampleInput4">Form Of Contact</label>
@@ -82,16 +108,29 @@
                         <!-- <span class="help-block" ng-show="tenderDetails.No_of_covers.$error.required && tenderDetails.No_of_covers.$touched">Please enter payment Mode</span>
                 <span class="help-block" ng-show="tenderDetails.No_of_covers.$error.pattern && tenderDetails.No_of_covers.$touched">payment mode must be entered</span> -->
                     </fieldset>
-                    <fieldset class="form-group" ng-class="{'has-error': (tenderDetails.Technical_evaluation_allowed.$invalid && tenderDetails.Technical_evaluation_allowed.$touched)}">
+                    <!-- <fieldset class="form-group" ng-class="{'has-error': (tenderDetails.Technical_evaluation_allowed.$invalid && tenderDetails.Technical_evaluation_allowed.$touched)}">
                         <label class="control-label" for="formGroupExampleInput4">Itemwise Technical Evaluation Allowed</label>
                           <input type="text" ng-model="tender.itemTechEvlnAllow" ng-if="isView" ng-readonly="isView" class="form-control formInput" name="tender_id" id="formGroupExampleInput3" placeholder="Enter Tender ID" />
                         <select class="form-control formInput" ng-model="tender.itemTechEvlnAllow" ng-if="!isView"  name="Technical_evaluation_allowed">
                             <option>Option one</option>
                             <option>Option two</option>
                         </select>
-                        <!-- <span class="help-block" ng-show="Technical_evaluation_allowed.$error.required && Technical_evaluation_allowed.$touched">select one</span> -->
+                    </fieldset> -->
+                    <fieldset class="form-group">
+                        <label class="control-label" for="formGroupExampleInput4">Itemwise Technical Evaluation Allowed</label>
+                        <div class="radio-wrap">
+                            <label>
+                                <input class="radio" ng-model="tender.itemTechEvlnAllow" name="itemTechEvlnAllow-radios" type="radio" value="Yes" ng-disabled="isView" ng-checked="tender.itemTechEvlnAllow == 'Yes'">
+                                <span>Yes</span>
+                            </label>
+                            <label>
+                                <input class="radio" ng-model="tender.itemTechEvlnAllow" name="itemTechEvlnAllow-radios" type="radio" value="No" ng-disabled="isView" ng-checked="tender.itemTechEvlnAllow == 'No'">
+                                <span>No</span>
+                            </label>
+
+                        </div>
                     </fieldset>
-                    <fieldset class="form-group" ng-class="{'has-error': (tenderDetails.BOQ_currency.$invalid && tenderDetails.BOQ_currency.$touched)}">
+                    <!-- <fieldset class="form-group" ng-class="{'has-error': (tenderDetails.BOQ_currency.$invalid && tenderDetails.BOQ_currency.$touched)}">
                         <label class="control-label" for="formGroupExampleInput4">Is Multi Currency Allowed For BOQ</label>
                         <input type="text" ng-model="tender.isMultyCurrencyBOQ" ng-if="isView" ng-readonly="isView" class="form-control formInput" name="tender_id" id="formGroupExampleInput3" placeholder="Enter Tender ID" />
 
@@ -99,7 +138,20 @@
                             <option>Option one</option>
                             <option>Option two</option>
                         </select>
-                        <!-- <span class="help-block" ng-show="tenderDetails.BOQ_currency.$error.required && tenderDetails.BOQ_currency.$touched">select one</span> -->
+                    </fieldset> -->
+                    <fieldset class="form-group">
+                        <label class="control-label" for="formGroupExampleInput4">Is Multi Currency Allowed For BOQ</label>
+                        <div class="radio-wrap">
+                            <label>
+                                <input class="radio" ng-model="tender.isMultyCurrencyBOQ" name="isMultyCurrencyBOQ-radios" type="radio" value="Yes" ng-disabled="isView" ng-checked="tender.isMultyCurrencyBOQ == 'Yes'">
+                                <span>Yes</span>
+                            </label>
+                            <label>
+                                <input class="radio" ng-model="tender.isMultyCurrencyBOQ" name="isMultyCurrencyBOQ-radios" type="radio" value="No" ng-disabled="isView" ng-checked="tender.isMultyCurrencyBOQ == 'No'">
+                                <span>No</span>
+                            </label>
+
+                        </div>
                     </fieldset>
                     <fieldset class="form-group" ng-class="{'has-error': (tenderDetails.Tender_fee.$invalid && tenderDetails.Tender_fee.$touched)}">
                         <label class="control-label" for="formGroupExampleInput4">Tender Fee</label>
@@ -147,7 +199,7 @@
                         <!-- <span class="help-block" ng-show="tenderDetails.emd_payble_to.$error.required && tenderDetails.emd_payble_to.$touched">Please enter EMD Payble To</span>
                 <span class="help-block" ng-show="tenderDetails.emd_payble_to.$error.pattern && tenderDetails.emd_payble_to.$touched">EMD Payble To must be entered</span> -->
                     </fieldset>
-                    <fieldset class="form-group" ng-class="{'has-error': (tenderDetails.Exemption_allowd.$invalid && tenderDetails.Exemption_allowd.$touched)}">
+                    <!-- <fieldset class="form-group" ng-class="{'has-error': (tenderDetails.Exemption_allowd.$invalid && tenderDetails.Exemption_allowd.$touched)}">
                         <label class="control-label" for="formGroupExampleInput7">EMD Exemption Allowed</label>
                         <input type="text" ng-model="tender.emdExempAllow" ng-if="isView" ng-readonly="isView" class="form-control formInput" name="tender_id" id="formGroupExampleInput3" placeholder="Enter Tender ID" />
 
@@ -155,7 +207,20 @@
                             <option>Option one</option>
                             <option>Option two</option>
                         </select>
-                        <!-- <span class="help-block" ng-show="tenderDetails.Exemption_allowd.$error.required && tenderDetails.Exemption_allowd.$touched">select one</span> -->
+                    </fieldset> -->
+                    <fieldset class="form-group">
+                        <label class="control-label" for="formGroupExampleInput7">EMD Exemption Allowed</label>
+                        <div class="radio-wrap">
+                            <label>
+                                <input class="radio" ng-model="tender.emdExempAllow" name="emdExempAllow-radios" type="radio" value="Yes" ng-disabled="isView" ng-checked="tender.emdExempAllow == 'Yes'">
+                                <span>Yes</span>
+                            </label>
+                            <label>
+                                <input class="radio" ng-model="tender.emdExempAllow" name="emdExempAllow-radios" type="radio" value="No" ng-disabled="isView" ng-checked="tender.emdExempAllow == 'Yes'">
+                                <span>No</span>
+                            </label>
+
+                        </div>
                     </fieldset>
                     <fieldset class="form-group" ng-class="{'has-error': (tenderDetails.EMD_Percentage.$invalid && tenderDetails.EMD_Percentage.$touched)}">
                         <label class="control-label" for="formGroupExampleInput7">EMD Percentage</label>

@@ -36,9 +36,13 @@ app.controller('UserController', function($scope, $rootScope, $state,$stateParam
 
         }
     }
-    $scope.updateActiveClass = function(index){
+    $rootScope.$on(Events.updateSideBar,function(event,data) {
+      // get the index of the sideBar to be activeated after state change
+      $scope.updateActiveClass(null,data.state);
+    })
+    $scope.updateActiveClass = function(index,state){
       angular.forEach($scope.sideBar,function(v,k) {
-        if(index == k)
+        if(index == k || state == v.state)
           v.activeClass = 'active';
         else {
             v.activeClass = '';

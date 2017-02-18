@@ -34,8 +34,8 @@
                     {{tenderMilestone[0].description}}:
                 </label>
                 <div class="col-sm-10">
-                    <date-viewer ng-model="tenderMilestone[0].startDate"></date-viewer>
-                    <button type="button" class="btn btn-success" ng-disabled="tenderMilestone[0].isClosed" ng-click="closeTicket(0)" >Close ticket</button>
+                    <date-viewer ng-model="tenderMilestone[0].startDate" disable="tenderMilestone[0].isClosed == 'true' ? true : false" min-date="true" max-date="true"></date-viewer>
+                    <button type="button" class="btn btn-success"  ng-disabled="tenderMilestone[0].isClosed" ng-click="closeTicket(0)" >Close ticket</button>
                 </div>
             </div>
             <div class="form-group row">
@@ -45,12 +45,12 @@
                       <tr>
                         <td>{{tenderMilestone[1].description}}<td>
                           <td>
-                            <date-viewer ng-model="tenderMilestone[1].startDate" disable="true"></date-viewer>
+                            <date-viewer ng-model="tenderMilestone[1].startDate" disable="true" ></date-viewer>
                             <span class="circular m-l-20pr" uib-tooltip="{{tenderMilestone[1].description}} Open date" >OD</span>
                           </td>
                           <td><hr/></td>
                           <td>
-                            <date-viewer ng-model="tenderMilestone[1].completionDate" disable="tenderMilestone[1].isClosed"></date-viewer>
+                            <date-viewer ng-model="tenderMilestone[1].completionDate" disable="tenderMilestone[1].isClosed" max-date="true" min-date="true"></date-viewer>
                             <span class="circular m-l-20pr" uib-tooltip="{{tenderMilestone[1].description}} Close date">CD</span>
                           </td>
                           <td><hr/></td>
@@ -69,7 +69,7 @@
                           </td>
                           <td><hr/></td>
                           <td>
-                            <date-viewer ng-model="tenderMilestone[2].completionDate" disable="tenderMilestone[2].isClosed"></date-viewer>
+                            <date-viewer ng-model="tenderMilestone[2].completionDate" disable="tenderMilestone[2].isClosed" max-date="true" min-date="true"></date-viewer>
                             <span class="circular m-l-20pr" uib-tooltip="{{tenderMilestone[2].description}} Close date" >CD</span>
                           </td>
                           <td><hr/></td>
@@ -88,7 +88,7 @@
                           </td>
                           <td><hr/></td>
                           <td>
-                            <date-viewer ng-model="tenderMilestone[3].completionDate" disable="tenderMilestone[3].isClosed"></date-viewer>
+                            <date-viewer ng-model="tenderMilestone[3].completionDate" disable="tenderMilestone[3].isClosed" max-date="true" min-date="true"></date-viewer>
                             <span class="circular m-l-20pr" uib-tooltip="{{tenderMilestone[3].description}} Close date">CD</span>
                           </td>
                           <td><hr/></td>
@@ -107,7 +107,7 @@
                           </td>
                           <td><hr/></td>
                           <td>
-                            <date-viewer ng-model="tenderMilestone[4].completionDate" disable="tenderMilestone[4].isClosed"></date-viewer>
+                            <date-viewer ng-model="tenderMilestone[4].completionDate" disable="tenderMilestone[4].isClosed" max-date="true" min-date="true"></date-viewer>
                             <span class="circular m-l-20pr" uib-tooltip="{{tenderMilestone[4].description}} Close date">CD</span>
                           </td>
                           <td><hr/></td>
@@ -126,7 +126,7 @@
                           </td>
                           <td><hr/></td>
                           <td>
-                            <date-viewer ng-model="tenderMilestone[5].completionDate" disable="tenderMilestone[5].isClosed"></date-viewer>
+                            <date-viewer ng-model="tenderMilestone[5].completionDate" disable="tenderMilestone[5].isClosed" max-date="true" min-date="true"></date-viewer>
                             <span class="circular m-l-20pr" uib-tooltip="{{tenderMilestone[5].description}} Close date">CD</span>
                           </td>
                           <td><hr/></td>

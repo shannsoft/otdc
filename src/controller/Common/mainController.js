@@ -1,9 +1,14 @@
 app.controller('Main_Controller', function($scope, $rootScope, $state, EnvService, $timeout, $cookieStore, $localStorage, validationService, Events, $location, Util, $anchorScroll) {
     // Events handling
-    
+
     $rootScope.$on(Events.validationFieldMissing, function(event, data) {
         alert("Event handled", data);
     });
+    $rootScope.$on('$stateChangeSuccess',
+      function(event, toState, toParams, fromState, fromParams){
+        // emit event to activate menu link
+        $scope.$emit(Events.updateSideBar,{state:toState.name})
+       })
     $scope.users = [{
             name: "Suresh Dasari",
             age: 30,
