@@ -28,6 +28,11 @@ app.controller('VendorChecklistController',function($scope,$rootScope,$state,$st
         if(res.Data.length){
           $scope.vendorChecklist.isUpdate = true;
           $scope.vendorChecklist.checklist = res.Data;
+
+          // adding default values
+          $scope.vendorChecklist.checklist[0].name = $scope.vendorChecklist.checklist[0].name || "Regd details";
+          $scope.vendorChecklist.checklist[1].name = $scope.vendorChecklist.checklist[1].name || "PAN details";
+          $scope.vendorChecklist.checklist[2].name = $scope.vendorChecklist.checklist[2].name || "Turn over details";
         }
         else {
           $scope.vendorChecklist.isUpdate = false;

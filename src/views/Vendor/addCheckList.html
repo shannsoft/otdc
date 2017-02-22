@@ -26,7 +26,7 @@
                         <div class="tab-pane fade" id="regdCert" ng-class="currTab == 0 ? 'active in' : '' " aria-expanded="{{currTab == 0 ? 'true' : 'false' }}">
                             <fieldset class="form-group">
                                 <label class="control-label" for="formGroupExampleInput7">Registration certificate Name :</label>
-                                <input type="text" ng-model="vendorChecklist.checklist[0].name || 'Regd name' " class="form-control formInput" id="formGroupExampleInput4" name="regdCertName" required>
+                                <input type="text" ng-model="vendorChecklist.checklist[0].name" class="form-control formInput" id="formGroupExampleInput4" name="regdCertName" required>
                             </fieldset>
                             <fieldset class="form-group">
                                 <label class="control-label" for="formGroupExampleInput7">Registration certificate file</label>
@@ -49,7 +49,7 @@
 
                             <fieldset class="form-group">
                                 <label class="control-label" for="formGroupExampleInput7">Pan card Name :</label>
-                                <input type="text" ng-model="vendorChecklist.checklist[1].name || 'PAN Details' " class="form-control formInput" id="formGroupExampleInput4" name="panCardName" required>
+                                <input type="text" ng-model="vendorChecklist.checklist[1].name" class="form-control formInput" id="formGroupExampleInput4" name="panCardName" required>
                             </fieldset>
                             <fieldset class="form-group">
                                 <label class="control-label" for="formGroupExampleInput7">Pan card file</label>
@@ -69,7 +69,7 @@
                         <div class="tab-pane fade" id="turnOver" ng-class="currTab == 2 ? 'active in' : '' " aria-expanded="{{currTab == 2 ? 'true' : 'false' }}">
                             <fieldset class="form-group">
                                 <label class="control-label" for="formGroupExampleInput7">turn over details :</label>
-                                <input type="text" ng-model="vendorChecklist.checklist[2].name || 'turnOver Details' " class="form-control formInput" id="formGroupExampleInput4" name="turnOverName" required>
+                                <input type="text" ng-model="vendorChecklist.checklist[2].name" class="form-control formInput" id="formGroupExampleInput4" name="turnOverName" required>
                             </fieldset>
                             <fieldset class="form-group">
                                 <label class="control-label" for="formGroupExampleInput7">turn over details file</label>

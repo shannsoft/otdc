@@ -50,8 +50,8 @@ app.controller('TenderMilestoneController', function($scope, $rootScope, $state,
       }
     }
     $scope.closeTicket = function(index) {
-        console.log("$scope.tenderMilestone  ",$scope.tenderMilestone);
-        return;
+        // console.log("$scope.tenderMilestone  ",$scope.tenderMilestone);
+        // return;
         if(index != 0 && !$scope.tenderMilestone[index].completionDate){
           Util.alertMessage(Events.eventType.warning, "Please select Date");
           return;

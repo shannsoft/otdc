@@ -1,4 +1,4 @@
-/*! otdc - v1.0.0 - Thu Feb 23 2017 02:11:04 */
+/*! otdc - v1.0.0 - Thu Feb 23 2017 02:42:04 */
 var dependency = [];
 // lib  dependency
 var distModules = ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate', 'ngCookies', 'ngMessages','ngTable'];
@@ -1122,8 +1122,8 @@ app.controller('boqHistoryController', function ($scope,$uibModalInstance,tender
       }
     }
     $scope.closeTicket = function(index) {
-        console.log("$scope.tenderMilestone  ",$scope.tenderMilestone);
-        return;
+        // console.log("$scope.tenderMilestone  ",$scope.tenderMilestone);
+        // return;
         if(index != 0 && !$scope.tenderMilestone[index].completionDate){
           Util.alertMessage(Events.eventType.warning, "Please select Date");
           return;
@@ -1560,6 +1560,11 @@ app.controller('deleteModalCtrl', function ($scope, $uibModalInstance,user,Util,
         if(res.Data.length){
           $scope.vendorChecklist.isUpdate = true;
           $scope.vendorChecklist.checklist = res.Data;
+
+          // adding default values
+          $scope.vendorChecklist.checklist[0].name = $scope.vendorChecklist.checklist[0].name || "Regd details";
+          $scope.vendorChecklist.checklist[1].name = $scope.vendorChecklist.checklist[1].name || "PAN details";
+          $scope.vendorChecklist.checklist[2].name = $scope.vendorChecklist.checklist[2].name || "Turn over details";
         }
         else {
           $scope.vendorChecklist.isUpdate = false;
