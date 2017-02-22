@@ -29,7 +29,6 @@ app.directive('dateViewer', function () {
 })
 .controller("dateViewerController",["$scope",function($scope) {
   // disabling dates based on condition , self executing function
-  console.log("$scope.disable  ",typeof $scope.disable);
   $scope.disable = $scope.disable == "true" ? true : false;
   $scope.disablingDate = function(){
     if($scope.minDate && $scope.minDate!="") {

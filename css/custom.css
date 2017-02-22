@@ -6,7 +6,9 @@
 .color-black {
     color: #000 !important;
 }
-
+.r-75per {
+  right:75% !important;
+}
 .m-t-5 {
     margin-top: 5px;
 }

@@ -9,9 +9,9 @@
                 </div>
                 <form name="addPermissionInitForm" role="addPermissionInitForm">
 
-                    <fieldset class="form-group">
+                    <fieldset class="form-group" ng-class="{'has-error': (addPermissionInitForm.designation.$invalid && addPermissionInitForm.designation.$touched)}">
                         <label class="control-label" for="formGroupExampleInput3">Select Designation</label>
-                        <select ng-change="fetchWebServiceDetails()" ng-options="designation as designation.designationName for designation in addPermission.designations track by designation.designationId" ng-model="addPermission.selectedDesignation" class="form-control formInput" name="Tender_Type"></select>
+                        <select  ng-options="designation as designation.designationName for designation in addPermission.designations track by designation.designationId" ng-model="addPermission.selectedDesignation" class="form-control formInput" name="designation" required></select>
                     </fieldset>
                     <!-- tender details a custom html tag to show  the tender details -->
                     <permissions ng-if="addPermission.webServices">

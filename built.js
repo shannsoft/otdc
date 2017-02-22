@@ -1,8 +1,8 @@
-/*! otdc - v1.0.0 - Sun Feb 19 2017 05:21:27 */
+/*! otdc - v1.0.0 - Thu Feb 23 2017 02:11:04 */
 var dependency = [];
 // lib  dependency
 var distModules = ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate', 'ngCookies', 'ngMessages','ngTable'];
-var custModules = ['validation', 'EventHandler', 'Authentication', 'WebService'];
+var custModules = ['validation', 'EventHandler', 'Authentication', 'WebService','uiSwitch'];
 dependency = dependency.concat(distModules).concat(custModules);
 
 var app = angular.module("teknobiz", dependency);
@@ -37,7 +37,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
             TokenId: $localStorage[Constants.getTokenKey()]
         }
         ApiCall.token(obj, function(response) {
-            if (response.StatusCode == 200 && response.Data && response.Status == "Success") {
+            if (response.StatusCode == 200 && response.Data && response.Status == "OK") {
                 $timeout(function() {
                     $rootScope.loggedin = $localStorage[Constants.getLoggedIn()] = true;
                     UserService.setUser(response.Data);
@@ -67,7 +67,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
             TokenId: $localStorage[Constants.getTokenKey()]
         }
         ApiCall.token(obj, function(response) {
-            if (response.StatusCode == 200 && response.Data && response.Status == "Success") {
+            if (response.StatusCode == 200 && response.Data && response.Status == "OK") {
               $timeout(function() {
                 $rootScope.loggedin = $localStorage[Constants.getLoggedIn()];
                 UserService.setUser(response.Data);
@@ -597,7 +597,7 @@ $scope.addTendorInit = function() {
   else {
     $timeout.cancel($scope.timeout)
     $scope.tender.tenderTypes = AppModel.getSetting('tenderType');
-    tender.tenderType = $scope.tender.tenderTypes[0] // default value
+    $scope.tender.tenderType = $scope.tender.tenderTypes[0] // default value
   }
 }
 /* $scope.fileSelected = function(fileName) {
@@ -1080,74 +1080,6 @@ app.controller('boqHistoryController', function ($scope,$uibModalInstance,tender
             Util.alertMessage(Events.eventType.warning, Events.selectTender);
             $state.go("tenderList");
         } else {
-            // $scope.tenderMilestone = [{
-            //         "actType": null,
-            //         "mileStoneId": 1,
-            //         "date": null,
-            //         "userId": 10015,
-            //         "tenderId": 100000,
-            //         "description": "Receipt Of Doc",
-            //         "startDate": "",
-            //         "endDate": "",
-            //         "completionDate": "1/10/2017",
-            //         "isClosed": "False"
-            //     }, {
-            //         "actType": null,
-            //         "mileStoneId": 2,
-            //         "date": null,
-            //         "userId": 10015,
-            //         "tenderId": 100000,
-            //         "description": "Technical Bid",
-            //         "startDate": "1/10/2017",
-            //         "endDate": "1/6/2017",
-            //         "completionDate": "",
-            //         "isClosed": "False"
-            //     }, {
-            //         "actType": null,
-            //         "mileStoneId": 3,
-            //         "date": null,
-            //         "userId": 10015,
-            //         "tenderId": 100000,
-            //         "description": "Opening Of Financial Bid",
-            //         "startDate": "1/15/2017",
-            //         "endDate": "1/7/2017",
-            //         "completionDate": "",
-            //         "isClosed": "False"
-            //     }, {
-            //         "actType": null,
-            //         "mileStoneId": 4,
-            //         "date": null,
-            //         "userId": 10015,
-            //         "tenderId": 100000,
-            //         "description": "Approval Of The Tender Date",
-            //         "startDate": "1/18/2017",
-            //         "endDate": "1/2/2017",
-            //         "completionDate": "",
-            //         "isClosed": "False"
-            //     }, {
-            //         "actType": null,
-            //         "mileStoneId": 5,
-            //         "date": null,
-            //         "userId": 10015,
-            //         "tenderId": 100000,
-            //         "description": "Singing Of Agreement Date",
-            //         "startDate": "1/10/2017",
-            //         "endDate": "1/3/2017",
-            //         "completionDate": "",
-            //         "isClosed": "False"
-            //     }, {
-            //         "actType": null,
-            //         "mileStoneId": 6,
-            //         "date": null,
-            //         "userId": 10015,
-            //         "tenderId": 100000,
-            //         "description": "Handing Over Of the Site",
-            //         "startDate": "1/10/2017",
-            //         "endDate": "1/4/2017",
-            //         "completionDate": "",
-            //         "isClosed": "False"
-            //     }]
-            //     $scope.updateDueDate($scope.tenderMilestone);
                 $scope.tender = $stateParams.tender;
                 ApiCall.getMilestone({
                         tenderId: $stateParams.tenderId
@@ -1170,11 +1102,15 @@ app.controller('boqHistoryController', function ($scope,$uibModalInstance,tender
 
     }
     $scope.updateDueDate = function(tenderMilestone) {
+      var mEnd;
       for(var i in tenderMilestone) {
         if(i == 0 )
         continue; // continue for the index of the doc received
         // for test milestone calculate the due date
-        var mEnd = moment(new Date(tenderMilestone[i].endDate));
+        if(tenderMilestone[i].completionDate && tenderMilestone[i].completionDate!= '')
+          mEnd = moment(new Date(tenderMilestone[i].completionDate));
+        else
+          mEnd = moment(new Date(tenderMilestone[i].endDate));
         var mToday = moment(new Date());
         var diff = mToday.diff(mEnd, 'days');
         if(diff > 0){
@@ -1186,6 +1122,8 @@ app.controller('boqHistoryController', function ($scope,$uibModalInstance,tender
       }
     }
     $scope.closeTicket = function(index) {
+        console.log("$scope.tenderMilestone  ",$scope.tenderMilestone);
+        return;
         if(index != 0 && !$scope.tenderMilestone[index].completionDate){
           Util.alertMessage(Events.eventType.warning, "Please select Date");
           return;
@@ -1293,28 +1231,34 @@ app.controller('boqHistoryController', function ($scope,$uibModalInstance,tender
         if (!$scope.permission.designations) {
             $scope.permissionInit(true);
         }
-        $scope.addPermission.webServices = [{
-            "name": "Login",
-            "get": false,
-            "post": false,
-            "put": false,
-            "delete": false,
-            "options": false
-        }, {
-            "name": "VendorCheckList",
-            "get": false,
-            "post": false,
-            "put": false,
-            "delete": false,
-            "options": false
-        }, {
-            "name": "LogOut",
-            "get": false,
-            "post": false,
-            "put": false,
-            "delete": false,
-            "options": false
-        }]
+        ApiCall.getServiceList(function(response) {
+            // Util.alertMessage(Events.eventType.success, response.Message);
+            $scope.addPermission.webServices = response;
+        }, function(err) {
+            Util.alertMessage(Events.eventType.error, err.Message);
+        })
+        // $scope.addPermission.webServices = [{
+        //     "name": "Login",
+        //     "get": false,
+        //     "post": false,
+        //     "put": false,
+        //     "delete": false,
+        //     "options": false
+        // }, {
+        //     "name": "VendorCheckList",
+        //     "get": false,
+        //     "post": false,
+        //     "put": false,
+        //     "delete": false,
+        //     "options": false
+        // }, {
+        //     "name": "LogOut",
+        //     "get": false,
+        //     "post": false,
+        //     "put": false,
+        //     "delete": false,
+        //     "options": false
+        // }]
     }
     $scope.saveAddPermission = function() {
       console.log($scope.addPermission.selectedDesignation);
@@ -1861,7 +1805,6 @@ app.controller('deleteVendorModalCtrl', function ($scope, $uibModalInstance,vend
 })
 .controller("dateViewerController",["$scope",function($scope) {
   // disabling dates based on condition , self executing function
-  console.log("$scope.disable  ",typeof $scope.disable);
   $scope.disable = $scope.disable == "true" ? true : false;
   $scope.disablingDate = function(){
     if($scope.minDate && $scope.minDate!="") {
@@ -2392,6 +2335,12 @@ app.filter('webServiceName', function () {
                 "method": "POST",
                 "Content-Type": "application/json",
             },
+            getServiceList: {
+                "url": "/api/ServiceList/",
+                "method": "GET",
+                "Content-Type": "application/json",
+                 "isArray" : true
+            },
 
 
         }
@@ -2436,10 +2385,11 @@ app.filter('webServiceName', function () {
             getProjectMileStone: ApiGenerator.getApi('getProjectMileStone'),
             getAuthentication: ApiGenerator.getApi('getAuthentication'),
             postAuthentication: ApiGenerator.getApi('postAuthentication'),
+            getServiceList: ApiGenerator.getApi('getServiceList'),
           });
 
     })
-    
+
 
 ;
 ;app.factory('AppModel',function($rootScope,$http,$localStorage,$resource,ApiGenerator,Events,Constants){

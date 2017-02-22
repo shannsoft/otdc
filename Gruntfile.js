@@ -74,6 +74,7 @@ module.exports = function(grunt) {
                     "lib/angular/angular-cookies.min.js",
                     "lib/angular/angular-messages.js",
                     "lib/dist/moment.min.js",
+                    "lib/dist/uiSwitch/angular-ui-switch.js",
                     "js/vendor.js",
                     "js/app.js",
                 ],
@@ -125,10 +126,13 @@ module.exports = function(grunt) {
             all: {
                 src: [
                     'css/bootstrap.min.css',
+                    // 'css/bootstrap-toggle.min.css',
                     'css/vendor.css',
                     'css/app-seagreen.css',
                     'css/custom.css',
                     'css/ng-table.min.css',
+                    'lib/dist/uiSwitch/angular-ui-switch.css',
+
                 ],
                 dest: "css/built.css"
             },

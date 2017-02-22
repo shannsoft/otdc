@@ -155,6 +155,12 @@ angular.module('WebService', [])
                 "method": "POST",
                 "Content-Type": "application/json",
             },
+            getServiceList: {
+                "url": "/api/ServiceList/",
+                "method": "GET",
+                "Content-Type": "application/json",
+                 "isArray" : true
+            },
 
 
         }
@@ -199,9 +205,10 @@ angular.module('WebService', [])
             getProjectMileStone: ApiGenerator.getApi('getProjectMileStone'),
             getAuthentication: ApiGenerator.getApi('getAuthentication'),
             postAuthentication: ApiGenerator.getApi('postAuthentication'),
+            getServiceList: ApiGenerator.getApi('getServiceList'),
           });
 
     })
-    
+
 
 ;

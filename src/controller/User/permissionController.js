@@ -64,28 +64,34 @@ app.controller('PermissionController', function($scope, $rootScope, $state, $tim
         if (!$scope.permission.designations) {
             $scope.permissionInit(true);
         }
-        $scope.addPermission.webServices = [{
-            "name": "Login",
-            "get": false,
-            "post": false,
-            "put": false,
-            "delete": false,
-            "options": false
-        }, {
-            "name": "VendorCheckList",
-            "get": false,
-            "post": false,
-            "put": false,
-            "delete": false,
-            "options": false
-        }, {
-            "name": "LogOut",
-            "get": false,
-            "post": false,
-            "put": false,
-            "delete": false,
-            "options": false
-        }]
+        ApiCall.getServiceList(function(response) {
+            // Util.alertMessage(Events.eventType.success, response.Message);
+            $scope.addPermission.webServices = response;
+        }, function(err) {
+            Util.alertMessage(Events.eventType.error, err.Message);
+        })
+        // $scope.addPermission.webServices = [{
+        //     "name": "Login",
+        //     "get": false,
+        //     "post": false,
+        //     "put": false,
+        //     "delete": false,
+        //     "options": false
+        // }, {
+        //     "name": "VendorCheckList",
+        //     "get": false,
+        //     "post": false,
+        //     "put": false,
+        //     "delete": false,
+        //     "options": false
+        // }, {
+        //     "name": "LogOut",
+        //     "get": false,
+        //     "post": false,
+        //     "put": false,
+        //     "delete": false,
+        //     "options": false
+        // }]
     }
     $scope.saveAddPermission = function() {
       console.log($scope.addPermission.selectedDesignation);

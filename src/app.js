@@ -1,7 +1,7 @@
 var dependency = [];
 // lib  dependency
 var distModules = ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate', 'ngCookies', 'ngMessages','ngTable'];
-var custModules = ['validation', 'EventHandler', 'Authentication', 'WebService'];
+var custModules = ['validation', 'EventHandler', 'Authentication', 'WebService','uiSwitch'];
 dependency = dependency.concat(distModules).concat(custModules);
 
 var app = angular.module("teknobiz", dependency);
@@ -36,7 +36,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
             TokenId: $localStorage[Constants.getTokenKey()]
         }
         ApiCall.token(obj, function(response) {
-            if (response.StatusCode == 200 && response.Data && response.Status == "Success") {
+            if (response.StatusCode == 200 && response.Data && response.Status == "OK") {
                 $timeout(function() {
                     $rootScope.loggedin = $localStorage[Constants.getLoggedIn()] = true;
                     UserService.setUser(response.Data);
@@ -66,7 +66,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
             TokenId: $localStorage[Constants.getTokenKey()]
         }
         ApiCall.token(obj, function(response) {
-            if (response.StatusCode == 200 && response.Data && response.Status == "Success") {
+            if (response.StatusCode == 200 && response.Data && response.Status == "OK") {
               $timeout(function() {
                 $rootScope.loggedin = $localStorage[Constants.getLoggedIn()];
                 UserService.setUser(response.Data);

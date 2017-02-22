@@ -8,74 +8,6 @@ app.controller('TenderMilestoneController', function($scope, $rootScope, $state,
             Util.alertMessage(Events.eventType.warning, Events.selectTender);
             $state.go("tenderList");
         } else {
-            // $scope.tenderMilestone = [{
-            //         "actType": null,
-            //         "mileStoneId": 1,
-            //         "date": null,
-            //         "userId": 10015,
-            //         "tenderId": 100000,
-            //         "description": "Receipt Of Doc",
-            //         "startDate": "",
-            //         "endDate": "",
-            //         "completionDate": "1/10/2017",
-            //         "isClosed": "False"
-            //     }, {
-            //         "actType": null,
-            //         "mileStoneId": 2,
-            //         "date": null,
-            //         "userId": 10015,
-            //         "tenderId": 100000,
-            //         "description": "Technical Bid",
-            //         "startDate": "1/10/2017",
-            //         "endDate": "1/6/2017",
-            //         "completionDate": "",
-            //         "isClosed": "False"
-            //     }, {
-            //         "actType": null,
-            //         "mileStoneId": 3,
-            //         "date": null,
-            //         "userId": 10015,
-            //         "tenderId": 100000,
-            //         "description": "Opening Of Financial Bid",
-            //         "startDate": "1/15/2017",
-            //         "endDate": "1/7/2017",
-            //         "completionDate": "",
-            //         "isClosed": "False"
-            //     }, {
-            //         "actType": null,
-            //         "mileStoneId": 4,
-            //         "date": null,
-            //         "userId": 10015,
-            //         "tenderId": 100000,
-            //         "description": "Approval Of The Tender Date",
-            //         "startDate": "1/18/2017",
-            //         "endDate": "1/2/2017",
-            //         "completionDate": "",
-            //         "isClosed": "False"
-            //     }, {
-            //         "actType": null,
-            //         "mileStoneId": 5,
-            //         "date": null,
-            //         "userId": 10015,
-            //         "tenderId": 100000,
-            //         "description": "Singing Of Agreement Date",
-            //         "startDate": "1/10/2017",
-            //         "endDate": "1/3/2017",
-            //         "completionDate": "",
-            //         "isClosed": "False"
-            //     }, {
-            //         "actType": null,
-            //         "mileStoneId": 6,
-            //         "date": null,
-            //         "userId": 10015,
-            //         "tenderId": 100000,
-            //         "description": "Handing Over Of the Site",
-            //         "startDate": "1/10/2017",
-            //         "endDate": "1/4/2017",
-            //         "completionDate": "",
-            //         "isClosed": "False"
-            //     }]
-            //     $scope.updateDueDate($scope.tenderMilestone);
                 $scope.tender = $stateParams.tender;
                 ApiCall.getMilestone({
                         tenderId: $stateParams.tenderId
@@ -98,11 +30,15 @@ app.controller('TenderMilestoneController', function($scope, $rootScope, $state,
 
     }
     $scope.updateDueDate = function(tenderMilestone) {
+      var mEnd;
       for(var i in tenderMilestone) {
         if(i == 0 )
         continue; // continue for the index of the doc received
         // for test milestone calculate the due date
-        var mEnd = moment(new Date(tenderMilestone[i].endDate));
+        if(tenderMilestone[i].completionDate && tenderMilestone[i].completionDate!= '')
+          mEnd = moment(new Date(tenderMilestone[i].completionDate));
+        else
+          mEnd = moment(new Date(tenderMilestone[i].endDate));
         var mToday = moment(new Date());
         var diff = mToday.diff(mEnd, 'days');
         if(diff > 0){
@@ -114,6 +50,8 @@ app.controller('TenderMilestoneController', function($scope, $rootScope, $state,
       }
     }
     $scope.closeTicket = function(index) {
+        console.log("$scope.tenderMilestone  ",$scope.tenderMilestone);
+        return;
         if(index != 0 && !$scope.tenderMilestone[index].completionDate){
           Util.alertMessage(Events.eventType.warning, "Please select Date");
           return;
