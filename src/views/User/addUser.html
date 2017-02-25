@@ -11,56 +11,59 @@
                    <fieldset class="form-group" ng-class="{'has-error':addUserForm.userName.$touched && addUserForm.userName.$invalid}">
                             <label class="control-label" for="formGroupExampleInput2">Username</label>
                             <input type="text" ng-model="user.userName" ng-pattern="/^[a-zA-Z0-9_]*$/" name="userName" required class="form-control formInput" id="formGroupExampleInput2" placeholder="Placeholder text">
-                            <span class="has-error formInput" ng-if="addUserForm.userName.$touched && addUserForm.userName.$invalid">Username is invalid</span>
+                            <!-- <span class="has-error formInput" ng-if="addUserForm.userName.$touched && addUserForm.userName.$invalid">Username is invalid</span> -->
+                            <span class="has-error formInput" ng-if="addUserForm.userName.$touched && addUserForm.userName.$error.required">User name required</span>
+                            <span class="has-error formInput" ng-if="!addUserForm.userName.$error.required && addUserForm.userName.$touched && addUserForm.userName.$invalid">User name is invalid , please enter alpha numeric values</span>
                    </fieldset>
                    <fieldset class="form-group" ng-class="{'has-error':addUserForm.firstName.$touched && addUserForm.firstName.$invalid}">
                             <label class="control-label" for="formGroupExampleInput2">First Name</label>
-                            <input type="text" ng-model="user.fName" name="firstName" required class="form-control formInput" id="formGroupExampleInput2" placeholder="Placeholder text">
-                            <span class="has-error formInput" ng-if="addUserForm.firstName.$touched && addUserForm.firstName.$invalid">firstName is invalid</span>
-
+                            <input type="text" ng-model="user.fName" name="firstName" ng-pattern="/^[a-zA-Z]*$/" required class="form-control formInput" id="formGroupExampleInput2" placeholder="Placeholder text">
+                            <span class="has-error formInput" ng-if="addUserForm.firstName.$touched && addUserForm.firstName.$error.required">First name required</span>
+                            <span class="has-error formInput" ng-if="!addUserForm.firstName.$error.required && addUserForm.firstName.$touched && addUserForm.firstName.$invalid">First name is invalid , please enter alphabet only </span>
                    </fieldset>
                    <fieldset class="form-group" ng-class="{'has-error':addUserForm.lastName.$touched && addUserForm.lastName.$invalid}">
                             <label class="control-label" for="formGroupExampleInput2">Last Name</label>
-                            <input type="text" ng-model="user.lName" name="lastName" required class="form-control formInput" id="formGroupExampleInput2" placeholder="Placeholder text">
-                            <span class="has-error formInput" ng-if="addUserForm.lastName.$touched && addUserForm.lastName.$invalid">lastName is invalid</span>
-
+                            <input type="text" ng-model="user.lName" name="lastName" ng-pattern="/^[a-zA-Z]*$/" required class="form-control formInput" id="formGroupExampleInput2" placeholder="Placeholder text">
+                            <span class="has-error formInput" ng-if="addUserForm.lastName.$touched && addUserForm.lastName.$error.required">Last name required</span>
+                            <span class="has-error formInput" ng-if="!addUserForm.lastName.$error.required && addUserForm.lastName.$touched && addUserForm.lastName.$invalid">Last name is invalid , please enter alphabet only </span>
                     </fieldset>
                     <fieldset class="form-group" ng-class="{'has-error':addUserForm.email.$touched && addUserForm.email.$invalid}">
                               <label class="control-label" for="formGroupExampleInput2">Email</label>
-                              <input type="text" ng-model="user.email" name="email" required class="form-control formInput" id="formGroupExampleInput2" placeholder="Placeholder text">
-                              <span class="has-error formInput" ng-if="addUserForm.email.$touched && addUserForm.email.$invalid">email is invalid</span>
+                              <input type="text" ng-model="user.email" name="email" ng-pattern="/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/" required class="form-control formInput" id="formGroupExampleInput2" placeholder="Placeholder text">
+                              <span class="has-error formInput" ng-if="addUserForm.email.$touched && addUserForm.email.$error.required">Email required</span>
+                              <span class="has-error formInput" ng-if="!addUserForm.email.$error.required && addUserForm.email.$touched && addUserForm.email.$invalid">Email is invalid , please enter alphabet only </span>
 
                      </fieldset>
                     <fieldset class="form-group" ng-class="{'has-error':addUserForm.address.$touched && addUserForm.address.$invalid}">
                            <label class="control-label" for="formGroupExampleInput3">Address</label>
                            <textarea rows="3" ng-model="user.address" name="address" required class="form-control formInput" id="formGroupExampleInput7"placeholder="Placeholder text"></textarea>
-                           <span class="has-error formInput" ng-if="addUserForm.address.$touched && addUserForm.address.$invalid">address is invalid</span>
-
+                           <span class="has-error formInput" ng-if="addUserForm.address.$touched && addUserForm.address.$error.required">Address required</span>
                    </fieldset>
                   <fieldset class="form-group" ng-class="{'has-error':addUserForm.phone.$touched && addUserForm.phone.$invalid}">
                          <label class="control-label" for="formGroupExampleInput3">Mobile No</label>
-                         <input type="text"  maxlength="10" ng-model="user.phone" name="phone" required numbers-only class="form-control formInput" id="formGroupExampleInput2" placeholder="Placeholder text">
-                         <span class="has-error formInput" ng-if="addUserForm.phone.$touched && addUserForm.phone.$invalid">phone is invalid</span>
-
+                         <input type="text"  ng-minlength="10" ng-maxlength="10" maxlength="10" ng-model="user.phone" name="phone" required numbers-only class="form-control formInput" id="formGroupExampleInput2" placeholder="Placeholder text">
+                         <span class="has-error formInput" ng-if="addUserForm.phone.$touched && addUserForm.phone.$error.required">Mobile No. required</span>
+                         <span class="has-error formInput" ng-if="addUserForm.phone.$touched && addUserForm.phone.$error.minlength">Mobile No. should be 10 digits</span>
                  </fieldset>
                  <fieldset class="form-group" ng-class="{'has-error':addUserForm.designation.$touched && addUserForm.designation.$invalid}">
 												<label class="control-label" for="formGroupExampleInput3">Desingnation</label>
 												<select  name="designation" required ng-options="designation as designation.designationName for designation in designations" ng-model="user.designation" class="form-control formInput">
 												</select>
-                        <span class="has-error formInput" ng-if="addUserForm.designation.$touched && addUserForm.designation.$invalid">designation is invalid</span>
-
+                        <span class="has-error formInput" ng-if="addUserForm.designation.$touched && addUserForm.designation.$invalid">Designation is invalid</span>
                 </fieldset>
                 <fieldset class="form-group" ng-class="{'has-error':addUserForm.pwd.$touched && addUserForm.pwd.$invalid}">
                        <label class="control-label" for="formGroupExampleInput3">Create Password</label>
-                       <input type="password" name="pwd" required ng-model="user.pwd" class="form-control formInput" id="formGroupExampleInput2" placeholder="Placeholder text">
-                       <span class="has-error formInput" ng-if="addUserForm.pwd.$touched && addUserForm.pwd.$invalid">password is invalid</span>
+                       <input type="password" name="pwd" ng-minlength="4" required ng-model="user.pwd" class="form-control formInput" id="formGroupExampleInput2" placeholder="Placeholder text">
+                       <span class="has-error formInput" ng-if="addUserForm.pwd.$touched && addUserForm.pwd.$error.required">password is Required</span>
+                       <span class="has-error formInput" ng-if="addUserForm.pwd.$touched && addUserForm.pwd.$invalid">password is invalid , minimum 4 charecters</span>
 
                </fieldset>
-               <fieldset class="form-group" ng-class="{'has-error':addUserForm.confirmPwd.$touched && addUserForm.confirmPwd.$invalid}">
+               <fieldset class="form-group" ng-class="{'has-error':(addUserForm.confirmPwd.$touched && addUserForm.confirmPwd.$invalid) || (addUserForm.confirmPwd.$touched && addUserForm.confirmPwd.$dirty && (user.confirmPwd != user.pwd))}">
                       <label class="control-label" for="formGroupExampleInput3">Confirm Password</label>
-                      <input type="password" name="confirmPwd" required ng-model="user.confirmPwd" class="form-control formInput" id="formGroupExampleInput2" placeholder="Placeholder text">
-                      <span class="has-error formInput" ng-if="addUserForm.confirmPwd.$touched && addUserForm.confirmPwd.$invalid">confirm password is invalid</span>
-
+                      <input type="password" name="confirmPwd" ng-minlength="4" required ng-model="user.confirmPwd" class="form-control formInput" id="formGroupExampleInput2" placeholder="Placeholder text">
+                      <span class="has-error formInput" ng-if="addUserForm.confirmPwd.$touched &&  addUserForm.confirmPwd.$dirty && addUserForm.confirmPwd.$invalid">confirm password is invalid</span>
+                      <span class="has-error formInput" ng-if="addUserForm.confirmPwd.$touched && addUserForm.confirmPwd.$error.required">password is Required</span>
+                      <span class="has-error formInput" ng-if="addUserForm.confirmPwd.$touched && addUserForm.confirmPwd.$dirty && (user.confirmPwd != user.pwd)">Password do not match</span>
               </fieldset>
               <fieldset class="form-group">
                     <button type="button" class="btn btn-success" ng-click="addUser()" ng-disabled="addUserForm.$invalid || user.pwd != user.confirmPwd">Submit</button>

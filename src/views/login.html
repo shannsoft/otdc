@@ -19,9 +19,9 @@
             </div>
             <div class="form-group" ng-class="{'has-error':loginForm.password.$touched && loginForm.password.$invalid}">
               <label for="password">Password</label>
-              <input type="password"  ng-model="user.Password"  class="form-control underlined" name="password" placeholder="Your password" ng-minlength="6" required>
+              <input type="password"  ng-model="user.Password"  class="form-control underlined" name="password" placeholder="Your password" ng-minlength="4" required>
               <span class="has-error" ng-if="loginForm.password.$touched && loginForm.password.$error.required">Password required</span>
-              <span class="has-error" ng-if="loginForm.password.$touched && loginForm.password.$error.minlength">Password should be minimum six charecter</span>
+              <span class="has-error" ng-if="loginForm.password.$touched && loginForm.password.$error.minlength">Password should be minimum 4 charecters</span>
             </div>
             <div class="form-group">
               <label for="remember">
@@ -31,8 +31,8 @@
               <a ui-sref="forget_password" class="forgot-btn pull-right">Forgot password?</a>
             </div>
             <div class="form-group">
-              <button type="submit" class="btn btn-block btn-primary" ng-click="login(loginForm)" >Login</button>
-              <!-- <button type="submit" class="btn btn-block btn-primary" ng-click="login(loginForm)" ng-disabled="loginForm.$invalid">Login</button> -->
+              <!-- <button type="submit" class="btn btn-block btn-primary" ng-click="login(loginForm)" >Login</button> -->
+              <button type="submit" class="btn btn-block btn-primary" ng-click="login(loginForm)" ng-disabled="loginForm.$invalid">Login</button>
             </div>
         </form>
       </div>
