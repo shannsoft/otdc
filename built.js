@@ -1,4 +1,4 @@
-/*! otdc - v1.0.0 - Thu Feb 23 2017 02:42:04 */
+/*! otdc - v1.0.0 - Sat Feb 25 2017 20:38:33 */
 var dependency = [];
 // lib  dependency
 var distModules = ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate', 'ngCookies', 'ngMessages','ngTable'];
@@ -2053,7 +2053,7 @@ app.filter('webServiceName', function () {
           $scope.user.Password = UtilityService.decode($localStorage[Constants.getPassword()]);
           $scope.user.remember = $localStorage[Constants.getIsRemember()];
         }
-        $scope.validationService = validationService;
+        // $scope.validationService = validationService;
         $scope.isInit = true; // this flag used to load the form after controller init
       }
       $scope.login = function(loginfrm) {
@@ -2104,7 +2104,7 @@ app.filter('webServiceName', function () {
       }
       $scope.forgotPassword = function(email) {
           var obj = {
-            
+
             "email":email
           }
           ApiCall.forgotPassword(obj,function(response) {
@@ -2143,43 +2143,55 @@ app.filter('webServiceName', function () {
     })
 ;
 ;angular.module('validation', [])
-    // .constant('MODULE_VERSION', '0.0.3')
-    // .value('defaults', {
-    //     foo: 'bar'
-    // })
-    // .directive('directiveName', function() {/* stuff here */})
     .factory('validationService', function($rootScope,Events) {
-      var validationMessages = {
-        'required' : {
-          // this will take as errorType ,%fieldName% and type** to generate message
-          'type1' : 'Field %fieldName% can not be blank',
-          'type2' : 'Please enter value for %fieldName% '
+      // var validationMessages = {
+      //   'required' : {
+      //     // this will take as errorType ,%fieldName% and type** to generate message
+      //     'type1' : 'Field %fieldName% can not be blank',
+      //     'type2' : 'Please enter value for %fieldName% '
+      //   },
+      //   'invalid' : {
+      //     // this will take as errorType ,%fieldName% and type** and %hint% as optional to generate message
+      //     'type1' : 'Invalid Entry for %fieldName%',
+      //     'type2' : 'Please enter valid input for %fieldName% ',
+      //     'type3' : 'Please enter valid input for %fieldName% with values %hint%',
+      //   },
+      // }
+      var validations = {
+        'numbersOnly':{
+          'regex':/[0-9]$/,
+          'errorMessage':"Please Enter numeric values only",
+          'errorClass':"invalid",
+          'successClass':"valid",
         },
-        'invalid' : {
-          // this will take as errorType ,%fieldName% and type** and %hint% as optional to generate message
-          'type1' : 'Invalid Entry for %fieldName%',
-          'type2' : 'Please enter valid input for %fieldName% ',
-          'type3' : 'Please enter valid input for %fieldName% with values %hint%',
+        'alphaNumeric':{
+          'regex':/^[a-zA-Z0-9_]*$/,
+          'errorMessage':"Please Enter alpha numeric values only",
+          'errorClass':'has-error',
+          'successClass':"valid",
         },
       }
       return{
-        getValidationMessage : function(errorType,type,fieldName,hint) {
-          if(!errorType || !fieldName || !type){
-            $rootScope.$emit(Events.validationFieldMissing,{type:Events.eventType.warn});
-            return;
-          }
-          else if (!validationMessages[errorType] || !validationMessages[errorType]['type'+type]) {
-            $rootScope.$emit(Events.validationFieldInvalid,{type:Events.eventType.warn});
-            return;
-          }
-          else if(validationMessages[errorType]['type'+type].indexOf('%hint%') != -1 && !hint){
-                $rootScope.$emit(Events.validationHintMissing,{type:Events.eventType.warn});
-                return;
-          }
-          // prepare the message
-          var message = validationMessages[errorType]['type'+type] ;
-          return message.replace("%fieldName%",fieldName).replace("%hint%",hint);
+        getValidation : function(validation){
+          return validations[validation];
         }
+        // getValidationMessage : function(errorType,type,fieldName,hint) {
+        //   if(!errorType || !fieldName || !type){
+        //     $rootScope.$emit(Events.validationFieldMissing,{type:Events.eventType.warn});
+        //     return;
+        //   }
+        //   else if (!validationMessages[errorType] || !validationMessages[errorType]['type'+type]) {
+        //     $rootScope.$emit(Events.validationFieldInvalid,{type:Events.eventType.warn});
+        //     return;
+        //   }
+        //   else if(validationMessages[errorType]['type'+type].indexOf('%hint%') != -1 && !hint){
+        //         $rootScope.$emit(Events.validationHintMissing,{type:Events.eventType.warn});
+        //         return;
+        //   }
+        //   // prepare the message
+        //   var message = validationMessages[errorType]['type'+type] ;
+        //   return message.replace("%fieldName%",fieldName).replace("%hint%",hint);
+        // }
       }
     })
 ;

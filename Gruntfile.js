@@ -50,8 +50,8 @@ module.exports = function(grunt) {
         },
         open: {
             dev: {
-                path: 'http://localhost:9009',
-                // app: 'Google Chrome'
+                path: 'http://localhost/external_projects/otdc/index.html',
+                appName:'Google Chrome',
             }
 
         },
@@ -282,7 +282,7 @@ module.exports = function(grunt) {
     // registerTask
     // grunt.registerTask("default", ['concat','watch']);
     grunt.registerTask("default", ['concat', 'connect:server', 'open:dev', 'watch']);
-    grunt.registerTask("con", ['concat', 'watch']);
+    grunt.registerTask("con", ['concat','open:dev', 'watch']);
     grunt.registerTask("buildCss", ['concat_css', 'cssmin']);
     grunt.registerTask("build-compress", ['copy', 'compress', 'clean']);
     grunt.registerTask("build", ['clean', 'copy']);

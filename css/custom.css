@@ -217,7 +217,7 @@ hr {
 }
 
 
-/*angular form validation*/
+/*angular form validation */
 
 input.ng-invalid {
     /*border-color: red;*/
@@ -477,3 +477,26 @@ input[type="date"] {
 .activeTheme{
   color:#31B680;
 }
+
+
+/*angular form validation starts*/
+
+.ng-invalid {
+    border-color: red;
+}
+
+.ng-valid {
+    border-color: lightgreen;
+}
+.ng-untouched {
+    border-color: #CCCCCC;
+}
+/*.ng-pristine    {  }
+.ng-dirty       {  }
+.ng-touched     {  }*/
+
+/* really specific css rules applied by angular */
+/*.ng-invalid-required        {  }
+.ng-invalid-minlength       {  }
+.ng-valid-max-length        {  }*/
+/*angular form validation ends*/

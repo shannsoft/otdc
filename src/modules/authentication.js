@@ -15,7 +15,7 @@ angular.module('Authentication', [])
           $scope.user.Password = UtilityService.decode($localStorage[Constants.getPassword()]);
           $scope.user.remember = $localStorage[Constants.getIsRemember()];
         }
-        $scope.validationService = validationService;
+        // $scope.validationService = validationService;
         $scope.isInit = true; // this flag used to load the form after controller init
       }
       $scope.login = function(loginfrm) {
@@ -66,7 +66,7 @@ angular.module('Authentication', [])
       }
       $scope.forgotPassword = function(email) {
           var obj = {
-            
+
             "email":email
           }
           ApiCall.forgotPassword(obj,function(response) {
