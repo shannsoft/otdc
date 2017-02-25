@@ -7,46 +7,48 @@
 						           Add Vendor
 				           	</h3>
                 </div>
-            <form role="userDetails" name="addVendorForm" ng-submit="addVendor(addVendorForm,$scope.vendor)">
+            <form role="addVendorForm" name="addVendorForm" ng-submit="addVendor(addVendorForm,$scope.vendor)">
                    <fieldset class="form-group" ng-class="{'has-error':addVendorForm.vendorName.$touched && addVendorForm.vendorName.$invalid}">
                             <label class="control-label" for="formGroupExampleInput2">Vendor Name</label>
-                            <input type="text" required name="vendorName" ng-model="$scope.vendor.vendorName" class="form-control formInput" id="formGroupExampleInput2" placeholder="Placeholder text">
-                              <span class="has-error formInput" ng-if="addVendorForm.vendorName.$touched && addVendorForm.vendorName.$invalid">vendorName is invalid</span>
+                            <input type="text" required name="vendorName" ng-model="$scope.vendor.vendorName" required class="form-control formInput" id="formGroupExampleInput2" placeholder="Placeholder text">
+                            <span class="has-error formInput" ng-if="addVendorForm.vendorName.$touched && addVendorForm.vendorName.$error.required">vendor name required</span>
                    </fieldset>
                     <fieldset class="form-group" ng-class="{'has-error':addVendorForm.emailId.$touched && addVendorForm.emailId.$invalid}">
                               <label class="control-label" for="formGroupExampleInput2">Email</label>
-                              <input type="text" required name="emailId" ng-model="$scope.vendor.emailId" class="form-control formInput" id="formGroupExampleInput2" placeholder="Placeholder text">
-                                <span class="has-error formInput" ng-if="addVendorForm.emailId.$touched && addVendorForm.emailId.$invalid">emailId is invalid</span>
+                              <input type="text" required name="emailId" ng-pattern="/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/" required ng-model="$scope.vendor.emailId" class="form-control formInput" id="formGroupExampleInput2" placeholder="Placeholder text">
+                              <span class="has-error formInput" ng-if="addVendorForm.emailId.$touched && addVendorForm.emailId.$error.required">Email required</span>
+                              <span class="has-error formInput" ng-if="!addVendorForm.emailId.$error.required && addVendorForm.emailId.$touched && addVendorForm.emailId.$invalid">Email is invalid , please enter alphabet only </span>
                      </fieldset>
                     <fieldset class="form-group" ng-class="{'has-error':addVendorForm.phoneNo.$touched && addVendorForm.phoneNo.$invalid}">
                               <label class="control-label" for="formGroupExampleInput2">Mobile</label>
-                              <input type="text" required name="phoneNo" ng-model="$scope.vendor.phoneNo" numbers-only class="form-control formInput" id="formGroupExampleInput2" placeholder="Placeholder text">
-                                <span class="has-error formInput" ng-if="addVendorForm.phoneNo.$touched && addVendorForm.phoneNo.$invalid">phoneNo is invalid</span>
+                              <input type="text" required ng-minlength="10" ng-maxlength="10" maxlength="10" name="phoneNo" ng-model="$scope.vendor.phoneNo" numbers-only class="form-control formInput" id="formGroupExampleInput2" placeholder="Placeholder text">
+                              <span class="has-error formInput" ng-if="addVendorForm.phoneNo.$touched && addVendorForm.phoneNo.$error.required">Mobile No. required</span>
+                              <span class="has-error formInput" ng-if="addVendorForm.phoneNo.$touched && addVendorForm.phoneNo.$error.minlength">Mobile No. should be 10 digits</span>
                      </fieldset>
                     <fieldset class="form-group" ng-class="{'has-error':addVendorForm.address.$touched && addVendorForm.address.$invalid}">
                            <label class="control-label" for="formGroupExampleInput3">Address</label>
                            <textarea rows="3" required name="address" ng-model="$scope.vendor.address" class="form-control formInput" id="formGroupExampleInput7"placeholder="Placeholder text"></textarea>
-                             <span class="has-error formInput" ng-if="addVendorForm.address.$touched && addVendorForm.address.$invalid">address is invalid</span>
+                          <span class="has-error formInput" ng-if="addVendorForm.address.$touched && addVendorForm.address.$error.required">Address required</span>
                    </fieldset>
                   <fieldset class="form-group" ng-class="{'has-error':addVendorForm.bankName.$touched && addVendorForm.bankName.$invalid}">
                          <label class="control-label" for="formGroupExampleInput3">Bank Name</label>
                          <input type="text" required name="bankName" ng-model="$scope.vendor.bankName" class="form-control formInput" id="formGroupExampleInput2" placeholder="Placeholder text">
-                           <span class="has-error formInput" ng-if="addVendorForm.bankName.$touched && addVendorForm.bankName.$invalid">bankName is invalid</span>
+                        <span class="has-error formInput" ng-if="addVendorForm.bankName.$touched && addVendorForm.bankName.$error.required">Bank Name required</span>
                  </fieldset>
                  <fieldset class="form-group" ng-class="{'has-error':addVendorForm.bankBranch.$touched && addVendorForm.bankBranch.$invalid}">
                         <label class="control-label" for="formGroupExampleInput3">Branch Name</label>
                         <input type="text" required name="bankBranch" ng-model="$scope.vendor.bankBranch" class="form-control formInput" id="formGroupExampleInput2" placeholder="Placeholder text">
-                          <span class="has-error formInput" ng-if="addVendorForm.bankBranch.$touched && addVendorForm.bankBranch.$invalid">bankBranch is invalid</span>
+                        <span class="has-error formInput" ng-if="addVendorForm.bankBranch.$touched && addVendorForm.bankBranch.$error.required">Bank Branch required</span>
                 </fieldset>
                 <fieldset class="form-group" ng-class="{'has-error':addVendorForm.accountNo.$touched && addVendorForm.accountNo.$invalid}">
                        <label class="control-label" for="formGroupExampleInput3">Account No</label>
                        <input type="text" required name="accountNo" ng-model="$scope.vendor.accountNo" class="form-control formInput" id="formGroupExampleInput2" placeholder="Placeholder text">
-                         <span class="has-error formInput" ng-if="addVendorForm.accountNo.$touched && addVendorForm.accountNo.$invalid">accountNo is invalid</span>
+                        <span class="has-error formInput" ng-if="addVendorForm.accountNo.$touched && addVendorForm.accountNo.$error.required">Account No required</span>
                </fieldset>
                <fieldset class="form-group" ng-class="{'has-error':addVendorForm.ifscCode.$touched && addVendorForm.ifscCode.$invalid}">
                       <label class="control-label" for="formGroupExampleInput3">IFSC Code</label>
                       <input type="text" required name="ifscCode" ng-model="$scope.vendor.ifscCode" class="form-control formInput" id="formGroupExampleInput2" placeholder="Placeholder text">
-                        <span class="has-error formInput" ng-if="addVendorForm.ifscCode.$touched && addVendorForm.ifscCode.$invalid">ifscCode is invalid</span>
+                      <span class="has-error formInput" ng-if="addVendorForm.ifscCode.$touched && addVendorForm.ifscCode.$error.required">Ifsc Code required</span>
               </fieldset>
               <fieldset class="form-group">
                     <input type="submit" class="btn btn-success" ng-disabled="addVendorForm.$invalid"/>

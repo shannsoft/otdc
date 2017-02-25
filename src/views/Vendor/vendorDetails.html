@@ -7,33 +7,40 @@
                         Vendor Details
                     </h3>
                 </div>
-                <form name="vendorDetails">
-                    <fieldset class="form-group">
+                <form name="vendorDetailsForm">
+                    <fieldset class="form-group" ng-class="{'has-error':vendorDetailsForm.vendorName.$touched && vendorDetailsForm.vendorName.$invalid}">
                         <label class="control-label" for="formGroupExampleInput2">Vendor Name</label>
-                        <input type="text" class="form-control formInput" ng-readonly="!isEdit" ng-model="vendor.vendorName" id="formGroupExampleInput2" placeholder="Placeholder text">
+                        <input type="text" name="vendorName" required class="form-control formInput" ng-readonly="!isEdit" ng-model="vendor.vendorName" id="formGroupExampleInput2" placeholder="Placeholder text">
+                        <span class="has-error formInput" ng-if="vendorDetailsForm.vendorName.$touched && vendorDetailsForm.vendorName.$error.required">vendor name required</span>
                     </fieldset>
-                    <fieldset class="form-group">
+                    <fieldset class="form-group" ng-class="{'has-error':vendorDetailsForm.emailId.$touched && vendorDetailsForm.emailId.$invalid}">
                         <label class="control-label" for="formGroupExampleInput2">Email</label>
-                        <input type="text" class="form-control formInput" ng-readonly="!isEdit" ng-model="vendor.emailId" id="formGroupExampleInput2" placeholder="Placeholder text">
+                        <input type="text" required ng-pattern="/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/" name="emailId" class="form-control formInput" ng-readonly="!isEdit" ng-model="vendor.emailId" id="formGroupExampleInput2" placeholder="Placeholder text">
+                        <span class="has-error formInput" ng-if="vendorDetailsForm.emailId.$touched && vendorDetailsForm.emailId.$error.required">Email required</span>
+                        <span class="has-error formInput" ng-if="!vendorDetailsForm.emailId.$error.required && vendorDetailsForm.emailId.$touched && vendorDetailsForm.emailId.$invalid">Email is invalid  </span>
                     </fieldset>
-                    <fieldset class="form-group">
+                    <fieldset class="form-group" ng-class="{'has-error':vendorDetailsForm.address.$touched && vendorDetailsForm.address.$invalid}">
                         <label class="control-label" for="formGroupExampleInput3">Address</label>
-                        <textarea rows="3" class="form-control formInput" ng-readonly="!isEdit" ng-model="vendor.address" id="formGroupExampleInput7" placeholder="Placeholder text"></textarea>
+                        <textarea rows="3" name="address" required class="form-control formInput" ng-readonly="!isEdit" ng-model="vendor.address" id="formGroupExampleInput7" placeholder="Placeholder text"></textarea>
+                        <span class="has-error formInput" ng-if="vendorDetailsForm.address.$touched && vendorDetailsForm.address.$error.required">Address required</span>
                     </fieldset>
-                    <fieldset class="form-group">
+                    <fieldset class="form-group" ng-class="{'has-error':vendorDetailsForm.bankName.$touched && vendorDetailsForm.bankName.$invalid}">
                         <label class="control-label" for="formGroupExampleInput3">Bank Name</label>
-                        <input type="text" class="form-control formInput" ng-readonly="!isEdit" ng-model="vendor.bankName" id="formGroupExampleInput2" placeholder="Placeholder text">
+                        <input type="text" required name="bankName" class="form-control formInput" ng-readonly="!isEdit" ng-model="vendor.bankName" id="formGroupExampleInput2" placeholder="Placeholder text">
+                        <span class="has-error formInput" ng-if="vendorDetailsForm.bankName.$touched && vendorDetailsForm.bankName.$error.required">Bank Name required</span>
                     </fieldset>
-                    <fieldset class="form-group">
+                    <fieldset class="form-group" ng-class="{'has-error':vendorDetailsForm.accountNo.$touched && vendorDetailsForm.accountNo.$invalid}">
                         <label class="control-label" for="formGroupExampleInput3">Account No</label>
-                        <input type="text" class="form-control formInput" ng-readonly="!isEdit" ng-model="vendor.accountNo" id="formGroupExampleInput2" placeholder="Placeholder text">
+                        <input type="text" required name="accountNo" class="form-control formInput" ng-readonly="!isEdit" ng-model="vendor.accountNo" id="formGroupExampleInput2" placeholder="Placeholder text">
+                        <span class="has-error formInput" ng-if="vendorDetailsForm.accountNo.$touched && vendorDetailsForm.accountNo.$error.required">Bank Account required</span>
                     </fieldset>
-                    <fieldset class="form-group">
+                    <fieldset class="form-group"  ng-class="{'has-error':vendorDetailsForm.ifscCode.$touched && vendorDetailsForm.ifscCode.$invalid}">
                         <label class="control-label" for="formGroupExampleInput3">IFSC Code</label>
-                        <input type="text" class="form-control formInput" ng-readonly="!isEdit" ng-model="vendor.ifscCode" id="formGroupExampleInput2" placeholder="Placeholder text">
+                        <input type="text" required name="ifscCode" class="form-control formInput" ng-readonly="!isEdit" ng-model="vendor.ifscCode" id="formGroupExampleInput2" placeholder="Placeholder text">
+                        <span class="has-error formInput" ng-if="vendorDetailsForm.ifscCode.$touched && vendorDetailsForm.ifscCode.$error.required">Ifsc Code required</span>
                     </fieldset>
                     <fieldset class="form-group btn-grp">
-                        <input type="submit" ng-if="isEdit" class="btn btn-success" ng-click="updateVendor(vendorDetails,vendor)"/>
+                        <input type="submit" ng-if="isEdit" class="btn btn-success" ng-click="updateVendor(vendorDetailsForm,vendor)"/>
                         <button type="button" ng-if="!isEdit" ui-sref="vendorDetails({action:'edit',vendor:vendor})" class="btn btn-primary">Edit</button>
                         <button type="button" ui-sref="VendorList" class="btn btn-secondary">Back</button>
                     </fieldset>
