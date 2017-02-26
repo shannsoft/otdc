@@ -161,6 +161,12 @@ angular.module('WebService', [])
                 "Content-Type": "application/json",
                  "isArray" : true
             },
+            ChangePassword: {
+                "url": "/api/ChangePassword",
+                "method": "POST",
+                "Content-Type": "application/json"
+
+            },
 
 
         }
@@ -206,6 +212,7 @@ angular.module('WebService', [])
             getAuthentication: ApiGenerator.getApi('getAuthentication'),
             postAuthentication: ApiGenerator.getApi('postAuthentication'),
             getServiceList: ApiGenerator.getApi('getServiceList'),
+            changePassword: ApiGenerator.getApi('ChangePassword'),
           });
 
     })

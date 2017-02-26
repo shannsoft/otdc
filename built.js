@@ -1,4 +1,4 @@
-/*! otdc - v1.0.0 - Sun Feb 26 2017 00:31:23 */
+/*! otdc - v1.0.0 - Sun Feb 26 2017 22:41:41 */
 var dependency = [];
 // lib  dependency
 var distModules = ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate', 'ngCookies', 'ngMessages','ngTable'];
@@ -389,7 +389,7 @@ app.factory('Util', ['$rootScope', '$timeout', function($rootScope, $timeout) {
     return Util;
 }]);
 ;app.constant("Constants", {
-        "debug":false,
+        "debug":true,
         "storagePrefix": "goAppOTDC$",
         "getTokenKey" : function() {return this.storagePrefix + "token";},
         "getLoggedIn" : function() {return this.storagePrefix + "loggedin";},
@@ -880,7 +880,8 @@ app.controller('deleteMilestoneCtrl', function ($scope, $state,$uibModalInstance
     $scope.updateTender = function(tender) {
       tender.actType = "U";
       tender.tenderType = tender.tenderType.typeName;
-      tender.fileData = $scope.FileData;
+      // tender.fileData = $scope.FileData;
+      delete tender['boqData']; // remove unrequired data in service call
       console.log(JSON.stringify(tender));
       $rootScope.showPreloader = true;
       ApiCall.postTendor(tender,function(res) {
@@ -1310,7 +1311,7 @@ app.controller('boqHistoryController', function ($scope,$uibModalInstance,tender
           $scope.isView = $stateParams.action == 'edit' ? false : true;
           var obj = {
             userId:$stateParams.userId,
-            TokenId: $localStorage[Constants.getTokenKey()]
+            // TokenId: $localStorage[Constants.getTokenKey()]
           }
           ApiCall.getUser(obj,function(response) {
             $scope.user = response.Data[0];
@@ -1339,18 +1340,30 @@ app.controller('boqHistoryController', function ($scope,$uibModalInstance,tender
     $scope.changePassword = function() {
         var obj = {
             UserId: $scope.user.userId,
-            TokenId: $localStorage[Constants.getTokenKey()],
-            OldPassword: $scope.user.oldPassword,
-            NewPassword: $scope.user.newPassword,
+            oldPwd: $scope.user.oldPwd,
+            newPwd: $scope.user.newPwd,
         }
         UtilityService.showLoader();
-        ApiCall.getUser(obj, function(response) {
+        ApiCall.changePassword(obj, function(response) {
                 UtilityService.hideLoader();
                 Util.alertMessage("success", "Password Changed");
             },
             function(error) {
                 UtilityService.hideLoader();
                 Util.alertMessage("danger", "Password Change Error");
+            }
+        )
+    }
+    $scope.updateDetails = function(form,user) {
+      console.log(form,user);
+        UtilityService.showLoader();
+        ApiCall.postUser(user, function(response) {
+                UtilityService.hideLoader();
+                Util.alertMessage("success", response.Message);
+            },
+            function(error) {
+                UtilityService.hideLoader();
+                Util.alertMessage("danger", error.Message);
             }
         )
     }
@@ -1417,7 +1430,7 @@ app.controller('boqHistoryController', function ($scope,$uibModalInstance,tender
         }
       }
       var obj = {
-        TokenId:$localStorage[Constants.getTokenKey()],
+        // TokenId:$localStorage[Constants.getTokenKey()],
         UserId:$stateParams.userId
       }
       $rootScope.showPreloader = true;
@@ -1457,7 +1470,7 @@ app.controller('boqHistoryController', function ($scope,$uibModalInstance,tender
     $scope.init = function() {
       $scope.userList = [];
       var obj = {
-        TokenId:$localStorage[Constants.getTokenKey()],
+        //TokenId:$localStorage[Constants.getTokenKey()],
         UserId:""
       }
       $rootScope.showPreloader = true;
@@ -1658,7 +1671,7 @@ app.controller('deleteModalCtrl', function ($scope, $uibModalInstance,user,Util,
   $scope.ok = function () {
     console.log("vendor to be deleted",$scope.selectedVendor);
     var vendorData = {};
-    vendorData.tokenId = $localStorage[Constants.getTokenKey()];
+    //vendorData.tokenId = $localStorage[Constants.getTokenKey()];
     vendorData.vendorId = $scope.selectedVendor.vendorId;
     $rootScope.showPreloader = true;
     ApiCall.deleteVendor(vendorData,function(res) {
@@ -2358,6 +2371,12 @@ app.filter('webServiceName', function () {
                 "Content-Type": "application/json",
                  "isArray" : true
             },
+            ChangePassword: {
+                "url": "/api/ChangePassword",
+                "method": "POST",
+                "Content-Type": "application/json"
+
+            },
 
 
         }
@@ -2403,6 +2422,7 @@ app.filter('webServiceName', function () {
             getAuthentication: ApiGenerator.getApi('getAuthentication'),
             postAuthentication: ApiGenerator.getApi('postAuthentication'),
             getServiceList: ApiGenerator.getApi('getServiceList'),
+            changePassword: ApiGenerator.getApi('ChangePassword'),
           });
 
     })

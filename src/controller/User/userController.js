@@ -26,7 +26,7 @@ app.controller('UserController', function($scope, $rootScope, $state,$stateParam
           $scope.isView = $stateParams.action == 'edit' ? false : true;
           var obj = {
             userId:$stateParams.userId,
-            TokenId: $localStorage[Constants.getTokenKey()]
+            // TokenId: $localStorage[Constants.getTokenKey()]
           }
           ApiCall.getUser(obj,function(response) {
             $scope.user = response.Data[0];
@@ -55,18 +55,30 @@ app.controller('UserController', function($scope, $rootScope, $state,$stateParam
     $scope.changePassword = function() {
         var obj = {
             UserId: $scope.user.userId,
-            TokenId: $localStorage[Constants.getTokenKey()],
-            OldPassword: $scope.user.oldPassword,
-            NewPassword: $scope.user.newPassword,
+            oldPwd: $scope.user.oldPwd,
+            newPwd: $scope.user.newPwd,
         }
         UtilityService.showLoader();
-        ApiCall.getUser(obj, function(response) {
+        ApiCall.changePassword(obj, function(response) {
                 UtilityService.hideLoader();
                 Util.alertMessage("success", "Password Changed");
             },
             function(error) {
                 UtilityService.hideLoader();
                 Util.alertMessage("danger", "Password Change Error");
+            }
+        )
+    }
+    $scope.updateDetails = function(form,user) {
+      console.log(form,user);
+        UtilityService.showLoader();
+        ApiCall.postUser(user, function(response) {
+                UtilityService.hideLoader();
+                Util.alertMessage("success", response.Message);
+            },
+            function(error) {
+                UtilityService.hideLoader();
+                Util.alertMessage("danger", error.Message);
             }
         )
     }

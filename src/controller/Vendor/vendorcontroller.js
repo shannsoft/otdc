@@ -16,7 +16,7 @@ app.controller('VendorController',function($scope,$rootScope,$state,Constants,$u
   $scope.ok = function () {
     console.log("vendor to be deleted",$scope.selectedVendor);
     var vendorData = {};
-    vendorData.tokenId = $localStorage[Constants.getTokenKey()];
+    //vendorData.tokenId = $localStorage[Constants.getTokenKey()];
     vendorData.vendorId = $scope.selectedVendor.vendorId;
     $rootScope.showPreloader = true;
     ApiCall.deleteVendor(vendorData,function(res) {

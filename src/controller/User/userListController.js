@@ -3,7 +3,7 @@ app.controller('UserListController', function($scope, $rootScope, $state, NgTabl
     $scope.init = function() {
       $scope.userList = [];
       var obj = {
-        TokenId:$localStorage[Constants.getTokenKey()],
+        //TokenId:$localStorage[Constants.getTokenKey()],
         UserId:""
       }
       $rootScope.showPreloader = true;

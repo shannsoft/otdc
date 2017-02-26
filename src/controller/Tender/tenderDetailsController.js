@@ -59,7 +59,8 @@ app.controller('TenderDetailsController', function($scope, $rootScope, $state,$u
     $scope.updateTender = function(tender) {
       tender.actType = "U";
       tender.tenderType = tender.tenderType.typeName;
-      tender.fileData = $scope.FileData;
+      // tender.fileData = $scope.FileData;
+      delete tender['boqData']; // remove unrequired data in service call
       console.log(JSON.stringify(tender));
       $rootScope.showPreloader = true;
       ApiCall.postTendor(tender,function(res) {

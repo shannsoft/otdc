@@ -15,7 +15,7 @@ app.controller('UserDetailsController', function($scope, $rootScope, $state,$sta
         }
       }
       var obj = {
-        TokenId:$localStorage[Constants.getTokenKey()],
+        // TokenId:$localStorage[Constants.getTokenKey()],
         UserId:$stateParams.userId
       }
       $rootScope.showPreloader = true;

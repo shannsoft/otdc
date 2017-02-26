@@ -248,7 +248,7 @@
                     </fieldset>
                     <fieldset class="form-group" ng-if="tender.isFreeze == 'NO' && !isView" ng-class="{'has-error': (tenderDetails.work_Desc.$invalid && tenderDetails.work_Desc.$touched)}">
                         <label class="control-label" for="formGroupExampleInput7">Upload BOQ file</label>
-                        <input type="file" class="form-control formInput"   file-select="tender.boqFile"/>
+                        <input type="file" class="form-control formInput"   file-select="tender.fileData"/>
                     </fieldset>
                     <fieldset class="form-group">
                         <input type="submit" ng-if="!isView" class="btn btn-success" ng-click="updateTender(tender)"></input>
