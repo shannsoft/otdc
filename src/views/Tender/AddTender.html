@@ -78,8 +78,7 @@
                     <fieldset class="form-group" ng-class="{'has-error': (addTendorForm.formOfContract.$invalid && addTendorForm.formOfContract.$touched)}">
                         <label class="control-label" for="formGroupExampleInput4">Form Of Contact</label>
                         <select ng-model="tender.formOfContract" class="form-control formInput" name="formOfContract" required>
-                            <option>contact type 1</option>
-                            <option>contact type 2</option>
+                            <option>Percentage-Rate</option>
                         </select>
                         <span class="has-error formInput" ng-if="addTendorForm.formOfContract.$touched && addTendorForm.formOfContract.$invalid">Tender form Of Contract is invalid
                         </span>
@@ -121,7 +120,7 @@
                         </div>
                     </fieldset>
                     <fieldset class="form-group" ng-class="{'has-error': (addTendorForm.fee.$invalid && addTendorForm.fee.$touched)}">
-                        <label class="control-label" for="formGroupExampleInput4">Tender Fee</label>
+                        <label class="control-label" for="formGroupExampleInput4">Tender Fee (INR)</label>
                         <input type="text" numbers-only ng-model="tender.fee" name="fee" class="form-control formInput" id="formGroupExampleInput4" placeholder="Enter Tender Fee" required>
                         <span class="has-error formInput" ng-if="addTendorForm.fee.$touched && addTendorForm.fee.$invalid">Tender fee is invalid
                         </span>
@@ -135,7 +134,7 @@
 
                     </fieldset>
                     <fieldset class="form-group" ng-class="{'has-error': (addTendorForm.vat.$invalid && addTendorForm.vat.$touched)}">
-                        <label class="control-label" for="formGroupExampleInput4">VAT Charges</label>
+                        <label class="control-label" for="formGroupExampleInput4">VAT Charges(INR)</label>
                         <input type="text" numbers-only ng-model="tender.vat" name="vat" class="form-control formInput" id="formGroupExampleInput4" placeholder="Enter Vat Charges" required>
                         <span class="has-error formInput" ng-if="addTendorForm.vat.$touched && addTendorForm.vat.$invalid">Tender vat is invalid
                         </span>
@@ -160,8 +159,7 @@
                     <fieldset class="form-group" ng-class="{'has-error': (addTendorForm.emdFeeType.$invalid && addTendorForm.emdFeeType.$touched)}">
                         <label class="control-label" for="formGroupExampleInput7">EMD Fee Type</label>
                         <select class="form-control formInput" ng-model="tender.emdFeeType" name="emdFeeType" required>
-                            <option>fee type 1</option>
-                            <option>fee type 2</option>
+                            <option>percentage</option>
                         </select>
                         <span class="has-error formInput" ng-if="addTendorForm.emdFeeType.$touched && addTendorForm.emdFeeType.$invalid">
                             emdFeeType is invalid

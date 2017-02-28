@@ -1,4 +1,4 @@
-/*! otdc - v1.0.0 - Sun Feb 26 2017 22:41:41 */
+/*! otdc - v1.0.0 - Tue Feb 28 2017 05:21:19 */
 var dependency = [];
 // lib  dependency
 var distModules = ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate', 'ngCookies', 'ngMessages','ngTable'];
@@ -389,7 +389,7 @@ app.factory('Util', ['$rootScope', '$timeout', function($rootScope, $timeout) {
     return Util;
 }]);
 ;app.constant("Constants", {
-        "debug":true,
+        "debug":false,
         "storagePrefix": "goAppOTDC$",
         "getTokenKey" : function() {return this.storagePrefix + "token";},
         "getLoggedIn" : function() {return this.storagePrefix + "loggedin";},
@@ -1108,9 +1108,9 @@ app.controller('boqHistoryController', function ($scope,$uibModalInstance,tender
         if(i == 0 )
         continue; // continue for the index of the doc received
         // for test milestone calculate the due date
-        if(tenderMilestone[i].completionDate && tenderMilestone[i].completionDate!= '')
-          mEnd = moment(new Date(tenderMilestone[i].completionDate));
-        else
+        // if(tenderMilestone[i].completionDate && tenderMilestone[i].completionDate!= '')
+        //   mEnd = moment(new Date(tenderMilestone[i].completionDate));
+        // else
           mEnd = moment(new Date(tenderMilestone[i].endDate));
         var mToday = moment(new Date());
         var diff = mToday.diff(mEnd, 'days');
@@ -1120,6 +1120,7 @@ app.controller('boqHistoryController', function ($scope,$uibModalInstance,tender
         else {
           tenderMilestone[i].dueDayCount = 0;
         }
+        // tenderMilestone[i].dueDayCount = 0; // static value
       }
     }
     $scope.closeTicket = function(index) {
@@ -1201,9 +1202,9 @@ app.controller('boqHistoryController', function ($scope,$uibModalInstance,tender
         ApiCall.getAuthentication({
             designation: $scope.permission.selectedDesignation.designationId
         }, function(response) {
-            // Util.alertMessage(Events.eventType.success,response.Message);
+            Util.alertMessage(Events.eventType.success,response.Message);
             $rootScope.showLoader = false;
-            $scope.permission.webServices = response;
+            $scope.permission.webServices = response.Data;
         }, function(err) {
             $rootScope.showLoader = false;
             Util.alertMessage(Events.eventType.error, err.Message);
@@ -1283,7 +1284,7 @@ app.controller('boqHistoryController', function ($scope,$uibModalInstance,tender
          */
 
 })
-;app.controller('UserController', function($scope, $rootScope, $state,$stateParams, UserService,AppModel, UtilityService,Util,$localStorage, Constants,ApiCall,Events) {
+;app.controller('UserController', function($scope, $rootScope, $state,$stateParams, UserService,AppModel,$window, UtilityService,Util,$localStorage, Constants,ApiCall,Events) {
     // $scope.UserService = UserService;
     $rootScope.$on(Events.userLogged,function() {
       if(!$scope.user){
@@ -1357,9 +1358,11 @@ app.controller('boqHistoryController', function ($scope,$uibModalInstance,tender
     $scope.updateDetails = function(form,user) {
       console.log(form,user);
         UtilityService.showLoader();
+        user.actType="U";
         ApiCall.postUser(user, function(response) {
                 UtilityService.hideLoader();
                 Util.alertMessage("success", response.Message);
+                $window.location.reload();
             },
             function(error) {
                 UtilityService.hideLoader();
@@ -2358,7 +2361,7 @@ app.filter('webServiceName', function () {
                 "url": "/api/Authentication",
                 "method": "GET",
                 "Content-Type": "application/json",
-                "isArray" : true
+                // "isArray" : true
             },
             postAuthentication: {
                 "url": "/api/Authentication",

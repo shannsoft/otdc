@@ -1,4 +1,4 @@
-app.controller('UserController', function($scope, $rootScope, $state,$stateParams, UserService,AppModel, UtilityService,Util,$localStorage, Constants,ApiCall,Events) {
+app.controller('UserController', function($scope, $rootScope, $state,$stateParams, UserService,AppModel,$window, UtilityService,Util,$localStorage, Constants,ApiCall,Events) {
     // $scope.UserService = UserService;
     $rootScope.$on(Events.userLogged,function() {
       if(!$scope.user){
@@ -72,9 +72,11 @@ app.controller('UserController', function($scope, $rootScope, $state,$stateParam
     $scope.updateDetails = function(form,user) {
       console.log(form,user);
         UtilityService.showLoader();
+        user.actType="U";
         ApiCall.postUser(user, function(response) {
                 UtilityService.hideLoader();
                 Util.alertMessage("success", response.Message);
+                $window.location.reload();
             },
             function(error) {
                 UtilityService.hideLoader();

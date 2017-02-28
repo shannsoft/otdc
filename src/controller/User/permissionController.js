@@ -33,9 +33,9 @@ app.controller('PermissionController', function($scope, $rootScope, $state, $tim
         ApiCall.getAuthentication({
             designation: $scope.permission.selectedDesignation.designationId
         }, function(response) {
-            // Util.alertMessage(Events.eventType.success,response.Message);
+            Util.alertMessage(Events.eventType.success,response.Message);
             $rootScope.showLoader = false;
-            $scope.permission.webServices = response;
+            $scope.permission.webServices = response.Data;
         }, function(err) {
             $rootScope.showLoader = false;
             Util.alertMessage(Events.eventType.error, err.Message);

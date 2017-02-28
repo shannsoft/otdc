@@ -35,9 +35,9 @@ app.controller('TenderMilestoneController', function($scope, $rootScope, $state,
         if(i == 0 )
         continue; // continue for the index of the doc received
         // for test milestone calculate the due date
-        if(tenderMilestone[i].completionDate && tenderMilestone[i].completionDate!= '')
-          mEnd = moment(new Date(tenderMilestone[i].completionDate));
-        else
+        // if(tenderMilestone[i].completionDate && tenderMilestone[i].completionDate!= '')
+        //   mEnd = moment(new Date(tenderMilestone[i].completionDate));
+        // else
           mEnd = moment(new Date(tenderMilestone[i].endDate));
         var mToday = moment(new Date());
         var diff = mToday.diff(mEnd, 'days');
@@ -47,6 +47,7 @@ app.controller('TenderMilestoneController', function($scope, $rootScope, $state,
         else {
           tenderMilestone[i].dueDayCount = 0;
         }
+        // tenderMilestone[i].dueDayCount = 0; // static value
       }
     }
     $scope.closeTicket = function(index) {

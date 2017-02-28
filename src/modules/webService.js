@@ -148,7 +148,7 @@ angular.module('WebService', [])
                 "url": "/api/Authentication",
                 "method": "GET",
                 "Content-Type": "application/json",
-                "isArray" : true
+                // "isArray" : true
             },
             postAuthentication: {
                 "url": "/api/Authentication",
