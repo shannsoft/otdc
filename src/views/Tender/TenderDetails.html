@@ -28,14 +28,11 @@
                         <label class="control-label" for="formGroupExampleInput3">Tender Type</label>
                         <input type="text" ng-model="tender.tenderType" ng-if="isView" ng-readonly="isView" class="form-control formInput" name="tender_id" id="formGroupExampleInput3" placeholder="Enter Tender ID" />
                         <select ng-model="tender.tenderType" class="form-control formInput" name="Tender_Type" ng-if="!isView">
-                            <option>Option one</option>
-                            <option>Option two</option>
-                            <option>Option three</option>
-                            <option>Option four</option>
+                            <option>National Competative Bidding</option>
                         </select>
                         <!-- <span class="help-block" ng-show="tenderDetails.Tender_Type.$error.required && tenderDetails.Tender_Type.$touched">select one</span> -->
                     </fieldset>
-                    <fieldset class="form-group" ng-class="{'has-error': (tenderDetails.Tender_category.$invalid && tenderDetails.Tender_category$touched)}">
+                    <!-- <fieldset class="form-group" ng-class="{'has-error': (tenderDetails.Tender_category.$invalid && tenderDetails.Tender_category$touched)}">
                         <label class="control-label" for="formGroupExampleInput3">Tender Category</label>
                         <input type="text" ng-model="tender.category" ng-if="isView" ng-readonly="isView" class="form-control formInput" name="tender_id" id="formGroupExampleInput3" placeholder="Enter Tender ID" />
                         <select ng-model="tender.category" ng-if="!isView" class="form-control formInput" name="Tender_category">
@@ -44,8 +41,14 @@
                             <option>Option three</option>
                             <option>Option four</option>
                         </select>
-                        <!-- <span class="help-block" ng-show="tenderDetails.Tender_category.$error.required && tenderDetails.Tender_category.$touched">select one</span> -->
+                    </fieldset> -->
+                    <fieldset class="form-group" ng-class="{'has-error': (tenderDetails.category.$invalid && tenderDetails.category.$touched)}">
+                        <label class="control-label" for="formGroupExampleInput3">Tender Category</label>
+                        <input type="text" ng-model="tender.category" ng-readonly="isView" class="form-control formInput" name="category" id="formGroupExampleInput3" placeholder="Enter Tender category" required>
+                        <span class="has-error formInput" ng-if="tenderDetails.category.$touched && tenderDetails.category.$invalid">Tender category is invalid
+                        </span>
                     </fieldset>
+
                     <!-- <fieldset class="form-group" ng-class="{'has-error': (tenderDetails.Technical_evaluation.$invalid && tenderDetails.Technical_evaluation.$touched)}">
                         <label class="control-label" for="formGroupExampleInput4">General Technical Evaluation Allowed</label>
                           <input type="text" ng-model="tender.genTechEvlnAllow" ng-if="isView" ng-readonly="isView" class="form-control formInput" name="tender_id" id="formGroupExampleInput3" placeholder="Enter Tender ID" />
@@ -188,8 +191,7 @@
                         <input type="text" ng-model="tender.emdFeeType" ng-if="isView" ng-readonly="isView" class="form-control formInput" name="tender_id" id="formGroupExampleInput3" placeholder="Enter Tender ID" />
 
                         <select class="form-control formInput" ng-model="tender.emdFeeType" ng-if="!isView"  name="emd_fee_type">
-                            <option>Option one</option>
-                            <option>Option two</option>
+                            <option>percentage</option>
                         </select>
                         <!-- <span class="help-block" ng-show="tenderDetails.emd_fee_type.$error.required && tenderDetails.emd_fee_type.$touched">select one</span> -->
                     </fieldset>

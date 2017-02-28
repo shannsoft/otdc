@@ -4,6 +4,11 @@ $scope.addTendorInit = function() {
   $scope.tender = {};
   $scope.tender.FileData = {};
   $scope.fileData = {};
+  $scope.tender.genTechEvlnAllow = "Yes";
+  $scope.tender.isMultyCurrency = "Yes";
+  $scope.tender.itemTechEvlnAllow = "Yes";
+  $scope.tender.isMultyCurrencyBOQ = "Yes";
+  $scope.tender.emdExempAllow = "Yes";
   if(!AppModel.getSetting()) {
     $scope.timeout = $timeout(function() {
       $scope.addTendorInit();
