@@ -69,11 +69,30 @@ app.controller('ProjectMilestoneController', function($scope, $rootScope,$window
      case "review":
       $state.go("projectMilestoneReview",{tender:$scope.projectMilestone.selectedTender,tenderId:$scope.projectMilestone.selectedTender.tenderId,milestoneId:milestone.code})
        break;
+     case "history":
+       $scope.showReviewHistory($scope.projectMilestone.selectedTender,milestone);
+       break;
      default:
 
    }
  }
-
+ // used to show the review history
+ $scope.showReviewHistory = function(tender,milestone){
+   $uibModal.open({
+       animation: true,
+       size: 'lg',
+       controller: "reviewHistoryController",
+       templateUrl:"reviewHistoryModal.html",
+       resolve:{
+         tender :function() {
+           return tender
+         },
+         milestone :function() {
+           return milestone
+         }
+       }
+   });
+ }
  $scope.openMilestoneDeleteModal = function(milestone) {
    var modalInstance = $uibModal.open({
      animation: true,
@@ -224,6 +243,41 @@ app.controller('deleteMilestoneCtrl', function ($scope, $state,$uibModalInstance
 
   };
 
+  $scope.cancel = function () {
+    $uibModalInstance.dismiss('cancel');
+  };
+});
+
+/**
+ * modal controller for the review history
+ */
+app.controller('reviewHistoryController', function ($scope, $state,$uibModalInstance,tender,milestone,Events,ApiCall,Util,NgTableParams) {
+  // $scope.user = user;
+  // added static value
+  $scope.data = [
+    {
+      reviewFile : "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRosdXEz5gxha3Pn7sR8ELCAg87XUSV41UXRiZqEqnAOzPBxBX_-w",
+      status:"pending",
+      comment:"This is a test comment"
+    },
+    {
+      reviewFile : "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRosdXEz5gxha3Pn7sR8ELCAg87XUSV41UXRiZqEqnAOzPBxBX_-w",
+      status:"pending",
+      comment:"This is a test comment"
+    },
+    {
+      reviewFile : "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRosdXEz5gxha3Pn7sR8ELCAg87XUSV41UXRiZqEqnAOzPBxBX_-w",
+      status:"pending",
+      comment:"This is a test comment"
+    }
+  ]
+  $scope.tableParams = new NgTableParams();
+  $scope.tableParams.settings({
+    dataset: $scope.data
+  });
+  $scope.ok = function () {
+    $uibModalInstance.close("ok");
+  };
   $scope.cancel = function () {
     $uibModalInstance.dismiss('cancel');
   };
