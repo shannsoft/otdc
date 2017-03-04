@@ -66,6 +66,9 @@ app.controller('ProjectMilestoneController', function($scope, $rootScope,$window
      case "delete":
      $scope.openMilestoneDeleteModal(milestone);
        break;
+     case "review":
+      $state.go("projectMilestoneReview",{tender:$scope.projectMilestone.selectedTender,tenderId:$scope.projectMilestone.selectedTender.tenderId,milestoneId:milestone.code})
+       break;
      default:
 
    }
@@ -143,9 +146,58 @@ $scope.submitProjectMilestone = function(form){
 
 });
 
+
+/**
+ * ProjectMilestoneReviewController starts
+ */
+ app.controller('ProjectMilestoneReviewController', function ($rootScope,$scope, $state,$stateParams,ApiCall,Util,Events) {
+   $scope.projectMilestoneReviewInit = function() {
+     $scope.projectMilestoneReview = {};
+     $scope.projectMilestoneReview.toggleTender = false;
+     $scope.projectMilestoneReview.status = "delayed";
+     if(!$stateParams.tenderId)
+      {
+        Util.alertMessage(Events.eventType.warning,Events.pleaseSelectTender);
+        $state.go("projectMilestone");
+        return;
+      }
+     else if(!$stateParams.milestoneId)
+      {
+        Util.alertMessage(Events.eventType.warning,Events.pleaseSelectMilestone);
+        $stateParams.tenderId ? $state.go("projectMilestone",{tenderId:$stateParams.tenderId}) : $state.go("projectMilestone");
+        return;
+      }
+      if($stateParams.tender)
+        $scope.projectMilestoneReview.selectedTender = $stateParams.tender;
+   }
+   $scope.toggleTenderDetails = function() {
+     $scope.projectMilestoneReview.toggleTender = !$scope.projectMilestoneReview.toggleTender;
+     if($scope.projectMilestoneReview.toggleTender && !$scope.projectMilestoneReview.selectedTender) {
+       // fetche the tender details
+       $rootScope.showPreloader = true;
+       ApiCall.getTendor({tenderId:$stateParams.tenderId},function(res) {
+         $rootScope.showPreloader = false;
+         $scope.projectMilestoneReview.selectedTender = res.Data;
+       },function(err) {
+         Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
+       })
+     }
+   }
+   $scope.saveReview = function(form) {
+     console.log($scope.projectMilestoneReview);
+     console.log(form);
+   }
+ });
+
+/**
+ * ProjectMilestoneReviewController starts
+ */
+
+
+
 /**
  * modal controller for the delete milestone
- */1
+ */
 app.controller('deleteMilestoneCtrl', function ($scope, $state,$uibModalInstance,milestone,Events,ApiCall,Util) {
   // $scope.user = user;
   $scope.ok = function () {

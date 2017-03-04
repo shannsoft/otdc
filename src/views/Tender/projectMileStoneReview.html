@@ -1,0 +1,72 @@
+<article class="content forms-page" ng-init="projectMilestoneReviewInit()">
+    <div class="row">
+        <div class="col-md-12">
+          <div class="card card-block sameheight-item">
+              <div class="title-block" ng-click="toggleTenderDetails()">
+                  <h3 class="title">
+                      {{projectMilestoneReview.toggleTender ? "Hide" : "Show"}} Tender details
+                  </h3>
+              </div>
+              <div uib-collapse="!projectMilestoneReview.toggleTender">
+                <tender-details >
+                  <fieldset class="form-group">
+                    <label class="control-label" for="formGroupExampleInput">Tender Id</label>
+                    <input type="text" ng-model="projectMilestoneReview.selectedTender.tndId" ng-readonly="true" class="form-control formInput" id="formGroupExampleInput">
+                  </fieldset>
+                  <fieldset class="form-group">
+                    <label class="control-label" for="formGroupExampleInput">Tender category</label>
+                    <input type="text" ng-model="projectMilestoneReview.selectedTender.category" ng-readonly="true" class="form-control formInput" id="formGroupExampleInput">
+                  </fieldset>
+                  <fieldset class="form-group">
+                    <label class="control-label" for="formGroupExampleInput">Tender tenderType</label>
+                    <input type="text" ng-model="projectMilestoneReview.selectedTender.tenderType" ng-readonly="true" class="form-control formInput" id="formGroupExampleInput">
+                  </fieldset>
+                  <fieldset class="form-group">
+                    <label class="control-label" for="formGroupExampleInput">Tender workDescription</label>
+                    <input type="text" ng-model="projectMilestoneReview.selectedTender.workDescription" ng-readonly="true" class="form-control formInput" id="formGroupExampleInput">
+                  </fieldset>
+
+                </tender-details>
+
+              </div>
+          </div>
+
+            <div class="card card-block sameheight-item">
+                <div class="title-block">
+                    <h3 class="title">
+                        Project Mile Stone review
+                    </h3>
+                </div>
+
+                <form name="projectMilestoneReviewForm" role="projectMilestoneReviewForm" ng-submit="saveReview(projectMilestoneReviewForm)">
+                    <milestone-review>
+                      <fieldset class="form-group" ng-class="{'has-error': (projectMilestoneReviewForm.reviewFile.$invalid && projectMilestoneReviewForm.reviewFile.$touched)}">
+                          <label class="control-label" for="formGroupExampleInput7">Upload Review File</label>
+                          <input type="file" class="form-control formInput" file-select="projectMilestoneReview.reviewFile" name="reviewFile" required/>
+                          <span class="has-error formInput" ng-show="projectMilestoneReviewForm.reviewFile.$error.required && projectMilestoneReviewForm.reviewFile.$touched">Please upload review file</span>
+                      </fieldset>
+                      <fieldset class="form-group" ng-class="{'has-error': (projectMilestoneReviewForm.status.$invalid && projectMilestoneReviewForm.status.$touched)}">
+                          <label class="control-label" for="formGroupExampleInput3">Select Status</label>
+                          <select ng-model="projectMilestoneReview.status" class="form-control formInput" name="status">
+                            <option value="delayed">Delayed</option>
+                            <option value="inTime">In Time</option>
+                            <option value="completed">Completed</option>
+                          </select>
+                      </fieldset>
+                      <fieldset class="form-group" ng-class="{'has-error': (projectMilestoneReviewForm.comment.$invalid && projectMilestoneReviewForm.comment.$touched)}">
+                          <label class="control-label" for="formGroupExampleInput7">Comment</label>
+                          <input type="text" class="form-control formInput" name="comment" ng-model="projectMilestoneReview.comment" required/>
+                          <span class="has-error formInput" ng-show="projectMilestoneReviewForm.comment.$error.required && projectMilestoneReviewForm.comment.$touched">Please add Comment</span>
+                      </fieldset>
+
+                      <fieldset class="form-group">
+                          <input type="submit" class="btn btn-success" ng-disabled="projectMilestoneReviewForm.$invalid"></input>
+                          <button class="btn btn-secondary" history>Cancel</button>
+                      </fieldset>
+                    </milestone-review>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</article>

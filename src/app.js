@@ -320,6 +320,15 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
                 loggedout: checkLoggedout
             },
         })
+        .state('projectMilestoneReview', {
+            templateUrl: 'src/views/Tender/projectMileStoneReview.html',
+            url: '/projectMilestoneReview/:tenderId/:milestoneId',
+            controller: "ProjectMilestoneReviewController",
+            params: { tender:null,tenderId:null,milestoneId:null},
+            resolve: {
+                loggedout: checkLoggedout
+            },
+        })
         .state('projectMilestoneDetails', {
             templateUrl: 'src/views/Tender/projectMilestoneDetails.html',
             url: '/projectMilestoneDetails/:tenderId',
