@@ -11,7 +11,10 @@ app.filter('getShortName', function () {
 app.filter('filterDate', function () {
     return function (value) {
       if(value){
-        return value.split(" ")[0];
+        if(value.indexOf("T"))
+            return value.split("T")[0];
+        else if(value.indexOf(" "))
+          return value.split(" ")[0];
       }
     };
 });

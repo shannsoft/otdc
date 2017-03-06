@@ -12,10 +12,7 @@
                         <label class="control-label" for="formGroupExampleInput3">Milestone Name</label>
                         <input type="text"  name="name" ng-readonly="!isEdit" ng-model="projectMilestoneDetails.name" class="form-control formInput" id="formGroupExampleInput" >
                     </fieldset>
-                    <fieldset class="form-group">
-                        <label class="control-label" for="formGroupExampleInput3">Project estimation</label>
-                        <input type="text"  name="estimation" ng-readonly="!isEdit" ng-model="projectMilestoneDetails.estimation" class="form-control formInput" id="formGroupExampleInput" >
-                    </fieldset>
+
                     <fieldset class="form-group">
                         <label class="control-label" for="formGroupExampleInput3">Start date</label>
                         <date-viewer ng-model="projectMilestoneDetails.startDate" disable="!isEdit"  class-name="'formInput-date'"></date-viewer>
@@ -25,6 +22,10 @@
                         <date-viewer ng-model="projectMilestoneDetails.endDate" disable="!isEdit" class-name="'formInput-date'"></date-viewer>
                     </fieldset>
                     <fieldset class="form-group">
+                        <label class="control-label" for="formGroupExampleInput3">Financial Milestone</label>
+                        <input type="text"  name="estimation" ng-readonly="!isEdit" ng-model="projectMilestoneDetails.estimation" class="form-control formInput" id="formGroupExampleInput" >
+                    </fieldset>
+                    <!-- <fieldset class="form-group">
                         <label class="control-label" for="formGroupExampleInput3">Finish date</label>
                         <date-viewer ng-model="projectMilestoneDetails.finishDate" disable="!isEdit" class-name="'formInput-date'"></date-viewer>
                     </fieldset>
@@ -43,7 +44,7 @@
                     <fieldset class="form-group">
                         <label class="control-label" for="formGroupExampleInput3">Amount In Rs</label>
                         <input type="text"  name="milestoneName" ng-readonly="!isEdit" ng-model="projectMilestoneDetails.amountInRs" class="form-control formInput" id="formGroupExampleInput">
-                    </fieldset>
+                    </fieldset> -->
                     <fieldset class="form-group">
                         <label class="control-label" for="formGroupExampleInput3">Comment</label>
                         <input type="text"  name="milestoneName" ng-readonly="!isEdit" ng-model="projectMilestoneDetails.comment" class="form-control formInput" id="formGroupExampleInput">

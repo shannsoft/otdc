@@ -165,7 +165,16 @@ angular.module('WebService', [])
                 "url": "/api/ChangePassword",
                 "method": "POST",
                 "Content-Type": "application/json"
-
+            },
+            postProjectMileStoneReview: {
+                "url": "/api/ProjectMileStoneReview",
+                "method": "POST",
+                "Content-Type": "application/json"
+            },
+            getProjectMileStoneReview: {
+                "url": "/api/ProjectMileStoneReview",
+                "method": "GET",
+                "Content-Type": "application/json"
             },
 
 
@@ -213,6 +222,8 @@ angular.module('WebService', [])
             postAuthentication: ApiGenerator.getApi('postAuthentication'),
             getServiceList: ApiGenerator.getApi('getServiceList'),
             changePassword: ApiGenerator.getApi('ChangePassword'),
+            postProjectMileStoneReview: ApiGenerator.getApi('postProjectMileStoneReview'),
+            getProjectMileStoneReview: ApiGenerator.getApi('getProjectMileStoneReview'),
           });
 
     })

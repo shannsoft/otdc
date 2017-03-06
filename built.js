@@ -1,4 +1,4 @@
-/*! otdc - v1.0.0 - Sun Mar 05 2017 02:09:14 */
+/*! otdc - v1.0.0 - Mon Mar 06 2017 23:49:05 */
 var dependency = [];
 // lib  dependency
 var distModules = ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate', 'ngCookies', 'ngMessages','ngTable'];
@@ -794,9 +794,13 @@ $scope.addProjectMilestoneInit = function() {
   }
 }
 $scope.submitProjectMilestone = function(form){
+  $rootScope.showPreloader = true;
   ApiCall.postProjectMileStone($scope.addProjectMilestone,function(res) {
+    $rootScope.showPreloader = false;
     Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
+    $state.go("projectMilestone",{tenderId:$scope.addProjectMilestone.tenderId});
   },function(err) {
+    $rootScope.showPreloader = false;
     Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
   })
 }
@@ -846,8 +850,19 @@ $scope.submitProjectMilestone = function(form){
      }
    }
    $scope.saveReview = function(form) {
-     console.log($scope.projectMilestoneReview);
-     console.log(form);
+     // remove selected tender in service call
+     delete $scope.projectMilestoneReview['selectedTender'];
+    //  console.log(form);
+    //  console.log(JSON.stringify($scope.projectMilestoneReview) );
+    $scope.projectMilestoneReview.actType = "I";
+    $scope.projectMilestoneReview.milestoneId = $stateParams.milestoneId;
+     ApiCall.postProjectMileStoneReview($scope.projectMilestoneReview,function(response) {
+       Util.alertMessage(response.Status.toLocaleLowerCase(),response.Message);
+       $state.go("projectMilestone",{tenderId:$stateParams.tenderId});
+     },function(err) {
+       Util.alertMessage(err.Status.toLocaleLowerCase(),err.Message);
+     })
+
    }
  });
 
@@ -897,27 +912,32 @@ app.controller('deleteMilestoneCtrl', function ($scope, $state,$uibModalInstance
 app.controller('reviewHistoryController', function ($scope, $state,$uibModalInstance,tender,milestone,Events,ApiCall,Util,NgTableParams) {
   // $scope.user = user;
   // added static value
-  $scope.data = [
-    {
-      reviewFile : "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRosdXEz5gxha3Pn7sR8ELCAg87XUSV41UXRiZqEqnAOzPBxBX_-w",
-      status:"pending",
-      comment:"This is a test comment"
-    },
-    {
-      reviewFile : "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRosdXEz5gxha3Pn7sR8ELCAg87XUSV41UXRiZqEqnAOzPBxBX_-w",
-      status:"pending",
-      comment:"This is a test comment"
-    },
-    {
-      reviewFile : "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRosdXEz5gxha3Pn7sR8ELCAg87XUSV41UXRiZqEqnAOzPBxBX_-w",
-      status:"pending",
-      comment:"This is a test comment"
-    }
-  ]
-  $scope.tableParams = new NgTableParams();
-  $scope.tableParams.settings({
-    dataset: $scope.data
-  });
+  ApiCall.getProjectMileStoneReview({mileStoneId:milestone.code},function(response) {
+    // console.log(JSON.stringify(response.Data));
+    $scope.tableParams = new NgTableParams();
+    $scope.tableParams.settings({
+      dataset: response.Data
+    });
+  },function(err) {
+      console.log(JSON.stringify(err.Data));
+  })
+  // $scope.data = [
+  //   {
+  //     reviewFile : "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRosdXEz5gxha3Pn7sR8ELCAg87XUSV41UXRiZqEqnAOzPBxBX_-w",
+  //     status:"pending",
+  //     comment:"This is a test comment"
+  //   },
+  //   {
+  //     reviewFile : "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRosdXEz5gxha3Pn7sR8ELCAg87XUSV41UXRiZqEqnAOzPBxBX_-w",
+  //     status:"pending",
+  //     comment:"This is a test comment"
+  //   },
+  //   {
+  //     reviewFile : "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRosdXEz5gxha3Pn7sR8ELCAg87XUSV41UXRiZqEqnAOzPBxBX_-w",
+  //     status:"pending",
+  //     comment:"This is a test comment"
+  //   }
+  // ]
   $scope.ok = function () {
     $uibModalInstance.close("ok");
   };
@@ -2117,7 +2137,13 @@ app.directive('fileSelect', ['$parse', function ($parse) {
         link: function (scope, element, attr, ngModelCtrl) {
             function fromUser(text) {
                 if (text) {
-                    var transformedInput = text.replace(/[^0-9]/g, '');
+                  var transformedInput;
+                    if(attr.allowFloat == "true"){
+                      transformedInput = text.replace(/[^0-9,.]/g, '');
+                    }
+                    else{
+                      transformedInput = text.replace(/[^0-9]/g, '');
+                    }
 
                     if (transformedInput !== text) {
                         ngModelCtrl.$setViewValue(transformedInput);
@@ -2144,7 +2170,10 @@ app.directive('fileSelect', ['$parse', function ($parse) {
 app.filter('filterDate', function () {
     return function (value) {
       if(value){
-        return value.split(" ")[0];
+        if(value.indexOf("T"))
+            return value.split("T")[0];
+        else if(value.indexOf(" "))
+          return value.split(" ")[0];
       }
     };
 });
@@ -2500,7 +2529,16 @@ app.filter('webServiceName', function () {
                 "url": "/api/ChangePassword",
                 "method": "POST",
                 "Content-Type": "application/json"
-
+            },
+            postProjectMileStoneReview: {
+                "url": "/api/ProjectMileStoneReview",
+                "method": "POST",
+                "Content-Type": "application/json"
+            },
+            getProjectMileStoneReview: {
+                "url": "/api/ProjectMileStoneReview",
+                "method": "GET",
+                "Content-Type": "application/json"
             },
 
 
@@ -2548,6 +2586,8 @@ app.filter('webServiceName', function () {
             postAuthentication: ApiGenerator.getApi('postAuthentication'),
             getServiceList: ApiGenerator.getApi('getServiceList'),
             changePassword: ApiGenerator.getApi('ChangePassword'),
+            postProjectMileStoneReview: ApiGenerator.getApi('postProjectMileStoneReview'),
+            getProjectMileStoneReview: ApiGenerator.getApi('getProjectMileStoneReview'),
           });
 
     })

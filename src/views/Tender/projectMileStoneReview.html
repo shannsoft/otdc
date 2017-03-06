@@ -40,10 +40,10 @@
 
                 <form name="projectMilestoneReviewForm" role="projectMilestoneReviewForm" ng-submit="saveReview(projectMilestoneReviewForm)">
                     <milestone-review>
-                      <fieldset class="form-group" ng-class="{'has-error': (projectMilestoneReviewForm.reviewFile.$invalid && projectMilestoneReviewForm.reviewFile.$touched)}">
+                      <fieldset class="form-group" ng-class="{'has-error': (projectMilestoneReviewForm.fileData.$invalid && projectMilestoneReviewForm.fileData.$touched)}">
                           <label class="control-label" for="formGroupExampleInput7">Upload Review File</label>
-                          <input type="file" class="form-control formInput" file-select="projectMilestoneReview.reviewFile" name="reviewFile" required/>
-                          <span class="has-error formInput" ng-show="projectMilestoneReviewForm.reviewFile.$error.required && projectMilestoneReviewForm.reviewFile.$touched">Please upload review file</span>
+                          <input type="file" class="form-control formInput" file-select="projectMilestoneReview.fileData" name="fileData" required/>
+                          <span class="has-error formInput" ng-show="projectMilestoneReviewForm.fileData.$error.required && projectMilestoneReviewForm.fileData.$touched">Please upload review file</span>
                       </fieldset>
                       <fieldset class="form-group" ng-class="{'has-error': (projectMilestoneReviewForm.status.$invalid && projectMilestoneReviewForm.status.$touched)}">
                           <label class="control-label" for="formGroupExampleInput3">Select Status</label>

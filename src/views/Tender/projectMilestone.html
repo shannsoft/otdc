@@ -44,7 +44,7 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Tender Id</th>
+                                            <!-- <th>Tender Id</th> -->
                                             <th>Milestone Name</th>
                                             <th>Estimation</th>
                                             <th>Start Date</th>
@@ -57,7 +57,7 @@
                                     <tbody>
                                         <tr ng-repeat="milestone in projectMilestone.milestoneList">
                                             <td>{{$index+1}}</td>
-                                            <td>{{milestone.tndId}}</td>
+                                            <!-- <td>{{milestone.tndId}}</td> -->
                                             <td>{{milestone.name}}</td>
                                             <td>{{milestone.estimation}}</td>
                                             <td>{{milestone.startDate|filterDate}}</td>
@@ -120,8 +120,8 @@
               <table ng-table="tableParams" class="table table-bordered ngTable">
                 <tr ng-repeat="row in $data">
                   <td data-title="'Sl No'" >{{ ( (tableParams.page() - 1) * tableParams.count() )+($index + 1)}}</td>
-                  <td data-title="'Review File'" filter="{reviewFile: 'text'}" sortable="'reviewFile'">
-                    <img src="{{row.reviewFile}}" class="reviewImg" />
+                  <td data-title="'Review File'" filter="{fileName: 'text'}" sortable="'fileName'">
+                    <img src="{{row.fileName}}" class="reviewImg" />
                   </td>
                   <!-- <td data-title="'User name'" filter="{userName: 'text'}" sortable="'userName'">
                     <a href="" ng-click="updateUserDetails(row)" uib-popover-template="'userDetails.html'" popover-title="User details" popover-is-open="row.isOpen">{{row.userName}}</a>
@@ -129,6 +129,7 @@
                   </td> -->
                   <td data-title="'status'" filter="{status: 'text'}" sortable="'status'">{{row.status}}</td>
                   <td data-title="'comment'" filter="{comment: 'text'}" sortable="'comment'">{{row.comment}}</td>
+                  <td data-title="'createDate'" filter="{createDate: 'text'}" sortable="'createDate'">{{row.createDate|filterDate}}</td>
                 </tr>
               </table>
 

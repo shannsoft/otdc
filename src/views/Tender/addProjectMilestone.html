@@ -13,11 +13,7 @@
                         <input type="text"  name="name"  required ng-model="addProjectMilestone.name" class="form-control formInput" id="formGroupExampleInput" >
                         <span class="has-error formInput" ng-if="addProjectMilestoneForm.name.$touched && addProjectMilestoneForm.name.$error.required">Milestone Name required</span>
                     </fieldset>
-                    <fieldset class="form-group" ng-class="{'has-error':addProjectMilestoneForm.estimation.$touched && addProjectMilestoneForm.estimation.$invalid}">
-                        <label class="control-label" for="formGroupExampleInput3">Project estimation</label>
-                        <input type="text"  name="estimation"  required ng-model="addProjectMilestone.estimation" class="form-control formInput" id="formGroupExampleInput" >
-                        <span class="has-error formInput" ng-if="addProjectMilestoneForm.estimation.$touched && addProjectMilestoneForm.estimation.$error.required">Project estimation required</span>
-                    </fieldset>
+
                     <fieldset class="form-group">
                         <label class="control-label" for="formGroupExampleInput3">Start date</label>
                         <date-viewer ng-model="addProjectMilestone.startDate"   class-name="'formInput-date'"></date-viewer>
@@ -26,7 +22,7 @@
                         <label class="control-label" for="formGroupExampleInput3">End date</label>
                         <date-viewer ng-model="addProjectMilestone.endDate"  class-name="'formInput-date'"></date-viewer>
                     </fieldset>
-                    <fieldset class="form-group">
+                    <!-- <fieldset class="form-group">
                         <label class="control-label" for="formGroupExampleInput3">Finish date</label>
                         <date-viewer ng-model="addProjectMilestone.finishDate"  class-name="'formInput-date'"></date-viewer>
                     </fieldset>
@@ -47,6 +43,11 @@
                         <label class="control-label" for="formGroupExampleInput3">Amount In Rs</label>
                         <input type="text"  required numbers-only name="amountInRs"  ng-model="addProjectMilestone.amountInRs" class="form-control formInput" id="formGroupExampleInput">
                         <span class="has-error formInput" ng-if="addProjectMilestoneForm.amountInRs.$touched && addProjectMilestoneForm.amountInRs.$error.required">amount  required</span>
+                    </fieldset> -->
+                    <fieldset class="form-group" ng-class="{'has-error':addProjectMilestoneForm.estimation.$touched && addProjectMilestoneForm.estimation.$invalid}">
+                        <label class="control-label" for="formGroupExampleInput3">Financial milestone</label>
+                        <input type="text"  name="estimation"  numbers-only allow-float="true" required ng-model="addProjectMilestone.estimation" class="form-control formInput" id="formGroupExampleInput" >
+                        <span class="has-error formInput" ng-if="addProjectMilestoneForm.estimation.$touched && addProjectMilestoneForm.estimation.$error.required">Project estimation required</span>
                     </fieldset>
                     <fieldset class="form-group">
                         <label class="control-label" for="formGroupExampleInput3">Comment</label>

@@ -188,7 +188,7 @@
                     </fieldset>
                     <fieldset class="form-group" ng-class="{'has-error': (addTendorForm.emdPercent.$invalid && addTendorForm.emdPercent.$touched)}">
                         <label class="control-label" for="formGroupExampleInput7">EMD Percentage</label>
-                        <input type="text" numbers-only ng-model="tender.emdPercent" class="form-control formInput" id="formGroupExampleInput4" name="emdPercent" placeholder="Enter EMD Percentage" required>
+                        <input type="text" numbers-only allow-float="true" ng-model="tender.emdPercent" class="form-control formInput" id="formGroupExampleInput4" name="emdPercent" placeholder="Enter EMD Percentage" required>
                         <span class="has-error formInput" ng-if="addTendorForm.emdPercent.$touched && addTendorForm.emdPercent.$invalid">
                             emdPercent is invalid
                         </span>
