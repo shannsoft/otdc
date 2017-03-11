@@ -347,6 +347,15 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
                 loggedout: checkLoggedout
             },
         })
+        .state('billing', {
+            templateUrl: 'src/views/Billing/billing.html',
+            url: '/billing/:tenderId',
+            controller: "BillingController",
+            params: { tenderId:null,tenderList:null},
+            resolve: {
+                loggedout: checkLoggedout
+            },
+        })
 
 });
 app.constant('CONFIG', {

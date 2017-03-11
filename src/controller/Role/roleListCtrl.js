@@ -1,4 +1,4 @@
-app.controller('RoleListController', function($scope, $rootScope, $state, ApiCall,$uibModal, AppModel,EnvService, $timeout, $cookieStore, $localStorage,NgTableParams) {
+app.controller('RoleListController', function($scope, $rootScope, $state, ApiCall,$uibModal, AppModel,EnvService, $timeout,Util, $cookieStore, $localStorage,NgTableParams) {
   $scope.init = function() {
     $scope.roles = {};
     ApiCall.getDesignation(function(response) {
@@ -47,15 +47,28 @@ app.controller('RoleListController', function($scope, $rootScope, $state, ApiCal
        },
        designation: function () {
          return designation;
+       },
+       designations: function () {
+         return $scope.roles.designation;
        }
      }
    });
  }
 });
 
-app.controller('designationModalCtrl', function ($rootScope,$scope, $uibModalInstance,Util,ApiCall,$state,Events,action,designation ) {
+app.controller('designationModalCtrl', function ($rootScope,$scope, $uibModalInstance,Util,ApiCall,$state,Events,action,designation ,designations,UtilityService) {
   $scope.action = action;
   $scope.designation = designation;
+  $scope.designations = designations;
+  // in case of edit auto fill the parent id
+  if(action == "edit") {
+    // angular.forEach($scope.designations,function(value,key) {
+    //   if(value.parentDesignation == $scope.designation.designationId) {
+    //     $scope.designation.parentDesignation = value;
+    //   }
+    // })
+    $scope.designation.parentDesignation = UtilityService.getmatchValue($scope.designations,'designationId',$scope.designation.parentId);
+  }
   $scope.ok = function () {
     var obj = {};
     // calling service to delete user
@@ -65,10 +78,13 @@ app.controller('designationModalCtrl', function ($rootScope,$scope, $uibModalIns
         break;
       case 'add':
        $scope.designation.actType = 'I';
+       $scope.designation.parentId = $scope.designation.parentDesignation.designationId;
+       delete $scope.designation['parentDesignation'];
         break;
       case 'edit':
         $scope.designation.actType = 'U';
-
+        $scope.designation.parentId = $scope.designation.parentDesignation.designationId;
+        delete $scope.designation['parentDesignation'];
         break;
       case 'delete':
           $scope.designation.actType = 'D';

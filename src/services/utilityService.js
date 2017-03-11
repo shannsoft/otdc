@@ -39,6 +39,22 @@ app.factory("UtilityService", function($http,$resource,$rootScope,$localStorage,
     });
     return arr;
   };
+  var getmatchIndex = function(array,prop,matchValue){
+    for(var i in array){
+      if(array[i][prop] == matchValue){
+        return i;
+      }
+    }
+    return null;
+  };
+  var getmatchValue = function(array,prop,matchValue){
+    for(var i in array){
+      if(array[i][prop] == matchValue){
+        return array[i];
+      }
+    }
+    return null;
+  };
   var getSelectedItemByID = function(array,prop,matchValue,returnProp){
     var arr = [];
     angular.forEach(array,function(value,key) {
@@ -108,5 +124,7 @@ app.factory("UtilityService", function($http,$resource,$rootScope,$localStorage,
     showLoader         :showLoader,
     hideLoader         :hideLoader,
     strReplace         :strReplace,
+    getmatchIndex         :getmatchIndex,
+    getmatchValue         :getmatchValue,
   }
 })
