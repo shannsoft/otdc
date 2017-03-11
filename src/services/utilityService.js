@@ -55,6 +55,15 @@ app.factory("UtilityService", function($http,$resource,$rootScope,$localStorage,
     }
     return null;
   };
+  var getTableHeaders = function(tableData) {
+    // tableData is a one of the index of the array of key values representing one table data
+    var arr = []
+    // getting headers as keys present in the boq details array
+    angular.forEach(tableData, function(index,value){
+      arr.push(value);
+    })
+    return arr;
+  }
   var getSelectedItemByID = function(array,prop,matchValue,returnProp){
     var arr = [];
     angular.forEach(array,function(value,key) {
@@ -126,5 +135,6 @@ app.factory("UtilityService", function($http,$resource,$rootScope,$localStorage,
     strReplace         :strReplace,
     getmatchIndex         :getmatchIndex,
     getmatchValue         :getmatchValue,
+    getTableHeaders:getTableHeaders,
   }
 })

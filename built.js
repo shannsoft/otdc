@@ -1,4 +1,4 @@
-/*! otdc - v1.0.0 - Sun Mar 12 2017 00:29:25 */
+/*! otdc - v1.0.0 - Sun Mar 12 2017 03:08:51 */
 var dependency = [];
 // lib  dependency
 var distModules = ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate', 'ngCookies', 'ngMessages','ngTable'];
@@ -14,10 +14,16 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
                 config.headers = config.headers || {};
                 // config.headers['Authorization'] = 'bearer '+$localStorage[Constants.getTokenKey()];
                 config.headers['tokenID'] = $localStorage[Constants.getTokenKey()];
+                // adding the db routing dynamically from url
+                // if($location.$$host.indexOf("otdctender.in") !== -1) {
+                //   config.headers['env'] = "prod";
+                // }
+                // else{
+                //   config.headers['env'] = "dev";
+                // }
                 if(Constants.debug) {
                   console.log("calling web service ->>>>>>>>>>>" , config.url);
                   console.log("Data web service ->>>>>>>>>>>" , JSON.stringify(config.data));
-
                 }
                 return config;
             },
@@ -426,17 +432,6 @@ app.factory('Util', ['$rootScope', '$timeout', function($rootScope, $timeout) {
 			//"basePath" :"http://localhost:9040",
           }
         },
-        // this will be used to validate client side operation as per the user role
-        "apiAuth" : {
-          "super_admin" : { // we need to manipulate the role name to match this key
-            "user":["get","getById","post","update","delete"],
-            "vendor":["get","getById","post","update","delete"]
-          },
-          "admin" : { // we need to manipulate the role name to match this key
-            "user":["get","getById","post","update"],
-            "vendor":["get","getById","post","update"]
-          },
-        }
 })
 ;app.controller('BillingController', function($scope, $rootScope,$window, $state,$uibModal, $stateParams, ApiCall,Util,$timeout,$localStorage,UtilityService) {
   $scope.billingInit = function() {
@@ -446,29 +441,33 @@ app.factory('Util', ['$rootScope', '$timeout', function($rootScope, $timeout) {
       $scope.billing.tenderList = res.Data;
       // checking for the selected tenderId
       if($stateParams.tenderId) {
-        var index = UtilityService.getmatchIndex($scope.billing.tenderList,'tenderId',$stateParams.tenderId);
-        
+        $rootScope.showPreloader = true;
+        ApiCall.getTendor({tenderId:$stateParams.tenderId},function(res) {
+          $rootScope.showPreloader = false;
+          $scope.billing.selectedTender = res.Data;
+        },function(err) {
+          $rootScope.showPreloader = false;
+          Util.alertMessage(err.Status.toLocaleLowerCase(),err.Message);
+        })
+        // var index = UtilityService.getmatchIndex($scope.billing.tenderList,'tenderId',$stateParams.tenderId);
+        // $scope.billing.selectedTender = $scope.billing.tenderList[index]
+      }
+      else{
+        $scope.selectTender($scope.billing.tenderList[0]); // select first index by default
       }
     }, function(err) {
       Util.alertMessage(err.Status.toLocaleLowerCase(),err.Message);
       $rootScope.showPreloader = false;
     })
   }
-  function getSelectedTenderIndex(tenderId,tenderList) {
-    var index = 0;
-    for(var i in tenderList) {
-
-      if(tenderList[i].tenderId == tenderId){
-        index = i;
-        break;
-      }
-    }
-    return index;
+  $scope.getBoqHeaders = function() {
+    var temp = $scope.billing.selectedTender.boqData[0];
+    var arr = UtilityService.getTableHeaders(temp);
+    return arr;
   }
   $scope.selectTender = function(selectedTender) {
     // reload the state with new data
-    $state.go($state.current, {tenderId:selectedTender.tenderId,tenderList:$scope.projectMilestone.tenderList}, {reload: true});
-
+    $state.go($state.current, {tenderId:selectedTender.tenderId,tenderList:$scope.billing.tenderList}, {reload: true});
   }
  $scope.onAction = function(action,milestone) {
    switch (action) {
@@ -1341,7 +1340,7 @@ app.controller('reviewHistoryController', function ($scope, $state,$uibModalInst
  * boqController
  * Info : used to show the boq data in the modal
  */
-app.controller('boqController', function ($scope,$uibModalInstance,tender,Util,ApiCall,$uibModal) {
+app.controller('boqController', function ($scope,$uibModalInstance,tender,Util,ApiCall,$uibModal,UtilityService) {
   $scope.boqUpdateArr = [];
   $scope.tender = tender;
   $scope.boqData = tender.boqData;
@@ -1373,12 +1372,7 @@ app.controller('boqController', function ($scope,$uibModalInstance,tender,Util,A
     })
   }
   $scope.getBoqHeaders = function() {
-    var temp = $scope.boqData[0];
-    var arr = []
-    // getting headers as keys present in the boq details array
-    angular.forEach(temp, function(index,value){
-      arr.push(value);
-    })
+    var arr = UtilityService.getTableHeaders($scope.boqData[0]);
     return arr;
   }
   $scope.updateAmount = function(boq,param) {
@@ -2995,6 +2989,11 @@ app.filter('webServiceName', function () {
         "state" : "projectMilestone",
         "fClass" : "fa fa-th-large",
       },
+      {
+        "label" : "Billing",
+        "state" : "billing",
+        "fClass" : "fa fa-th-large",
+      },
     ],
     'Executive Engineer' :[
       {
@@ -3319,6 +3318,15 @@ app.filter('webServiceName', function () {
     }
     return null;
   };
+  var getTableHeaders = function(tableData) {
+    // tableData is a one of the index of the array of key values representing one table data
+    var arr = []
+    // getting headers as keys present in the boq details array
+    angular.forEach(tableData, function(index,value){
+      arr.push(value);
+    })
+    return arr;
+  }
   var getSelectedItemByID = function(array,prop,matchValue,returnProp){
     var arr = [];
     angular.forEach(array,function(value,key) {
@@ -3390,5 +3398,6 @@ app.filter('webServiceName', function () {
     strReplace         :strReplace,
     getmatchIndex         :getmatchIndex,
     getmatchValue         :getmatchValue,
+    getTableHeaders:getTableHeaders,
   }
 })

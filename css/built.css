@@ -16068,6 +16068,12 @@ pre {
     margin-left: 5px;
     margin-right: 5px;
 }
+.h-500px{
+  height: 500px;
+}
+.selected{
+  background-color: #21B04B !important;
+}
 .pointer{
   cursor: pointer;
 }

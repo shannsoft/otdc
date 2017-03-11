@@ -18,15 +18,4 @@ app.constant("Constants", {
 			//"basePath" :"http://localhost:9040",
           }
         },
-        // this will be used to validate client side operation as per the user role
-        "apiAuth" : {
-          "super_admin" : { // we need to manipulate the role name to match this key
-            "user":["get","getById","post","update","delete"],
-            "vendor":["get","getById","post","update","delete"]
-          },
-          "admin" : { // we need to manipulate the role name to match this key
-            "user":["get","getById","post","update"],
-            "vendor":["get","getById","post","update"]
-          },
-        }
 })

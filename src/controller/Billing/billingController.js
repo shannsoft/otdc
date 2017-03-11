@@ -6,29 +6,33 @@ app.controller('BillingController', function($scope, $rootScope,$window, $state,
       $scope.billing.tenderList = res.Data;
       // checking for the selected tenderId
       if($stateParams.tenderId) {
-        var index = UtilityService.getmatchIndex($scope.billing.tenderList,'tenderId',$stateParams.tenderId);
-        
+        $rootScope.showPreloader = true;
+        ApiCall.getTendor({tenderId:$stateParams.tenderId},function(res) {
+          $rootScope.showPreloader = false;
+          $scope.billing.selectedTender = res.Data;
+        },function(err) {
+          $rootScope.showPreloader = false;
+          Util.alertMessage(err.Status.toLocaleLowerCase(),err.Message);
+        })
+        // var index = UtilityService.getmatchIndex($scope.billing.tenderList,'tenderId',$stateParams.tenderId);
+        // $scope.billing.selectedTender = $scope.billing.tenderList[index]
+      }
+      else{
+        $scope.selectTender($scope.billing.tenderList[0]); // select first index by default
       }
     }, function(err) {
       Util.alertMessage(err.Status.toLocaleLowerCase(),err.Message);
       $rootScope.showPreloader = false;
     })
   }
-  function getSelectedTenderIndex(tenderId,tenderList) {
-    var index = 0;
-    for(var i in tenderList) {
-
-      if(tenderList[i].tenderId == tenderId){
-        index = i;
-        break;
-      }
-    }
-    return index;
+  $scope.getBoqHeaders = function() {
+    var temp = $scope.billing.selectedTender.boqData[0];
+    var arr = UtilityService.getTableHeaders(temp);
+    return arr;
   }
   $scope.selectTender = function(selectedTender) {
     // reload the state with new data
-    $state.go($state.current, {tenderId:selectedTender.tenderId,tenderList:$scope.projectMilestone.tenderList}, {reload: true});
-
+    $state.go($state.current, {tenderId:selectedTender.tenderId,tenderList:$scope.billing.tenderList}, {reload: true});
   }
  $scope.onAction = function(action,milestone) {
    switch (action) {

@@ -48,6 +48,11 @@ app.factory('UserService',function($rootScope,$http,$localStorage,$resource,ApiG
         "state" : "projectMilestone",
         "fClass" : "fa fa-th-large",
       },
+      {
+        "label" : "Billing",
+        "state" : "billing",
+        "fClass" : "fa fa-th-large",
+      },
     ],
     'Executive Engineer' :[
       {

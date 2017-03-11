@@ -78,7 +78,7 @@ app.controller('TenderDetailsController', function($scope, $rootScope, $state,$u
  * boqController
  * Info : used to show the boq data in the modal
  */
-app.controller('boqController', function ($scope,$uibModalInstance,tender,Util,ApiCall,$uibModal) {
+app.controller('boqController', function ($scope,$uibModalInstance,tender,Util,ApiCall,$uibModal,UtilityService) {
   $scope.boqUpdateArr = [];
   $scope.tender = tender;
   $scope.boqData = tender.boqData;
@@ -110,12 +110,7 @@ app.controller('boqController', function ($scope,$uibModalInstance,tender,Util,A
     })
   }
   $scope.getBoqHeaders = function() {
-    var temp = $scope.boqData[0];
-    var arr = []
-    // getting headers as keys present in the boq details array
-    angular.forEach(temp, function(index,value){
-      arr.push(value);
-    })
+    var arr = UtilityService.getTableHeaders($scope.boqData[0]);
     return arr;
   }
   $scope.updateAmount = function(boq,param) {
