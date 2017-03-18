@@ -53,6 +53,11 @@ app.factory('UserService',function($rootScope,$http,$localStorage,$resource,ApiG
         "state" : "billing",
         "fClass" : "fa fa-th-large",
       },
+      {
+        "label" : "Confugrations",
+        "state" : "confugrations",
+        "fClass" : "fa fa-th-large",
+      },
     ],
     'Executive Engineer' :[
       {

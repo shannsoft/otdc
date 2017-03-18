@@ -371,6 +371,15 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
                 loggedout: checkLoggedout
             },
         })
+        .state('confugrations', {
+            templateUrl: 'src/views/confugrations/confugration.html',
+            url: '/confugrations',
+            controller: "ConfugrationsController",
+            params: { tender:null},
+            resolve: {
+                loggedout: checkLoggedout
+            },
+        })
 
 });
 app.constant('CONFIG', {

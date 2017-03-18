@@ -1,0 +1,50 @@
+<article class="content dashboard-page" ng-init="confugrationInit()">
+    <div class="col-xl-12">
+        <div class="card sameheight-item" >
+            <div class="card-block">
+                <!-- Nav tabs -->
+                <div class="card-title-block">
+                    <h3 class="title">
+                        Confugrations
+                    </h3>
+                </div>
+                <ul class="nav nav-tabs nav-tabs-bordered">
+                    <li class="nav-item">
+                        <a href="" class="nav-link" ng-class="currTab == 0 ? 'active' : '' " ng-click="tabChange(0)" data-target="#tender" data-toggle="tab" aria-controls="tender" role="tab" aria-expanded="{{currTab == 0 ? 'true' : 'false' }}">Tender</a>
+                    </li>
+                    <!-- <li class="nav-item">
+                        <a href="" class="nav-link" ng-class="currTab == 1 ? 'active' : '' " ng-click="tabChange(1)" data-target="#editProfile" aria-controls="editProfile" data-toggle="tab" role="tab" aria-expanded="{{currTab == 1 ? 'true' : 'false' }}">Edit Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link" ng-class="currTab == 2 ? 'active' : '' " ng-click="tabChange(2)" data-target="#changePassword" aria-controls="changePassword" data-toggle="tab" role="tab" aria-expanded="{{currTab == 2 ? 'true' : 'false' }}">Change Password</a> -->
+
+                </ul>
+                <!-- Tab panes -->
+                <div class="tab-content tabs-bordered">
+                    <div class="tab-pane fade" ng-class="currTab == 0 ? 'active in' : '' " aria-expanded="{{currTab == 0 ? 'true' : 'false' }}" id="tender">
+                        <form role="form" name="tenderConfugrationForm">
+                            <fieldset class="form-group">
+                                <label class="control-label" for="inputSuccess1">Service Tax</label>
+                                <input type="text"  ng-model="confugration.tender.serviceTax" class="form-control underlined formInput" id="inputSuccess1">
+                                <!-- <span class="">Success message.</span> -->
+                            </fieldset>
+                            <fieldset class="form-group">
+                                <label class="control-label" for="inputSuccess1">Income Tax</label>
+                                <input type="text"  ng-model="confugration.tender.incomeTax" class="form-control underlined formInput" id="inputSuccess1">
+                                <!-- <span class="">Success message.</span> -->
+                            </fieldset>
+                            <fieldset class="form-group">
+                                <button type="submit" class="btn btn-primary" ng-disabled="tenderConfugrationForm.$invalid" ng-click="saveConfugration(0)">Submit</button>
+                                <button type="button" class="btn btn-secondary-outline" history>Cancel</button>
+                            </fieldset>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+            <!-- /.card-block -->
+        </div>
+        <!-- /.card -->
+    </div>
+
+</article>

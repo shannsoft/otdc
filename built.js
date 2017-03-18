@@ -1,4 +1,4 @@
-/*! otdc - v1.0.0 - Sun Mar 19 2017 03:17:42 */
+/*! otdc - v1.0.0 - Sun Mar 19 2017 03:57:11 */
 var dependency = [];
 // lib  dependency
 var distModules = ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate', 'ngCookies', 'ngMessages','ngTable'];
@@ -367,6 +367,15 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
             templateUrl: 'src/views/Billing/generateBilling.html',
             url: '/generateBill',
             controller: "BillingController",
+            params: { tender:null},
+            resolve: {
+                loggedout: checkLoggedout
+            },
+        })
+        .state('confugrations', {
+            templateUrl: 'src/views/confugrations/confugration.html',
+            url: '/confugrations',
+            controller: "ConfugrationsController",
             params: { tender:null},
             resolve: {
                 loggedout: checkLoggedout
@@ -2082,6 +2091,39 @@ app.controller('deleteVendorModalCtrl', function ($scope, $uibModalInstance,vend
     $uibModalInstance.dismiss('cancel');
   };
 });
+;app.controller('ConfugrationsController', function($scope, $rootScope, $window, Events, $state, $uibModal, $stateParams, $filter, ApiCall, Util, $timeout, $localStorage, UtilityService, Constants) {
+    $scope.confugrationInit = function() {
+        $scope.tabs = [{
+                heading: "Tender",
+                active: true
+            },
+        ]
+        $scope.currTab = 0;
+        $scope.confugrations = {
+            tender: {
+                // will be updated after the service call for the confugration data
+            }
+        }
+    }
+    $scope.tabChange = function(tabPos) {
+        $scope.currTab = tabPos;
+    }
+    $scope.saveConfugration = function(tabIndex) {
+      switch (tabIndex) {
+        case 0: // tender
+           // api call to save tender details
+          break;
+        case 1:
+
+          break;
+        case 1:
+
+          break;
+        default:
+
+      }
+    }
+});
 ;app.directive(
         'dateInput',
         function(dateFilter) {
@@ -2853,6 +2895,11 @@ app.filter('webServiceName', function () {
       {
         "label" : "Billing",
         "state" : "billing",
+        "fClass" : "fa fa-th-large",
+      },
+      {
+        "label" : "Confugrations",
+        "state" : "confugrations",
         "fClass" : "fa fa-th-large",
       },
     ],
