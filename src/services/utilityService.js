@@ -55,7 +55,7 @@ app.factory("UtilityService", function($http,$resource,$rootScope,$localStorage,
     }
     return null;
   };
-  var getTableHeaders = function(tableData) {
+  var getTableHeaders = function(view,tableData) {
     // tableData is a one of the index of the array of key values representing one table data
     var arr = []
     // getting headers as keys present in the boq details array
@@ -117,6 +117,24 @@ app.factory("UtilityService", function($http,$resource,$rootScope,$localStorage,
   var strReplace = function(str,find,replace){
     return str.replace(new RegExp(find, 'g'), replace);
   }
+  // used to parse header as per the view name that will be show in the table
+  var isAllowedHeader = function(view,header){
+    var allowedHeader;
+    switch (view) {
+      case "boqDetails":
+        allowedHeader = ['slNo','itemDescription','quantity','units','estimateRate','totalAmountWithoutTaxes'];
+        break;
+      case "billing":
+        allowedHeader = ['slNo','itemDescription','quantity','units','estimateRate','unitPaid','completedUnit'];
+        break;
+      case "generateBilling":
+        allowedHeader = ['slNo','itemDescription','quantity','units','estimateRate','unitPaid','completedUnit','price'];
+        break;
+      default:
+    }
+    allowed = allowedHeader.indexOf(header) != -1 ? true : false;
+    return allowed;
+  }
   return{
     getSelectedIds:getSelectedIds,
     getSelectedItemByProp:getSelectedItemByProp,
@@ -136,5 +154,6 @@ app.factory("UtilityService", function($http,$resource,$rootScope,$localStorage,
     getmatchIndex         :getmatchIndex,
     getmatchValue         :getmatchValue,
     getTableHeaders:getTableHeaders,
+    isAllowedHeader:isAllowedHeader,
   }
 })

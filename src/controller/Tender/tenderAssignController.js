@@ -17,4 +17,7 @@ app.controller('TenderAssignController', function($scope, $rootScope, $state, $s
       Util.alertMessage(err.Status.toLocaleLowerCase(), err.Message);
     })
   }
+  $scope.assignTender = function(tenderAssignForm,tender) {
+    console.log(tenderAssignForm,tender);
+  }
 })

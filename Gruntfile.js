@@ -126,7 +126,7 @@ module.exports = function(grunt) {
             all: {
                 src: [
                     'css/bootstrap.min.css',
-                    // 'css/bootstrap-toggle.min.css',
+                    'css/bootstrap-toggle.min.css',
                     'css/vendor.css',
                     'css/app-seagreen.css',
                     'css/custom.css',
@@ -144,7 +144,7 @@ module.exports = function(grunt) {
                     {
                         expand: true,
                         // flatten: true,
-                        src: ['index.html'],
+                        src: ['index.html','invoice.html'],
                         dest: 'build/',
                         filter: 'isFile'
                     }, {
@@ -285,7 +285,7 @@ module.exports = function(grunt) {
     grunt.registerTask("con", ['concat','open:dev', 'watch']);
     grunt.registerTask("buildCss", ['concat_css', 'cssmin']);
     grunt.registerTask("build-compress", ['copy', 'compress', 'clean']);
-    grunt.registerTask("build", ['clean', 'copy']);
+    grunt.registerTask("build", ['concat','clean', 'copy']);
     grunt.registerTask("jscrambler", ['jscrambler']);
     // grunt.registerTask("conn", ['concat','open:dev','watch']);
     grunt.registerTask('something', 'Do something interesting.', function(arg) {

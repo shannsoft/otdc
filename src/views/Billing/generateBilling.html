@@ -1,0 +1,89 @@
+<article class="content forms-page" ng-init="generateBillingInit()">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-block sameheight-item">
+                <div class="title-block">
+                    <h3 class="title">
+                        Billing
+                    </h3>
+                </div>
+                <form name="billingForm" role="billingForm">
+
+                    <billing>
+                        <fieldset class="form-group">
+                            <label class="control-label" for="formGroupExampleInput">Tender Id</label>
+                            <input type="text" ng-model="generateBill.tender.tndId" ng-readonly="true" class="form-control formInput" id="formGroupExampleInput">
+                        </fieldset>
+                        <fieldset class="form-group">
+                            <label class="control-label" for="formGroupExampleInput">Tender category</label>
+                            <input type="text" ng-model="generateBill.tender.category" ng-readonly="true" class="form-control formInput" id="formGroupExampleInput">
+                        </fieldset>
+                        <fieldset class="form-group">
+                            <label class="control-label" for="formGroupExampleInput">Tender tenderType</label>
+                            <input type="text" ng-model="generateBill.tender.tenderType" ng-readonly="true" class="form-control formInput" id="formGroupExampleInput">
+                        </fieldset>
+                        <fieldset class="form-group">
+                            <label class="control-label" for="formGroupExampleInput">Tender workDescription</label>
+                            <input type="text" ng-model="generateBill.tender.workDescription" ng-readonly="true" class="form-control formInput" id="formGroupExampleInput">
+                        </fieldset>
+                        <fieldset class="form-group">
+                            <div class="card card-block sameheight-item">
+                                <div class="title-block">
+                                    <h3 class="title">
+                                        Billing Details
+                                    </h3>
+                                </div>
+                                <div class="table-responsive border-wrap">
+                                    <table class="table table-striped table-bordered table-hover boqDetailsTable">
+                                        <thead>
+                                            <tr>
+                                                <th ng-repeat="th in UtilityService.getTableHeaders('billing',generateBill.tender.selectedBoq[0])" ng-if="UtilityService.isAllowedHeader('generateBilling',th)">{{th}}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="boq in generateBill.tender.selectedBoq">
+                                                <td ng-repeat="th in UtilityService.getTableHeaders('billing',generateBill.tender.selectedBoq[0])" ng-if="UtilityService.isAllowedHeader('generateBilling',th)">
+                                                    <span>{{boq[th]}}</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset class="form-group">
+                            <table class="billing-glance">
+                              <tr>
+                                <td>Total Price </td>
+                                <td>1000</td>
+                              </tr>
+                              <tr>
+                                <td>Income tax : </td>
+                                <td> - 1%</td>
+                              </tr>
+                              <tr>
+                                <td>Service tax : </td>
+                                <td> - 2%</td>
+                              </tr>
+                              <tr></tr>
+                              <tr></tr>
+                              <tr>
+                                <td><hr></td>
+                                <td><hr></td>
+                              </tr>
+                              <tr>
+                                <td>Total : </td>
+                                <td> 900</td>
+                              </tr>
+                            </table>
+                        </fieldset>
+                        <fieldset class="form-group">
+                            <button class="btn btn-success" ng-click="printInvoice(generateBill.tender)">E-print</button>
+                        </fieldset>
+                    </billing>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</article>

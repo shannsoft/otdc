@@ -41,6 +41,9 @@ app.controller('UserController', function($scope, $rootScope, $state,$stateParam
       $scope.updateActiveClass(null,data.state);
     })
     $scope.updateActiveClass = function(index,state){
+      if(state == "generateBilling") {
+        state = "billing" ; // to active the billing tab in side menu incase of generateBilling state change
+      }
       angular.forEach($scope.sideBar,function(v,k) {
         if(index == k || state == v.state)
           v.activeClass = 'active';

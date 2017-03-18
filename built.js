@@ -1,4 +1,4 @@
-/*! otdc - v1.0.0 - Sun Mar 12 2017 03:08:51 */
+/*! otdc - v1.0.0 - Sun Mar 19 2017 03:17:42 */
 var dependency = [];
 // lib  dependency
 var distModules = ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate', 'ngCookies', 'ngMessages','ngTable'];
@@ -15,12 +15,12 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
                 // config.headers['Authorization'] = 'bearer '+$localStorage[Constants.getTokenKey()];
                 config.headers['tokenID'] = $localStorage[Constants.getTokenKey()];
                 // adding the db routing dynamically from url
-                // if($location.$$host.indexOf("otdctender.in") !== -1) {
-                //   config.headers['env'] = "prod";
-                // }
-                // else{
-                //   config.headers['env'] = "dev";
-                // }
+                if($location.$$host.indexOf("otdctender.in") !== -1) {
+                  config.headers['server'] = 2;
+                }
+                else{
+                  config.headers['server'] = 1;
+                }
                 if(Constants.debug) {
                   console.log("calling web service ->>>>>>>>>>>" , config.url);
                   console.log("Data web service ->>>>>>>>>>>" , JSON.stringify(config.data));
@@ -363,6 +363,15 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
                 loggedout: checkLoggedout
             },
         })
+        .state('generateBill', {
+            templateUrl: 'src/views/Billing/generateBilling.html',
+            url: '/generateBill',
+            controller: "BillingController",
+            params: { tender:null},
+            resolve: {
+                loggedout: checkLoggedout
+            },
+        })
 
 });
 app.constant('CONFIG', {
@@ -429,11 +438,16 @@ app.factory('Util', ['$rootScope', '$timeout', function($rootScope, $timeout) {
           "env":"dev",
           "dev" : {
             "basePath" :"http://api.otdctender.in",
-			//"basePath" :"http://localhost:9040",
+            "appPath"  :"http://localhost/external_projects/otdc",
+          },
+          "prod" : {
+            "basePath" :"http://api.otdctender.in",
+            "appPath"  :".",
           }
         },
 })
-;app.controller('BillingController', function($scope, $rootScope,$window, $state,$uibModal, $stateParams, ApiCall,Util,$timeout,$localStorage,UtilityService) {
+;app.controller('BillingController', function($scope, $rootScope,$window, Events,$state,$uibModal, $stateParams,$filter, ApiCall,Util,$timeout,$localStorage,UtilityService,Constants) {
+  $scope.UtilityService = UtilityService;
   $scope.billingInit = function() {
     $scope.billing = {};
     ApiCall.getTendor(function(res) {
@@ -445,6 +459,11 @@ app.factory('Util', ['$rootScope', '$timeout', function($rootScope, $timeout) {
         ApiCall.getTendor({tenderId:$stateParams.tenderId},function(res) {
           $rootScope.showPreloader = false;
           $scope.billing.selectedTender = res.Data;
+          // adding extra column for the completed unit
+          angular.forEach($scope.billing.selectedTender.boqData,function(value,key) {
+            value['completedUnit'] = value.unitPaid;
+            value['price'] = 0;
+          })
         },function(err) {
           $rootScope.showPreloader = false;
           Util.alertMessage(err.Status.toLocaleLowerCase(),err.Message);
@@ -460,259 +479,60 @@ app.factory('Util', ['$rootScope', '$timeout', function($rootScope, $timeout) {
       $rootScope.showPreloader = false;
     })
   }
-  $scope.getBoqHeaders = function() {
-    var temp = $scope.billing.selectedTender.boqData[0];
-    var arr = UtilityService.getTableHeaders(temp);
-    return arr;
-  }
+  // $scope.getBoqHeaders = function(data) {
+  //   if(!data){
+  //     data = $scope.billing.selectedTender.boqData[0];
+  //   }
+  //   var arr = UtilityService.getTableHeaders(data);
+  //   return arr;
+  // }
   $scope.selectTender = function(selectedTender) {
     // reload the state with new data
     $state.go($state.current, {tenderId:selectedTender.tenderId,tenderList:$scope.billing.tenderList}, {reload: true});
   }
- $scope.onAction = function(action,milestone) {
-   switch (action) {
-     case "view":
-     case "edit":
-      $state.go("projectMilestoneDetails",{tenderId:$scope.projectMilestone.selectedTender.tenderId,milestone:milestone,action:action})
-       break;
-     case "delete":
-     $scope.openMilestoneDeleteModal(milestone);
-       break;
-     case "review":
-      $state.go("projectMilestoneReview",{tender:$scope.projectMilestone.selectedTender,tenderId:$scope.projectMilestone.selectedTender.tenderId,milestoneId:milestone.code})
-       break;
-     case "history":
-       $scope.showReviewHistory($scope.projectMilestone.selectedTender,milestone);
-       break;
-     default:
-
-   }
- }
- // used to show the review history
- $scope.showReviewHistory = function(tender,milestone){
-   $uibModal.open({
-       animation: true,
-       size: 'lg',
-       controller: "reviewHistoryController",
-       templateUrl:"reviewHistoryModal.html",
-       resolve:{
-         tender :function() {
-           return tender
-         },
-         milestone :function() {
-           return milestone
-         }
-       }
-   });
- }
- $scope.openMilestoneDeleteModal = function(milestone) {
-   var modalInstance = $uibModal.open({
-     animation: true,
-     templateUrl: 'deleteMilestoneModal.html',
-     controller: 'deleteMilestoneCtrl',
-     size: 'md',
-     resolve: {
-       milestone: function () {
-         return milestone;
-       }
-     }
-   });
- }
-/**
-  add project Milestone details starts
- */
-$scope.projectMilestoneDetailsInit = function(){
-  $scope.projectMilestoneDetails = {};
-    if(!$stateParams.tenderId){
-        $state.go("projectMilestone");
-      }
-      else if($stateParams.tenderId && !$stateParams.milestone ){
-        $state.go("projectMilestone",{tenderId:$stateParams.tenderId});
-      }
-      else{
-        $scope.projectMilestoneDetails = $stateParams.milestone;
-      }
-      $scope.isEdit = $stateParams.action == "edit" ? true : false;
-
-
-}
-$scope.updateMilestone = function(form){
-  $scope.projectMilestoneDetails.actType = 'U';
-  ApiCall.postProjectMileStone($scope.projectMilestoneDetails,function(res) {
-    Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
-  },function(err) {
-    Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
-  })
-}
-/**
-  add project Milestone details ends
- */
-
 
 /**
- * add project milestone starts
+***************************************************** Generate Billing starts ****************************************
  */
-$scope.addProjectMilestoneInit = function() {
-  $scope.addProjectMilestone = {};
-  if(!$stateParams.tenderId){
-    $state.go("projectMilestone");
+$scope.generateBillingInit = function(){
+  // getting vendor details
+  $scope.generateBill = {};
+  if(!$stateParams.tender){
+    Util.alertMessage(Events.eventType.warning,Events.selectTender);
+    $state.go("billing");
+    return;
   }
-  else {
-    $scope.addProjectMilestone.tenderId = $stateParams.tenderId;
-    $scope.addProjectMilestone.actType = "I";
-  }
-}
-$scope.submitProjectMilestone = function(form){
-  $rootScope.showPreloader = true;
-  ApiCall.postProjectMileStone($scope.addProjectMilestone,function(res) {
-    $rootScope.showPreloader = false;
-    Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
-    $state.go("projectMilestone",{tenderId:$scope.addProjectMilestone.tenderId});
-  },function(err) {
-    $rootScope.showPreloader = false;
-    Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
-  })
-}
-
-/**
-  add project Milestone ends
- */
-
-
-});
-
-
-/**
- * ProjectMilestoneReviewController starts
- */
- app.controller('ProjectMilestoneReviewController', function ($rootScope,$scope, $state,$stateParams,ApiCall,Util,Events) {
-   $scope.projectMilestoneReviewInit = function() {
-     $scope.projectMilestoneReview = {};
-     $scope.projectMilestoneReview.toggleTender = false;
-     $scope.projectMilestoneReview.status = "delayed";
-     if(!$stateParams.tenderId)
-      {
-        Util.alertMessage(Events.eventType.warning,Events.pleaseSelectTender);
-        $state.go("projectMilestone");
-        return;
-      }
-     else if(!$stateParams.milestoneId)
-      {
-        Util.alertMessage(Events.eventType.warning,Events.pleaseSelectMilestone);
-        $stateParams.tenderId ? $state.go("projectMilestone",{tenderId:$stateParams.tenderId}) : $state.go("projectMilestone");
-        return;
-      }
-      if($stateParams.tender)
-        $scope.projectMilestoneReview.selectedTender = $stateParams.tender;
-   }
-   $scope.toggleTenderDetails = function() {
-     $scope.projectMilestoneReview.toggleTender = !$scope.projectMilestoneReview.toggleTender;
-     if($scope.projectMilestoneReview.toggleTender && !$scope.projectMilestoneReview.selectedTender) {
-       // fetche the tender details
-       $rootScope.showPreloader = true;
-       ApiCall.getTendor({tenderId:$stateParams.tenderId},function(res) {
-         $rootScope.showPreloader = false;
-         $scope.projectMilestoneReview.selectedTender = res.Data;
-       },function(err) {
-         Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
-       })
-     }
-   }
-   $scope.saveReview = function(form) {
-     // remove selected tender in service call
-     delete $scope.projectMilestoneReview['selectedTender'];
-    //  console.log(form);
-    //  console.log(JSON.stringify($scope.projectMilestoneReview) );
-    $scope.projectMilestoneReview.actType = "I";
-    $scope.projectMilestoneReview.milestoneId = $stateParams.milestoneId;
-     ApiCall.postProjectMileStoneReview($scope.projectMilestoneReview,function(response) {
-       Util.alertMessage(response.Status.toLocaleLowerCase(),response.Message);
-       $state.go("projectMilestone",{tenderId:$stateParams.tenderId});
-     },function(err) {
-       Util.alertMessage(err.Status.toLocaleLowerCase(),err.Message);
-     })
-
-   }
- });
-
-/**
- * ProjectMilestoneReviewController starts
- */
-
-
-
-/**
- * modal controller for the delete milestone
- */
-app.controller('deleteMilestoneCtrl', function ($scope, $state,$uibModalInstance,milestone,Events,ApiCall,Util) {
-  // $scope.user = user;
-  $scope.ok = function () {
-    // calling service to delete user
-    var obj = {
-      actType:'D',
-      code:milestone.code
+  $scope.generateBill.tender = $stateParams.tender;
+  // parsing the selected the boq for the bill generation
+  $scope.generateBill.tender.selectedBoq = [];
+  for(var i in $scope.generateBill.tender.boqData){
+    if($scope.generateBill.tender.boqData[i].isChecked){
+      // updating price as per completed unit
+      $scope.generateBill.tender.boqData[i].price = ($scope.generateBill.tender.boqData[i].completedUnit - $scope.generateBill.tender.boqData[i].unitPaid) * $scope.generateBill.tender.boqData[i].estimateRate;
+      $scope.generateBill.tender.selectedBoq.push($scope.generateBill.tender.boqData[i]);
     }
-    // ApiCall.postUser(obj,function(response) {
-    //   Util.alertMessage(Events.eventType.success,response.Message);e
-    //   $uibModalInstance.close();
-    //   $state.reload();
-    // },function(err) {
-    //   Util.alertMessage(Events.eventType.error,err.Message);
-    //   $uibModalInstance.close();
-    // })
-    ApiCall.postProjectMileStone(obj,function(res) {
-      Util.alertMessage(Events.eventType.success,res.Message);
-      $uibModalInstance.close();
-      $state.reload();
-    },function(err) {
-      Util.alertMessage(erre.Status.toLocaleLowerCase(),err.Message);
-    })
+  }
+  // delete the boq data after parsing selected boq
+  delete $scope.generateBill.tender['boqData'];
+}
+$scope.printInvoice = function(tender) {
+  var queryString = '';
+  queryString+="invoice="+"autoGenValues"+"&";
+  queryString+="createdDate="+$filter('date')(new Date(), "dd/mm/yyyy")+"&";
+  queryString+="tenderId="+tender.tndId+"&";
+  queryString+="tenderType="+tender.tenderType+"&";
+  queryString+="category="+tender.category;
+  console.log("opening  "+Constants['envData']['dev']['appPath']+"/invoice.html?"+queryString);
+  window.open("invoice.html?"+queryString);
+}
 
-  };
 
-  $scope.cancel = function () {
-    $uibModalInstance.dismiss('cancel');
-  };
-});
 
 /**
- * modal controller for the review history
+***************************************************** Generate Billing ends ****************************************
  */
-app.controller('reviewHistoryController', function ($scope, $state,$uibModalInstance,tender,milestone,Events,ApiCall,Util,NgTableParams) {
-  // $scope.user = user;
-  // added static value
-  ApiCall.getProjectMileStoneReview({mileStoneId:milestone.code},function(response) {
-    // console.log(JSON.stringify(response.Data));
-    $scope.tableParams = new NgTableParams();
-    $scope.tableParams.settings({
-      dataset: response.Data
-    });
-  },function(err) {
-      console.log(JSON.stringify(err.Data));
-  })
-  // $scope.data = [
-  //   {
-  //     reviewFile : "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRosdXEz5gxha3Pn7sR8ELCAg87XUSV41UXRiZqEqnAOzPBxBX_-w",
-  //     status:"pending",
-  //     comment:"This is a test comment"
-  //   },
-  //   {
-  //     reviewFile : "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRosdXEz5gxha3Pn7sR8ELCAg87XUSV41UXRiZqEqnAOzPBxBX_-w",
-  //     status:"pending",
-  //     comment:"This is a test comment"
-  //   },
-  //   {
-  //     reviewFile : "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRosdXEz5gxha3Pn7sR8ELCAg87XUSV41UXRiZqEqnAOzPBxBX_-w",
-  //     status:"pending",
-  //     comment:"This is a test comment"
-  //   }
-  // ]
-  $scope.ok = function () {
-    $uibModalInstance.close("ok");
-  };
-  $scope.cancel = function () {
-    $uibModalInstance.dismiss('cancel');
-  };
+
+
 });
 ;app.controller('Main_Controller', function($scope, $rootScope, $state, EnvService, $timeout, $cookieStore, $localStorage, validationService, Events, $location, Util, $anchorScroll) {
     // Events handling
@@ -1265,6 +1085,9 @@ app.controller('reviewHistoryController', function ($scope, $state,$uibModalInst
       Util.alertMessage(err.Status.toLocaleLowerCase(), err.Message);
     })
   }
+  $scope.assignTender = function(tenderAssignForm,tender) {
+    console.log(tenderAssignForm,tender);
+  }
 })
 ;app.controller('TenderDetailsController', function($scope, $rootScope, $state,$uibModal, $stateParams, ApiCall,Util, EnvService, $timeout, $cookieStore, $localStorage) {
 
@@ -1340,10 +1163,47 @@ app.controller('reviewHistoryController', function ($scope, $state,$uibModalInst
  * boqController
  * Info : used to show the boq data in the modal
  */
-app.controller('boqController', function ($scope,$uibModalInstance,tender,Util,ApiCall,$uibModal,UtilityService) {
+app.controller('boqController', function ($scope,$uibModalInstance,$uibModal,tender,Util,ApiCall,UtilityService) {
   $scope.boqUpdateArr = [];
   $scope.tender = tender;
   $scope.boqData = tender.boqData;
+  $scope.verifyBoqItem = function(boq,action) {
+    if(action == "verify") {
+
+    }
+    else if(action == "cancel") {
+      $uibModal.open({
+          animation: true,
+          size: 'lg',
+          controller: function($scope,boq,$uibModalInstance,Util,ApiCall) {
+            $scope.boq = boq;
+            $scope.ok = function () {
+              boq.verify = 0;
+              boq.action = "Cancel Verify";
+              var data = [boq]; // sending in array as boq update requires a array
+              ApiCall.postBOQHistory(data,function(response) {
+                Util.alertMessage(response.Status.toLocaleLowerCase(),response.Message);
+              },function(err) {
+                Util.alertMessage(err.Status.toLocaleLowerCase(),err.Message);
+              })
+              $uibModalInstance.close();
+            };
+            $scope.cancel = function () {
+              $uibModalInstance.dismiss('cancel');
+            };
+
+
+          },
+          templateUrl:"cancelBoqVerification.html",
+          resolve:{
+            boq:function() {
+              return boq;
+            }
+          }
+      });
+    }
+  }
+  $scope.UtilityService = UtilityService;
   // used to update the boq data of the indivisual row
   $scope.updateBoqData = function(){
     ApiCall.postBOQHistory($scope.boqUpdateArr,function(response) {
@@ -1371,10 +1231,6 @@ app.controller('boqController', function ($scope,$uibModalInstance,tender,Util,A
       boqData == boq ? boq.isEdit = true : boqData.isEdit = false;
     })
   }
-  $scope.getBoqHeaders = function() {
-    var arr = UtilityService.getTableHeaders($scope.boqData[0]);
-    return arr;
-  }
   $scope.updateAmount = function(boq,param) {
     if(!boq.count || isNaN(boq.count)){
       boq.count = 0;
@@ -1392,12 +1248,14 @@ app.controller('boqController', function ($scope,$uibModalInstance,tender,Util,A
     for(var i in $scope.boqUpdateArr){
       if($scope.boqUpdateArr[i].id == boq.id){
         $scope.boqUpdateArr[i] = boq;
+        $scope.boqUpdateArr[i].verify = 1 ; // verify = 1 this need to be verify by higher designation
         found = true;
         break;
       }
     }
     if(!found){
       // update the array that will save in batch
+      boq.verify = 1; // verify = 1 this need to be verify by higher designation
       $scope.boqUpdateArr.push(boq);
     }
     boq.totalAmountWithoutTaxes = boq.quantity*boq.estimateRate;
@@ -1763,6 +1621,9 @@ app.controller('boqHistoryController', function ($scope,$uibModalInstance,tender
       $scope.updateActiveClass(null,data.state);
     })
     $scope.updateActiveClass = function(index,state){
+      if(state == "generateBilling") {
+        state = "billing" ; // to active the billing tab in side menu incase of generateBilling state change
+      }
       angular.forEach($scope.sideBar,function(v,k) {
         if(index == k || state == v.state)
           v.activeClass = 'active';
@@ -3318,7 +3179,7 @@ app.filter('webServiceName', function () {
     }
     return null;
   };
-  var getTableHeaders = function(tableData) {
+  var getTableHeaders = function(view,tableData) {
     // tableData is a one of the index of the array of key values representing one table data
     var arr = []
     // getting headers as keys present in the boq details array
@@ -3380,6 +3241,24 @@ app.filter('webServiceName', function () {
   var strReplace = function(str,find,replace){
     return str.replace(new RegExp(find, 'g'), replace);
   }
+  // used to parse header as per the view name that will be show in the table
+  var isAllowedHeader = function(view,header){
+    var allowedHeader;
+    switch (view) {
+      case "boqDetails":
+        allowedHeader = ['slNo','itemDescription','quantity','units','estimateRate','totalAmountWithoutTaxes'];
+        break;
+      case "billing":
+        allowedHeader = ['slNo','itemDescription','quantity','units','estimateRate','unitPaid','completedUnit'];
+        break;
+      case "generateBilling":
+        allowedHeader = ['slNo','itemDescription','quantity','units','estimateRate','unitPaid','completedUnit','price'];
+        break;
+      default:
+    }
+    allowed = allowedHeader.indexOf(header) != -1 ? true : false;
+    return allowed;
+  }
   return{
     getSelectedIds:getSelectedIds,
     getSelectedItemByProp:getSelectedItemByProp,
@@ -3399,5 +3278,6 @@ app.filter('webServiceName', function () {
     getmatchIndex         :getmatchIndex,
     getmatchValue         :getmatchValue,
     getTableHeaders:getTableHeaders,
+    isAllowedHeader:isAllowedHeader,
   }
 })

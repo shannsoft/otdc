@@ -14,12 +14,12 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
                 // config.headers['Authorization'] = 'bearer '+$localStorage[Constants.getTokenKey()];
                 config.headers['tokenID'] = $localStorage[Constants.getTokenKey()];
                 // adding the db routing dynamically from url
-                // if($location.$$host.indexOf("otdctender.in") !== -1) {
-                //   config.headers['env'] = "prod";
-                // }
-                // else{
-                //   config.headers['env'] = "dev";
-                // }
+                if($location.$$host.indexOf("otdctender.in") !== -1) {
+                  config.headers['server'] = 2;
+                }
+                else{
+                  config.headers['server'] = 1;
+                }
                 if(Constants.debug) {
                   console.log("calling web service ->>>>>>>>>>>" , config.url);
                   console.log("Data web service ->>>>>>>>>>>" , JSON.stringify(config.data));
@@ -358,6 +358,15 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
             url: '/billing/:tenderId',
             controller: "BillingController",
             params: { tenderId:null,tenderList:null},
+            resolve: {
+                loggedout: checkLoggedout
+            },
+        })
+        .state('generateBill', {
+            templateUrl: 'src/views/Billing/generateBilling.html',
+            url: '/generateBill',
+            controller: "BillingController",
+            params: { tender:null},
             resolve: {
                 loggedout: checkLoggedout
             },

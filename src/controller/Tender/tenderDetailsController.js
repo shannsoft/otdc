@@ -78,10 +78,47 @@ app.controller('TenderDetailsController', function($scope, $rootScope, $state,$u
  * boqController
  * Info : used to show the boq data in the modal
  */
-app.controller('boqController', function ($scope,$uibModalInstance,tender,Util,ApiCall,$uibModal,UtilityService) {
+app.controller('boqController', function ($scope,$uibModalInstance,$uibModal,tender,Util,ApiCall,UtilityService) {
   $scope.boqUpdateArr = [];
   $scope.tender = tender;
   $scope.boqData = tender.boqData;
+  $scope.verifyBoqItem = function(boq,action) {
+    if(action == "verify") {
+
+    }
+    else if(action == "cancel") {
+      $uibModal.open({
+          animation: true,
+          size: 'lg',
+          controller: function($scope,boq,$uibModalInstance,Util,ApiCall) {
+            $scope.boq = boq;
+            $scope.ok = function () {
+              boq.verify = 0;
+              boq.action = "Cancel Verify";
+              var data = [boq]; // sending in array as boq update requires a array
+              ApiCall.postBOQHistory(data,function(response) {
+                Util.alertMessage(response.Status.toLocaleLowerCase(),response.Message);
+              },function(err) {
+                Util.alertMessage(err.Status.toLocaleLowerCase(),err.Message);
+              })
+              $uibModalInstance.close();
+            };
+            $scope.cancel = function () {
+              $uibModalInstance.dismiss('cancel');
+            };
+
+
+          },
+          templateUrl:"cancelBoqVerification.html",
+          resolve:{
+            boq:function() {
+              return boq;
+            }
+          }
+      });
+    }
+  }
+  $scope.UtilityService = UtilityService;
   // used to update the boq data of the indivisual row
   $scope.updateBoqData = function(){
     ApiCall.postBOQHistory($scope.boqUpdateArr,function(response) {
@@ -109,10 +146,6 @@ app.controller('boqController', function ($scope,$uibModalInstance,tender,Util,A
       boqData == boq ? boq.isEdit = true : boqData.isEdit = false;
     })
   }
-  $scope.getBoqHeaders = function() {
-    var arr = UtilityService.getTableHeaders($scope.boqData[0]);
-    return arr;
-  }
   $scope.updateAmount = function(boq,param) {
     if(!boq.count || isNaN(boq.count)){
       boq.count = 0;
@@ -130,12 +163,14 @@ app.controller('boqController', function ($scope,$uibModalInstance,tender,Util,A
     for(var i in $scope.boqUpdateArr){
       if($scope.boqUpdateArr[i].id == boq.id){
         $scope.boqUpdateArr[i] = boq;
+        $scope.boqUpdateArr[i].verify = 1 ; // verify = 1 this need to be verify by higher designation
         found = true;
         break;
       }
     }
     if(!found){
       // update the array that will save in batch
+      boq.verify = 1; // verify = 1 this need to be verify by higher designation
       $scope.boqUpdateArr.push(boq);
     }
     boq.totalAmountWithoutTaxes = boq.quantity*boq.estimateRate;
