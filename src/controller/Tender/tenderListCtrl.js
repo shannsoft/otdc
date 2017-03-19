@@ -1,9 +1,12 @@
-app.controller('TenderListController', function($scope, $rootScope, $state, ApiCall, EnvService, $timeout, $cookieStore, $localStorage,NgTableParams,Util,Events) {
+app.controller('TenderListController', function($scope, $rootScope,$stateParams, $state, ApiCall, EnvService, $timeout, $cookieStore, $localStorage,NgTableParams,Util,Events) {
 
     $scope.tenderListInit = function() {
       $rootScope.showPreloader = true;
-      ApiCall.getTendor(function(res) {
-
+      var obj = {}
+      if($stateParams.tenderStatus){
+        obj.tenderStatus = $stateParams.tenderStatus;
+      }
+      ApiCall.getTendor(obj,function(res) {
         $scope.tenders = res.Data;
         $scope.tableParams = new NgTableParams();
         $scope.tableParams.settings({

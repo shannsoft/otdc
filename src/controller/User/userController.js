@@ -121,13 +121,36 @@ app.controller('UserController', function($scope, $rootScope, $state,$stateParam
 
 
     /**
-     * view user starts
+     * dashboard code starts
      *
      */
-
-
+     $scope.initDashboard = function(){
+       $scope.dashboard = {};
+       ApiCall.getDashboard(function(res) {
+         Util.alertMessage(res.Status.toLocaleLowerCase(), res.Message);
+         $scope.dashboard = res.Data;
+         $scope.dashboard.tenderStatusCount = {};
+         // getting tender status count to show in dashboard tabs
+         for(var i in $scope.dashboard.projectMilestone) {
+           if($scope.dashboard.projectMilestone[i].projectMilestoneSts == "inTime"){
+             $scope.dashboard.tenderStatusCount.inTime = $scope.dashboard.projectMilestone[i].count;
+           }
+           else if($scope.dashboard.projectMilestone[i].projectMilestoneSts == "delayed"){
+             $scope.dashboard.tenderStatusCount.delayed = $scope.dashboard.projectMilestone[i].count;
+           }
+           else if($scope.dashboard.projectMilestone[i].projectMilestoneSts == "completed"){
+             $scope.dashboard.tenderStatusCount.completed = $scope.dashboard.projectMilestone[i].count;
+           }
+         }
+       },function(err) {
+         Util.alertMessage(err.Status.toLocaleLowerCase(), res.Message);
+       })
+     }
+     $scope.getTenderByStatus = function(tenderStatus) {
+       $state.go("tenderList",{tenderStatus:tenderStatus});
+     }
     /**
-     * view user ends
+     * dashboard code ends
      *
      */
 

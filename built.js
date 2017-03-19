@@ -1,4 +1,4 @@
-/*! otdc - v1.0.0 - Sun Mar 19 2017 03:57:11 */
+/*! otdc - v1.0.0 - Sun Mar 19 2017 13:40:57 */
 var dependency = [];
 // lib  dependency
 var distModules = ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate', 'ngCookies', 'ngMessages','ngTable'];
@@ -151,6 +151,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
             templateUrl: 'src/views/Tender/tenderList.html',
             url: '/tenderList',
             controller: "TenderListController",
+            params: {tenderStatus:null},
             resolve: {
                 loggedout: checkLoggedout
             },
@@ -1324,12 +1325,15 @@ app.controller('boqHistoryController', function ($scope,$uibModalInstance,tender
     $uibModalInstance.dismiss('cancel');
   };
 });
-;app.controller('TenderListController', function($scope, $rootScope, $state, ApiCall, EnvService, $timeout, $cookieStore, $localStorage,NgTableParams,Util,Events) {
+;app.controller('TenderListController', function($scope, $rootScope,$stateParams, $state, ApiCall, EnvService, $timeout, $cookieStore, $localStorage,NgTableParams,Util,Events) {
 
     $scope.tenderListInit = function() {
       $rootScope.showPreloader = true;
-      ApiCall.getTendor(function(res) {
-
+      var obj = {}
+      if($stateParams.tenderStatus){
+        obj.tenderStatus = $stateParams.tenderStatus;
+      }
+      ApiCall.getTendor(obj,function(res) {
         $scope.tenders = res.Data;
         $scope.tableParams = new NgTableParams();
         $scope.tableParams.settings({
@@ -1710,13 +1714,36 @@ app.controller('boqHistoryController', function ($scope,$uibModalInstance,tender
 
 
     /**
-     * view user starts
+     * dashboard code starts
      *
      */
-
-
+     $scope.initDashboard = function(){
+       $scope.dashboard = {};
+       ApiCall.getDashboard(function(res) {
+         Util.alertMessage(res.Status.toLocaleLowerCase(), res.Message);
+         $scope.dashboard = res.Data;
+         $scope.dashboard.tenderStatusCount = {};
+         // getting tender status count to show in dashboard tabs
+         for(var i in $scope.dashboard.projectMilestone) {
+           if($scope.dashboard.projectMilestone[i].projectMilestoneSts == "inTime"){
+             $scope.dashboard.tenderStatusCount.inTime = $scope.dashboard.projectMilestone[i].count;
+           }
+           else if($scope.dashboard.projectMilestone[i].projectMilestoneSts == "delayed"){
+             $scope.dashboard.tenderStatusCount.delayed = $scope.dashboard.projectMilestone[i].count;
+           }
+           else if($scope.dashboard.projectMilestone[i].projectMilestoneSts == "completed"){
+             $scope.dashboard.tenderStatusCount.completed = $scope.dashboard.projectMilestone[i].count;
+           }
+         }
+       },function(err) {
+         Util.alertMessage(err.Status.toLocaleLowerCase(), res.Message);
+       })
+     }
+     $scope.getTenderByStatus = function(tenderStatus) {
+       $state.go("tenderList",{tenderStatus:tenderStatus});
+     }
     /**
-     * view user ends
+     * dashboard code ends
      *
      */
 
@@ -2423,7 +2450,6 @@ app.filter('webServiceName', function () {
       $scope.login = function(loginfrm) {
         // $rootScope.loggedin = $localStorage[Constants.getLoggedIn()] = true;
         // $state.go('dashboard');
-        console.log(loginfrm);
         ApiGenerator.getApi('login');
         UtilityService.showLoader();
         ApiCall.login(JSON.stringify($scope.user),function(response) {
@@ -2739,6 +2765,11 @@ app.filter('webServiceName', function () {
                 "method": "GET",
                 "Content-Type": "application/json"
             },
+            getDashboard: {
+                "url": "/api/dashboard",
+                "method": "GET",
+                "Content-Type": "application/json"
+            },
 
 
         }
@@ -2787,6 +2818,7 @@ app.filter('webServiceName', function () {
             changePassword: ApiGenerator.getApi('ChangePassword'),
             postProjectMileStoneReview: ApiGenerator.getApi('postProjectMileStoneReview'),
             getProjectMileStoneReview: ApiGenerator.getApi('getProjectMileStoneReview'),
+            getDashboard: ApiGenerator.getApi('getDashboard'),
           });
 
     })
@@ -2924,6 +2956,7 @@ app.filter('webServiceName', function () {
         "state" : "projectMilestone",
         "fClass" : "fa fa-th-large",
       },
+      
     ],
     ///////////
     'Admin-test' :[

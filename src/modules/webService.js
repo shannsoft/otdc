@@ -176,6 +176,11 @@ angular.module('WebService', [])
                 "method": "GET",
                 "Content-Type": "application/json"
             },
+            getDashboard: {
+                "url": "/api/dashboard",
+                "method": "GET",
+                "Content-Type": "application/json"
+            },
 
 
         }
@@ -224,6 +229,7 @@ angular.module('WebService', [])
             changePassword: ApiGenerator.getApi('ChangePassword'),
             postProjectMileStoneReview: ApiGenerator.getApi('postProjectMileStoneReview'),
             getProjectMileStoneReview: ApiGenerator.getApi('getProjectMileStoneReview'),
+            getDashboard: ApiGenerator.getApi('getDashboard'),
           });
 
     })

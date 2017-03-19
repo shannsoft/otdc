@@ -21,7 +21,6 @@ angular.module('Authentication', [])
       $scope.login = function(loginfrm) {
         // $rootScope.loggedin = $localStorage[Constants.getLoggedIn()] = true;
         // $state.go('dashboard');
-        console.log(loginfrm);
         ApiGenerator.getApi('login');
         UtilityService.showLoader();
         ApiCall.login(JSON.stringify($scope.user),function(response) {

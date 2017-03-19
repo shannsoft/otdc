@@ -80,6 +80,7 @@ app.factory('UserService',function($rootScope,$http,$localStorage,$resource,ApiG
         "state" : "projectMilestone",
         "fClass" : "fa fa-th-large",
       },
+      
     ],
     ///////////
     'Admin-test' :[

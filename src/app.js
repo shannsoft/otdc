@@ -150,6 +150,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
             templateUrl: 'src/views/Tender/tenderList.html',
             url: '/tenderList',
             controller: "TenderListController",
+            params: {tenderStatus:null},
             resolve: {
                 loggedout: checkLoggedout
             },
