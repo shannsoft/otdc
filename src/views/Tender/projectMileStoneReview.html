@@ -48,6 +48,7 @@
                       <fieldset class="form-group" ng-class="{'has-error': (projectMilestoneReviewForm.status.$invalid && projectMilestoneReviewForm.status.$touched)}">
                           <label class="control-label" for="formGroupExampleInput3">Select Status</label>
                           <select ng-model="projectMilestoneReview.status" class="form-control formInput" name="status">
+                            <option value="delayed">Select Status</option>
                             <option value="delayed">Delayed</option>
                             <option value="inTime">In Time</option>
                             <option value="completed">Completed</option>

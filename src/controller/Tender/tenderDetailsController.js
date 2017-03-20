@@ -84,7 +84,14 @@ app.controller('boqController', function ($scope,$uibModalInstance,$uibModal,ten
   $scope.boqData = tender.boqData;
   $scope.verifyBoqItem = function(boq,action) {
     if(action == "verify") {
-
+      boq.verify = 0;
+      boq.action = "item verification";
+      var data = [boq]; // sending in array as boq update requires a array
+      ApiCall.postBOQHistory(data,function(response) {
+        Util.alertMessage(response.Status.toLocaleLowerCase(),response.Message);
+      },function(err) {
+        Util.alertMessage(err.Status.toLocaleLowerCase(),err.Message);
+      })
     }
     else if(action == "cancel") {
       $uibModal.open({
@@ -94,7 +101,7 @@ app.controller('boqController', function ($scope,$uibModalInstance,$uibModal,ten
             $scope.boq = boq;
             $scope.ok = function () {
               boq.verify = 0;
-              boq.action = "Cancel Verify";
+              boq.action = "Cancel verification";
               var data = [boq]; // sending in array as boq update requires a array
               ApiCall.postBOQHistory(data,function(response) {
                 Util.alertMessage(response.Status.toLocaleLowerCase(),response.Message);

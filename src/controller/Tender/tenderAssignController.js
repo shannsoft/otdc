@@ -18,6 +18,18 @@ app.controller('TenderAssignController', function($scope, $rootScope, $state, $s
     })
   }
   $scope.assignTender = function(tenderAssignForm,tender) {
-    console.log(tenderAssignForm,tender);
+    console.log(tenderAssignForm,JSON.stringify(tender));
+
+    var obj = {
+      actType:"I",
+      tenderId:tender.tenderId,
+      vendorId:tender.vendor.vendorId,
+    }
+    ApiCall.postTenderAssign(obj,function(res) {
+      Util.alertMessage(res.Status.toLocaleLowerCase(), res.Message);
+      $state.go("tenderList");
+    },function(err) {
+      Util.alertMessage(err.Status.toLocaleLowerCase(), err.Message);
+    })
   }
 })

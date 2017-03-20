@@ -33,6 +33,10 @@
                             <input type="text" ng-model="billing.selectedTender.workDescription" ng-readonly="true" class="form-control formInput" id="formGroupExampleInput">
                         </fieldset>
                         <fieldset class="form-group">
+                            <label class="control-label" for="formGroupExampleInput">Vendor Name :</label>
+                            <input type="text" ng-model="billing.selectedTender.vendorInfo[0].vendorName" ng-readonly="true" class="form-control formInput" id="formGroupExampleInput">
+                        </fieldset>
+                        <fieldset class="form-group">
                           <div class="card card-block sameheight-item">
                               <div class="title-block">
                                   <h3 class="title">
@@ -68,7 +72,7 @@
 
                           </div>
                           <div class="form-group m-t-20">
-                            <button class="btn btn-success" ui-sref="generateBill({tender:billing.selectedTender})" ng-disabled="generateBillingForm.$invalid">Generate Bill</button>
+                            <button class="btn btn-success" ng-click="generateBill()" ng-disabled="generateBillingForm.$invalid">Generate Bill</button>
                           </div>
                           </div>
                         </fieldset>

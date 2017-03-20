@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>A simple, clean, and responsive HTML invoice template</title>
+    <title>E - Invoice</title>
 
     <style>
     .printBtn{
@@ -118,9 +118,25 @@
                     <table>
                         <tr>
                             <td>
-                                Next Step Webs, Inc.<br>
-                                12345 Sunny Road<br>
-                                Sunnyville, TX 12345
+                                <p>
+                                  <b>Vendor Details</b>
+                                </p>
+                                <hr></hr>
+                                <p>
+                                  <b>Vendor Name : </b><span id="vendorName" />
+                                </p>
+                                <p>
+                                  <b>Email : </b><span id="emailId" />
+                                </p>
+                                <p>
+                                  <b>Vendor Address : </b><span id="vendorAddress" />
+                                </p>
+                                <p>
+                                  <b>Vendor Acc No : </b><span id="vendorAccNo" />
+                                </p>
+                                <p>
+                                  <b>Vendor ifsc Code : </b><span id="vendorIfscCode" />
+                                </p>
                             </td>
 
                             <!-- <td>
@@ -132,26 +148,6 @@
                     </table>
                 </td>
             </tr>
-            <!-- <tr class="heading">
-                <td>
-                    Payment Method
-                </td>
-
-                <td>
-                    Check #
-                </td>
-            </tr>
-
-            <tr class="details">
-                <td>
-                    Check
-                </td>
-
-                <td>
-                    1000
-                </td>
-            </tr> -->
-
             <tr class="heading">
                 <td>
                     Tender Details
@@ -236,6 +232,15 @@
       $("#tenderType").text(getParameterByName('tenderType'));
       $("#category").text(getParameterByName('category'));
 
+      // getting the vendor details from object string
+      var vendor = JSON.parse(getParameterByName('vendor'));
+      $("#vendorName").text(vendor.vendorName);
+      $("#emailId").text(vendor.emailId);
+      $("#vendorAddress").text(vendor.address);
+      $("#vendorAccNo").text(vendor.accountNo);
+      $("#vendorIfscCode").text(vendor.ifscCode);
+
+      console.log("vendor"  ,vendor);
       $("#printBtn").click(function() {
         window.print();
       })

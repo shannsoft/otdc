@@ -181,6 +181,11 @@ angular.module('WebService', [])
                 "method": "GET",
                 "Content-Type": "application/json"
             },
+            postTenderAssign: {
+                "url": "/api/TenderAssignToVendor",
+                "method": "POST",
+                "Content-Type": "application/json"
+            },
 
 
         }
@@ -230,6 +235,7 @@ angular.module('WebService', [])
             postProjectMileStoneReview: ApiGenerator.getApi('postProjectMileStoneReview'),
             getProjectMileStoneReview: ApiGenerator.getApi('getProjectMileStoneReview'),
             getDashboard: ApiGenerator.getApi('getDashboard'),
+            postTenderAssign: ApiGenerator.getApi('postTenderAssign'),
           });
 
     })

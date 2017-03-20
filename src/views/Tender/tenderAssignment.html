@@ -10,7 +10,7 @@
                         Tender Assignment
                     </h3>
                 </div>
-                <form role="tenderAssignForm" ng-submit="assignTender(tenderAssignForm,tender)">
+                <form role="tenderAssignForm" name="tenderAssignForm" ng-submit="assignTender(tenderAssignForm,tender)">
                     <fieldset class="form-group">
                         <label class="control-label" for="formGroupExampleInput">Organisation Chain</label>
                         <input type="text" ng-model="tender.organizationChain" ng-readonly="isView" class="form-control" id="formGroupExampleInput">

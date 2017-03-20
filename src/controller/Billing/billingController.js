@@ -42,7 +42,19 @@ app.controller('BillingController', function($scope, $rootScope,$window, Events,
     // reload the state with new data
     $state.go($state.current, {tenderId:selectedTender.tenderId,tenderList:$scope.billing.tenderList}, {reload: true});
   }
-
+$scope.generateBill = function() {
+  var selected = false;
+  for(var i in $scope.billing.selectedTender.boqData){
+    if($scope.billing.selectedTender.boqData[i].isChecked){
+      selected = true;
+    }
+  }
+  if(!selected) {
+    Util.alertMessage('warning',"Please select Boq items");
+    return;
+  }
+  $state.go("generateBill",{tender:$scope.billing.selectedTender})
+}
 /**
 ***************************************************** Generate Billing starts ****************************************
  */
@@ -68,12 +80,14 @@ $scope.generateBillingInit = function(){
   delete $scope.generateBill.tender['boqData'];
 }
 $scope.printInvoice = function(tender) {
+  var vendorObj = tender.vendorInfo[0];
   var queryString = '';
   queryString+="invoice="+"autoGenValues"+"&";
   queryString+="createdDate="+$filter('date')(new Date(), "dd/mm/yyyy")+"&";
   queryString+="tenderId="+tender.tndId+"&";
   queryString+="tenderType="+tender.tenderType+"&";
-  queryString+="category="+tender.category;
+  queryString+="category="+tender.category+"&";
+  queryString+="vendor="+JSON.stringify(vendorObj);
   console.log("opening  "+Constants['envData']['dev']['appPath']+"/invoice.html?"+queryString);
   window.open("invoice.html?"+queryString);
 }

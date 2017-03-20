@@ -26,6 +26,41 @@
                             <label class="control-label" for="formGroupExampleInput">Tender workDescription</label>
                             <input type="text" ng-model="generateBill.tender.workDescription" ng-readonly="true" class="form-control formInput" id="formGroupExampleInput">
                         </fieldset>
+                        <!-- vendor details starts -->
+                        <fieldset class="form-group">
+                          <div class="card card-block sameheight-item">
+                              <div class="title-block">
+                                  <h3 class="title">
+                                      Vendor Details :
+                                  </h3>
+                              </div>
+                              <fieldset class="form-group">
+                                  <label class="control-label" for="formGroupExampleInput">Vendor Name :</label>
+                                  <input type="text" ng-model="generateBill.tender.vendorInfo[0].vendorName" ng-readonly="true" class="form-control formInput" id="formGroupExampleInput">
+                              </fieldset>
+                              <fieldset class="form-group">
+                                  <label class="control-label" for="formGroupExampleInput">Vendor Address :</label>
+                                  <input type="text" ng-model="generateBill.tender.vendorInfo[0].address" ng-readonly="true" class="form-control formInput" id="formGroupExampleInput">
+                              </fieldset>
+                              <fieldset class="form-group">
+                                  <label class="control-label" for="formGroupExampleInput">Vendor phoneNo :</label>
+                                  <input type="text" ng-model="generateBill.tender.vendorInfo[0].phoneNo" ng-readonly="true" class="form-control formInput" id="formGroupExampleInput">
+                              </fieldset>
+                              <fieldset class="form-group">
+                                  <label class="control-label" for="formGroupExampleInput">Vendor Account No :</label>
+                                  <input type="text" ng-model="generateBill.tender.vendorInfo[0].accountNo" ng-readonly="true" class="form-control formInput" id="formGroupExampleInput">
+                              </fieldset>
+                              <fieldset class="form-group">
+                                  <label class="control-label" for="formGroupExampleInput">Vendor Bank Name :</label>
+                                  <input type="text" ng-model="generateBill.tender.vendorInfo[0].bankName" ng-readonly="true" class="form-control formInput" id="formGroupExampleInput">
+                              </fieldset>
+                              <fieldset class="form-group">
+                                  <label class="control-label" for="formGroupExampleInput">Vendor ifscCode :</label>
+                                  <input type="text" ng-model="generateBill.tender.vendorInfo[0].ifscCode" ng-readonly="true" class="form-control formInput" id="formGroupExampleInput">
+                              </fieldset>
+                          </div>
+                        </fieldset>
+                        <!-- vendor details ends -->
                         <fieldset class="form-group">
                             <div class="card card-block sameheight-item">
                                 <div class="title-block">

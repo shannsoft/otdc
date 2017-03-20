@@ -1,4 +1,4 @@
-/*! otdc - v1.0.0 - Sun Mar 19 2017 13:40:57 */
+/*! otdc - v1.0.0 - Tue Mar 21 2017 02:04:26 */
 var dependency = [];
 // lib  dependency
 var distModules = ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate', 'ngCookies', 'ngMessages','ngTable'];
@@ -500,7 +500,19 @@ app.factory('Util', ['$rootScope', '$timeout', function($rootScope, $timeout) {
     // reload the state with new data
     $state.go($state.current, {tenderId:selectedTender.tenderId,tenderList:$scope.billing.tenderList}, {reload: true});
   }
-
+$scope.generateBill = function() {
+  var selected = false;
+  for(var i in $scope.billing.selectedTender.boqData){
+    if($scope.billing.selectedTender.boqData[i].isChecked){
+      selected = true;
+    }
+  }
+  if(!selected) {
+    Util.alertMessage('warning',"Please select Boq items");
+    return;
+  }
+  $state.go("generateBill",{tender:$scope.billing.selectedTender})
+}
 /**
 ***************************************************** Generate Billing starts ****************************************
  */
@@ -526,12 +538,14 @@ $scope.generateBillingInit = function(){
   delete $scope.generateBill.tender['boqData'];
 }
 $scope.printInvoice = function(tender) {
+  var vendorObj = tender.vendorInfo[0];
   var queryString = '';
   queryString+="invoice="+"autoGenValues"+"&";
   queryString+="createdDate="+$filter('date')(new Date(), "dd/mm/yyyy")+"&";
   queryString+="tenderId="+tender.tndId+"&";
   queryString+="tenderType="+tender.tenderType+"&";
-  queryString+="category="+tender.category;
+  queryString+="category="+tender.category+"&";
+  queryString+="vendor="+JSON.stringify(vendorObj);
   console.log("opening  "+Constants['envData']['dev']['appPath']+"/invoice.html?"+queryString);
   window.open("invoice.html?"+queryString);
 }
@@ -1096,7 +1110,19 @@ app.controller('reviewHistoryController', function ($scope, $state,$uibModalInst
     })
   }
   $scope.assignTender = function(tenderAssignForm,tender) {
-    console.log(tenderAssignForm,tender);
+    console.log(tenderAssignForm,JSON.stringify(tender));
+
+    var obj = {
+      actType:"I",
+      tenderId:tender.tenderId,
+      vendorId:tender.vendor.vendorId,
+    }
+    ApiCall.postTenderAssign(obj,function(res) {
+      Util.alertMessage(res.Status.toLocaleLowerCase(), res.Message);
+      $state.go("tenderList");
+    },function(err) {
+      Util.alertMessage(err.Status.toLocaleLowerCase(), err.Message);
+    })
   }
 })
 ;app.controller('TenderDetailsController', function($scope, $rootScope, $state,$uibModal, $stateParams, ApiCall,Util, EnvService, $timeout, $cookieStore, $localStorage) {
@@ -1179,7 +1205,14 @@ app.controller('boqController', function ($scope,$uibModalInstance,$uibModal,ten
   $scope.boqData = tender.boqData;
   $scope.verifyBoqItem = function(boq,action) {
     if(action == "verify") {
-
+      boq.verify = 0;
+      boq.action = "item verification";
+      var data = [boq]; // sending in array as boq update requires a array
+      ApiCall.postBOQHistory(data,function(response) {
+        Util.alertMessage(response.Status.toLocaleLowerCase(),response.Message);
+      },function(err) {
+        Util.alertMessage(err.Status.toLocaleLowerCase(),err.Message);
+      })
     }
     else if(action == "cancel") {
       $uibModal.open({
@@ -1189,7 +1222,7 @@ app.controller('boqController', function ($scope,$uibModalInstance,$uibModal,ten
             $scope.boq = boq;
             $scope.ok = function () {
               boq.verify = 0;
-              boq.action = "Cancel Verify";
+              boq.action = "Cancel verification";
               var data = [boq]; // sending in array as boq update requires a array
               ApiCall.postBOQHistory(data,function(response) {
                 Util.alertMessage(response.Status.toLocaleLowerCase(),response.Message);
@@ -2770,6 +2803,11 @@ app.filter('webServiceName', function () {
                 "method": "GET",
                 "Content-Type": "application/json"
             },
+            postTenderAssign: {
+                "url": "/api/TenderAssignToVendor",
+                "method": "POST",
+                "Content-Type": "application/json"
+            },
 
 
         }
@@ -2819,6 +2857,7 @@ app.filter('webServiceName', function () {
             postProjectMileStoneReview: ApiGenerator.getApi('postProjectMileStoneReview'),
             getProjectMileStoneReview: ApiGenerator.getApi('getProjectMileStoneReview'),
             getDashboard: ApiGenerator.getApi('getDashboard'),
+            postTenderAssign: ApiGenerator.getApi('postTenderAssign'),
           });
 
     })
