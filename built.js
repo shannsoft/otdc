@@ -1,4 +1,4 @@
-/*! otdc - v1.0.0 - Sat Mar 25 2017 11:43:45 */
+/*! otdc - v1.0.0 - Sat Mar 25 2017 12:16:13 */
 var dependency = [];
 // lib  dependency
 var distModules = ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate', 'ngCookies', 'ngMessages','ngTable'];
@@ -406,12 +406,15 @@ app.factory('Util', ['$rootScope', '$timeout', function($rootScope, $timeout) {
     Util.alertMessage = function(msgType, message) {
         if (msgType == "failed")
             msgType = "warning";
+        if (msgType == "ok")
+            msgType = "success";
         var alert = {
             type: msgType,
             msg: message
         };
         switch (msgType) {
           case "success":
+          case "ok":
             alert.msg = alert.msg || "success";
             break;
           case "failed":
@@ -1199,7 +1202,7 @@ app.controller('reviewHistoryController', function ($scope, $state,$uibModalInst
  * boqController
  * Info : used to show the boq data in the modal
  */
-app.controller('boqController', function ($scope,$uibModalInstance,$uibModal,tender,Util,ApiCall,UtilityService) {
+app.controller('boqController', function ($rootScope,$scope,$uibModalInstance,$uibModal,tender,Util,ApiCall,UtilityService) {
   $scope.boqUpdateArr = [];
   $scope.tender = tender;
   $scope.boqData = tender.boqData;
@@ -1249,9 +1252,12 @@ app.controller('boqController', function ($scope,$uibModalInstance,$uibModal,ten
   $scope.UtilityService = UtilityService;
   // used to update the boq data of the indivisual row
   $scope.updateBoqData = function(){
+    $rootScope.showPreloader = true;
     ApiCall.postBOQHistory($scope.boqUpdateArr,function(response) {
+      $rootScope.showPreloader = false;
       Util.alertMessage(response.Status.toLocaleLowerCase(),response.Message);
     },function(err) {
+      $rootScope.showPreloader = false;
       Util.alertMessage(err.Status.toLocaleLowerCase(),err.Message);
     })
   }

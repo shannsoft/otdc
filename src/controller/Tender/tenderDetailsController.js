@@ -78,7 +78,7 @@ app.controller('TenderDetailsController', function($scope, $rootScope, $state,$u
  * boqController
  * Info : used to show the boq data in the modal
  */
-app.controller('boqController', function ($scope,$uibModalInstance,$uibModal,tender,Util,ApiCall,UtilityService) {
+app.controller('boqController', function ($rootScope,$scope,$uibModalInstance,$uibModal,tender,Util,ApiCall,UtilityService) {
   $scope.boqUpdateArr = [];
   $scope.tender = tender;
   $scope.boqData = tender.boqData;
@@ -128,9 +128,12 @@ app.controller('boqController', function ($scope,$uibModalInstance,$uibModal,ten
   $scope.UtilityService = UtilityService;
   // used to update the boq data of the indivisual row
   $scope.updateBoqData = function(){
+    $rootScope.showPreloader = true;
     ApiCall.postBOQHistory($scope.boqUpdateArr,function(response) {
+      $rootScope.showPreloader = false;
       Util.alertMessage(response.Status.toLocaleLowerCase(),response.Message);
     },function(err) {
+      $rootScope.showPreloader = false;
       Util.alertMessage(err.Status.toLocaleLowerCase(),err.Message);
     })
   }

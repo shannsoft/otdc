@@ -405,12 +405,15 @@ app.factory('Util', ['$rootScope', '$timeout', function($rootScope, $timeout) {
     Util.alertMessage = function(msgType, message) {
         if (msgType == "failed")
             msgType = "warning";
+        if (msgType == "ok")
+            msgType = "success";
         var alert = {
             type: msgType,
             msg: message
         };
         switch (msgType) {
           case "success":
+          case "ok":
             alert.msg = alert.msg || "success";
             break;
           case "failed":
