@@ -1,15 +1,17 @@
 
-app.directive('fileSelect', ['$parse', function ($parse) {
+app.directive('fileSelect', ['$parse','$rootScope', function ($parse,$rootScope) {
 	return {
 	   restrict: 'EA',
 	   link: function(scope, element, attrs) {
 		  var model = $parse(attrs.fileSelect);
 		  var modelSetter = model.assign;
 		  element.bind('change', function(){
+			 $rootScope.showPreloader = true;
 			 var fr = new FileReader();
 			 var file  = element[0].files[0];
 			 fr.onloadend = function () {
-                var result = this.result;
+				 $rootScope.showPreloader = false;
+        var result = this.result;
 				var obj = {
 					fileName : file.name,
 					InputStream : result.split(";base64,")[1]

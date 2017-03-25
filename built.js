@@ -1,4 +1,4 @@
-/*! otdc - v1.0.0 - Tue Mar 21 2017 02:19:45 */
+/*! otdc - v1.0.0 - Sat Mar 25 2017 11:43:45 */
 var dependency = [];
 // lib  dependency
 var distModules = ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate', 'ngCookies', 'ngMessages','ngTable'];
@@ -2310,17 +2310,19 @@ app.controller('deleteVendorModalCtrl', function ($scope, $uibModalInstance,vend
   }
 }])
 ;
-app.directive('fileSelect', ['$parse', function ($parse) {
+app.directive('fileSelect', ['$parse','$rootScope', function ($parse,$rootScope) {
 	return {
 	   restrict: 'EA',
 	   link: function(scope, element, attrs) {
 		  var model = $parse(attrs.fileSelect);
 		  var modelSetter = model.assign;
 		  element.bind('change', function(){
+			 $rootScope.showPreloader = true;
 			 var fr = new FileReader();
 			 var file  = element[0].files[0];
 			 fr.onloadend = function () {
-                var result = this.result;
+				 $rootScope.showPreloader = false;
+        var result = this.result;
 				var obj = {
 					fileName : file.name,
 					InputStream : result.split(";base64,")[1]

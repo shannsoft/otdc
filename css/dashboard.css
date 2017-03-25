@@ -11,6 +11,8 @@ float: left;
 background-color: white;
 margin: 25px 15px;
 border-radius: 5px;
+min-height: 150px;
+min-width: : 324px;
 }
 .box h3{
   font-family: 'Didact Gothic', sans-serif;
