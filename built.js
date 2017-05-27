@@ -1,4 +1,4 @@
-/*! otdc - v1.0.0 - Sat Mar 25 2017 12:16:13 */
+/*! otdc - v1.0.0 - Sat May 27 2017 13:24:33 */
 var dependency = [];
 // lib  dependency
 var distModules = ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate', 'ngCookies', 'ngMessages','ngTable'];
@@ -1697,6 +1697,7 @@ app.controller('boqHistoryController', function ($scope,$uibModalInstance,tender
         ApiCall.changePassword(obj, function(response) {
                 UtilityService.hideLoader();
                 Util.alertMessage("success", "Password Changed");
+                $state.go("dashboard");
             },
             function(error) {
                 UtilityService.hideLoader();
@@ -2937,13 +2938,18 @@ app.filter('webServiceName', function () {
         "fClass" : "fa fa-home",
       },
       {
-        "label" : "Tender Management",
-        "state" : "tenderList",
-        "fClass" : "fa fa-home",
+        "label" : "Role Management",
+        "state" : "role_management",
+        "fClass" : "fa fa-th-large",
       },
       {
         "label" : "User Management",
         "state" : "UserList",
+        "fClass" : "fa fa-th-large",
+      },
+      {
+        "label" : "Permission Management",
+        "state" : "permissionManagement",
         "fClass" : "fa fa-th-large",
       },
       {
@@ -2952,20 +2958,19 @@ app.filter('webServiceName', function () {
         "fClass" : "fa fa-home",
       },
       {
+        "label" : "Tender Management",
+        "state" : "tenderList",
+        "fClass" : "fa fa-home",
+      },
+
+
+      {
         "label" : "Tender Milestone",
         "state" : "tenderMilestone",
         "fClass" : "fa fa-th-large",
       },
-      {
-        "label" : "Role Management",
-        "state" : "role_management",
-        "fClass" : "fa fa-th-large",
-      },
-      {
-        "label" : "Permission Management",
-        "state" : "permissionManagement",
-        "fClass" : "fa fa-th-large",
-      },
+
+
       {
         "label" : "Project Milestone",
         "state" : "projectMilestone",
@@ -3003,7 +3008,7 @@ app.filter('webServiceName', function () {
         "state" : "projectMilestone",
         "fClass" : "fa fa-th-large",
       },
-      
+
     ],
     ///////////
     'Admin-test' :[

@@ -14,13 +14,18 @@ app.factory('UserService',function($rootScope,$http,$localStorage,$resource,ApiG
         "fClass" : "fa fa-home",
       },
       {
-        "label" : "Tender Management",
-        "state" : "tenderList",
-        "fClass" : "fa fa-home",
+        "label" : "Role Management",
+        "state" : "role_management",
+        "fClass" : "fa fa-th-large",
       },
       {
         "label" : "User Management",
         "state" : "UserList",
+        "fClass" : "fa fa-th-large",
+      },
+      {
+        "label" : "Permission Management",
+        "state" : "permissionManagement",
         "fClass" : "fa fa-th-large",
       },
       {
@@ -29,20 +34,19 @@ app.factory('UserService',function($rootScope,$http,$localStorage,$resource,ApiG
         "fClass" : "fa fa-home",
       },
       {
+        "label" : "Tender Management",
+        "state" : "tenderList",
+        "fClass" : "fa fa-home",
+      },
+
+
+      {
         "label" : "Tender Milestone",
         "state" : "tenderMilestone",
         "fClass" : "fa fa-th-large",
       },
-      {
-        "label" : "Role Management",
-        "state" : "role_management",
-        "fClass" : "fa fa-th-large",
-      },
-      {
-        "label" : "Permission Management",
-        "state" : "permissionManagement",
-        "fClass" : "fa fa-th-large",
-      },
+
+
       {
         "label" : "Project Milestone",
         "state" : "projectMilestone",
@@ -80,7 +84,7 @@ app.factory('UserService',function($rootScope,$http,$localStorage,$resource,ApiG
         "state" : "projectMilestone",
         "fClass" : "fa fa-th-large",
       },
-      
+
     ],
     ///////////
     'Admin-test' :[

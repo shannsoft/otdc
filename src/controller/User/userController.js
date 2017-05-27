@@ -65,6 +65,7 @@ app.controller('UserController', function($scope, $rootScope, $state,$stateParam
         ApiCall.changePassword(obj, function(response) {
                 UtilityService.hideLoader();
                 Util.alertMessage("success", "Password Changed");
+                $state.go("dashboard");
             },
             function(error) {
                 UtilityService.hideLoader();
