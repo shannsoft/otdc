@@ -66,7 +66,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         return deferred.promise;
     };
 
-    function checkLoggedout($q, $timeout, $http, $location, $rootScope, $state, ApiCall,$localStorage, AppModel,Constants, UserService,Events) {
+    function checkLoggedout($q, $timeout, $http, $location, $rootScope, $state, ApiCall,$localStorage, AppModel,Constants, UserService,Events,Util) {
         var deferred = $q.defer();
         var obj = {
             TokenId: $localStorage[Constants.getTokenKey()]

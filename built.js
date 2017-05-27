@@ -1,4 +1,4 @@
-/*! otdc - v1.0.0 - Sat May 27 2017 13:24:33 */
+/*! otdc - v1.0.0 - Sat May 27 2017 23:55:04 */
 var dependency = [];
 // lib  dependency
 var distModules = ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate', 'ngCookies', 'ngMessages','ngTable'];
@@ -67,7 +67,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         return deferred.promise;
     };
 
-    function checkLoggedout($q, $timeout, $http, $location, $rootScope, $state, ApiCall,$localStorage, AppModel,Constants, UserService,Events) {
+    function checkLoggedout($q, $timeout, $http, $location, $rootScope, $state, ApiCall,$localStorage, AppModel,Constants, UserService,Events,Util) {
         var deferred = $q.defer();
         var obj = {
             TokenId: $localStorage[Constants.getTokenKey()]
@@ -447,6 +447,9 @@ app.factory('Util', ['$rootScope', '$timeout', function($rootScope, $timeout) {
         "getPassword" : function() {return this.storagePrefix + "password";},
         "getIsRemember" : function() {return this.storagePrefix + "isRemember";},
         "hashKey" : "goAppOTDC",
+        "assets":{
+          "boqSample":"assets/tender/boqSample.jpg"
+        },
         "envData" : {
           "env":"dev",
           "dev" : {

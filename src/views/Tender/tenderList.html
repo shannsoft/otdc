@@ -13,7 +13,7 @@
                                         <td data-title="'Sl No'" >{{ ( (tableParams.page() - 1) * tableParams.count() )+($index + 1)}}</td>
                                         <td data-title="'Tender Id'" filter="{tndId: 'text'}" sortable="'tndId'">{{row.tndId}}</td>
                                         <td data-title="'Reference No'" filter="{referenceNo: 'text'}" sortable="'referenceNo'">{{row.referenceNo}}</td>
-                                        <td data-title="'Reference Id'" filter="{referenceId: 'text'}" sortable="'referenceId'">{{row.referenceId}}</td>
+                                        <!-- <td data-title="'Reference Id'" filter="{referenceId: 'text'}" sortable="'referenceId'">{{row.referenceId}}</td> -->
                                         <td data-title="'Tender Type'" filter="{ tenderType: 'text'}"  sortable="'tenderType'">{{row.tenderType}}</td>
                                         <!-- <td data-title="'Tender Type'" filter="{tenderType: 'text'}" sortable="'tenderType'">{{row.tenderType}}</td> -->
 
@@ -24,7 +24,7 @@
                                             <div class="col-md-2 col-sm-2" ng-click="onAction('view',row)">
                                               <em class="fa fa-eye"></em>View
                                             </div>
-                                            <div class="col-md-2 col-sm-2" ng-click="onAction('edit',row)">
+                                            <div class="col-md-2 col-sm-2" ng-if="row.isFreeze != 'YES'" ng-click="onAction('edit',row)">
                                               <em class="fa fa-edit"></em>Edit
                                             </div>
                                             <div class="col-md-2 col-sm-2" ng-if="!row.assignedToVendor" ng-click="onAction('assign',row)">

@@ -11,6 +11,9 @@ app.constant("Constants", {
         "getPassword" : function() {return this.storagePrefix + "password";},
         "getIsRemember" : function() {return this.storagePrefix + "isRemember";},
         "hashKey" : "goAppOTDC",
+        "assets":{
+          "boqSample":"assets/tender/boqSample.jpg"
+        },
         "envData" : {
           "env":"dev",
           "dev" : {

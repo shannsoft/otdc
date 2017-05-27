@@ -50,7 +50,7 @@ module.exports = function(grunt) {
         },
         open: {
             dev: {
-                path: 'http://localhost/external_projects/otdc/index.html',
+                path: 'http://localhost/otdc/index.html',
                 appName:'Google Chrome',
             }
 
@@ -144,7 +144,7 @@ module.exports = function(grunt) {
                     {
                         expand: true,
                         // flatten: true,
-                        src: ['index.html','invoice.html'],
+                        src: ['index.html','invoice.html','boq-sample.jpg'],
                         dest: 'build/',
                         filter: 'isFile'
                     }, {
