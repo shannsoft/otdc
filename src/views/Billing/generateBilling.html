@@ -36,27 +36,27 @@
                               </div>
                               <fieldset class="form-group">
                                   <label class="control-label" for="formGroupExampleInput">Vendor Name :</label>
-                                  <input type="text" ng-model="generateBill.tender.vendorInfo[0].vendorName" ng-readonly="true" class="form-control formInput" id="formGroupExampleInput">
+                                  <input type="text" ng-model="generateBill.tender.selectedVendor.vendorName" ng-readonly="true" class="form-control formInput" id="formGroupExampleInput">
                               </fieldset>
                               <fieldset class="form-group">
                                   <label class="control-label" for="formGroupExampleInput">Vendor Address :</label>
-                                  <input type="text" ng-model="generateBill.tender.vendorInfo[0].address" ng-readonly="true" class="form-control formInput" id="formGroupExampleInput">
+                                  <input type="text" ng-model="generateBill.tender.selectedVendor.address" ng-readonly="true" class="form-control formInput" id="formGroupExampleInput">
                               </fieldset>
                               <fieldset class="form-group">
                                   <label class="control-label" for="formGroupExampleInput">Vendor phoneNo :</label>
-                                  <input type="text" ng-model="generateBill.tender.vendorInfo[0].phoneNo" ng-readonly="true" class="form-control formInput" id="formGroupExampleInput">
+                                  <input type="text" ng-model="generateBill.tender.selectedVendor.phoneNo" ng-readonly="true" class="form-control formInput" id="formGroupExampleInput">
                               </fieldset>
                               <fieldset class="form-group">
                                   <label class="control-label" for="formGroupExampleInput">Vendor Account No :</label>
-                                  <input type="text" ng-model="generateBill.tender.vendorInfo[0].accountNo" ng-readonly="true" class="form-control formInput" id="formGroupExampleInput">
+                                  <input type="text" ng-model="generateBill.tender.selectedVendor.accountNo" ng-readonly="true" class="form-control formInput" id="formGroupExampleInput">
                               </fieldset>
                               <fieldset class="form-group">
                                   <label class="control-label" for="formGroupExampleInput">Vendor Bank Name :</label>
-                                  <input type="text" ng-model="generateBill.tender.vendorInfo[0].bankName" ng-readonly="true" class="form-control formInput" id="formGroupExampleInput">
+                                  <input type="text" ng-model="generateBill.tender.selectedVendor.bankName" ng-readonly="true" class="form-control formInput" id="formGroupExampleInput">
                               </fieldset>
                               <fieldset class="form-group">
                                   <label class="control-label" for="formGroupExampleInput">Vendor ifscCode :</label>
-                                  <input type="text" ng-model="generateBill.tender.vendorInfo[0].ifscCode" ng-readonly="true" class="form-control formInput" id="formGroupExampleInput">
+                                  <input type="text" ng-model="generateBill.tender.selectedVendor.ifscCode" ng-readonly="true" class="form-control formInput" id="formGroupExampleInput">
                               </fieldset>
                           </div>
                         </fieldset>
@@ -90,15 +90,15 @@
                             <table class="billing-glance">
                               <tr>
                                 <td>Total Price </td>
-                                <td>1000</td>
+                                <td>{{generateBill.sumTotal}}</td>
                               </tr>
                               <tr>
                                 <td>Income tax : </td>
-                                <td> - 1%</td>
+                                <td> - {{generateBill.incomeTax}}%</td>
                               </tr>
                               <tr>
                                 <td>Service tax : </td>
-                                <td> - 2%</td>
+                                <td> - {{generateBill.serviceTax}}%</td>
                               </tr>
                               <tr></tr>
                               <tr></tr>
@@ -107,8 +107,8 @@
                                 <td><hr></td>
                               </tr>
                               <tr>
-                                <td>Total : </td>
-                                <td> 900</td>
+                                <td>Total After Tax: </td>
+                                <td>&nbsp&nbsp{{generateBill.grandTotal}}</td>
                               </tr>
                             </table>
                         </fieldset>

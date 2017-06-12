@@ -31,9 +31,9 @@ $scope.addTendor = function(addTendorForm,tender) {
   console.log(JSON.stringify(tender));
   $rootScope.showPreloader = true;
   ApiCall.postTendor(tender,function(res) {
-    $state.go("tenderList");
-    $rootScope.showPreloader = false;
     Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
+    $rootScope.showPreloader = false;
+    $state.go("tenderList");
   }, function(err) {
     $rootScope.showPreloader = false;
     Util.alertMessage(err.Status.toLocaleLowerCase(),err.Message);

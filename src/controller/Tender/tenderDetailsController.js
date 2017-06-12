@@ -78,14 +78,15 @@ app.controller('TenderDetailsController', function($scope, $rootScope, $state,$u
  * boqController
  * Info : used to show the boq data in the modal
  */
-app.controller('boqController', function ($rootScope,$scope,$uibModalInstance,$uibModal,tender,Util,ApiCall,UtilityService) {
+app.controller('boqController', function ($rootScope,$scope,$uibModalInstance,$uibModal,tender,Util,ApiCall,UtilityService,UserService) {
   $scope.boqUpdateArr = [];
   $scope.tender = tender;
   $scope.boqData = tender.boqData;
   $scope.verifyBoqItem = function(boq,action) {
     if(action == "verify") {
-      boq.verify = 0;
-      boq.action = "item verification";
+      boq.verify = 2;
+      boq.action = "Item verification";
+      boq.verifyUserId = UserService.getUser().userId;
       var data = [boq]; // sending in array as boq update requires a array
       ApiCall.postBOQHistory(data,function(response) {
         Util.alertMessage(response.Status.toLocaleLowerCase(),response.Message);
@@ -100,8 +101,9 @@ app.controller('boqController', function ($rootScope,$scope,$uibModalInstance,$u
           controller: function($scope,boq,$uibModalInstance,Util,ApiCall) {
             $scope.boq = boq;
             $scope.ok = function () {
-              boq.verify = 0;
+              boq.verify = 3;
               boq.action = "Cancel verification";
+              boq.verifyUserId = UserService.getUser().userId;
               var data = [boq]; // sending in array as boq update requires a array
               ApiCall.postBOQHistory(data,function(response) {
                 Util.alertMessage(response.Status.toLocaleLowerCase(),response.Message);
@@ -155,6 +157,23 @@ app.controller('boqController', function ($rootScope,$scope,$uibModalInstance,$u
     angular.forEach($scope.boqData,function(boqData) {
       boqData == boq ? boq.isEdit = true : boqData.isEdit = false;
     })
+  }
+  /**
+   * functionName :allowBoqEdit
+   * Info : return true if the user  is JE (junior Engg.)
+   * output bookean
+
+   */
+  $scope.validateBoqPermission = function(permissionType){
+    var boqPermission = {
+      "updateQuantity" : ["Junior Engineer"],
+      "verifyQuantity" : ["SUPER ADMIN","Executive Engineer","Assistant Engineer","Superintendent Engineer","Managing Director"]
+    }
+    var designation = UserService.getUser().designation;
+    if(boqPermission[permissionType].indexOf(designation) != -1){
+      return true;
+    }
+    return false;
   }
   $scope.updateAmount = function(boq,param) {
     if(!boq.count || isNaN(boq.count)){
@@ -221,6 +240,18 @@ app.controller('boqHistoryController', function ($scope,$uibModalInstance,tender
       }
     })
     $scope.userDetails = data;
+  }
+  $scope.updateVerifyingUserDetails = function(data) {
+    // close all the pop up
+    angular.forEach($scope.boqHistory,function(v,k) {
+      if(data == v) {
+        v.isVerifyUserOpen = !v.isVerifyUserOpen;
+      }
+      else {
+        v.isVerifyUserOpen = false;
+      }
+    })
+    $scope.verifiedUserDetails = data;
   }
   ApiCall.getBOQHistory(data,function(response) {
     $scope.boqHistory = response.Data;

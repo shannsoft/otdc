@@ -5,36 +5,51 @@
                 <!-- Nav tabs -->
                 <div class="card-title-block">
                     <h3 class="title">
-                        Confugrations
+                        configuration
                     </h3>
                 </div>
                 <ul class="nav nav-tabs nav-tabs-bordered">
                     <li class="nav-item">
                         <a href="" class="nav-link" ng-class="currTab == 0 ? 'active' : '' " ng-click="tabChange(0)" data-target="#tender" data-toggle="tab" aria-controls="tender" role="tab" aria-expanded="{{currTab == 0 ? 'true' : 'false' }}">Tender</a>
                     </li>
-                    <!-- <li class="nav-item">
-                        <a href="" class="nav-link" ng-class="currTab == 1 ? 'active' : '' " ng-click="tabChange(1)" data-target="#editProfile" aria-controls="editProfile" data-toggle="tab" role="tab" aria-expanded="{{currTab == 1 ? 'true' : 'false' }}">Edit Profile</a>
+                   <li class="nav-item">
+                        <a href="" class="nav-link" ng-class="currTab == 1 ? 'active' : '' " ng-click="tabChange(1)" data-target="#billing" aria-controls="billing" data-toggle="tab" role="tab" aria-expanded="{{currTab == 1 ? 'true' : 'false' }}">Billing</a>
                     </li>
-                    <li class="nav-item">
+                      <!--<li class="nav-item">
                         <a href="" class="nav-link" ng-class="currTab == 2 ? 'active' : '' " ng-click="tabChange(2)" data-target="#changePassword" aria-controls="changePassword" data-toggle="tab" role="tab" aria-expanded="{{currTab == 2 ? 'true' : 'false' }}">Change Password</a> -->
 
                 </ul>
                 <!-- Tab panes -->
                 <div class="tab-content tabs-bordered">
                     <div class="tab-pane fade" ng-class="currTab == 0 ? 'active in' : '' " aria-expanded="{{currTab == 0 ? 'true' : 'false' }}" id="tender">
-                        <form role="form" name="tenderConfugrationForm">
+                        <form role="tenderConfugrationForm" name="tenderConfugrationForm">
                             <fieldset class="form-group">
                                 <label class="control-label" for="inputSuccess1">Service Tax</label>
-                                <input type="text"  ng-model="confugration.tender.serviceTax" class="form-control underlined formInput" id="inputSuccess1">
+                                <input type="text" name="serviceTax" numbers-only ng-model="configuration.tender.serviceTax" class="form-control underlined formInput" id="inputSuccess1" required>
                                 <!-- <span class="">Success message.</span> -->
                             </fieldset>
                             <fieldset class="form-group">
                                 <label class="control-label" for="inputSuccess1">Income Tax</label>
-                                <input type="text"  ng-model="confugration.tender.incomeTax" class="form-control underlined formInput" id="inputSuccess1">
+                                <input type="text"  name="incomeTax" numbers-only ng-model="configuration.tender.incomeTax" class="form-control underlined formInput" id="inputSuccess1" required>
                                 <!-- <span class="">Success message.</span> -->
                             </fieldset>
                             <fieldset class="form-group">
-                                <button type="submit" class="btn btn-primary" ng-disabled="tenderConfugrationForm.$invalid" ng-click="saveConfugration(0)">Submit</button>
+                                <button type="submit" class="btn btn-primary" ng-disabled="tenderConfugrationForm.$invalid" ng-click="saveConfugration(0,tenderConfugrationForm)">Submit{{tenderConfugrationForm.$invalid}}</button>
+                                <button type="button" class="btn btn-secondary-outline" history>Cancel</button>
+                            </fieldset>
+                        </form>
+                    </div>
+
+                    <div class="tab-pane fade" ng-class="currTab == 1 ? 'active in' : '' " aria-expanded="{{currTab == 1 ? 'true' : 'false' }}" id="billing" ng-init="billingConfigInit()">
+                        <form role="form" name="tenderConfugrationForm">
+
+                            <fieldset class="form-group" ng-repeat="designation in designations">
+                                <label class="control-label" for="inputSuccess1">{{designation.designationName}}</label>
+                                <input type="text"  numbers-only ng-model="designation.limit" class="form-control underlined formInput" id="inputSuccess1">
+                            </fieldset>
+
+                            <fieldset class="form-group">
+                                <button type="submit" class="btn btn-primary"  ng-click="saveConfugration(1)">Submit</button>
                                 <button type="button" class="btn btn-secondary-outline" history>Cancel</button>
                             </fieldset>
                         </form>

@@ -7,8 +7,15 @@
     </div>
     <nav class="menu">
       <ul class="nav metismenu" id="sidebar-menu" >
-        <li ng-repeat="side in sideBar"  ng-class="side.activeClass">
-          <a ui-sref="{{side.state}}"> <i class="{{side.fClass}}"></i>{{side.label}}</a>
+        <li ng-repeat="side in sideBar"  class="{{side.activeClass}}"  ng-class="{'open':side.menuOpen}">
+          <a ui-sref="{{side.state}}"> <i class="{{side.fClass}}"></i>{{side.label}} <i ng-click="toggleSubmenu(side)" ng-show="{{side.subMenu.length > 0}}" class="fa arrow"></i></a>
+          <ul class="collapse" ng-class="{'in':side.subMenuOpen}">
+                <li ng-repeat="subMenu in  side.subMenu ">
+                  <a ui-sref="subMenu.state">
+    								{{subMenu.label}}
+    							</a>
+                </li>
+          </ul>
         </li>
       </ul>
     </nav>

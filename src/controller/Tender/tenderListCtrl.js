@@ -6,6 +6,9 @@ app.controller('TenderListController', function($scope, $rootScope,$stateParams,
       if($stateParams.tenderStatus){
         obj.tenderStatus = $stateParams.tenderStatus;
       }
+      if($stateParams.Tenderids){
+        obj.Tenderids = $stateParams.Tenderids;
+      }
       ApiCall.getTendor(obj,function(res) {
         $scope.tenders = res.Data;
         $scope.tableParams = new NgTableParams();

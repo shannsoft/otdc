@@ -187,6 +187,12 @@ angular.module('WebService', [])
                 "Content-Type": "application/json"
             },
 
+            postBillingAuth: {
+                "url": "/api/_Billing_Auth",
+                "method": "POST",
+                "Content-Type": "application/json"
+            },
+
 
         }
     })
@@ -236,6 +242,7 @@ angular.module('WebService', [])
             getProjectMileStoneReview: ApiGenerator.getApi('getProjectMileStoneReview'),
             getDashboard: ApiGenerator.getApi('getDashboard'),
             postTenderAssign: ApiGenerator.getApi('postTenderAssign'),
+            postBillingAuth: ApiGenerator.getApi('postBillingAuth'),
           });
 
     })

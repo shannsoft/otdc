@@ -13,6 +13,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
                 config.headers = config.headers || {};
                 // config.headers['Authorization'] = 'bearer '+$localStorage[Constants.getTokenKey()];
                 config.headers['tokenID'] = $localStorage[Constants.getTokenKey()];
+                // config.headers['Content-Type'] = 'application/json';
                 // adding the db routing dynamically from url
                 if($location.$$host.indexOf("otdctender.in") !== -1) {
                   config.headers['server'] = 2;
@@ -46,6 +47,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
                 $timeout(function() {
                     $rootScope.loggedin = $localStorage[Constants.getLoggedIn()] = true;
                     UserService.setUser(response.Data);
+                    console.log("UserService.setUser(response.Data);  ",UserService.getUser(response.Data));
                     deferred.resolve();
                     $state.go('dashboard',{role:UserService.getRole()});
                 }, 100);
@@ -76,6 +78,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
               $timeout(function() {
                 $rootScope.loggedin = $localStorage[Constants.getLoggedIn()];
                 UserService.setUser(response.Data);
+                  //console.log("UserService.setUser(response.Data);  ",UserService.getUser(response.Data));
                 // UserService.authorisedApi('Login','post',function(result) {
                 //   console.log("web serviceCall validated as ",result);
                 // });
@@ -150,11 +153,20 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
             templateUrl: 'src/views/Tender/tenderList.html',
             url: '/tenderList',
             controller: "TenderListController",
-            params: {tenderStatus:null},
+            params: {tenderStatus:null,Tenderids:null},
             resolve: {
                 loggedout: checkLoggedout
             },
         })
+        // .state('tenderList', {
+        //     templateUrl: 'src/views/Tender/tenderList.html',
+        //     url: '/tenderList/:ids',
+        //     controller: "TenderListController",
+        //     params: {tenderStatus:null},
+        //     resolve: {
+        //         loggedout: checkLoggedout
+        //     },
+        // })
         .state('tenderDetails', {
             templateUrl: 'src/views/Tender/TenderDetails.html',
             url: '/tenderDetails/:tenderId',

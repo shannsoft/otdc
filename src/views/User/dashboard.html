@@ -1,41 +1,76 @@
 <article class="content dashboard-page m-h-900" ng-init="initDashboard()">
     <section class="section">
-        <div class="wrap">
-            <div class="box box1 shadow1 pointer" ng-click="getTenderByStatus()">
-                <h3>On Going Project</h3>
-            </div>
-            <!-- <div class="box box1 shadow2 pointer">
-                <h3>Completed Tender</h3>
-            </div> -->
-            <div class="box box1 shadow3 projectAppr pointer">
-                <h5>Project For My Approval (3)</h5>
-                <div class="row clearfix fff">
-                    <div class="col-sm-6">
-                        Boq verification approval (2)
-                    </div>
-                    <div class="col-sm-6">
-                        Billing verification approval (1)
-                    </div>
-                </div>
-            </div>
-            <div class="box box2 shadow4 pointer" ng-click="getTenderByStatus('inTime')">
-                <h3>On Time Projects ({{dashboard.tenderStatusCount.inTime}})</h3>
-            </div>
-            <div class="box box2 shadow5 pointer" ng-click="getTenderByStatus('delayed')">
-                <h3>Delayed Projects ({{dashboard.tenderStatusCount.delayed}})</h3>
-            </div>
-            <div class="box box2 shadow6 pointer">
-                <h3>Billing Report</h3>
-            </div>
-            <!-- <div class="box box1 shadow6 pointer">
-                <h3>Tender Aging Report</h3>
-            </div> -->
-            <!-- <div class="box box1 shadow6">
-                <h3>Billing Ageing Report</h3>
-            </div> -->
-            <div class="box box1 shadow6 pointer" ng-click="getTenderByStatus('completed')">
-                <h3>Completed Projects ({{dashboard.tenderStatusCount.completed}})</h3>
-            </div>
+      <div class="wrap">
+       <div class="row">
+          <div class="col-md-3 col-lg-3 col-sm-3 box box1 shadow1 pointer" ng-click="getTenderByStatus()">
+              <h3>On Going Project</h3>
+          </div>
+          <!-- <div class="box box1 shadow2 pointer">
+              <h3>Completed Tender</h3>
+          </div> -->
+          <div class="col-md-6 col-lg-6 col-sm-6 box box1 shadow3 pointer boqStatus">
+              <h5>Items For My Approval </h5>
+              <div class="row">
+                  <div class="col-sm-3 m-l-10p" ui-sref="tenderList({Tenderids:dashboard.boqStatus.pendingIds})">
+                      Pending Boq ({{dashboard.boqStatus.pendingCount}})
+                  </div>
+
+                  <div class="col-sm-3" ui-sref="tenderList({Tenderids:dashboard.boqStatus.verifiedIds})">
+                      Verified Boq ({{dashboard.boqStatus.verifiedCount}})
+                  </div><div class="col-sm-3" ui-sref="tenderList({Tenderids:dashboard.boqStatus.cancelIds})">
+                      Rejected Boq ({{dashboard.boqStatus.cancelCount}})
+                  </div>
+              </div>
+          </div>
+
         </div>
+        <div class="row">
+
+          <!-- <div class="col-md-3 col-lg-3 col-sm-3 box box2 shadow4 pointer" ng-click="getTenderByStatus('inTime')">
+              <h3 class="ng-binding">On Time Projects (2)</h3>
+          </div> -->
+          <div class="col-md-3 col-lg-3 col-sm-3 box box2 shadow5 pointer" ng-click="getTenderByStatus('')">
+              <h3 class="ng-binding">Project Milestone ({{dashboard.tenderStatusCount.totalCount}})</h3>
+          </div>
+          <div class="col-md-6 col-lg-6 col-sm-6 box box2 shadow4 pointer boqStatus">
+              <h5>Billing Report </h5>
+              <div class="row">
+                  <div class="col-md-2 col-lg-2 col-sm-2 m-l-10p">
+                      Pending Bills
+                  </div>
+
+                  <div class="col-md-2 col-lg-2 col-sm-2">
+                      Approved Bills
+                  </div>
+                  <div class="col-md-2 col-lg-2 col-sm-2">
+                      Hold Bills
+                  </div>
+                  <div class="col-md-2 col-lg-2 col-sm-2">
+                      Rejected Bills
+                  </div>
+              </div>
+          </div>
+
+          <div class="col-md-3 col-lg-3 col-sm-3 box box2 shadow5 pointer" ng-click="getTenderByStatus('delayed')">
+              <h3 class="ng-binding">Delayed Projects ({{dashboard.tenderStatusCount.delayed}})</h3>
+          </div>
+          <div class="col-md-3 col-lg-3 col-sm-3 box box2 shadow5 pointer" ng-click="getTenderByStatus('delayed')">
+              <h3 class="ng-binding">In Time Projects ({{dashboard.tenderStatusCount.inTime}})</h3>
+          </div>
+          <!-- <div class="col-md-3 col-lg-3 col-sm-3 box box2 shadow6 pointer">
+              <h3>Billing Report</h3>
+          </div> -->
+          <!-- <div class="box box1 shadow6 pointer">
+              <h3>Tender Aging Report</h3>
+          </div> -->
+          <!-- <div class="box box1 shadow6">
+              <h3>Billing Ageing Report</h3>
+          </div> -->
+          <div class="col-md-3 col-lg-3 col-sm-3 box box1 shadow6 pointer" ng-click="getTenderByStatus('completed')">
+              <h3 class="ng-binding">Completed Projects ({{dashboard.tenderStatusCount.completed}})</h3>
+          </div>
+
+          </div>
+      </div>
     </section>
 </article>

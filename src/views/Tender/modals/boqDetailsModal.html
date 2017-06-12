@@ -24,11 +24,11 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="boq in boqData" ng-class="{'selected':boq.verify}">
+                                    <tr ng-repeat="boq in boqData" ng-class="{'pending-verified':boq.verify == 1,'verified':boq.verify == 2,'cancel-verified':boq.verify == 3}">
                                         <td ng-repeat="th in UtilityService.getTableHeaders('billing',boqData[0])" ng-if="UtilityService.isAllowedHeader('boqDetails',th)">
                                             <div ng-if="th == 'quantity'">
                                                 <span ng-if="!boq.isEdit" class="color-black ng-binding">{{boq[th]}}</span>
-                                                <em  class="fa fa-edit pull-right" ng-if="!boq.isEdit" ng-click="focusEdit(boq,$event)"></em>
+                                                <em  class="fa fa-edit pull-right" ng-if="!boq.isEdit && validateBoqPermission('updateQuantity')" ng-click="focusEdit(boq,$event)"></em>
                                                 <div ng-if="boq.isEdit">
                                                   <span>New Values : </span>
                                                   <input type="text" ng-if="boq.isEdit"  ng-model="boq[th]" ng-blur="updateAmount(boq,'value1')">
@@ -40,9 +40,9 @@
                                             </div>
                                             <div>
                                             <span ng-if="th != 'quantity'" class="color-black">
-                                              <span ng-if="th == 'totalAmountWithoutTaxes' && boq.verify" class="pull-right">
-                                                <button type="button" class="btn btn-primary" ng-click="verifyBoqItem(boq,'verify')">Verify</button>
-                                                <button type="button" class="btn btn-primary" ng-click="verifyBoqItem(boq,'cancel')">Cancel</button>
+                                              <span ng-if="th == 'totalAmountWithoutTaxes' && boq.verify == 1" class="pull-right">
+                                                <button type="button" class="btn btn-primary" ng-if="validateBoqPermission('verifyQuantity')" ng-click="verifyBoqItem(boq,'verify')">Verify</button>
+                                                <button type="button" class="btn btn-primary" ng-if="validateBoqPermission('verifyQuantity')" ng-click="verifyBoqItem(boq,'cancel')">Cancel</button>
                                               </span>
                                               {{boq[th]}}
                                             </span>
@@ -68,7 +68,7 @@
             <h3 class="modal-title">Boq history : </h3>
             <em class="fa fa-arrows-alt pull-right modalClose" ng-click="ok()"></em>
         </div>
-        <div class="modal-body">
+        <div class="modal-body boqHist">
 
               <table ng-table="tableParams" class="table table-bordered ngTable">
                 <tr ng-repeat="row in $data">
@@ -88,6 +88,9 @@
                   <td data-title="'Action'" filter="{action: 'text'}" sortable="'action'">{{row.action}}</td>
                   <td data-title="'cancel Comment'" filter="{cancelComment: 'text'}" sortable="'cancelComment'">{{row.cancelComment}}</td>
                   <td data-title="'Date'" filter="{date: 'text'}" sortable="'date'">{{row.date}}</td>
+                  <td data-title="'verifyUserName'" filter="{date: 'text'}" sortable="'verifyUserName'">
+                    <a href="" ng-click="updateVerifyingUserDetails(row)" uib-popover-template="'verifingUserDetails.html'" popover-title="Verified User" popover-is-open="row.isVerifyUserOpen">{{row.verifyUserName}}</a>
+                  </td>
 
 
                 </tr>
@@ -111,6 +114,18 @@
           <input type="text" ng-model="userDetails.designation" ng-readonly="true" class="form-control formInput-60 m-r-10">
         </div>
 </script>
+<!-- verifying user details pop up -->
+<script type="text/ng-template" id="verifingUserDetails.html">
+
+        <div class="form-group row">
+          <label class="m-l-10">Name:</label>
+          <input type="text" ng-model="verifiedUserDetails.userName" ng-readonly="true" class="form-control formInput-60 m-r-10">
+        </div>
+        <div class="form-group row">
+          <label class="m-l-10">Designation:</label>
+          <input type="text" ng-model="verifiedUserDetails.designation" ng-readonly="true" class="form-control formInput-60 m-r-10">
+        </div>
+</script>
 
 <!-- cancel boq verification modal -->
 <script type="text/ng-template" id="cancelBoqVerification.html">
@@ -120,7 +135,7 @@
     <div class="modal-body">
       <form name="cancelBoqVerificationForm">
         <fieldset class="form-group" ng-class="{'has-error':cancelBoqVerificationForm.comment.$touched && cancelBoqVerificationForm.comment.$invalid}">
-            <label class="control-label" for="formGroupExampleInput">Organisation Chain</label>
+            <label class="control-label" for="formGroupExampleInput">Cancel Reason</label>
             <input type="text"  name="comment" ng-model="boq.cancelComment" class="form-control formInput" id="formGroupExampleInput" required>
             <span class="has-error formInput" ng-if="cancelBoqVerificationForm.comment.$touched && cancelBoqVerificationForm.comment.$invalid">Organisation Chain is invalid</span>
         </fieldset>

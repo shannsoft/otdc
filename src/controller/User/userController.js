@@ -36,6 +36,17 @@ app.controller('UserController', function($scope, $rootScope, $state,$stateParam
 
         }
     }
+    $scope.toggleSubmenu = function(side) {
+      // side.menuOpen = !side.menuOpen || false; // make default as false
+      side.menuOpen = !side.menuOpen;
+      // side.subMenuOpen = !side.subMenuOpen || false; // make default as false
+      if(side.menuOpen) {
+        side.subMenuOpen = true;
+      }
+      else{
+        side.subMenuOpen = false;
+      }
+    }
     $rootScope.$on(Events.updateSideBar,function(event,data) {
       // get the index of the sideBar to be activeated after state change
       $scope.updateActiveClass(null,data.state);
@@ -133,6 +144,9 @@ app.controller('UserController', function($scope, $rootScope, $state,$stateParam
          $scope.dashboard.tenderStatusCount = {};
          // getting tender status count to show in dashboard tabs
          for(var i in $scope.dashboard.projectMilestone) {
+           if($scope.dashboard.projectMilestone[i].projectMilestoneSts == ""){
+             $scope.dashboard.tenderStatusCount.totalCount = $scope.dashboard.projectMilestone[i].count;
+           }
            if($scope.dashboard.projectMilestone[i].projectMilestoneSts == "inTime"){
              $scope.dashboard.tenderStatusCount.inTime = $scope.dashboard.projectMilestone[i].count;
            }

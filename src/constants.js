@@ -18,7 +18,7 @@ app.constant("Constants", {
           "env":"dev",
           "dev" : {
             "basePath" :"http://api.otdctender.in",
-            "appPath"  :"http://localhost/external_projects/otdc",
+            "appPath"  :"http://localhost:9009",
           },
           "prod" : {
             "basePath" :"http://api.otdctender.in",

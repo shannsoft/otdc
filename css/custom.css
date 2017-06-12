@@ -12,7 +12,9 @@
 .m-t-5 {
     margin-top: 5px;
 }
-
+.m-l-10p{
+  margin-left: 10%;
+}
 .m-t-10 {
     margin-top: 10px;
 }
@@ -127,8 +129,14 @@
 .border-wrap{
   border: 1px solid #000;
 }
-.selected{
+.verified{
   background-color: #21B04B !important;
+}
+.pending-verified{
+  background-color: orange !important;
+}
+.cancel-verified{
+  background-color: red !important;
 }
 .pointer{
   cursor: pointer;
@@ -519,4 +527,8 @@ input[type="date"] {
   float: right;
   font-size: 16px;
   font-weight: bold;
+}
+/* to make large modal with width 1024px to adjust boq history table width*/
+.modal-lg .modal-content{
+  width: 1030px !important;
 }

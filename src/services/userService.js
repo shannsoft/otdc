@@ -56,6 +56,27 @@ app.factory('UserService',function($rootScope,$http,$localStorage,$resource,ApiG
         "label" : "Billing",
         "state" : "billing",
         "fClass" : "fa fa-th-large",
+        "subMenu" : [
+        
+          {
+            "label" : "Approved Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },{
+            "label" : "Pending Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },{
+            "label" : "Hold Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },
+          {
+            "label" : "Rejected Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },
+        ]
       },
       {
         "label" : "Confugrations",
@@ -67,6 +88,11 @@ app.factory('UserService',function($rootScope,$http,$localStorage,$resource,ApiG
       {
         "label" : "Dashboard",
         "state" : "dashboard",
+        "fClass" : "fa fa-home",
+      },
+      {
+        "label" : "Vendor Management",
+        "state" : "VendorList",
         "fClass" : "fa fa-home",
       },
       {
@@ -116,6 +142,11 @@ app.factory('UserService',function($rootScope,$http,$localStorage,$resource,ApiG
         "fClass" : "fa fa-home",
       },
       {
+        "label" : "Vendor Management",
+        "state" : "VendorList",
+        "fClass" : "fa fa-home",
+      },
+      {
         "label" : "Tender Management",
         "state" : "tenderList",
         "fClass" : "fa fa-home",
@@ -135,6 +166,11 @@ app.factory('UserService',function($rootScope,$http,$localStorage,$resource,ApiG
       {
         "label" : "Dashboard",
         "state" : "dashboard",
+        "fClass" : "fa fa-home",
+      },
+      {
+        "label" : "Vendor Management",
+        "state" : "VendorList",
         "fClass" : "fa fa-home",
       },
       {
@@ -160,6 +196,11 @@ app.factory('UserService',function($rootScope,$http,$localStorage,$resource,ApiG
         "fClass" : "fa fa-home",
       },
       {
+        "label" : "Vendor Management",
+        "state" : "VendorList",
+        "fClass" : "fa fa-home",
+      },
+      {
         "label" : "Tender Management",
         "state" : "tenderList",
         "fClass" : "fa fa-home",
@@ -179,6 +220,11 @@ app.factory('UserService',function($rootScope,$http,$localStorage,$resource,ApiG
       {
         "label" : "Dashboard",
         "state" : "dashboard",
+        "fClass" : "fa fa-home",
+      },
+      {
+        "label" : "Vendor Management",
+        "state" : "VendorList",
         "fClass" : "fa fa-home",
       },
       {
@@ -223,6 +269,11 @@ app.factory('UserService',function($rootScope,$http,$localStorage,$resource,ApiG
       {
         "label" : "Dashboard",
         "state" : "dashboard",
+        "fClass" : "fa fa-home",
+      },
+      {
+        "label" : "Vendor Management",
+        "state" : "VendorList",
         "fClass" : "fa fa-home",
       },
       {

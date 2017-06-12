@@ -5,14 +5,14 @@ body{
   margin-left:20px;
 }
 .box{
-  width: 30%;
+  /*width: 30%;*/
 height: 150px;
 float: left;
 background-color: white;
 margin: 25px 15px;
 border-radius: 5px;
 min-height: 150px;
-min-width: : 324px;
+/*min-width: : 324px;*/
 }
 .box h3{
   font-family: 'Didact Gothic', sans-serif;
@@ -54,7 +54,7 @@ min-width: : 324px;
 /*****************************************************************dashed border
 ****************************************************************/
 .shadow1 h3, .shadow2 h3, .shadow3 h3, .shadow4 h3, .shadow5 h3, .shadow6 h3, .shadow7 h3, .shadow8 h3{
-  width:87%;
+  /*width:87%;*/
   height:100px;
   margin-left:6%;
   border-radius:5px;
@@ -66,7 +66,7 @@ min-width: : 324px;
   position:absolute;
   content:"";
   bottom:12px;left:15px;top:80%;
-  width:45%;
+  /*width:45%;*/
   background:#9B7468;
   z-index:-1;
   -webkit-box-shadow: 0 20px 15px #9B7468;
@@ -85,7 +85,7 @@ min-width: : 324px;
 .shadow2:before{
   position:absolute;
   content:"";
-  width:80%;
+  /*width:80%;*/
   top:140px;bottom:15px;left:30px;
   background-color:#9F8641;
   z-index:-1;
@@ -119,7 +119,7 @@ min-width: : 324px;
   content:"";
   box-shadow:0 10px 25px 20px #518C96;
   top:40px;left:10px;bottom:50px;
-  width:15%;
+  /*width:15%;*/
   z-index:-1;
   -webkit-transform: rotate(-8deg);
   -moz-transform: rotate(-8deg);
@@ -143,7 +143,7 @@ min-width: : 324px;
   position:absolute;
   content:"1";
   top:25px;left:20px;bottom:150px;
-  width:80%;
+  /*width:80%;*/
   z-index:-1;
   -webkit-transform: rotate(-6deg);
   -moz-transform: rotate(-6deg);
@@ -175,4 +175,10 @@ h5 {
     text-align: center;
     padding-top: 60px;
     color: #fff;
+}
+.boqStatus{
+  color:#fff;
+}
+.boqStatus h5{
+  color:#fff;
 }

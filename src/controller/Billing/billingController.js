@@ -11,6 +11,7 @@ app.controller('BillingController', function($scope, $rootScope,$window, Events,
         ApiCall.getTendor({tenderId:$stateParams.tenderId},function(res) {
           $rootScope.showPreloader = false;
           $scope.billing.selectedTender = res.Data;
+          $scope.selectVendor($scope.billing.selectedTender.vendorInfo);
           // adding extra column for the completed unit
           angular.forEach($scope.billing.selectedTender.boqData,function(value,key) {
             value['completedUnit'] = value.unitPaid;
@@ -30,6 +31,18 @@ app.controller('BillingController', function($scope, $rootScope,$window, Events,
       Util.alertMessage(err.Status.toLocaleLowerCase(),err.Message);
       $rootScope.showPreloader = false;
     })
+  }
+  $scope.selectVendor = function(vendors) {
+    if(Array.isArray(vendors)){
+      for(var i in vendors){
+        if(vendors[i].isActive){
+          $scope.billing.selectedTender.selectedVendor = vendors[i];
+        }
+      }
+    }
+    else{
+      $scope.billing.selectedTender.selectedVendor = vendors;
+    }
   }
   // $scope.getBoqHeaders = function(data) {
   //   if(!data){
@@ -60,7 +73,11 @@ $scope.generateBill = function() {
  */
 $scope.generateBillingInit = function(){
   // getting vendor details
-  $scope.generateBill = {};
+  $scope.generateBill = {
+    serviceTax : 1,
+    incomeTax  : 2
+  };
+
   if(!$stateParams.tender){
     Util.alertMessage(Events.eventType.warning,Events.selectTender);
     $state.go("billing");
@@ -78,9 +95,25 @@ $scope.generateBillingInit = function(){
   }
   // delete the boq data after parsing selected boq
   delete $scope.generateBill.tender['boqData'];
+  console.log("generateBill.tender.selectedBoq   ",$scope.generateBill.tender.selectedBoq);
+  $scope.getSumTotal();
 }
+/**
+ * Used to get the total amount of the bill based on the selected item and the quantity
+ */
+$scope.getSumTotal = function() {
+  if(!$scope.generateBill.tender && !$scope.generateBill.tender.selectedBoq)
+  return;
+  $scope.generateBill.sumTotal = 0;
+  for(var i in $scope.generateBill.tender.selectedBoq){
+    $scope.generateBill.sumTotal+= parseInt($scope.generateBill.tender.selectedBoq[i].price);
+  }
+  $scope.generateBill.grandTotal = $scope.generateBill.sumTotal - ( ($scope.generateBill.incomeTax + $scope.generateBill.serviceTax)/100*$scope.generateBill.sumTotal);
+
+}
+
 $scope.printInvoice = function(tender) {
-  var vendorObj = tender.vendorInfo[0];
+  var vendorObj = tender.selectedVendor;
   var queryString = '';
   queryString+="invoice="+"autoGenValues"+"&";
   queryString+="createdDate="+$filter('date')(new Date(), "dd/mm/yyyy")+"&";

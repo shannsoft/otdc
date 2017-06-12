@@ -1,17 +1,21 @@
+/*! otdc - v1.0.0 - Tue Jun 13 2017 00:01:56 */
 var dependency = [];
+// lib  dependency
 var distModules = ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate', 'ngCookies', 'ngMessages','ngTable'];
 var custModules = ['validation', 'EventHandler', 'Authentication', 'WebService','uiSwitch'];
 dependency = dependency.concat(distModules).concat(custModules);
 
 var app = angular.module("teknobiz", dependency);
-app.config(["$stateProvider", "$urlRouterProvider", "$httpProvider", function($stateProvider, $urlRouterProvider, $httpProvider) {
-    checkLoggedout.$inject = ["$q", "$timeout", "$http", "$location", "$rootScope", "$state", "ApiCall", "$localStorage", "AppModel", "Constants", "UserService", "Events", "Util"];
-    checkLoggedin.$inject = ["$q", "$timeout", "$http", "$location", "$rootScope", "$state", "ApiCall", "Constants", "$localStorage", "$rootScope", "UserService"];
-    $httpProvider.interceptors.push(["$q", "$location", "$window", "$localStorage", "Constants", function($q, $location, $window, $localStorage,Constants) {
+app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
+    //adding http intercepter
+    $httpProvider.interceptors.push(function($q, $location, $window, $localStorage,Constants) {
         return {
             request: function(config) {
                 config.headers = config.headers || {};
+                // config.headers['Authorization'] = 'bearer '+$localStorage[Constants.getTokenKey()];
                 config.headers['tokenID'] = $localStorage[Constants.getTokenKey()];
+                // config.headers['Content-Type'] = 'application/json';
+                // adding the db routing dynamically from url
                 if($location.$$host.indexOf("otdctender.in") !== -1) {
                   config.headers['server'] = 2;
                 }
@@ -26,12 +30,13 @@ app.config(["$stateProvider", "$urlRouterProvider", "$httpProvider", function($s
             },
             response: function(response) {
                 if (response.status === 401) {
+                    // handle the case where the user is not authenticated
                     $location.path('/');
                 }
                 return response || $q.when(response);
             }
         };
-    }]);
+    });
 
     function checkLoggedin($q, $timeout, $http, $location, $rootScope, $state, ApiCall,Constants, $localStorage, $rootScope, UserService) {
         var deferred = $q.defer();
@@ -43,6 +48,7 @@ app.config(["$stateProvider", "$urlRouterProvider", "$httpProvider", function($s
                 $timeout(function() {
                     $rootScope.loggedin = $localStorage[Constants.getLoggedIn()] = true;
                     UserService.setUser(response.Data);
+                    console.log("UserService.setUser(response.Data);  ",UserService.getUser(response.Data));
                     deferred.resolve();
                     $state.go('dashboard',{role:UserService.getRole()});
                 }, 100);
@@ -73,7 +79,12 @@ app.config(["$stateProvider", "$urlRouterProvider", "$httpProvider", function($s
               $timeout(function() {
                 $rootScope.loggedin = $localStorage[Constants.getLoggedIn()];
                 UserService.setUser(response.Data);
+                  //console.log("UserService.setUser(response.Data);  ",UserService.getUser(response.Data));
+                // UserService.authorisedApi('Login','post',function(result) {
+                //   console.log("web serviceCall validated as ",result);
+                // });
                 $rootScope.$emit(Events.userLogged);
+                // fetching the details of the settings
                 if(!AppModel.getSetting()) {
                   $rootScope.showPreloader = true;
                   ApiCall.getCommonSettings(function(response) {
@@ -107,7 +118,9 @@ app.config(["$stateProvider", "$urlRouterProvider", "$httpProvider", function($s
 
     $urlRouterProvider.otherwise('/login');
     $stateProvider
+    // HOME STATES AND NESTED VIEWS ========================================
         .state('dashboard', {
+            // templateUrl: 'src/views/dashboard.html',
             templateUrl: 'src/views/User/dashboard.html',
             url: '/dashboard',
             controller: "UserController",
@@ -131,15 +144,30 @@ app.config(["$stateProvider", "$urlRouterProvider", "$httpProvider", function($s
                 loggedin: checkLoggedout
             },
         })
+        // .state('forget-password', {
+        //     templateUrl: 'src/views/forget.html',
+        //     url: '/forget-password',
+        //     controller:"Main_Controller",
+        //     resolve: {loggedout: checkLoggedout},
+        // })
         .state('tenderList', {
             templateUrl: 'src/views/Tender/tenderList.html',
             url: '/tenderList',
             controller: "TenderListController",
-            params: {tenderStatus:null},
+            params: {tenderStatus:null,Tenderids:null},
             resolve: {
                 loggedout: checkLoggedout
             },
         })
+        // .state('tenderList', {
+        //     templateUrl: 'src/views/Tender/tenderList.html',
+        //     url: '/tenderList/:ids',
+        //     controller: "TenderListController",
+        //     params: {tenderStatus:null},
+        //     resolve: {
+        //         loggedout: checkLoggedout
+        //     },
+        // })
         .state('tenderDetails', {
             templateUrl: 'src/views/Tender/TenderDetails.html',
             url: '/tenderDetails/:tenderId',
@@ -169,6 +197,7 @@ app.config(["$stateProvider", "$urlRouterProvider", "$httpProvider", function($s
         .state('editTender', {
             templateUrl: 'src/views/Tender/editTenderDetails.html',
             url: '/editTender',
+            // controller: "Tender_controller",
             resolve: {
                 loggedout: checkLoggedout
             },
@@ -207,6 +236,15 @@ app.config(["$stateProvider", "$urlRouterProvider", "$httpProvider", function($s
                 loggedout: checkLoggedout
             },
         })
+        // .state('editUser', {
+        //     templateUrl: 'src/views/User/userDetails.html',
+        //     url: '/editUser/:userId',
+        //     controller: "UserDetailsController",
+        //     params: { userId: null ,action:null},
+        //     resolve: {
+        //         loggedout: checkLoggedout
+        //     },
+        // })
         .state('VendorList', {
             templateUrl: 'src/views/Vendor/vendorList.html',
             url: '/VendorList',
@@ -236,10 +274,14 @@ app.config(["$stateProvider", "$urlRouterProvider", "$httpProvider", function($s
             templateUrl: 'src/views/forgetpassword.html',
             url: '/forget_password',
             controller: "LoginController",
+            // resolve: {
+            //     loggedout: checkLoggedout
+            // },
         })
         .state('tender_assign', {
             templateUrl: 'src/views/Tender/assignTender.html',
             url: '/tender_assign',
+            // controller: "Tender_controller",
             resolve: {
                 loggedout: checkLoggedout
             },
@@ -353,14 +395,23 @@ app.config(["$stateProvider", "$urlRouterProvider", "$httpProvider", function($s
             },
         })
 
-}]);
+});
 app.constant('CONFIG', {
     'HTTP_HOST': '../ep-portal/Server/api.php' //client staging
 })
-app.run(["$http", "EnvService", "Constants", function($http, EnvService, Constants) {
+app.run(function($http, EnvService, Constants) {
+    // $http.get('env.json')
+    //     .success(function(response) {
+    //         EnvService.setEnvData(response);
+    //         console.log(EnvService.getEnvData());
+    //         return;
+    //     })
+    //     .error(function(error) {
+    //         return error;
+    //     });
     EnvService.setSettings(Constants);
 
-}]);
+});
 app.factory('Util', ['$rootScope', '$timeout', function($rootScope, $timeout) {
     var Util = {};
     $rootScope.alerts = [];
@@ -415,7 +466,7 @@ app.factory('Util', ['$rootScope', '$timeout', function($rootScope, $timeout) {
           "env":"dev",
           "dev" : {
             "basePath" :"http://api.otdctender.in",
-            "appPath"  :"http://localhost/external_projects/otdc",
+            "appPath"  :"http://localhost:9009",
           },
           "prod" : {
             "basePath" :"http://api.otdctender.in",
@@ -423,18 +474,21 @@ app.factory('Util', ['$rootScope', '$timeout', function($rootScope, $timeout) {
           }
         },
 })
-;app.controller('BillingController', ["$scope", "$rootScope", "$window", "Events", "$state", "$uibModal", "$stateParams", "$filter", "ApiCall", "Util", "$timeout", "$localStorage", "UtilityService", "Constants", function($scope, $rootScope,$window, Events,$state,$uibModal, $stateParams,$filter, ApiCall,Util,$timeout,$localStorage,UtilityService,Constants) {
+;app.controller('BillingController', function($scope, $rootScope,$window, Events,$state,$uibModal, $stateParams,$filter, ApiCall,Util,$timeout,$localStorage,UtilityService,Constants) {
   $scope.UtilityService = UtilityService;
   $scope.billingInit = function() {
     $scope.billing = {};
     ApiCall.getTendor(function(res) {
       $rootScope.showPreloader = false;
       $scope.billing.tenderList = res.Data;
+      // checking for the selected tenderId
       if($stateParams.tenderId) {
         $rootScope.showPreloader = true;
         ApiCall.getTendor({tenderId:$stateParams.tenderId},function(res) {
           $rootScope.showPreloader = false;
           $scope.billing.selectedTender = res.Data;
+          $scope.selectVendor($scope.billing.selectedTender.vendorInfo);
+          // adding extra column for the completed unit
           angular.forEach($scope.billing.selectedTender.boqData,function(value,key) {
             value['completedUnit'] = value.unitPaid;
             value['price'] = 0;
@@ -443,6 +497,8 @@ app.factory('Util', ['$rootScope', '$timeout', function($rootScope, $timeout) {
           $rootScope.showPreloader = false;
           Util.alertMessage(err.Status.toLocaleLowerCase(),err.Message);
         })
+        // var index = UtilityService.getmatchIndex($scope.billing.tenderList,'tenderId',$stateParams.tenderId);
+        // $scope.billing.selectedTender = $scope.billing.tenderList[index]
       }
       else{
         $scope.selectTender($scope.billing.tenderList[0]); // select first index by default
@@ -452,7 +508,27 @@ app.factory('Util', ['$rootScope', '$timeout', function($rootScope, $timeout) {
       $rootScope.showPreloader = false;
     })
   }
+  $scope.selectVendor = function(vendors) {
+    if(Array.isArray(vendors)){
+      for(var i in vendors){
+        if(vendors[i].isActive){
+          $scope.billing.selectedTender.selectedVendor = vendors[i];
+        }
+      }
+    }
+    else{
+      $scope.billing.selectedTender.selectedVendor = vendors;
+    }
+  }
+  // $scope.getBoqHeaders = function(data) {
+  //   if(!data){
+  //     data = $scope.billing.selectedTender.boqData[0];
+  //   }
+  //   var arr = UtilityService.getTableHeaders(data);
+  //   return arr;
+  // }
   $scope.selectTender = function(selectedTender) {
+    // reload the state with new data
     $state.go($state.current, {tenderId:selectedTender.tenderId,tenderList:$scope.billing.tenderList}, {reload: true});
   }
 $scope.generateBill = function() {
@@ -468,25 +544,52 @@ $scope.generateBill = function() {
   }
   $state.go("generateBill",{tender:$scope.billing.selectedTender})
 }
+/**
+***************************************************** Generate Billing starts ****************************************
+ */
 $scope.generateBillingInit = function(){
-  $scope.generateBill = {};
+  // getting vendor details
+  $scope.generateBill = {
+    serviceTax : 1,
+    incomeTax  : 2
+  };
+
   if(!$stateParams.tender){
     Util.alertMessage(Events.eventType.warning,Events.selectTender);
     $state.go("billing");
     return;
   }
   $scope.generateBill.tender = $stateParams.tender;
+  // parsing the selected the boq for the bill generation
   $scope.generateBill.tender.selectedBoq = [];
   for(var i in $scope.generateBill.tender.boqData){
     if($scope.generateBill.tender.boqData[i].isChecked){
+      // updating price as per completed unit
       $scope.generateBill.tender.boqData[i].price = ($scope.generateBill.tender.boqData[i].completedUnit - $scope.generateBill.tender.boqData[i].unitPaid) * $scope.generateBill.tender.boqData[i].estimateRate;
       $scope.generateBill.tender.selectedBoq.push($scope.generateBill.tender.boqData[i]);
     }
   }
+  // delete the boq data after parsing selected boq
   delete $scope.generateBill.tender['boqData'];
+  console.log("generateBill.tender.selectedBoq   ",$scope.generateBill.tender.selectedBoq);
+  $scope.getSumTotal();
 }
+/**
+ * Used to get the total amount of the bill based on the selected item and the quantity
+ */
+$scope.getSumTotal = function() {
+  if(!$scope.generateBill.tender && !$scope.generateBill.tender.selectedBoq)
+  return;
+  $scope.generateBill.sumTotal = 0;
+  for(var i in $scope.generateBill.tender.selectedBoq){
+    $scope.generateBill.sumTotal+= parseInt($scope.generateBill.tender.selectedBoq[i].price);
+  }
+  $scope.generateBill.grandTotal = $scope.generateBill.sumTotal - ( ($scope.generateBill.incomeTax + $scope.generateBill.serviceTax)/100*$scope.generateBill.sumTotal);
+
+}
+
 $scope.printInvoice = function(tender) {
-  var vendorObj = tender.vendorInfo[0];
+  var vendorObj = tender.selectedVendor;
   var queryString = '';
   queryString+="invoice="+"autoGenValues"+"&";
   queryString+="createdDate="+$filter('date')(new Date(), "dd/mm/yyyy")+"&";
@@ -499,14 +602,22 @@ $scope.printInvoice = function(tender) {
 }
 
 
-}]);
-;app.controller('Main_Controller', ["$scope", "$rootScope", "$state", "EnvService", "$timeout", "$cookieStore", "$localStorage", "validationService", "Events", "$location", "Util", "$anchorScroll", function($scope, $rootScope, $state, EnvService, $timeout, $cookieStore, $localStorage, validationService, Events, $location, Util, $anchorScroll) {
+
+/**
+***************************************************** Generate Billing ends ****************************************
+ */
+
+
+});
+;app.controller('Main_Controller', function($scope, $rootScope, $state, EnvService, $timeout, $cookieStore, $localStorage, validationService, Events, $location, Util, $anchorScroll) {
+    // Events handling
 
     $rootScope.$on(Events.validationFieldMissing, function(event, data) {
         alert("Event handled", data);
     });
     $rootScope.$on('$stateChangeSuccess',
       function(event, toState, toParams, fromState, fromParams){
+        // emit event to activate menu link
         $scope.$emit(Events.updateSideBar,{state:toState.name})
        })
     $scope.users = [{
@@ -521,6 +632,10 @@ $scope.printInvoice = function(tender) {
             location: 'Chennai'
         },
     ];
+    // $scope.usersTable = new ngTableParams({}, {
+    //     dataset: $scope.users
+    // });
+//});
 $rootScope.$on(Events.errorInLogin, function(event, data) {
     $location.hash('top');
     $anchorScroll();
@@ -531,60 +646,35 @@ $rootScope.$on(Events.errorInLogout, function(event, data) {
     $anchorScroll();
     Util.alertMessage(data.type, data.message || Events.errorInLogout);
 })
+
+
+// Event hander for the error type message
 $rootScope.$on(Events.eventType.error, function(event, data) {
         $location.hash('top');
         $anchorScroll();
         Util.alertMessage(Events.eventType.error, data.message);
     })
+    // Event hander for the warning type message
 $rootScope.$on(Events.eventType.warn, function(event, data) {
         $location.hash('top');
         $anchorScroll();
         Util.alertMessage(Events.eventType.warn, data.message);
     })
+    // Event hander for the success type message
 $rootScope.$on(Events.eventType.success, function(event, data) {
         $location.hash('top');
         $anchorScroll();
         Util.alertMessage(Events.eventType.success, data.message);
     })
+    // used to close the alert
 $scope.close = function() {
     $rootScope.alerts.splice($rootScope.alerts.indexOf(alert), 1);
 }
 $scope.forgetpassword = function() {
 $state.go('forget_password');
 }
-}])
-;app.controller('ConfugrationsController', ["$scope", "$rootScope", "$window", "Events", "$state", "$uibModal", "$stateParams", "$filter", "ApiCall", "Util", "$timeout", "$localStorage", "UtilityService", "Constants", function($scope, $rootScope, $window, Events, $state, $uibModal, $stateParams, $filter, ApiCall, Util, $timeout, $localStorage, UtilityService, Constants) {
-    $scope.confugrationInit = function() {
-        $scope.tabs = [{
-                heading: "Tender",
-                active: true
-            },
-        ]
-        $scope.currTab = 0;
-        $scope.confugrations = {
-            tender: {
-            }
-        }
-    }
-    $scope.tabChange = function(tabPos) {
-        $scope.currTab = tabPos;
-    }
-    $scope.saveConfugration = function(tabIndex) {
-      switch (tabIndex) {
-        case 0: // tender
-          break;
-        case 1:
-
-          break;
-        case 1:
-
-          break;
-        default:
-
-      }
-    }
-}]);
-;app.controller('RoleListController', ["$scope", "$rootScope", "$state", "ApiCall", "$uibModal", "AppModel", "EnvService", "$timeout", "Util", "$cookieStore", "$localStorage", "NgTableParams", function($scope, $rootScope, $state, ApiCall,$uibModal, AppModel,EnvService, $timeout,Util, $cookieStore, $localStorage,NgTableParams) {
+})
+;app.controller('RoleListController', function($scope, $rootScope, $state, ApiCall,$uibModal, AppModel,EnvService, $timeout,Util, $cookieStore, $localStorage,NgTableParams) {
   $scope.init = function() {
     $scope.roles = {};
     ApiCall.getDesignation(function(response) {
@@ -594,6 +684,15 @@ $state.go('forget_password');
       $rootScope.showPreloader = false;
       Util.alertMessage(Events.eventType.error,err.Message);
     })
+    // if(AppModel.getSetting()) {
+    //   $timeout.cancel($scope.timeout); // cancel timeout if exist
+    //   $scope.roles.designation = AppModel.getSetting('designation');
+    // }
+    // else {
+    //     $scope.timeout = $timeout(function() {
+    //     $scope.init();
+    //   }, 2000);
+    // }
   }
  $scope.onAction = function(action,designation) {
    var templateUrl;
@@ -631,17 +730,24 @@ $state.go('forget_password');
      }
    });
  }
-}]);
+});
 
-app.controller('designationModalCtrl', ["$rootScope", "$scope", "$uibModalInstance", "Util", "ApiCall", "$state", "Events", "action", "designation", "designations", "UtilityService", function ($rootScope,$scope, $uibModalInstance,Util,ApiCall,$state,Events,action,designation ,designations,UtilityService) {
+app.controller('designationModalCtrl', function ($rootScope,$scope, $uibModalInstance,Util,ApiCall,$state,Events,action,designation ,designations,UtilityService) {
   $scope.action = action;
   $scope.designation = designation;
   $scope.designations = designations;
+  // in case of edit auto fill the parent id
   if(action == "edit") {
+    // angular.forEach($scope.designations,function(value,key) {
+    //   if(value.parentDesignation == $scope.designation.designationId) {
+    //     $scope.designation.parentDesignation = value;
+    //   }
+    // })
     $scope.designation.parentDesignation = UtilityService.getmatchValue($scope.designations,'designationId',$scope.designation.parentId);
   }
   $scope.ok = function () {
     var obj = {};
+    // calling service to delete user
     switch ($scope.action) {
       case 'view':
        $scope.designation.actType = 'V';
@@ -663,6 +769,7 @@ app.controller('designationModalCtrl', ["$rootScope", "$scope", "$uibModalInstan
       default:
 
     }
+    // obj = Object.assign(obj, $scope.designation);
     $rootScope.showPreloader = true;
     ApiCall.postDesignation($scope.designation,function(response) {
       $rootScope.showPreloader = false;
@@ -680,8 +787,8 @@ app.controller('designationModalCtrl', ["$rootScope", "$scope", "$uibModalInstan
   $scope.cancel = function () {
     $uibModalInstance.dismiss('cancel');
   };
-}]);
-;app.controller('AddTendorController',["$scope", "$rootScope", "$state", "Util", "Constants", "ApiCall", "EnvService", "$timeout", "$cookieStore", "$localStorage", "AppModel", function($scope,$rootScope,$state,Util,Constants,ApiCall,EnvService,$timeout,$cookieStore,$localStorage,AppModel){
+});
+;app.controller('AddTendorController',function($scope,$rootScope,$state,Util,Constants,ApiCall,EnvService,$timeout,$cookieStore,$localStorage,AppModel){
 
 $scope.addTendorInit = function() {
   $scope.tender = {};
@@ -703,15 +810,20 @@ $scope.addTendorInit = function() {
     $scope.tender.tenderType = $scope.tender.tenderTypes[0] // default value
   }
 }
+/* $scope.fileSelected = function(fileName) {
+  console.log(">>>>>>>>>>>>>>>>>>>>>>",window.fileData);
+  $scope.tender.FileData = window.fileData;
+} */
 $scope.addTendor = function(addTendorForm,tender) {
+  // tender.tokenID = $localStorage[Constants.getTokenKey()];
   tender.actType = "I";
   tender.tenderType = tender.tenderType.typeName;
   console.log(JSON.stringify(tender));
   $rootScope.showPreloader = true;
   ApiCall.postTendor(tender,function(res) {
-    $state.go("tenderList");
-    $rootScope.showPreloader = false;
     Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
+    $rootScope.showPreloader = false;
+    $state.go("tenderList");
   }, function(err) {
     $rootScope.showPreloader = false;
     Util.alertMessage(err.Status.toLocaleLowerCase(),err.Message);
@@ -724,12 +836,14 @@ $scope.gotoTenderCheck = function(){
   $state.go('tender_checklist');
 }
 
-}])
-;app.controller('ProjectMilestoneController', ["$scope", "$rootScope", "$window", "$state", "$uibModal", "$stateParams", "ApiCall", "Util", "EnvService", "$timeout", "$cookieStore", "$localStorage", function($scope, $rootScope,$window, $state,$uibModal, $stateParams, ApiCall,Util, EnvService, $timeout, $cookieStore, $localStorage) {
+})
+;app.controller('ProjectMilestoneController', function($scope, $rootScope,$window, $state,$uibModal, $stateParams, ApiCall,Util, EnvService, $timeout, $cookieStore, $localStorage) {
   $scope.projectMilestoneInit = function() {
     $scope.projectMilestone = {};
+    // if both the tenderId and tender data is present
     if($stateParams.tenderId && $stateParams.tenderList){
       $scope.projectMilestone.tenderList = $stateParams.tenderList;
+      //$scope.projectMilestone.tenderList = $rootScope.tenderList;
       var index = getSelectedTenderIndex($stateParams.tenderId,$scope.projectMilestone.tenderList);
       $timeout(function() {
         $scope.projectMilestone.selectedTender = $scope.projectMilestone.tenderList[index];
@@ -740,17 +854,21 @@ $scope.gotoTenderCheck = function(){
           Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
         })
       })
+      //$window.location.reload();
     }
     else if ($stateParams.tenderId && !$stateParams.tenderList) {
+      // fetch the tender details and recall the state with tender list and the tender Id
       ApiCall.getTendor(function(res) {
         $rootScope.showPreloader = false;
         $scope.projectMilestone.tenderList = res.Data;
         $state.go($state.current, {tenderId:$stateParams.tenderId,tenderList:$scope.projectMilestone.tenderList}, {reload: true});
+        // $state.go("projectMilestone",{tenderId:$stateParams.tenderId,tenderList:$scope.projectMilestone.tenderList})
       },function(err) {
         Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
       })
     }
     else{
+      // call the tender list api
       $rootScope.showPreloader = true;
       ApiCall.getTendor(function(res) {
         $rootScope.showPreloader = false;
@@ -774,6 +892,7 @@ $scope.gotoTenderCheck = function(){
     return index;
   }
   $scope.selectTender = function(selectedTender) {
+    // reload the state with new data
     $state.go($state.current, {tenderId:selectedTender.tenderId,tenderList:$scope.projectMilestone.tenderList}, {reload: true});
 
   }
@@ -796,6 +915,7 @@ $scope.gotoTenderCheck = function(){
 
    }
  }
+ // used to show the review history
  $scope.showReviewHistory = function(tender,milestone){
    $uibModal.open({
        animation: true,
@@ -825,6 +945,9 @@ $scope.gotoTenderCheck = function(){
      }
    });
  }
+/**
+  add project Milestone details starts
+ */
 $scope.projectMilestoneDetailsInit = function(){
   $scope.projectMilestoneDetails = {};
     if(!$stateParams.tenderId){
@@ -848,6 +971,14 @@ $scope.updateMilestone = function(form){
     Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
   })
 }
+/**
+  add project Milestone details ends
+ */
+
+
+/**
+ * add project milestone starts
+ */
 $scope.addProjectMilestoneInit = function() {
   $scope.addProjectMilestone = {};
   if(!$stateParams.tenderId){
@@ -870,9 +1001,18 @@ $scope.submitProjectMilestone = function(form){
   })
 }
 
+/**
+  add project Milestone ends
+ */
 
-}]);
- app.controller('ProjectMilestoneReviewController', ["$rootScope", "$scope", "$state", "$stateParams", "ApiCall", "Util", "Events", function ($rootScope,$scope, $state,$stateParams,ApiCall,Util,Events) {
+
+});
+
+
+/**
+ * ProjectMilestoneReviewController starts
+ */
+ app.controller('ProjectMilestoneReviewController', function ($rootScope,$scope, $state,$stateParams,ApiCall,Util,Events) {
    $scope.projectMilestoneReviewInit = function() {
      $scope.projectMilestoneReview = {};
      $scope.projectMilestoneReview.toggleTender = false;
@@ -895,6 +1035,7 @@ $scope.submitProjectMilestone = function(form){
    $scope.toggleTenderDetails = function() {
      $scope.projectMilestoneReview.toggleTender = !$scope.projectMilestoneReview.toggleTender;
      if($scope.projectMilestoneReview.toggleTender && !$scope.projectMilestoneReview.selectedTender) {
+       // fetche the tender details
        $rootScope.showPreloader = true;
        ApiCall.getTendor({tenderId:$stateParams.tenderId},function(res) {
          $rootScope.showPreloader = false;
@@ -905,7 +1046,10 @@ $scope.submitProjectMilestone = function(form){
      }
    }
    $scope.saveReview = function(form) {
+     // remove selected tender in service call
      delete $scope.projectMilestoneReview['selectedTender'];
+    //  console.log(form);
+    //  console.log(JSON.stringify($scope.projectMilestoneReview) );
     $scope.projectMilestoneReview.actType = "I";
     $scope.projectMilestoneReview.milestoneId = $stateParams.milestoneId;
      ApiCall.postProjectMileStoneReview($scope.projectMilestoneReview,function(response) {
@@ -916,13 +1060,33 @@ $scope.submitProjectMilestone = function(form){
      })
 
    }
- }]);
-app.controller('deleteMilestoneCtrl', ["$scope", "$state", "$uibModalInstance", "milestone", "Events", "ApiCall", "Util", function ($scope, $state,$uibModalInstance,milestone,Events,ApiCall,Util) {
+ });
+
+/**
+ * ProjectMilestoneReviewController starts
+ */
+
+
+
+/**
+ * modal controller for the delete milestone
+ */
+app.controller('deleteMilestoneCtrl', function ($scope, $state,$uibModalInstance,milestone,Events,ApiCall,Util) {
+  // $scope.user = user;
   $scope.ok = function () {
+    // calling service to delete user
     var obj = {
       actType:'D',
       code:milestone.code
     }
+    // ApiCall.postUser(obj,function(response) {
+    //   Util.alertMessage(Events.eventType.success,response.Message);e
+    //   $uibModalInstance.close();
+    //   $state.reload();
+    // },function(err) {
+    //   Util.alertMessage(Events.eventType.error,err.Message);
+    //   $uibModalInstance.close();
+    // })
     ApiCall.postProjectMileStone(obj,function(res) {
       Util.alertMessage(Events.eventType.success,res.Message);
       $uibModalInstance.close();
@@ -936,9 +1100,16 @@ app.controller('deleteMilestoneCtrl', ["$scope", "$state", "$uibModalInstance", 
   $scope.cancel = function () {
     $uibModalInstance.dismiss('cancel');
   };
-}]);
-app.controller('reviewHistoryController', ["$scope", "$state", "$uibModalInstance", "tender", "milestone", "Events", "ApiCall", "Util", "NgTableParams", function ($scope, $state,$uibModalInstance,tender,milestone,Events,ApiCall,Util,NgTableParams) {
+});
+
+/**
+ * modal controller for the review history
+ */
+app.controller('reviewHistoryController', function ($scope, $state,$uibModalInstance,tender,milestone,Events,ApiCall,Util,NgTableParams) {
+  // $scope.user = user;
+  // added static value
   ApiCall.getProjectMileStoneReview({mileStoneId:milestone.code},function(response) {
+    // console.log(JSON.stringify(response.Data));
     $scope.tableParams = new NgTableParams();
     $scope.tableParams.settings({
       dataset: response.Data
@@ -946,21 +1117,40 @@ app.controller('reviewHistoryController', ["$scope", "$state", "$uibModalInstanc
   },function(err) {
       console.log(JSON.stringify(err.Data));
   })
+  // $scope.data = [
+  //   {
+  //     reviewFile : "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRosdXEz5gxha3Pn7sR8ELCAg87XUSV41UXRiZqEqnAOzPBxBX_-w",
+  //     status:"pending",
+  //     comment:"This is a test comment"
+  //   },
+  //   {
+  //     reviewFile : "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRosdXEz5gxha3Pn7sR8ELCAg87XUSV41UXRiZqEqnAOzPBxBX_-w",
+  //     status:"pending",
+  //     comment:"This is a test comment"
+  //   },
+  //   {
+  //     reviewFile : "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRosdXEz5gxha3Pn7sR8ELCAg87XUSV41UXRiZqEqnAOzPBxBX_-w",
+  //     status:"pending",
+  //     comment:"This is a test comment"
+  //   }
+  // ]
   $scope.ok = function () {
     $uibModalInstance.close("ok");
   };
   $scope.cancel = function () {
     $uibModalInstance.dismiss('cancel');
   };
-}]);
-;app.controller('TenderAssignController', ["$scope", "$rootScope", "$state", "$stateParams", "ApiCall", "EnvService", "$timeout", "$cookieStore", "$localStorage", "Constants", "Util", function($scope, $rootScope, $state, $stateParams, ApiCall, EnvService, $timeout, $cookieStore, $localStorage,Constants,Util) {
+});
+;app.controller('TenderAssignController', function($scope, $rootScope, $state, $stateParams, ApiCall, EnvService, $timeout, $cookieStore, $localStorage,Constants,Util) {
   $scope.init = function() {
     if(!$stateParams.tender)
       $state.go("tenderList");
     $scope.isView = true;
     $scope.tender = $stateParams.tender;
+    // loading vendorList
     $rootScope.showPreloader = true;
     var vendorData = {};
+    // vendorData.tokenId = $localStorage[Constants.getTokenKey()];
     vendorData.type = "GET_VENDOR_ALL";
     ApiCall.getVendor(vendorData,function(res) {
       $scope.tender.vendors = res.Data;
@@ -985,14 +1175,8 @@ app.controller('reviewHistoryController', ["$scope", "$state", "$uibModalInstanc
       Util.alertMessage(err.Status.toLocaleLowerCase(), err.Message);
     })
   }
-}])
-;/**
- * This page is used to show the view and update for the tender details
- where if the action is selected as view and the fields are in disable Status
- if the action is edit user can edit the items
- */
-
-app.controller('TenderDetailsController', ["$scope", "$rootScope", "$state", "$uibModal", "$stateParams", "ApiCall", "Util", "EnvService", "$timeout", "$cookieStore", "$localStorage", function($scope, $rootScope, $state,$uibModal, $stateParams, ApiCall,Util, EnvService, $timeout, $cookieStore, $localStorage) {
+})
+;app.controller('TenderDetailsController', function($scope, $rootScope, $state,$uibModal, $stateParams, ApiCall,Util, EnvService, $timeout, $cookieStore, $localStorage) {
 
     $scope.init = function() {
         $scope.isInit = false;
@@ -1005,8 +1189,17 @@ app.controller('TenderDetailsController', ["$scope", "$rootScope", "$state", "$u
         ApiCall.getTendor(data, function(res) {
 
             $scope.tender = res.Data;
+            // Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
             $scope.isInit = true;
             $rootScope.showPreloader = false;
+            // delete boq columns
+            // for(var i in $scope.tender.boqData) {
+            //   angular.forEach($scope.tender.boqData[i],function(v,k) {
+            //     var temp = ['itemDescription','quantity','units','totalAmountWithoutTaxes'];
+            //     if(temp.indexOf(k)  == -1)
+            //       delete $scope.tender.boqData[i][k];
+            //   })
+            // }
         }, function(err) {
             Util.alertMessage(err.Status.toLocaleLowerCase(), err.Message);
             $rootScope.showPreloader = false;
@@ -1038,6 +1231,7 @@ app.controller('TenderDetailsController', ["$scope", "$rootScope", "$state", "$u
     $scope.updateTender = function(tender) {
       tender.actType = "U";
       tender.tenderType = tender.tenderType.typeName;
+      // tender.fileData = $scope.FileData;
       delete tender['boqData']; // remove unrequired data in service call
       console.log(JSON.stringify(tender));
       $rootScope.showPreloader = true;
@@ -1050,15 +1244,21 @@ app.controller('TenderDetailsController', ["$scope", "$rootScope", "$state", "$u
         Util.alertMessage(err.Status.toLocaleLowerCase(),err.Message);
       })
     }
-}])
-app.controller('boqController', ["$rootScope", "$scope", "$uibModalInstance", "$uibModal", "tender", "Util", "ApiCall", "UtilityService", function ($rootScope,$scope,$uibModalInstance,$uibModal,tender,Util,ApiCall,UtilityService) {
+})
+
+/**
+ * boqController
+ * Info : used to show the boq data in the modal
+ */
+app.controller('boqController', function ($rootScope,$scope,$uibModalInstance,$uibModal,tender,Util,ApiCall,UtilityService,UserService) {
   $scope.boqUpdateArr = [];
   $scope.tender = tender;
   $scope.boqData = tender.boqData;
   $scope.verifyBoqItem = function(boq,action) {
     if(action == "verify") {
-      boq.verify = 0;
-      boq.action = "item verification";
+      boq.verify = 2;
+      boq.action = "Item verification";
+      boq.verifyUserId = UserService.getUser().userId;
       var data = [boq]; // sending in array as boq update requires a array
       ApiCall.postBOQHistory(data,function(response) {
         Util.alertMessage(response.Status.toLocaleLowerCase(),response.Message);
@@ -1070,11 +1270,12 @@ app.controller('boqController', ["$rootScope", "$scope", "$uibModalInstance", "$
       $uibModal.open({
           animation: true,
           size: 'lg',
-          controller: ["$scope", "boq", "$uibModalInstance", "Util", "ApiCall", function($scope,boq,$uibModalInstance,Util,ApiCall) {
+          controller: function($scope,boq,$uibModalInstance,Util,ApiCall) {
             $scope.boq = boq;
             $scope.ok = function () {
-              boq.verify = 0;
+              boq.verify = 3;
               boq.action = "Cancel verification";
+              boq.verifyUserId = UserService.getUser().userId;
               var data = [boq]; // sending in array as boq update requires a array
               ApiCall.postBOQHistory(data,function(response) {
                 Util.alertMessage(response.Status.toLocaleLowerCase(),response.Message);
@@ -1088,7 +1289,7 @@ app.controller('boqController', ["$rootScope", "$scope", "$uibModalInstance", "$
             };
 
 
-          }],
+          },
           templateUrl:"cancelBoqVerification.html",
           resolve:{
             boq:function() {
@@ -1099,6 +1300,7 @@ app.controller('boqController', ["$rootScope", "$scope", "$uibModalInstance", "$
     }
   }
   $scope.UtilityService = UtilityService;
+  // used to update the boq data of the indivisual row
   $scope.updateBoqData = function(){
     $rootScope.showPreloader = true;
     ApiCall.postBOQHistory($scope.boqUpdateArr,function(response) {
@@ -1123,9 +1325,27 @@ app.controller('boqController', ["$rootScope", "$scope", "$uibModalInstance", "$
     });
   }
   $scope.focusEdit = function(boq,$event) {
+    // reset the edit mode except the selected one
     angular.forEach($scope.boqData,function(boqData) {
       boqData == boq ? boq.isEdit = true : boqData.isEdit = false;
     })
+  }
+  /**
+   * functionName :allowBoqEdit
+   * Info : return true if the user  is JE (junior Engg.)
+   * output bookean
+
+   */
+  $scope.validateBoqPermission = function(permissionType){
+    var boqPermission = {
+      "updateQuantity" : ["Junior Engineer"],
+      "verifyQuantity" : ["SUPER ADMIN","Executive Engineer","Assistant Engineer","Superintendent Engineer","Managing Director"]
+    }
+    var designation = UserService.getUser().designation;
+    if(boqPermission[permissionType].indexOf(designation) != -1){
+      return true;
+    }
+    return false;
   }
   $scope.updateAmount = function(boq,param) {
     if(!boq.count || isNaN(boq.count)){
@@ -1138,6 +1358,8 @@ app.controller('boqController', ["$rootScope", "$scope", "$uibModalInstance", "$
       boq.count = 0;
       boq.isEdit = false; // here the values
     }
+
+    // removing the duplicate boq if exist
     var found = false;
     for(var i in $scope.boqUpdateArr){
       if($scope.boqUpdateArr[i].id == boq.id){
@@ -1148,10 +1370,13 @@ app.controller('boqController', ["$rootScope", "$scope", "$uibModalInstance", "$
       }
     }
     if(!found){
+      // update the array that will save in batch
       boq.verify = 1; // verify = 1 this need to be verify by higher designation
       $scope.boqUpdateArr.push(boq);
     }
     boq.totalAmountWithoutTaxes = boq.quantity*boq.estimateRate;
+
+    // update the totalAmountWithoutTaxes for all enrty
      var total = 0;
      for(var i in $scope.tender.boqData) {
        total += $scope.tender.boqData[i].totalAmountWithoutTaxes;
@@ -1164,13 +1389,20 @@ app.controller('boqController', ["$rootScope", "$scope", "$uibModalInstance", "$
   $scope.cancel = function () {
     $uibModalInstance.dismiss('cancel');
   };
-}]);
-app.controller('boqHistoryController', ["$scope", "$uibModalInstance", "tenderId", "ApiCall", "NgTableParams", "Util", function ($scope,$uibModalInstance,tenderId,ApiCall,NgTableParams,Util) {
+});
+
+
+/**
+ * boqHistoryController
+ * Info : used to show the boq history updated by different users
+ */
+app.controller('boqHistoryController', function ($scope,$uibModalInstance,tenderId,ApiCall,NgTableParams,Util) {
   var data = {
     tenderId : tenderId
   }
   $scope.boqHistory = [];
   $scope.updateUserDetails = function(data) {
+    // close all the pop up
     angular.forEach($scope.boqHistory,function(v,k) {
       if(data == v) {
         v.isOpen = !v.isOpen;
@@ -1181,8 +1413,21 @@ app.controller('boqHistoryController', ["$scope", "$uibModalInstance", "tenderId
     })
     $scope.userDetails = data;
   }
+  $scope.updateVerifyingUserDetails = function(data) {
+    // close all the pop up
+    angular.forEach($scope.boqHistory,function(v,k) {
+      if(data == v) {
+        v.isVerifyUserOpen = !v.isVerifyUserOpen;
+      }
+      else {
+        v.isVerifyUserOpen = false;
+      }
+    })
+    $scope.verifiedUserDetails = data;
+  }
   ApiCall.getBOQHistory(data,function(response) {
     $scope.boqHistory = response.Data;
+    // $scope.boqHistory = response.Data;
     $scope.tableParams = new NgTableParams();
     $scope.tableParams.settings({
       dataset: response.Data
@@ -1197,8 +1442,8 @@ app.controller('boqHistoryController', ["$scope", "$uibModalInstance", "tenderId
   $scope.cancel = function () {
     $uibModalInstance.dismiss('cancel');
   };
-}]);
-;app.controller('TenderListController', ["$scope", "$rootScope", "$stateParams", "$state", "ApiCall", "EnvService", "$timeout", "$cookieStore", "$localStorage", "NgTableParams", "Util", "Events", function($scope, $rootScope,$stateParams, $state, ApiCall, EnvService, $timeout, $cookieStore, $localStorage,NgTableParams,Util,Events) {
+});
+;app.controller('TenderListController', function($scope, $rootScope,$stateParams, $state, ApiCall, EnvService, $timeout, $cookieStore, $localStorage,NgTableParams,Util,Events) {
 
     $scope.tenderListInit = function() {
       $rootScope.showPreloader = true;
@@ -1206,12 +1451,16 @@ app.controller('boqHistoryController', ["$scope", "$uibModalInstance", "tenderId
       if($stateParams.tenderStatus){
         obj.tenderStatus = $stateParams.tenderStatus;
       }
+      if($stateParams.Tenderids){
+        obj.Tenderids = $stateParams.Tenderids;
+      }
       ApiCall.getTendor(obj,function(res) {
         $scope.tenders = res.Data;
         $scope.tableParams = new NgTableParams();
         $scope.tableParams.settings({
         dataset: res.Data
       });
+        // Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
         $rootScope.showPreloader = false;
       }, function(err) {
         Util.alertMessage(err.Status.toLocaleLowerCase(),err.Message);
@@ -1249,8 +1498,8 @@ app.controller('boqHistoryController', ["$scope", "$uibModalInstance", "tenderId
       }
 
     }
-}])
-;app.controller('TenderMilestoneController', ["$scope", "$rootScope", "$state", "$filter", "$stateParams", "ApiCall", "Util", "Events", "EnvService", "$timeout", "$cookieStore", "$localStorage", function($scope, $rootScope, $state, $filter,$stateParams, ApiCall, Util, Events, EnvService, $timeout, $cookieStore, $localStorage) {
+})
+;app.controller('TenderMilestoneController', function($scope, $rootScope, $state, $filter,$stateParams, ApiCall, Util, Events, EnvService, $timeout, $cookieStore, $localStorage) {
     $scope.dateChange = function(data) {
         console.log("data  ", $scope.tenderMilestone, data);
     }
@@ -1266,6 +1515,7 @@ app.controller('boqHistoryController', ["$scope", "$uibModalInstance", "tenderId
                     }, function(response) {
                         Util.alertMessage(Events.eventType.success, response.Message);
                         $scope.tenderMilestone = response.Data;
+                        // filtering out the time from the date
                         for(var i in $scope.tenderMilestone) {
                           $scope.tenderMilestone[i].startDate = $filter('filterDate')($scope.tenderMilestone[i].startDate);
                           $scope.tenderMilestone[i].endDate = $filter('filterDate')($scope.tenderMilestone[i].endDate);
@@ -1285,6 +1535,10 @@ app.controller('boqHistoryController', ["$scope", "$uibModalInstance", "tenderId
       for(var i in tenderMilestone) {
         if(i == 0 )
         continue; // continue for the index of the doc received
+        // for test milestone calculate the due date
+        // if(tenderMilestone[i].completionDate && tenderMilestone[i].completionDate!= '')
+        //   mEnd = moment(new Date(tenderMilestone[i].completionDate));
+        // else
           mEnd = moment(new Date(tenderMilestone[i].endDate));
         var mToday = moment(new Date());
         var diff = mToday.diff(mEnd, 'days');
@@ -1294,15 +1548,21 @@ app.controller('boqHistoryController', ["$scope", "$uibModalInstance", "tenderId
         else {
           tenderMilestone[i].dueDayCount = 0;
         }
+        // tenderMilestone[i].dueDayCount = 0; // static value
       }
     }
     $scope.closeTicket = function(index) {
+        // console.log("$scope.tenderMilestone  ",$scope.tenderMilestone);
+        // return;
         if(index != 0 && !$scope.tenderMilestone[index].completionDate){
           Util.alertMessage(Events.eventType.warning, "Please select Date");
           return;
         }
         var isValid = true;
         switch (index) {
+           /*
+           * Note : Only in case of the doc received the acttype = 'RECEPT_DOC' , in all other cases it will be 'U'
+           */
             case 0: //"Receipt Of Doc"
                 $scope.tenderMilestone[index].actType = 'RECEPT_DOC';
                 $scope.tenderMilestone[index].isClosed = true;
@@ -1322,8 +1582,10 @@ app.controller('boqHistoryController', ["$scope", "$uibModalInstance", "tenderId
                 break;
         }
         if (isValid) {
+            // call web service
             ApiCall.postMilestone($scope.tenderMilestone[index], function(response) {
                     Util.alertMessage(Events.eventType.success, response.Message);
+                    //$scope.tenderMilestone = response.Data;
                     $state.reload();
                 },
                 function(err) {
@@ -1332,13 +1594,16 @@ app.controller('boqHistoryController', ["$scope", "$uibModalInstance", "tenderId
             )
         }
     }
-}])
-;app.controller('PermissionController', ["$scope", "$rootScope", "$state", "$timeout", "AppModel", "$uibModal", "ApiCall", "Events", "Util", "$localStorage", "UtilityService", "Constants", "UserService", function($scope, $rootScope, $state, $timeout, AppModel, $uibModal, ApiCall, Events, Util, $localStorage, UtilityService, Constants,UserService) {
+})
+;app.controller('PermissionController', function($scope, $rootScope, $state, $timeout, AppModel, $uibModal, ApiCall, Events, Util, $localStorage, UtilityService, Constants,UserService) {
   $scope.permission = {};
   $scope.addPermission = {};
   $scope.checkPermission = UserService.checkPermission;
     $scope.permissionInit = function(fromAddService) {
+        // $scope.permission.designation = AppModel.getSetting('designation');
+        // $scope.UtilityService = UtilityService;
         var temp = '';
+        // $scope.checkPermission('Login','POST');
         $rootScope.showLoader = true;
         ApiCall.getDesignation(function(response) {
             $rootScope.showLoader = false;
@@ -1348,6 +1613,7 @@ app.controller('boqHistoryController', ["$scope", "$uibModalInstance", "tenderId
                 $scope.addPermission.designations = response.Data;
 
             $scope.permission.selectedDesignation = $scope.permission.designations[0];
+            // calling for the web service for selected designation
             if (!fromAddService)
                 $scope.fetchWebServiceDetails();
 
@@ -1375,29 +1641,58 @@ app.controller('boqHistoryController', ["$scope", "$uibModalInstance", "tenderId
     }
     $scope.savePermission = function(permission) {
         console.log(permission.webServices == $scope.permission.webServices);
+        // permission.actType = 'U';
         var obj = {
             authenticaiton: permission.webServices,
             actType: 'U'
         }
         ApiCall.postAuthentication(obj, function(response) {
             Util.alertMessage(Events.eventType.success, response.Message);
+            // $scope.permission.webServices = response;
         }, function(err) {
             Util.alertMessage(Events.eventType.error, err.Message);
         })
     }
+    /**
+     * code for the add permission starts
+     */
 
     $scope.addPermissionInit = function() {
         if (!$scope.permission.designations) {
             $scope.permissionInit(true);
         }
         ApiCall.getServiceList(function(response) {
+            // Util.alertMessage(Events.eventType.success, response.Message);
             $scope.addPermission.webServices = response;
         }, function(err) {
             Util.alertMessage(Events.eventType.error, err.Message);
         })
+        // $scope.addPermission.webServices = [{
+        //     "name": "Login",
+        //     "get": false,
+        //     "post": false,
+        //     "put": false,
+        //     "delete": false,
+        //     "options": false
+        // }, {
+        //     "name": "VendorCheckList",
+        //     "get": false,
+        //     "post": false,
+        //     "put": false,
+        //     "delete": false,
+        //     "options": false
+        // }, {
+        //     "name": "LogOut",
+        //     "get": false,
+        //     "post": false,
+        //     "put": false,
+        //     "delete": false,
+        //     "options": false
+        // }]
     }
     $scope.saveAddPermission = function() {
       console.log($scope.addPermission.selectedDesignation);
+      // permission.actType = 'U';
       for(var i in $scope.addPermission.webServices) {
         $scope.addPermission.webServices[i].designation = $scope.addPermission.selectedDesignation.designationId;
       }
@@ -1407,13 +1702,18 @@ app.controller('boqHistoryController', ["$scope", "$uibModalInstance", "tenderId
       }
       ApiCall.postAuthentication(obj, function(response) {
           Util.alertMessage(Events.eventType.success, response.Message);
+          // $scope.permission.webServices = response;
       }, function(err) {
           Util.alertMessage(Events.eventType.error, err.Message);
       })
     }
+        /**
+         * code for the add permission ends
+         */
 
-}])
-;app.controller('UserController', ["$scope", "$rootScope", "$state", "$stateParams", "UserService", "AppModel", "$window", "UtilityService", "Util", "$localStorage", "Constants", "ApiCall", "Events", function($scope, $rootScope, $state,$stateParams, UserService,AppModel,$window, UtilityService,Util,$localStorage, Constants,ApiCall,Events) {
+})
+;app.controller('UserController', function($scope, $rootScope, $state,$stateParams, UserService,AppModel,$window, UtilityService,Util,$localStorage, Constants,ApiCall,Events) {
+    // $scope.UserService = UserService;
     $rootScope.$on(Events.userLogged,function() {
       if(!$scope.user){
         $scope.user = UserService.getUser();
@@ -1421,6 +1721,8 @@ app.controller('boqHistoryController', ["$scope", "$uibModalInstance", "tenderId
     });
     $scope.init = function() {
         $scope.user = UserService.getUser();
+        // here this is kept in $rootScope as this controller is a shared one
+        //the this value getting lost on each controller load
         $rootScope.sideBar = UserService.getSideBarInfo();
         $scope.userTabs = [{
             heading: "View Profile",
@@ -1433,10 +1735,12 @@ app.controller('boqHistoryController', ["$scope", "$uibModalInstance", "tenderId
             active: false
         }, ]
         $scope.currTab = 0;
+        // loading user information in case of the edituser, view user
         if($stateParams.userId){
           $scope.isView = $stateParams.action == 'edit' ? false : true;
           var obj = {
             userId:$stateParams.userId,
+            // TokenId: $localStorage[Constants.getTokenKey()]
           }
           ApiCall.getUser(obj,function(response) {
             $scope.user = response.Data[0];
@@ -1446,7 +1750,19 @@ app.controller('boqHistoryController', ["$scope", "$uibModalInstance", "tenderId
 
         }
     }
+    $scope.toggleSubmenu = function(side) {
+      // side.menuOpen = !side.menuOpen || false; // make default as false
+      side.menuOpen = !side.menuOpen;
+      // side.subMenuOpen = !side.subMenuOpen || false; // make default as false
+      if(side.menuOpen) {
+        side.subMenuOpen = true;
+      }
+      else{
+        side.subMenuOpen = false;
+      }
+    }
     $rootScope.$on(Events.updateSideBar,function(event,data) {
+      // get the index of the sideBar to be activeated after state change
       $scope.updateActiveClass(null,data.state);
     })
     $scope.updateActiveClass = function(index,state){
@@ -1497,6 +1813,10 @@ app.controller('boqHistoryController', ["$scope", "$uibModalInstance", "tenderId
             }
         )
     }
+    /**
+     * add user starts
+     *
+     */
      $scope.addUserInit = function() {
        $rootScope.showPreloader = true;
        ApiCall.getDesignation({TokenId:$localStorage[Constants.getTokenKey()]},function(res) {
@@ -1510,7 +1830,9 @@ app.controller('boqHistoryController', ["$scope", "$uibModalInstance", "tenderId
      $scope.addUser = function(form) {
        $scope.user.actType = "I";
        $scope.user.designationId = $scope.user.designation.designationId;
+      //  delete $scope.user['designation'];
        console.log("user ",$scope.user);
+      //  $scope.user.tokenId = $localStorage[Constants.getTokenKey()];
        ApiCall.postUser($scope.user,function(res) {
          Util.alertMessage(res.Status.toLocaleLowerCase(), res.Message);
          $state.go("UserList");
@@ -1518,13 +1840,27 @@ app.controller('boqHistoryController', ["$scope", "$uibModalInstance", "tenderId
          Util.alertMessage(res.Status.toLocaleLowerCase(), err.Message || "Error in Login");
        })
      }
+    /**
+     * add user ends
+     *
+     */
+
+
+    /**
+     * dashboard code starts
+     *
+     */
      $scope.initDashboard = function(){
        $scope.dashboard = {};
        ApiCall.getDashboard(function(res) {
          Util.alertMessage(res.Status.toLocaleLowerCase(), res.Message);
          $scope.dashboard = res.Data;
          $scope.dashboard.tenderStatusCount = {};
+         // getting tender status count to show in dashboard tabs
          for(var i in $scope.dashboard.projectMilestone) {
+           if($scope.dashboard.projectMilestone[i].projectMilestoneSts == ""){
+             $scope.dashboard.tenderStatusCount.totalCount = $scope.dashboard.projectMilestone[i].count;
+           }
            if($scope.dashboard.projectMilestone[i].projectMilestoneSts == "inTime"){
              $scope.dashboard.tenderStatusCount.inTime = $scope.dashboard.projectMilestone[i].count;
            }
@@ -1542,12 +1878,18 @@ app.controller('boqHistoryController', ["$scope", "$uibModalInstance", "tenderId
      $scope.getTenderByStatus = function(tenderStatus) {
        $state.go("tenderList",{tenderStatus:tenderStatus});
      }
+    /**
+     * dashboard code ends
+     *
+     */
 
 
-}])
-;app.controller('UserDetailsController', ["$scope", "$rootScope", "$state", "$stateParams", "$timeout", "AppModel", "ApiCall", "UserService", "Events", "UtilityService", "Util", "$localStorage", "Constants", function($scope, $rootScope, $state,$stateParams,$timeout, AppModel,ApiCall,UserService,Events, UtilityService,Util,$localStorage, Constants) {
+})
+;app.controller('UserDetailsController', function($scope, $rootScope, $state,$stateParams,$timeout, AppModel,ApiCall,UserService,Events, UtilityService,Util,$localStorage, Constants) {
+    // $scope.UserService = UserService;
     $scope.init = function() {
       $scope.isEdit = $stateParams.action == "edit" ? true : false;
+      // get the designation to update
       if($scope.isEdit){
         if(!AppModel.getSetting()) {
           $scope.timeout = $timeout(function() {
@@ -1560,12 +1902,14 @@ app.controller('boqHistoryController', ["$scope", "$uibModalInstance", "tenderId
         }
       }
       var obj = {
+        // TokenId:$localStorage[Constants.getTokenKey()],
         UserId:$stateParams.userId
       }
       $rootScope.showPreloader = true;
         ApiCall.getUser(obj,function(response) {
           $scope.user = response.Data;
           $rootScope.showPreloader = false;
+          // setting the user designation
           for(var i in $scope.designations){
             if($scope.user.designation == $scope.designations[i].designationName){
               $scope.user.designation = $scope.designations[i];
@@ -1578,6 +1922,7 @@ app.controller('boqHistoryController', ["$scope", "$uibModalInstance", "tenderId
         }
       )
     }
+    // update user info as admin
     $scope.updateUser = function(form,user) {
       user.designationId = user.designation.designationId;
       delete user['designation'];
@@ -1591,15 +1936,18 @@ app.controller('boqHistoryController', ["$scope", "$uibModalInstance", "tenderId
     }
 
 
-}])
-;app.controller('UserListController', ["$scope", "$rootScope", "$state", "NgTableParams", "$uibModal", "ApiCall", "UserService", "Events", "UtilityService", "Util", "$localStorage", "Constants", function($scope, $rootScope, $state, NgTableParams,$uibModal,ApiCall,UserService,Events, UtilityService,Util,$localStorage, Constants) {
+})
+;app.controller('UserListController', function($scope, $rootScope, $state, NgTableParams,$uibModal,ApiCall,UserService,Events, UtilityService,Util,$localStorage, Constants) {
+    // $scope.UserService = UserService;
     $scope.init = function() {
       $scope.userList = [];
       var obj = {
+        //TokenId:$localStorage[Constants.getTokenKey()],
         UserId:""
       }
       $rootScope.showPreloader = true;
         ApiCall.getUser(obj,function(response) {
+          //$scope.userList = response.Data;
           $rootScope.showPreloader = false;
           $scope.tableParams = new NgTableParams();
           $scope.tableParams.settings({
@@ -1630,11 +1978,12 @@ app.controller('boqHistoryController', ["$scope", "$uibModalInstance", "tenderId
     }
 
 
-}])
+})
 
-app.controller('deleteModalCtrl', ["$scope", "$uibModalInstance", "user", "Util", "ApiCall", "$state", "Events", function ($scope, $uibModalInstance,user,Util,ApiCall,$state,Events ) {
+app.controller('deleteModalCtrl', function ($scope, $uibModalInstance,user,Util,ApiCall,$state,Events ) {
   $scope.user = user;
   $scope.ok = function () {
+    // calling service to delete user
     var obj = {
       actType:'D',
       userId:user.userId
@@ -1653,8 +2002,8 @@ app.controller('deleteModalCtrl', ["$scope", "$uibModalInstance", "user", "Util"
   $scope.cancel = function () {
     $uibModalInstance.dismiss('cancel');
   };
-}]);
-;app.controller('EditVendorController',["$scope", "$rootScope", "$state", "$stateParams", "Constants", "EnvService", "$timeout", "$cookieStore", "$localStorage", "ApiCall", "Util", function($scope,$rootScope,$state,$stateParams,Constants,EnvService,$timeout,$cookieStore,$localStorage,ApiCall,Util){
+});
+;app.controller('EditVendorController',function($scope,$rootScope,$state,$stateParams,Constants,EnvService,$timeout,$cookieStore,$localStorage,ApiCall,Util){
   $scope.initEditVendor = function() {
     if(!$stateParams.vendor)
       $state.go("VendorList"); // move to vendor list if no vendor selected to edit data
@@ -1665,8 +2014,8 @@ app.controller('deleteModalCtrl', ["$scope", "$uibModalInstance", "user", "Util"
   $scope.updateVendor = function(vendorDetails,vendor) {
     console.log(vendorDetails,vendor);
   }
-}])
-;app.controller('VendorChecklistController',["$scope", "$rootScope", "$state", "$stateParams", "Constants", "Events", "EnvService", "$timeout", "$cookieStore", "$localStorage", "ApiCall", "Util", function($scope,$rootScope,$state,$stateParams,Constants,Events,EnvService,$timeout,$cookieStore,$localStorage,ApiCall,Util){
+})
+;app.controller('VendorChecklistController',function($scope,$rootScope,$state,$stateParams,Constants,Events,EnvService,$timeout,$cookieStore,$localStorage,ApiCall,Util){
   $scope.currTab = 0;
   $scope.vendorChecklist = {};
   $scope.vendorChecklist.checklist = [
@@ -1690,11 +2039,14 @@ app.controller('deleteModalCtrl', ["$scope", "$uibModalInstance", "user", "Util"
     }
     else {
       $scope.vendorChecklist.vendorId = $stateParams.vendorId;
+      // getting checklist details
       ApiCall.getVendorCheckList({vendorId:$stateParams.vendorId},function(res){
         Util.alertMessage(Events.eventType.success,res.Message);
         if(res.Data.length){
           $scope.vendorChecklist.isUpdate = true;
           $scope.vendorChecklist.checklist = res.Data;
+
+          // adding default values
           $scope.vendorChecklist.checklist[0].name = $scope.vendorChecklist.checklist[0].name || "Regd details";
           $scope.vendorChecklist.checklist[1].name = $scope.vendorChecklist.checklist[1].name || "PAN details";
           $scope.vendorChecklist.checklist[2].name = $scope.vendorChecklist.checklist[2].name || "Turn over details";
@@ -1711,6 +2063,7 @@ app.controller('deleteModalCtrl', ["$scope", "$uibModalInstance", "user", "Util"
       $scope.currTab = tabPos;
   }
   $scope.submitChecklist = function(form) {
+    // structuring multiple file upload
     for(var i in $scope.vendorChecklist.checklist){
       if($scope.vendorChecklist.checklist[i].fileData) {
         $scope.vendorChecklist.checklist[i].file = $scope.vendorChecklist.checklist[i].fileData.InputStream;
@@ -1723,6 +2076,7 @@ app.controller('deleteModalCtrl', ["$scope", "$uibModalInstance", "user", "Util"
       }
     }
     $scope.vendorChecklist.actType = "I"; // here note that actType = I represents both insert and update
+    //$scope.vendorChecklist.isUpdate ? $scope.vendorChecklist.actType = "U" : $scope.vendorChecklist.actType = "I";
     $rootScope.showPreloader = true;
     ApiCall.postVendorCheckList($scope.vendorChecklist,function(res) {
       $rootScope.showPreloader = false;
@@ -1732,117 +2086,8 @@ app.controller('deleteModalCtrl', ["$scope", "$uibModalInstance", "user", "Util"
       Util.alertMessage(Events.eventType.error,res.Message);
     })
   }
-}])
-;app.controller('VendorController',["$scope", "$rootScope", "$state", "Constants", "$uibModal", "NgTableParams", "EnvService", "$timeout", "$cookieStore", "$localStorage", "ApiCall", "Util", function($scope,$rootScope,$state,Constants,$uibModal,NgTableParams,EnvService,$timeout,$cookieStore,$localStorage,ApiCall,Util){
-  $scope.onDeleteVendor = function (vendor) {
-
-    $scope.selectedVendor = vendor;
-    $scope.open();
-  };
-  $scope.open = function(){
-      $scope.showModal = true;
-  }
-  $scope.ok = function () {
-    console.log("vendor to be deleted",$scope.selectedVendor);
-    var vendorData = {};
-    vendorData.vendorId = $scope.selectedVendor.vendorId;
-    $rootScope.showPreloader = true;
-    ApiCall.deleteVendor(vendorData,function(res) {
-      Util.alertMessage(res.Status.toLocaleLowerCase(), res.Message);
-      $scope.initVenderList();
-      $rootScope.showPreloader = false;
-    },function(err) {
-      Util.alertMessage(err.Status.toLocaleLowerCase(), err.Message);
-      $rootScope.showPreloader = false;
-    })
-    $scope.showModal = false;
-    $scope.selectedVendor = null;
-  };
-  $scope.cancel = function () {
-    console.log("vendor to be deleted cancelled ",$scope.selectedVendor);
-    $scope.selectedVendor = null;
-     $scope.showModal = false;
-  };
-
-  $scope.onAction = function(action,vendor) {
-    switch (action) {
-      case 'view':
-      case 'edit':
-        $state.go("vendorDetails",{vendorId:vendor.vendorId,vendor:vendor,action:action})
-        break;
-      case 'checklist':
-        $state.go("vendorChecklist",{vendorId:vendor.vendorId,vendor: vendor});
-        break;
-      case 'delete':
-        var modalInstance = $uibModal.open({
-          animation: true,
-          templateUrl: 'deleteVendorModal.html',
-          controller: 'deleteVendorModalCtrl',
-          size: 'md',
-          resolve: {
-            vendor: function () {
-              return vendor;
-            }
-          }
-        });
-        break;
-      default:
-
-    }
-  }
-  $scope.initVenderList = function(){
-    var vendorData = {};
-    $rootScope.showPreloader = true;
-    ApiCall.getVendor(vendorData,function(res) {
-      Util.alertMessage(res.Status.toLocaleLowerCase(), res.Message);
-      $scope.tableParams = new NgTableParams();
-        $scope.tableParams.settings({
-        dataset: res.Data
-      });
-      $rootScope.showPreloader = false;
-    },function(err) {
-      Util.alertMessage(err.Status.toLocaleLowerCase(), err.Message);
-      $rootScope.showPreloader = false;
-    })
-  }
-  $scope.addVendor = function(addVendorForm,vendorData){
-    vendorData.type = "I";
-    $rootScope.showPreloader = true;
-    ApiCall.postVendor(vendorData,function(res) {
-      Util.alertMessage(res.Status.toLocaleLowerCase(), res.Message);
-      $state.go("VendorList");
-      $rootScope.showPreloader = false;
-    },function(err) {
-      Util.alertMessage(err.Status.toLocaleLowerCase(), err.Message);
-      $rootScope.showPreloader = false;
-    })
-  }
-}])
-
-
-app.controller('deleteVendorModalCtrl', ["$scope", "$uibModalInstance", "vendor", "Util", "ApiCall", "$state", "Events", function ($scope, $uibModalInstance,vendor,Util,ApiCall,$state,Events ) {
-  $scope.vendor = vendor;
-  $scope.ok = function () {
-    var obj = {
-      actType:'D',
-      vendorId:vendor.vendorId
-    }
-    ApiCall.postVendor(obj,function(response) {
-      Util.alertMessage(Events.eventType.success,response.Message);
-      $uibModalInstance.close();
-      $state.reload();
-    },function(err) {
-      Util.alertMessage(Events.eventType.error,err.Message);
-      $uibModalInstance.close();
-    })
-
-  };
-
-  $scope.cancel = function () {
-    $uibModalInstance.dismiss('cancel');
-  };
-}]);
-;app.controller('VendorDetailsController',["$scope", "$rootScope", "$state", "$stateParams", "Constants", "EnvService", "$timeout", "$cookieStore", "$localStorage", "ApiCall", "Util", function($scope,$rootScope,$state,$stateParams,Constants,EnvService,$timeout,$cookieStore,$localStorage,ApiCall,Util){
+})
+;app.controller('VendorDetailsController',function($scope,$rootScope,$state,$stateParams,Constants,EnvService,$timeout,$cookieStore,$localStorage,ApiCall,Util){
   $scope.init = function() {
     if(!$stateParams.vendor)
     {
@@ -1879,10 +2124,220 @@ app.controller('deleteVendorModalCtrl', ["$scope", "$uibModalInstance", "vendor"
       $rootScope.showPreloader = false;
     })
   }
-}])
+})
+;app.controller('VendorController',function($scope,$rootScope,$state,Constants,$uibModal,NgTableParams,EnvService,$timeout,$cookieStore,$localStorage,ApiCall,Util){
+  /***************************************************************************/
+  /**************************This is use to show a pop up****************************/
+  /***************************************************************************/
+  $scope.onDeleteVendor = function (vendor) {
+
+    $scope.selectedVendor = vendor;
+    $scope.open();
+  };
+  $scope.open = function(){
+      $scope.showModal = true;
+  }
+  /***************************************************************************/
+  /**************************This is use to hide a pop up****************************/
+  /***************************************************************************/
+  $scope.ok = function () {
+    console.log("vendor to be deleted",$scope.selectedVendor);
+    var vendorData = {};
+    //vendorData.tokenId = $localStorage[Constants.getTokenKey()];
+    vendorData.vendorId = $scope.selectedVendor.vendorId;
+    $rootScope.showPreloader = true;
+    ApiCall.deleteVendor(vendorData,function(res) {
+      Util.alertMessage(res.Status.toLocaleLowerCase(), res.Message);
+      $scope.initVenderList();
+      $rootScope.showPreloader = false;
+    },function(err) {
+      Util.alertMessage(err.Status.toLocaleLowerCase(), err.Message);
+      $rootScope.showPreloader = false;
+    })
+    $scope.showModal = false;
+    $scope.selectedVendor = null;
+  };
+  /***************************************************************************/
+  /**************************This is use to hide a pop up****************************/
+  /***************************************************************************/
+  $scope.cancel = function () {
+    console.log("vendor to be deleted cancelled ",$scope.selectedVendor);
+    $scope.selectedVendor = null;
+     $scope.showModal = false;
+  };
+  /***************************************************************************/
+  /**************************This is use to go to edit vendor page****************************/
+  /***************************************************************************/
+
+  $scope.onAction = function(action,vendor) {
+    switch (action) {
+      case 'view':
+      case 'edit':
+        $state.go("vendorDetails",{vendorId:vendor.vendorId,vendor:vendor,action:action})
+        break;
+      case 'checklist':
+        $state.go("vendorChecklist",{vendorId:vendor.vendorId,vendor: vendor});
+        break;
+      case 'delete':
+        // call service to delete
+        var modalInstance = $uibModal.open({
+          animation: true,
+          templateUrl: 'deleteVendorModal.html',
+          controller: 'deleteVendorModalCtrl',
+          size: 'md',
+          resolve: {
+            vendor: function () {
+              return vendor;
+            }
+          }
+        });
+        break;
+      default:
+
+    }
+  }
+  $scope.initVenderList = function(){
+    var vendorData = {};
+    // vendorData.tokenId = $localStorage[Constants.getTokenKey()];
+    // vendorData.actType = "GET_VENDOR_ALL";
+    $rootScope.showPreloader = true;
+    ApiCall.getVendor(vendorData,function(res) {
+      Util.alertMessage(res.Status.toLocaleLowerCase(), res.Message);
+      // $scope.vendors = res.Data;
+      $scope.tableParams = new NgTableParams();
+        $scope.tableParams.settings({
+        dataset: res.Data
+      });
+      $rootScope.showPreloader = false;
+    },function(err) {
+      Util.alertMessage(err.Status.toLocaleLowerCase(), err.Message);
+      $rootScope.showPreloader = false;
+    })
+  }
+  $scope.addVendor = function(addVendorForm,vendorData){
+
+    // vendorData.tokenId = $localStorage[Constants.getTokenKey()];
+    vendorData.type = "I";
+    $rootScope.showPreloader = true;
+    ApiCall.postVendor(vendorData,function(res) {
+      Util.alertMessage(res.Status.toLocaleLowerCase(), res.Message);
+      $state.go("VendorList");
+      $rootScope.showPreloader = false;
+    },function(err) {
+      Util.alertMessage(err.Status.toLocaleLowerCase(), err.Message);
+      $rootScope.showPreloader = false;
+    })
+  }
+})
+
+
+app.controller('deleteVendorModalCtrl', function ($scope, $uibModalInstance,vendor,Util,ApiCall,$state,Events ) {
+  $scope.vendor = vendor;
+  $scope.ok = function () {
+    // calling service to delete user
+    var obj = {
+      actType:'D',
+      vendorId:vendor.vendorId
+    }
+    ApiCall.postVendor(obj,function(response) {
+      Util.alertMessage(Events.eventType.success,response.Message);
+      $uibModalInstance.close();
+      $state.reload();
+    },function(err) {
+      Util.alertMessage(Events.eventType.error,err.Message);
+      $uibModalInstance.close();
+    })
+
+  };
+
+  $scope.cancel = function () {
+    $uibModalInstance.dismiss('cancel');
+  };
+});
+;app.controller('ConfugrationsController', function($scope, $rootScope, $window, Events, $state, $uibModal, $stateParams, $filter, ApiCall, Util, $timeout, $localStorage, UtilityService, Constants) {
+    $scope.confugrationInit = function() {
+        // $scope.tabs = [{
+        //         heading: "Tender",
+        //         active: true
+        //     },
+        //     {
+        //             heading: "Billing",
+        //             active: false
+        //     },
+        // ]
+        $scope.currTab = 0;
+        $scope.configuration = {
+            tender: {},
+            billing: {},
+        }
+    }
+    $scope.tabChange = function(tabPos) {
+        $scope.currTab = tabPos;
+    }
+    $scope.saveConfugration = function(tabIndex) {
+
+      switch (tabIndex) {
+        case 0: // tender
+           // api call to save tender details
+           if(!$scope.configuration.tender.serviceTax) {
+             Util.alertMessage("warning","Please Enter Service tax");
+             return;
+           }
+           if(!$scope.configuration.tender.incomeTax) {
+             Util.alertMessage("warning","Please Enter Income tax");
+             return;
+           }
+
+           ApiCall.postConfigurations($scope.configuration.tender,function(response) {
+             $rootScope.showPreloader = false;
+             Util.alertMessage(Events.eventType.success,response.Message);
+
+           },function(err) {
+             $rootScope.showPreloader = false;
+             Util.alertMessage(Events.eventType.error,err.Message);
+
+           })
+          break;
+        case 1:
+          // billing configurations
+          ApiCall.postBillingAuth($scope.designations,function(response) {
+            $rootScope.showPreloader = false;
+            Util.alertMessage(Events.eventType.success,response.Message);
+
+          },function(err) {
+            $rootScope.showPreloader = false;
+            Util.alertMessage(Events.eventType.error,err.Message);
+
+          })
+          break;
+        case 1:
+
+          break;
+        default:
+
+      }
+    }
+
+    /**
+     * Billing configuration starts
+     */
+     $scope.billingConfigInit = function() {
+       ApiCall.getDesignation(function(response) {
+         $rootScope.showPreloader = false;
+         $scope.designations = response.Data;
+       },function(err) {
+         $rootScope.showPreloader = false;
+         Util.alertMessage(Events.eventType.error,err.Message);
+       })
+     }
+
+    /**
+     * Billing configuration ends
+     */
+});
 ;app.directive(
         'dateInput',
-        ["dateFilter", function(dateFilter) {
+        function(dateFilter) {
             return {
                 require: 'ngModel',
                 template: '<input type="date"></input>',
@@ -1897,16 +2352,8 @@ app.controller('deleteVendorModalCtrl', ["$scope", "$uibModalInstance", "vendor"
                     });
                 },
             };
-    }]);
-;/**
- * directive :dateviewer
- * Info : used to create the date picker and set the ng-model value passed to it
- * input : ngModel
- * output :...
- * createdDate - 10-9-16
- * updated on -  10-9-16 // used to create the date picker and store the value in theng-model
- */
-app.directive('dateViewer', function () {
+    });
+;app.directive('dateViewer', function () {
     return {
         require: "ngModel",
         restrict: 'EA',
@@ -1920,12 +2367,15 @@ app.directive('dateViewer', function () {
         controller:'dateViewerController',
         scope:{
           ngModel:'=',
+          // minDate:'=', // if true then disable prev date , else disable given date
+          // maxDate:'=',// if true then disable next date , else disable given date
           className:"=",
           disable:"="
         }
     };
 })
 .controller("dateViewerController",["$scope",function($scope) {
+  // disabling dates based on condition , self executing function
   $scope.disable = $scope.disable == "true" ? true : false;
   $scope.disablingDate = function(){
     if($scope.minDate && $scope.minDate!="") {
@@ -2036,6 +2486,46 @@ app.directive('fileSelect', ['$parse','$rootScope', function ($parse,$rootScope)
 		  });
 	   }
 	};
+//
+// app.directive('fileSelect', [function () {
+//     return {
+//         restrict:"EA",
+//         require: 'ngModel',
+//         link: function (scope, element, attrs,ngModelCtrl) {
+//             element.on('change', function  (evt) {
+//               console.log("attrs  ",attrs.fileData,ngModelCtrl.$modelValue);
+//                var fr = new FileReader();
+//                 var file = evt.target.files[0];
+//                 fr.onloadend = function () {
+//                    var result = this.result;
+//                   //  var hex = "";
+//                   //  for (var i = 0; i < this.result.length; i++) {
+//                   //      var byteStr = result.charCodeAt(i).toString(16);
+//                   //      if (byteStr.length < 2) {
+//                   //          byteStr = "0" + byteStr;
+//                   //      }
+//                   //      hex += " " + byteStr;
+//                   //  }
+//                    window.fileData = {
+//                      FileName:file.name,
+//                      InputStream:result.split(";base64,")[1]
+//                    }
+//                    scope.fileData = window.fileData;
+//                    scope.fileSelected(scope.fileData);
+//                };
+//                fr.readAsDataURL(file);
+//
+//             });
+//         },
+//         scope:{
+//           fileSelected :"&",
+//           fileData :"=",
+//         },
+//         controller:function($scope) {
+//           console.log('fileData   ',$scope.fileData);
+//         }
+//     }
+//
 }]
 
 
@@ -2124,7 +2614,15 @@ app.filter('webServiceName', function () {
     };
 });
 ;angular.module('Authentication', [])
-    .controller('LoginController',["$http", "$scope", "$state", "$rootScope", "ApiCall", "UtilityService", "Events", "$localStorage", "Constants", "UserService", "Util", "ApiGenerator", "validationService", function($http,$scope,$state,$rootScope,ApiCall,UtilityService,Events,$localStorage,Constants,UserService,Util,ApiGenerator,validationService) {
+    // .factory('LoginService',function($http,$resource,ApiGenerator) {
+    //   return $resource('/',null, {
+    //     login: ApiGenerator.getApi('login'),
+    //     logout: ApiGenerator.getApi('logout'),
+    //     token: ApiGenerator.getApi('token'),
+    //     forgotPassword: ApiGenerator.getApi('forgotPassword')
+    //   });
+    // })
+    .controller('LoginController',function($http,$scope,$state,$rootScope,ApiCall,UtilityService,Events,$localStorage,Constants,UserService,Util,ApiGenerator,validationService) {
       $scope.init = function(){
         $scope.user = {};
         if($localStorage[Constants.getIsRemember()]){
@@ -2132,9 +2630,12 @@ app.filter('webServiceName', function () {
           $scope.user.Password = UtilityService.decode($localStorage[Constants.getPassword()]);
           $scope.user.remember = $localStorage[Constants.getIsRemember()];
         }
+        // $scope.validationService = validationService;
         $scope.isInit = true; // this flag used to load the form after controller init
       }
       $scope.login = function(loginfrm) {
+        // $rootScope.loggedin = $localStorage[Constants.getLoggedIn()] = true;
+        // $state.go('dashboard');
         ApiGenerator.getApi('login');
         UtilityService.showLoader();
         ApiCall.login(JSON.stringify($scope.user),function(response) {
@@ -2144,6 +2645,7 @@ app.filter('webServiceName', function () {
             $localStorage[Constants.getLoggedIn()] = true;
             $rootScope.loggedin = $localStorage[Constants.getLoggedIn()];
             UserService.setUser(response.Data);
+            // saving / removing remember me data
             if($scope.user.remember){
               $localStorage[Constants.getUsername()] = $scope.user.userId;
               $localStorage[Constants.getPassword()] = UtilityService.encode($scope.user.Password);
@@ -2158,8 +2660,10 @@ app.filter('webServiceName', function () {
           }
           else{
             Util.alertMessage("danger", response.Message || "Error in Login");
+            // $rootScope.$emit(Events.errorInLogin,{type:Events.eventType.error,data:response});
           }
         },function(err) {
+          // $state.go('login');
           $rootScope.$emit(Events.errorInLogin,{type:Events.eventType.error});
         })
       }
@@ -2186,10 +2690,10 @@ app.filter('webServiceName', function () {
           })
 
       }
-    }])
+    })
 ;
 ;angular.module('EventHandler', [])
-    .factory('Events', ["$rootScope", function($rootScope) {
+    .factory('Events', function($rootScope) {
       var eventType = {
         "success":"success",
         "error":"error",
@@ -2214,10 +2718,23 @@ app.filter('webServiceName', function () {
         "pleaseSelectMilestone"             :"Please select Milestone",
         "pleaseSelectTender"             :"Please select Tender",
       }
-    }])
+    })
 ;
 ;angular.module('validation', [])
-    .factory('validationService', ["$rootScope", "Events", function($rootScope,Events) {
+    .factory('validationService', function($rootScope,Events) {
+      // var validationMessages = {
+      //   'required' : {
+      //     // this will take as errorType ,%fieldName% and type** to generate message
+      //     'type1' : 'Field %fieldName% can not be blank',
+      //     'type2' : 'Please enter value for %fieldName% '
+      //   },
+      //   'invalid' : {
+      //     // this will take as errorType ,%fieldName% and type** and %hint% as optional to generate message
+      //     'type1' : 'Invalid Entry for %fieldName%',
+      //     'type2' : 'Please enter valid input for %fieldName% ',
+      //     'type3' : 'Please enter valid input for %fieldName% with values %hint%',
+      //   },
+      // }
       var validations = {
         'numbersOnly':{
           'regex':/[0-9]$/,
@@ -2236,15 +2753,33 @@ app.filter('webServiceName', function () {
         getValidation : function(validation){
           return validations[validation];
         }
+        // getValidationMessage : function(errorType,type,fieldName,hint) {
+        //   if(!errorType || !fieldName || !type){
+        //     $rootScope.$emit(Events.validationFieldMissing,{type:Events.eventType.warn});
+        //     return;
+        //   }
+        //   else if (!validationMessages[errorType] || !validationMessages[errorType]['type'+type]) {
+        //     $rootScope.$emit(Events.validationFieldInvalid,{type:Events.eventType.warn});
+        //     return;
+        //   }
+        //   else if(validationMessages[errorType]['type'+type].indexOf('%hint%') != -1 && !hint){
+        //         $rootScope.$emit(Events.validationHintMissing,{type:Events.eventType.warn});
+        //         return;
+        //   }
+        //   // prepare the message
+        //   var message = validationMessages[errorType]['type'+type] ;
+        //   return message.replace("%fieldName%",fieldName).replace("%hint%",hint);
+        // }
       }
-    }])
+    })
 ;
 ;angular.module('WebService', [])
-    .factory('API', ["$http", "$resource", "EnvService", function($http, $resource, EnvService) {
+    .factory('API', function($http, $resource, EnvService) {
         return {
             login: {
                 "url": "/api/Login",
                 "method": "POST",
+                // "isArray" : true
                 "headers": {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
@@ -2259,17 +2794,26 @@ app.filter('webServiceName', function () {
                 "url": "/api/User",
                 "method": "GET",
                 "Content-Type": "application/json",
+                // "isArray" : true
             },
             getUser: {
                 "url": "/api/User",
                 "method": "GET",
                 "Content-Type": "application/json",
+                // "isArray" : true
             },
             forgotPassword: {
                 "url": "/api/ForgotPassword",
                 "method": "POST",
                 "Content-Type": "application/json",
+                // "isArray" : true
             },
+            // getUsers: {
+            //     "url": "/api/User",
+            //     "method": "GET",
+            //     "Content-Type": "application/json",
+            //     // "isArray" : true
+            // },
             addUser: {
                 "url": "/api/User",
                 "method": "POST",
@@ -2280,6 +2824,16 @@ app.filter('webServiceName', function () {
                 "method": "POST",
                 "Content-Type": "application/json",
             },
+            // deleteUser: {
+            //     "url": "/api/User",
+            //     "method": "DELETE",
+            //     "Content-Type": "application/json",
+            // },
+            // getUser: {
+            //     "url": "/api/User",
+            //     "method": "POST",
+            //     "Content-Type": "application/json",
+            // },
             postVendor: {
                 "url": "/api/Vendor",
                 "method": "POST",
@@ -2369,6 +2923,7 @@ app.filter('webServiceName', function () {
                 "url": "/api/Authentication",
                 "method": "GET",
                 "Content-Type": "application/json",
+                // "isArray" : true
             },
             postAuthentication: {
                 "url": "/api/Authentication",
@@ -2407,20 +2962,27 @@ app.filter('webServiceName', function () {
                 "Content-Type": "application/json"
             },
 
+            postBillingAuth: {
+                "url": "/api/_Billing_Auth",
+                "method": "POST",
+                "Content-Type": "application/json"
+            },
+
 
         }
-    }])
-    .factory('ApiGenerator', ["$http", "$resource", "API", "EnvService", function($http, $resource, API, EnvService) {
+    })
+    .factory('ApiGenerator', function($http, $resource, API, EnvService) {
         return {
             getApi: function(api) {
                 var obj = {};
                 obj = angular.copy(API[api]);
+                // console.log("obj  ",obj,api);
                 obj.url = EnvService.getBasePath() + obj.url; // prefix the base path
                 return obj;
             }
         }
-    }])
-    .factory('ApiCall', ["$http", "$resource", "API", "EnvService", "ApiGenerator", function($http, $resource, API, EnvService,ApiGenerator) {
+    })
+    .factory('ApiCall', function($http, $resource, API, EnvService,ApiGenerator) {
 
           return $resource('/',null, {
             login: ApiGenerator.getApi('login'),
@@ -2429,6 +2991,7 @@ app.filter('webServiceName', function () {
             forgotPassword: ApiGenerator.getApi('forgotPassword'),
             getDesignation: ApiGenerator.getApi('getDesignation'),
             postUser: ApiGenerator.getApi('postUser'),
+            // deleteUser: ApiGenerator.getApi('deleteUser'),
             getUser: ApiGenerator.getApi('getUser'),
             postVendor: ApiGenerator.getApi('postVendor'),
             getVendor: ApiGenerator.getApi('getVendor'),
@@ -2454,13 +3017,14 @@ app.filter('webServiceName', function () {
             getProjectMileStoneReview: ApiGenerator.getApi('getProjectMileStoneReview'),
             getDashboard: ApiGenerator.getApi('getDashboard'),
             postTenderAssign: ApiGenerator.getApi('postTenderAssign'),
+            postBillingAuth: ApiGenerator.getApi('postBillingAuth'),
           });
 
-    }])
+    })
 
 
 ;
-;app.factory('AppModel',["$rootScope", "$http", "$localStorage", "$resource", "ApiGenerator", "Events", "Constants", function($rootScope,$http,$localStorage,$resource,ApiGenerator,Events,Constants){
+;app.factory('AppModel',function($rootScope,$http,$localStorage,$resource,ApiGenerator,Events,Constants){
   var appModel = {};
   appModel.getSetting = function(key) {
     if(!appModel.setting)
@@ -2476,14 +3040,15 @@ app.filter('webServiceName', function () {
     appModel.setting = setting;
   }
   return appModel;
-}])
-;app.factory('EnvService',["$http", "CONFIG", "$localStorage", function($http,CONFIG,$localStorage){
+})
+;app.factory('EnvService',function($http,CONFIG,$localStorage){
   var envData = env = {};
   var settings =  {};
 
   return{
     setSettings : function(setting) {
       settings = setting;
+      // setting env
       this.setEnvData(setting.envData);
     },
     getSettings : function(param) {
@@ -2507,14 +3072,15 @@ app.filter('webServiceName', function () {
     }
 
   }
-}])
-;app.factory('UserService',["$rootScope", "$http", "$localStorage", "$resource", "ApiGenerator", "Events", "Constants", "$q", function($rootScope,$http,$localStorage,$resource,ApiGenerator,Events,Constants,$q){
+})
+;app.factory('UserService',function($rootScope,$http,$localStorage,$resource,ApiGenerator,Events,Constants,$q){
 
   var user = {};
   var UserService = {};
   var roles = {
     "10000":"superAdmin",
   }
+  // side bar details mapped data with the degignation id
   var sideBar = {
     'SUPER ADMIN' :[
       {
@@ -2565,6 +3131,27 @@ app.filter('webServiceName', function () {
         "label" : "Billing",
         "state" : "billing",
         "fClass" : "fa fa-th-large",
+        "subMenu" : [
+        
+          {
+            "label" : "Approved Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },{
+            "label" : "Pending Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },{
+            "label" : "Hold Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },
+          {
+            "label" : "Rejected Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },
+        ]
       },
       {
         "label" : "Confugrations",
@@ -2576,6 +3163,11 @@ app.filter('webServiceName', function () {
       {
         "label" : "Dashboard",
         "state" : "dashboard",
+        "fClass" : "fa fa-home",
+      },
+      {
+        "label" : "Vendor Management",
+        "state" : "VendorList",
         "fClass" : "fa fa-home",
       },
       {
@@ -2595,6 +3187,7 @@ app.filter('webServiceName', function () {
       },
 
     ],
+    ///////////
     'Admin-test' :[
       {
         "label" : "Dashboard",
@@ -2624,6 +3217,11 @@ app.filter('webServiceName', function () {
         "fClass" : "fa fa-home",
       },
       {
+        "label" : "Vendor Management",
+        "state" : "VendorList",
+        "fClass" : "fa fa-home",
+      },
+      {
         "label" : "Tender Management",
         "state" : "tenderList",
         "fClass" : "fa fa-home",
@@ -2643,6 +3241,11 @@ app.filter('webServiceName', function () {
       {
         "label" : "Dashboard",
         "state" : "dashboard",
+        "fClass" : "fa fa-home",
+      },
+      {
+        "label" : "Vendor Management",
+        "state" : "VendorList",
         "fClass" : "fa fa-home",
       },
       {
@@ -2668,6 +3271,11 @@ app.filter('webServiceName', function () {
         "fClass" : "fa fa-home",
       },
       {
+        "label" : "Vendor Management",
+        "state" : "VendorList",
+        "fClass" : "fa fa-home",
+      },
+      {
         "label" : "Tender Management",
         "state" : "tenderList",
         "fClass" : "fa fa-home",
@@ -2687,6 +3295,11 @@ app.filter('webServiceName', function () {
       {
         "label" : "Dashboard",
         "state" : "dashboard",
+        "fClass" : "fa fa-home",
+      },
+      {
+        "label" : "Vendor Management",
+        "state" : "VendorList",
         "fClass" : "fa fa-home",
       },
       {
@@ -2734,6 +3347,11 @@ app.filter('webServiceName', function () {
         "fClass" : "fa fa-home",
       },
       {
+        "label" : "Vendor Management",
+        "state" : "VendorList",
+        "fClass" : "fa fa-home",
+      },
+      {
         "label" : "Tender Management",
         "state" : "tenderList",
         "fClass" : "fa fa-home",
@@ -2755,6 +3373,7 @@ app.filter('webServiceName', function () {
     var role = roles[this.getUser().designationId];
     if(!role)
     {
+      // emit event to terminate redirect to login
       $rootScope.$emit(Events.eventType.error,{message:Events.roleError})
     }
     else {
@@ -2774,10 +3393,20 @@ app.filter('webServiceName', function () {
     $rootScope.loggedin = $localStorage[Constants.getLoggedIn()];
     this.setUser(null);
   };
+  // this is used to call the web serviceCall
+  // UserService.serviceCall = function() {
+  //   return $resource('/',null, {
+  //     getUser: ApiGenerator.getApi('getUser'), // get user can be called in many form
+  //     getUsers: ApiGenerator.getApi('getUsers'), // get user can be called in many form
+  //     addUser: ApiGenerator.getApi('addUser'), // get user can be called in many form
+  //   });
+  // };
+  // used to get the side bar details according to user
   UserService.getSideBarInfo = function() {
     var sideBarInfo = sideBar[this.getUser().designation];
     if(!sideBarInfo)
     {
+      // emit event to terminate redirect to login
       $rootScope.$emit(Events.eventType.error,{message:Events.errorSideBarData})
     }
     else {
@@ -2785,6 +3414,14 @@ app.filter('webServiceName', function () {
     }
 
   };
+  /**
+   * This is used to autorise api based on the user Designation
+   @param -
+    api - api name
+    type - type of the method need to access
+    callback - callback function
+   *
+   */
   var authorisedApi = function(api,type,callback) {
     var deferred = $q.defer();
     var authetication = user.authentication;
@@ -2802,19 +3439,28 @@ app.filter('webServiceName', function () {
     })
     return deferred.promise;
   };
+  /**
+   * functionName :checkPermission
+   * Info : used to get the info for the authenticaiton of particular web services
+   * @param
+   api - api name
+   type- type of web service
+   */
   UserService.checkPermission = function(api,type) {
     var auth = authorisedApi(api,type);
     var auth = auth.$$state.value;
+    // console.log("********** ",typeof auth);
     return auth;
   }
 
 
   return UserService;
-}])
-;app.factory("UtilityService", ["$http", "$resource", "$rootScope", "$localStorage", "Constants", function($http,$resource,$rootScope,$localStorage,Constants) {
+})
+;app.factory("UtilityService", function($http,$resource,$rootScope,$localStorage,Constants) {
   var userSettings;
   var selectedRooms = [];
   var selectedTransaction;
+  // Create Base64 Object
   var Base64={_keyStr:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",encode:function(e){var t="";var n,r,i,s,o,u,a;var f=0;e=Base64._utf8_encode(e);while(f<e.length){n=e.charCodeAt(f++);r=e.charCodeAt(f++);i=e.charCodeAt(f++);s=n>>2;o=(n&3)<<4|r>>4;u=(r&15)<<2|i>>6;a=i&63;if(isNaN(r)){u=a=64}else if(isNaN(i)){a=64}t=t+this._keyStr.charAt(s)+this._keyStr.charAt(o)+this._keyStr.charAt(u)+this._keyStr.charAt(a)}return t},decode:function(e){var t="";var n,r,i;var s,o,u,a;var f=0;e=e.replace(/[^A-Za-z0-9+/=]/g,"");while(f<e.length){s=this._keyStr.indexOf(e.charAt(f++));o=this._keyStr.indexOf(e.charAt(f++));u=this._keyStr.indexOf(e.charAt(f++));a=this._keyStr.indexOf(e.charAt(f++));n=s<<2|o>>4;r=(o&15)<<4|u>>2;i=(u&3)<<6|a;t=t+String.fromCharCode(n);if(u!=64){t=t+String.fromCharCode(r)}if(a!=64){t=t+String.fromCharCode(i)}}t=Base64._utf8_decode(t);return t},_utf8_encode:function(e){e=e.replace(/rn/g,"n");var t="";for(var n=0;n<e.length;n++){var r=e.charCodeAt(n);if(r<128){t+=String.fromCharCode(r)}else if(r>127&&r<2048){t+=String.fromCharCode(r>>6|192);t+=String.fromCharCode(r&63|128)}else{t+=String.fromCharCode(r>>12|224);t+=String.fromCharCode(r>>6&63|128);t+=String.fromCharCode(r&63|128)}}return t},_utf8_decode:function(e){var t="";var n=0;var r=c1=c2=0;while(n<e.length){r=e.charCodeAt(n);if(r<128){t+=String.fromCharCode(r);n++}else if(r>191&&r<224){c2=e.charCodeAt(n+1);t+=String.fromCharCode((r&31)<<6|c2&63);n+=2}else{c2=e.charCodeAt(n+1);c3=e.charCodeAt(n+2);t+=String.fromCharCode((r&15)<<12|(c2&63)<<6|c3&63);n+=3}}return t}}
 
   var getSelectedIds = function(array,prop,matchValue){
@@ -2826,6 +3472,18 @@ app.filter('webServiceName', function () {
     });
     return arr;
   };
+  /**
+   * functionName :getSelectedItemByProp
+   * Info : this is used to give the required property on matching the condition given and give the result in array
+   * input :
+        @array - input array
+        @prop - prop to be parse (in case of null skip the conditon checking and loop for all iterration)
+        @matchValue - condition to match @prop
+        @returnProp - property to be returned
+   * output : array
+   * createdDate - 5-9-2016
+   * updated on -  5-9-2016 // reason for update
+   */
   var getSelectedItemByProp = function(array,prop,matchValue,returnProp){
     var arr = [];
     angular.forEach(array,function(value,key) {
@@ -2833,6 +3491,7 @@ app.filter('webServiceName', function () {
       if(prop && value[prop] == matchValue)
         arr.push(value[returnProp]);
       else if (!prop) {
+        // in case of the match property not mentioned then add the Required property
         arr.push(value[returnProp]);
       }
     });
@@ -2855,7 +3514,9 @@ app.filter('webServiceName', function () {
     return null;
   };
   var getTableHeaders = function(view,tableData) {
+    // tableData is a one of the index of the array of key values representing one table data
     var arr = []
+    // getting headers as keys present in the boq details array
     angular.forEach(tableData, function(index,value){
       arr.push(value);
     })
@@ -2914,6 +3575,7 @@ app.filter('webServiceName', function () {
   var strReplace = function(str,find,replace){
     return str.replace(new RegExp(find, 'g'), replace);
   }
+  // used to parse header as per the view name that will be show in the table
   var isAllowedHeader = function(view,header){
     var allowedHeader;
     switch (view) {
@@ -2952,4 +3614,4 @@ app.filter('webServiceName', function () {
     getTableHeaders:getTableHeaders,
     isAllowedHeader:isAllowedHeader,
   }
-}])
+})
