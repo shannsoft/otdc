@@ -82,6 +82,11 @@ app.controller('boqController', function ($rootScope,$scope,$uibModalInstance,$u
   $scope.boqUpdateArr = [];
   $scope.tender = tender;
   $scope.boqData = tender.boqData;
+  for(var i in $scope.boqData) {
+    if(i==1 || i==2){
+      $scope.boqData[i].invoiceIsLocked = true;
+    }
+  }
   $scope.verifyBoqItem = function(boq,action) {
     if(action == "verify") {
       boq.verify = 2;

@@ -89,32 +89,36 @@
                         <fieldset class="form-group">
                             <table class="billing-glance">
                               <tr>
-                                <td>Total Price </td>
+                                <td>Total Amount </td>
                                 <td>{{generateBill.sumTotal}}</td>
                               </tr>
                               <tr>
-                                <td>Income tax : </td>
-                                <td> - {{generateBill.incomeTax}}%</td>
+                                <td>Sales tax ({{generateBill.salesTaxPer}}%): </td>
+                                <td>  {{generateBill.salesTaxAmt}}</td>
                               </tr>
                               <tr>
-                                <td>Service tax : </td>
-                                <td> - {{generateBill.serviceTax}}%</td>
+                                <td>Service tax ({{generateBill.serviceTaxPer}}%): </td>
+                                <td>  {{generateBill.serviceTaxAmt}}</td>
+                              </tr>
+                              <tr>
+                                <td>Holding Amount in % : </td>
+                                <td>  <input type="text" maxlength="5" ng-model="generateBill.holdPercent" class="holdInput"></td>
                               </tr>
                               <tr></tr>
                               <tr></tr>
                               <tr>
-                                <td><hr></td>
-                                <td><hr></td>
+                                <td><div class="ruler"></div></td>
+                                <td><div class="ruler"></div></td>
                               </tr>
                               <tr>
-                                <td>Total After Tax: </td>
-                                <td>&nbsp&nbsp{{generateBill.grandTotal}}</td>
+                                <td>Total Amount After Tax: </td>
+                                <td ng-if="!generateBill.hideTotal">&nbsp&nbsp{{generateBill.grandTotal}}</td>
                               </tr>
                             </table>
                         </fieldset>
                         <fieldset class="form-group">
-                            <button class="btn btn-success" ng-click="printInvoice(generateBill.tender)">E-print</button>
-                            <button class="btn btn-success">Send For Approval</button>
+                            <button class="btn btn-success" ng-disabled="generateBill.hideTotal" ng-click="printInvoice(generateBill.tender)">E-print</button>
+                            <button class="btn btn-success" ng-disabled="generateBill.hideTotal" ng-click="onBillingApproval(generateBill.tender)">Send For Approval</button>
                         </fieldset>
                     </billing>
 

@@ -384,6 +384,15 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
                 loggedout: checkLoggedout
             },
         })
+        .state('invoiceDetails', {
+            templateUrl: 'src/views/Billing/invoiceDetails.html',
+            url: '/invoiceDetails/:invoice',
+            controller: "InvoiceController",
+            params: { invoice:null,tender:null},
+            resolve: {
+                loggedout: checkLoggedout
+            },
+        })
         .state('confugrations', {
             templateUrl: 'src/views/confugrations/confugration.html',
             url: '/confugrations',

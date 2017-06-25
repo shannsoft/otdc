@@ -16061,6 +16061,9 @@ pre {
 .w-100 {
     width: 100px;
 }
+.w-150px{
+  width:150px !important;
+}
 
 .m-l-20pr {
     margin-left: 20%;
@@ -16073,6 +16076,7 @@ pre {
 .h-500px{
   height: 500px;
 }
+
 .border-wrap{
   border: 1px solid #000;
 }
@@ -16084,6 +16088,9 @@ pre {
 }
 .cancel-verified{
   background-color: red !important;
+}
+.locked{
+  background-color: grey !important;
 }
 .pointer{
   cursor: pointer;
@@ -16474,6 +16481,18 @@ input[type="date"] {
   float: right;
   font-size: 16px;
   font-weight: bold;
+}
+table.billing-glance tr td:nth-child(2){
+  text-align: right;
+}
+table.billing-glance .holdInput {
+    width: 25%;
+    text-align: right;
+}
+.ruler {
+    margin-top: 10px;
+    height: 2px;
+    background-color: #299a6c;
 }
 /* to make large modal with width 1024px to adjust boq history table width*/
 .modal-lg .modal-content{

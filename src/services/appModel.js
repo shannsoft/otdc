@@ -1,5 +1,6 @@
-app.factory('AppModel',function($rootScope,$http,$localStorage,$resource,ApiGenerator,Events,Constants){
+app.factory('AppModel',function($rootScope,$http,$localStorage,$resource,$location,ApiGenerator,Events,Constants){
   var appModel = {};
+  appModel.history = [];
   appModel.getSetting = function(key) {
     if(!appModel.setting)
       return false;
@@ -13,5 +14,13 @@ app.factory('AppModel',function($rootScope,$http,$localStorage,$resource,ApiGene
   appModel.setSetting = function(setting) {
     appModel.setting = setting;
   }
+  // here pushing only the path
+  appModel.pushHistory = function(path) {
+    appModel.history.push(path);
+  }
+  appModel.popHistory = function() {
+    return this.history[this.history.length-1];
+  }
+
   return appModel;
 })

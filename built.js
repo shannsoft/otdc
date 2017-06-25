@@ -1,4 +1,4 @@
-/*! otdc - v1.0.0 - Tue Jun 13 2017 00:01:56 */
+/*! otdc - v1.0.0 - Sun Jun 25 2017 17:36:36 */
 var dependency = [];
 // lib  dependency
 var distModules = ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate', 'ngCookies', 'ngMessages','ngTable'];
@@ -385,6 +385,15 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
                 loggedout: checkLoggedout
             },
         })
+        .state('invoiceDetails', {
+            templateUrl: 'src/views/Billing/invoiceDetails.html',
+            url: '/invoiceDetails/:invoice',
+            controller: "InvoiceController",
+            params: { invoice:null,tender:null},
+            resolve: {
+                loggedout: checkLoggedout
+            },
+        })
         .state('confugrations', {
             templateUrl: 'src/views/confugrations/confugration.html',
             url: '/confugrations',
@@ -447,7 +456,7 @@ app.factory('Util', ['$rootScope', '$timeout', function($rootScope, $timeout) {
     return Util;
 }]);
 ;app.constant("Constants", {
-        "debug":false,
+        "debug":true,
         "storagePrefix": "goAppOTDC$",
         "getTokenKey" : function() {return this.storagePrefix + "token";},
         "getLoggedIn" : function() {return this.storagePrefix + "loggedin";},
@@ -474,8 +483,9 @@ app.factory('Util', ['$rootScope', '$timeout', function($rootScope, $timeout) {
           }
         },
 })
-;app.controller('BillingController', function($scope, $rootScope,$window, Events,$state,$uibModal, $stateParams,$filter, ApiCall,Util,$timeout,$localStorage,UtilityService,Constants) {
+;app.controller('BillingController', function($scope, $rootScope,$window,$location,AppModel, Events,$state,$uibModal, $stateParams,$filter, ApiCall,Util,$timeout,$localStorage,UtilityService,Constants) {
   $scope.UtilityService = UtilityService;
+
   $scope.billingInit = function() {
     $scope.billing = {};
     ApiCall.getTendor(function(res) {
@@ -487,6 +497,11 @@ app.factory('Util', ['$rootScope', '$timeout', function($rootScope, $timeout) {
         ApiCall.getTendor({tenderId:$stateParams.tenderId},function(res) {
           $rootScope.showPreloader = false;
           $scope.billing.selectedTender = res.Data;
+          // for(var i in $scope.billing.selectedTender.boqData) {
+          //   if(i==1 || i==2){
+          //     $scope.billing.selectedTender.boqData[i].invoiceIsLocked = true;
+          //   }
+          // }
           $scope.selectVendor($scope.billing.selectedTender.vendorInfo);
           // adding extra column for the completed unit
           angular.forEach($scope.billing.selectedTender.boqData,function(value,key) {
@@ -532,6 +547,7 @@ app.factory('Util', ['$rootScope', '$timeout', function($rootScope, $timeout) {
     $state.go($state.current, {tenderId:selectedTender.tenderId,tenderList:$scope.billing.tenderList}, {reload: true});
   }
 $scope.generateBill = function() {
+
   var selected = false;
   for(var i in $scope.billing.selectedTender.boqData){
     if($scope.billing.selectedTender.boqData[i].isChecked){
@@ -542,6 +558,7 @@ $scope.generateBill = function() {
     Util.alertMessage('warning',"Please select Boq items");
     return;
   }
+  AppModel.pushHistory($location.$$url);
   $state.go("generateBill",{tender:$scope.billing.selectedTender})
 }
 /**
@@ -550,8 +567,10 @@ $scope.generateBill = function() {
 $scope.generateBillingInit = function(){
   // getting vendor details
   $scope.generateBill = {
-    serviceTax : 1,
-    incomeTax  : 2
+    serviceTaxPer : 1,
+    incomeTaxPer  : 2,
+    holdPercent:3,
+    salesTaxPer:5
   };
 
   if(!$stateParams.tender){
@@ -571,24 +590,82 @@ $scope.generateBillingInit = function(){
   }
   // delete the boq data after parsing selected boq
   delete $scope.generateBill.tender['boqData'];
-  console.log("generateBill.tender.selectedBoq   ",$scope.generateBill.tender.selectedBoq);
+  console.log("generateBill.tender.selectedBoq   ",JSON.stringify($scope.generateBill.tender.selectedBoq));
   $scope.getSumTotal();
 }
+$scope.onBillingApproval = function() {
+
+  var data = {
+         tenderId : $scope.generateBill.tender.tenderId,
+         vendorId : $scope.generateBill.tender.selectedVendor.vendorId,
+         totalAmount : $scope.generateBill.sumTotal,
+        //  incomeTaxPer : $scope.generateBill.incomeTax,
+        //  incomeTaxAmt : $scope.generateBill.incomeTaxAmt,
+         salesTaxPer : $scope.generateBill.salesTaxPer,
+         salesTaxAmt : $scope.generateBill.salesTaxAmt,
+         serviceTaxPer : $scope.generateBill.serviceTaxPer,
+         serviceTaxAmt : $scope.generateBill.serviceTaxAmt,
+         holdingPer : $scope.generateBill.holdPercent,
+         holdingAmt : $scope.generateBill.holdAmount,
+         totalAmountAfterTax : $scope.generateBill.grandTotal,
+         //invoiceDetails: $scope.generateBill.tender.selectedBoq
+        }
+        // added 'boqId' in place of id
+        for(var i in $scope.generateBill.tender.selectedBoq){
+          $scope.generateBill.tender.selectedBoq[i]['boqId'] = $scope.generateBill.tender.selectedBoq[i].id;
+          delete $scope.generateBill.tender.selectedBoq[i]['id']; // removed
+        }
+        data['invoiceDetails'] = $scope.generateBill.tender.selectedBoq;
+
+        console.log('data' ,JSON.stringify(data));
+        ApiCall.postInvoice(data,function(res) {
+          Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
+          $location.path(AppModel.popHistory());
+        },function(err) {
+          $rootScope.showPreloader = false;
+          Util.alertMessage(err.Status.toLocaleLowerCase(),err.Message);
+        })
+}
+$scope.$watch('generateBill.holdPercent',function(value) {
+  console.log("value  ",value,typeof value);
+  if(parseFloat(value) > 100 ){
+    $scope.generateBill.holdPercent = 99;
+  }
+  else if(parseFloat(value) < 0) {
+    $scope.generateBill.holdPercent = 0;
+  }
+
+  // else if(!value || value == '') {
+  //   $scope.generateBill.holdPercent = 0;
+  // }
+
+  $scope.getSumTotal();
+})
 /**
  * Used to get the total amount of the bill based on the selected item and the quantity
  */
 $scope.getSumTotal = function() {
-  if(!$scope.generateBill.tender && !$scope.generateBill.tender.selectedBoq)
+  var grandTotal = 0;
+  if(!$scope.generateBill.tender || !$scope.generateBill.tender.selectedBoq)
   return;
   $scope.generateBill.sumTotal = 0;
   for(var i in $scope.generateBill.tender.selectedBoq){
-    $scope.generateBill.sumTotal+= parseInt($scope.generateBill.tender.selectedBoq[i].price);
+    $scope.generateBill.sumTotal+= $scope.generateBill.tender.selectedBoq[i].price;
   }
-  $scope.generateBill.grandTotal = $scope.generateBill.sumTotal - ( ($scope.generateBill.incomeTax + $scope.generateBill.serviceTax)/100*$scope.generateBill.sumTotal);
-
+  $scope.generateBill.salesTaxAmt = parseFloat(($scope.generateBill.salesTaxPer/100*$scope.generateBill.sumTotal).toFixed(2));
+  $scope.generateBill.serviceTaxAmt = parseFloat(($scope.generateBill.serviceTaxPer/100*$scope.generateBill.sumTotal).toFixed(2));
+  $scope.generateBill.holdAmount = parseFloat(( parseFloat($scope.generateBill.holdPercent)/100*$scope.generateBill.sumTotal).toFixed(2));
+  $scope.generateBill.grandTotal   = ($scope.generateBill.sumTotal - ($scope.generateBill.salesTaxAmt + $scope.generateBill.serviceTaxAmt+$scope.generateBill.holdAmount)).toFixed(2);
+  if(isNaN($scope.generateBill.grandTotal)){
+    $scope.generateBill.hideTotal = true;
+  }
+  else {
+    $scope.generateBill.hideTotal = false;
+  }
 }
 
 $scope.printInvoice = function(tender) {
+
   var vendorObj = tender.selectedVendor;
   var queryString = '';
   queryString+="invoice="+"autoGenValues"+"&";
@@ -601,12 +678,53 @@ $scope.printInvoice = function(tender) {
   window.open("invoice.html?"+queryString);
 }
 
-
-
+/*
+  * getInvoices : used to get all the invoices against the tender
+*/
+$scope.getInvoices = function() {
+  var data = {
+    tender:$scope.billing.selectedTender.tenderId
+  }
+  ApiCall.getInvoice(data,function(res) {
+    Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
+      $scope.billing.invoices = res.Data;
+  },function(err) {
+    $rootScope.showPreloader = false;
+    Util.alertMessage(err.Status.toLocaleLowerCase(),err.Message);
+  })
+}
+/*
+  * getting invoice details
+*/
+$scope.getInvoiceDetails = function(invoiceId) {
+  $state.go("invoiceDetails",{invoice:invoiceId,tender:$scope.billing.selectedTender});
+}
 /**
 ***************************************************** Generate Billing ends ****************************************
  */
 
+
+});
+;app.controller('InvoiceController', function($scope, $rootScope,$window,$location,AppModel, Events,$state,$uibModal, $stateParams,$filter, ApiCall,Util,$timeout,$localStorage,UtilityService,Constants) {
+  $scope.UtilityService = UtilityService;
+  $scope.invoiceDetailsInit = function() {
+
+    if(!$stateParams.tender || !$stateParams.invoice) {
+      Util.alertMessage("warning","No Invoice selected ");
+      $state.go("billing");
+    }
+    $scope.tender = $stateParams.tender;
+    var data = {
+      invoice:$stateParams.invoice
+    }
+    ApiCall.getInvoice(data,function(res) {
+      Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
+        $scope.invoiceData = res.Data;
+    },function(err) {
+      $rootScope.showPreloader = false;
+      Util.alertMessage(err.Status.toLocaleLowerCase(),err.Message);
+    })
+  }
 
 });
 ;app.controller('Main_Controller', function($scope, $rootScope, $state, EnvService, $timeout, $cookieStore, $localStorage, validationService, Events, $location, Util, $anchorScroll) {
@@ -1254,6 +1372,11 @@ app.controller('boqController', function ($rootScope,$scope,$uibModalInstance,$u
   $scope.boqUpdateArr = [];
   $scope.tender = tender;
   $scope.boqData = tender.boqData;
+  for(var i in $scope.boqData) {
+    if(i==1 || i==2){
+      $scope.boqData[i].invoiceIsLocked = true;
+    }
+  }
   $scope.verifyBoqItem = function(boq,action) {
     if(action == "verify") {
       boq.verify = 2;
@@ -2254,7 +2377,8 @@ app.controller('deleteVendorModalCtrl', function ($scope, $uibModalInstance,vend
     $uibModalInstance.dismiss('cancel');
   };
 });
-;app.controller('ConfugrationsController', function($scope, $rootScope, $window, Events, $state, $uibModal, $stateParams, $filter, ApiCall, Util, $timeout, $localStorage, UtilityService, Constants) {
+;app.controller('ConfugrationsController', function($scope, $rootScope, $window, Events, $state, $uibModal, $stateParams, $filter, UserService,ApiCall, Util, $timeout, $localStorage, UtilityService, Constants) {
+    $scope.UserService = UserService;
     $scope.confugrationInit = function() {
         // $scope.tabs = [{
         //         heading: "Tender",
@@ -2967,6 +3091,16 @@ app.filter('webServiceName', function () {
                 "method": "POST",
                 "Content-Type": "application/json"
             },
+            postInvoice: {
+                "url": "/api/_Invoice",
+                "method": "POST",
+                "Content-Type": "application/json"
+            },
+            getInvoice: {
+                "url": "/api/_Invoice",
+                "method": "GET",
+                "Content-Type": "application/json"
+            },
 
 
         }
@@ -3018,14 +3152,17 @@ app.filter('webServiceName', function () {
             getDashboard: ApiGenerator.getApi('getDashboard'),
             postTenderAssign: ApiGenerator.getApi('postTenderAssign'),
             postBillingAuth: ApiGenerator.getApi('postBillingAuth'),
+            postInvoice: ApiGenerator.getApi('postInvoice'),
+            getInvoice: ApiGenerator.getApi('getInvoice'),
           });
 
     })
 
 
 ;
-;app.factory('AppModel',function($rootScope,$http,$localStorage,$resource,ApiGenerator,Events,Constants){
+;app.factory('AppModel',function($rootScope,$http,$localStorage,$resource,$location,ApiGenerator,Events,Constants){
   var appModel = {};
+  appModel.history = [];
   appModel.getSetting = function(key) {
     if(!appModel.setting)
       return false;
@@ -3039,6 +3176,14 @@ app.filter('webServiceName', function () {
   appModel.setSetting = function(setting) {
     appModel.setting = setting;
   }
+  // here pushing only the path
+  appModel.pushHistory = function(path) {
+    appModel.history.push(path);
+  }
+  appModel.popHistory = function() {
+    return this.history[this.history.length-1];
+  }
+
   return appModel;
 })
 ;app.factory('EnvService',function($http,CONFIG,$localStorage){
@@ -3132,7 +3277,7 @@ app.filter('webServiceName', function () {
         "state" : "billing",
         "fClass" : "fa fa-th-large",
         "subMenu" : [
-        
+
           {
             "label" : "Approved Bills",
             "state" : "billing",
@@ -3452,7 +3597,19 @@ app.filter('webServiceName', function () {
     // console.log("********** ",typeof auth);
     return auth;
   }
+  /*
+* used to parse the billing limit of users
+  */
+  UserService.parseValidation = function(validationType,designation) {
+    switch (validationType) {
+      case 'billingLimit':
+        var restictedDesignations = ["SUPER ADMIN","Assistant Engineer Accounts","Financial Controler"];
+        return (restictedDesignations.indexOf(designation.designationName) == -1 ? true : false);
+        break;
+      default:
 
+    }
+  }
 
   return UserService;
 })
@@ -3588,6 +3745,9 @@ app.filter('webServiceName', function () {
       case "generateBilling":
         allowedHeader = ['slNo','itemDescription','quantity','units','estimateRate','unitPaid','completedUnit','price'];
         break;
+        case "invoiceDetails":
+          allowedHeader = ['slNo','itemDescription','quantity','units','estimateRate','unitPaid','completedUnit'];
+          break;
       default:
     }
     allowed = allowedHeader.indexOf(header) != -1 ? true : false;

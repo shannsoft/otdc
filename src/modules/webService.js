@@ -192,6 +192,16 @@ angular.module('WebService', [])
                 "method": "POST",
                 "Content-Type": "application/json"
             },
+            postInvoice: {
+                "url": "/api/_Invoice",
+                "method": "POST",
+                "Content-Type": "application/json"
+            },
+            getInvoice: {
+                "url": "/api/_Invoice",
+                "method": "GET",
+                "Content-Type": "application/json"
+            },
 
 
         }
@@ -243,6 +253,8 @@ angular.module('WebService', [])
             getDashboard: ApiGenerator.getApi('getDashboard'),
             postTenderAssign: ApiGenerator.getApi('postTenderAssign'),
             postBillingAuth: ApiGenerator.getApi('postBillingAuth'),
+            postInvoice: ApiGenerator.getApi('postInvoice'),
+            getInvoice: ApiGenerator.getApi('getInvoice'),
           });
 
     })

@@ -57,7 +57,7 @@ app.factory('UserService',function($rootScope,$http,$localStorage,$resource,ApiG
         "state" : "billing",
         "fClass" : "fa fa-th-large",
         "subMenu" : [
-        
+
           {
             "label" : "Approved Bills",
             "state" : "billing",
@@ -377,7 +377,19 @@ app.factory('UserService',function($rootScope,$http,$localStorage,$resource,ApiG
     // console.log("********** ",typeof auth);
     return auth;
   }
+  /*
+* used to parse the billing limit of users
+  */
+  UserService.parseValidation = function(validationType,designation) {
+    switch (validationType) {
+      case 'billingLimit':
+        var restictedDesignations = ["SUPER ADMIN","Assistant Engineer Accounts","Financial Controler"];
+        return (restictedDesignations.indexOf(designation.designationName) == -1 ? true : false);
+        break;
+      default:
 
+    }
+  }
 
   return UserService;
 })

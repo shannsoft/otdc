@@ -1,4 +1,5 @@
-app.controller('ConfugrationsController', function($scope, $rootScope, $window, Events, $state, $uibModal, $stateParams, $filter, ApiCall, Util, $timeout, $localStorage, UtilityService, Constants) {
+app.controller('ConfugrationsController', function($scope, $rootScope, $window, Events, $state, $uibModal, $stateParams, $filter, UserService,ApiCall, Util, $timeout, $localStorage, UtilityService, Constants) {
+    $scope.UserService = UserService;
     $scope.confugrationInit = function() {
         // $scope.tabs = [{
         //         heading: "Tender",

@@ -130,6 +130,9 @@ app.factory("UtilityService", function($http,$resource,$rootScope,$localStorage,
       case "generateBilling":
         allowedHeader = ['slNo','itemDescription','quantity','units','estimateRate','unitPaid','completedUnit','price'];
         break;
+        case "invoiceDetails":
+          allowedHeader = ['slNo','itemDescription','quantity','units','estimateRate','unitPaid','completedUnit'];
+          break;
       default:
     }
     allowed = allowedHeader.indexOf(header) != -1 ? true : false;

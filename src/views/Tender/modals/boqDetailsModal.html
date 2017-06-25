@@ -24,11 +24,11 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="boq in boqData" ng-class="{'pending-verified':boq.verify == 1,'verified':boq.verify == 2,'cancel-verified':boq.verify == 3}">
+                                    <tr uib-tooltip="locked for billing" tooltip-enable="boq.invoiceIsLocked" ng-repeat="boq in boqData" ng-class="{'pending-verified':boq.verify == 1,'verified':boq.verify == 2,'cancel-verified':boq.verify == 3,'locked':boq.invoiceIsLocked}">
                                         <td ng-repeat="th in UtilityService.getTableHeaders('billing',boqData[0])" ng-if="UtilityService.isAllowedHeader('boqDetails',th)">
                                             <div ng-if="th == 'quantity'">
                                                 <span ng-if="!boq.isEdit" class="color-black ng-binding">{{boq[th]}}</span>
-                                                <em  class="fa fa-edit pull-right" ng-if="!boq.isEdit && validateBoqPermission('updateQuantity')" ng-click="focusEdit(boq,$event)"></em>
+                                                <em  class="fa fa-edit pull-right" ng-if="!boq.isEdit && validateBoqPermission('updateQuantity') && !boq.invoiceIsLocked" ng-click="focusEdit(boq,$event)"></em>
                                                 <div ng-if="boq.isEdit">
                                                   <span>New Values : </span>
                                                   <input type="text" ng-if="boq.isEdit"  ng-model="boq[th]" ng-blur="updateAmount(boq,'value1')">
@@ -40,7 +40,7 @@
                                             </div>
                                             <div>
                                             <span ng-if="th != 'quantity'" class="color-black">
-                                              <span ng-if="th == 'totalAmountWithoutTaxes' && boq.verify == 1" class="pull-right">
+                                              <span ng-if="th == 'totalAmountWithoutTaxes' && boq.verify == 1 && !boq.invoiceIsLocked" class="pull-right">
                                                 <button type="button" class="btn btn-primary" ng-if="validateBoqPermission('verifyQuantity')" ng-click="verifyBoqItem(boq,'verify')">Verify</button>
                                                 <button type="button" class="btn btn-primary" ng-if="validateBoqPermission('verifyQuantity')" ng-click="verifyBoqItem(boq,'cancel')">Cancel</button>
                                               </span>

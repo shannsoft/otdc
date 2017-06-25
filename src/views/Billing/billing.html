@@ -52,14 +52,14 @@
                                       </tr>
                                   </thead>
                                   <tbody>
-                                      <tr ng-repeat="boq in billing.selectedTender.boqData" ng-class="{'selected': boq.isChecked}">
+                                      <tr uib-tooltip="locked for billing" tooltip-enable="boq.invoiceIsLocked" ng-repeat="boq in billing.selectedTender.boqData" ng-class="{'selected': boq.isChecked,'locked':boq.invoiceIsLocked}">
                                           <td ng-repeat="th in UtilityService.getTableHeaders('billing',billing.selectedTender.boqData[0])" ng-if="UtilityService.isAllowedHeader('billing',th)">
                                               <div>
                                                 <label ng-if="th == 'slNo'">
-                          			                    <input class="radio squared" ng-model="boq.isChecked" name="squared-radios" type="checkbox">
+                          			                    <input ng-disabled="boq.invoiceIsLocked" class="radio squared" ng-model="boq.isChecked" name="squared-radios" type="checkbox">
                           			                    <span>{{boq[th]}}</span>
                           			                </label>
-                                                <input type="number" ng-if="th == 'completedUnit'" ng-model="boq.completedUnit" min="{{boq.unitPaid}}" max={{boq.quantity}}/>
+                                                <input type="number" ng-if="th == 'completedUnit' && !boq.invoiceIsLocked" ng-model="boq.completedUnit" min="{{boq.unitPaid}}" max={{boq.quantity}}/>
                                                 <span ng-if="th != 'completedUnit' && th != 'slNo'">{{boq[th]}}</span>
                                               </div>
                                               <!-- <div ng-if="th != 'slNo'">
@@ -85,12 +85,28 @@
                                        Tender Billing History :
                                   </h3>
                               </div>
-                          <div class="table-responsive h-500px">
-                              <table class="table table-striped table-bordered table-hover boqDetailsTable">
-
-                              </table>
-
-                          </div>
+                              <div class="table-responsive" ng-init="getInvoices()">
+                                <table class="table table-striped table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Total Amount</th>
+                                            <th>Total Amount after Tax</th>
+                                            <th>Holding Amt</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="pointer" ng-repeat="invoice in  billing.invoices" ng-click="getInvoiceDetails(invoice.id)">
+                                            <td>{{invoice.id}}</td>
+                                            <td>{{invoice.totalAmount}}</td>
+                                            <td>{{invoice.totalAmountAfterTax}}</td>
+                                            <td>{{invoice.holdingAmountAmt}}</td>
+                                            <td>{{invoice.sts}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                           </div>
                         </fieldset>
 

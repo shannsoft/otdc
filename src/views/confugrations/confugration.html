@@ -43,9 +43,9 @@
                     <div class="tab-pane fade" ng-class="currTab == 1 ? 'active in' : '' " aria-expanded="{{currTab == 1 ? 'true' : 'false' }}" id="billing" ng-init="billingConfigInit()">
                         <form role="form" name="tenderConfugrationForm">
 
-                            <fieldset class="form-group" ng-repeat="designation in designations">
+                            <fieldset class="form-group" ng-repeat="designation in designations" ng-if="UserService.parseValidation('billingLimit',designation)"> 
                                 <label class="control-label" for="inputSuccess1">{{designation.designationName}}</label>
-                                <input type="text"  numbers-only ng-model="designation.limit" class="form-control underlined formInput" id="inputSuccess1">
+                                <input type="text" numbers-only ng-model="designation.limit" class="form-control underlined formInput" id="inputSuccess1">
                             </fieldset>
 
                             <fieldset class="form-group">
