@@ -5,7 +5,7 @@
               <a href="boq-sample.jpg" target="blank" class="btn btn-pill-left btn-primary btn-capsule w-150px">Contract Sample</a>
                 <div class="title-block">
                     <h3 class="title">
-                        Invoice Details
+                        Tender Details
                     </h3>
                 </div>
                 <form name="invoiceDetailsForm" role="invoiceDetailsForm" >
@@ -30,6 +30,48 @@
                     <!-- <input type="text" ng-model="tender.vendorInfo[0].vendorName" ng-readonly="true" class="form-control formInput" id="formGroupExampleInput"> -->
                     <!-- <select ng-options="vendor as vendor.vendorName for vendor in tender.vendorInfo track by vendor.vendorId" ng-model="tender.selectedVendor" ng-change="selectVendor(tender.selectedVendor)" class="form-control formInput" name="Tender_Type"></select> -->
                     <input type="text" ng-model="tender.selectedVendor.vendorName" ng-readonly="true" class="form-control formInput" id="formGroupExampleInput">
+                </fieldset>
+
+                <fieldset class="form-group">
+                  <div class="card card-block sameheight-item">
+                      <div class="title-block">
+                          <h3 class="title">
+                            Invoice Details :
+                          </h3>
+                      </div>
+                      <fieldset class="form-group">
+                          <label class="control-label" for="formGroupExampleInput">Sales Tax Percentage</label>
+                          <input type="text" ng-model="invoiceData.salesTaxPer" ng-readonly="true" class="form-control formInput" id="formGroupExampleInput">
+                      </fieldset>
+                      <fieldset class="form-group">
+                          <label class="control-label" for="formGroupExampleInput">Sales Tax Amount</label>
+                          <input type="text" ng-model="invoiceData.salesTaxAmt" ng-readonly="true" class="form-control formInput" id="formGroupExampleInput">
+                      </fieldset>
+                      <fieldset class="form-group">
+                          <label class="control-label" for="formGroupExampleInput">Service Tax Percentage</label>
+                          <input type="text" ng-model="invoiceData.serviceTaxPer" ng-readonly="true" class="form-control formInput" id="formGroupExampleInput">
+                      </fieldset>
+                      <fieldset class="form-group">
+                          <label class="control-label" for="formGroupExampleInput">Service Tax Amount</label>
+                          <input type="text" ng-model="invoiceData.serviceTaxAmt" ng-readonly="true" class="form-control formInput" id="formGroupExampleInput">
+                      </fieldset>
+                      <fieldset class="form-group">
+                          <label class="control-label" for="formGroupExampleInput">Holding Percentage</label>
+                          <input type="text" ng-model="invoiceData.holdingPer" ng-readonly="true" class="form-control formInput" id="formGroupExampleInput">
+                      </fieldset>
+                      <fieldset class="form-group">
+                          <label class="control-label" for="formGroupExampleInput">Holding Amount</label>
+                          <input type="text" ng-model="invoiceData.holdingAmt" ng-readonly="true" class="form-control formInput" id="formGroupExampleInput">
+                      </fieldset>
+                      <fieldset class="form-group">
+                          <label class="control-label" for="formGroupExampleInput">Total Amount</label>
+                          <input type="text" ng-model="invoiceData.totalAmount" ng-readonly="true" class="form-control formInput" id="formGroupExampleInput">
+                      </fieldset>
+                      <fieldset class="form-group">
+                          <label class="control-label" for="formGroupExampleInput">Total Amount after tax</label>
+                          <input type="text" ng-model="invoiceData.totalAmountAfterTax" ng-readonly="true" class="form-control formInput" id="formGroupExampleInput">
+                      </fieldset>
+                  </div>
                 </fieldset>
 
                 <fieldset class="form-group">
@@ -65,6 +107,8 @@
 
                   </div>
                   <fieldset class="form-group m-t-10">
+                      <button type="button" class="btn btn-success" ng-click="onInvoiceAction(1)">Approve</button>
+                      <button class="btn btn-secondary" ng-click="onInvoiceAction(2)">Reject</button>
                       <button class="btn btn-secondary" history>Back</button>
                   </fieldset>
                   </div>

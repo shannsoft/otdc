@@ -76,37 +76,51 @@ $scope.generateBill = function() {
   AppModel.pushHistory($location.$$url);
   $state.go("generateBill",{tender:$scope.billing.selectedTender})
 }
+$scope.onChangeinvoiceStatus = function(inVoiceStatus) {
+  alert("call invoice list based on status ---- ")
+}
 /**
 ***************************************************** Generate Billing starts ****************************************
  */
 $scope.generateBillingInit = function(){
-  // getting vendor details
-  $scope.generateBill = {
-    serviceTaxPer : 1,
-    incomeTaxPer  : 2,
-    holdPercent:3,
-    salesTaxPer:5
-  };
+  // api call to get the tax confugrations
+  ApiCall.getTaxConfig(function(response) {
+    $rootScope.showPreloader = false;
+    Util.alertMessage(Events.eventType.success,response.Message);
+    var tax = response.Data;
+    $scope.generateBill = {
+      serviceTaxPer : tax.serviceTax,
+      incomeTaxPer  : 2,
+      holdPercent:3,
+      salesTaxPer:tax.salesTax
+    };
 
-  if(!$stateParams.tender){
-    Util.alertMessage(Events.eventType.warning,Events.selectTender);
-    $state.go("billing");
-    return;
-  }
-  $scope.generateBill.tender = $stateParams.tender;
-  // parsing the selected the boq for the bill generation
-  $scope.generateBill.tender.selectedBoq = [];
-  for(var i in $scope.generateBill.tender.boqData){
-    if($scope.generateBill.tender.boqData[i].isChecked){
-      // updating price as per completed unit
-      $scope.generateBill.tender.boqData[i].price = ($scope.generateBill.tender.boqData[i].completedUnit - $scope.generateBill.tender.boqData[i].unitPaid) * $scope.generateBill.tender.boqData[i].estimateRate;
-      $scope.generateBill.tender.selectedBoq.push($scope.generateBill.tender.boqData[i]);
+    if(!$stateParams.tender){
+      Util.alertMessage(Events.eventType.warning,Events.selectTender);
+      $state.go("billing");
+      return;
     }
-  }
-  // delete the boq data after parsing selected boq
-  delete $scope.generateBill.tender['boqData'];
-  console.log("generateBill.tender.selectedBoq   ",JSON.stringify($scope.generateBill.tender.selectedBoq));
-  $scope.getSumTotal();
+    $scope.generateBill.tender = $stateParams.tender;
+    // parsing the selected the boq for the bill generation
+    $scope.generateBill.tender.selectedBoq = [];
+    for(var i in $scope.generateBill.tender.boqData){
+      if($scope.generateBill.tender.boqData[i].isChecked){
+        // updating price as per completed unit
+        $scope.generateBill.tender.boqData[i].price = ($scope.generateBill.tender.boqData[i].completedUnit - $scope.generateBill.tender.boqData[i].unitPaid) * $scope.generateBill.tender.boqData[i].estimateRate;
+        $scope.generateBill.tender.boqData[i].price = parseFloat($scope.generateBill.tender.boqData[i].price).toFixed(2);
+        $scope.generateBill.tender.selectedBoq.push($scope.generateBill.tender.boqData[i]);
+      }
+    }
+    // delete the boq data after parsing selected boq
+    delete $scope.generateBill.tender['boqData'];
+    console.log("generateBill.tender.selectedBoq   ",JSON.stringify($scope.generateBill.tender.selectedBoq));
+    $scope.getSumTotal();
+  },function(err) {
+    $rootScope.showPreloader = false;
+    Util.alertMessage(Events.eventType.error,err.Message);
+
+  })
+
 }
 $scope.onBillingApproval = function() {
 
@@ -167,6 +181,7 @@ $scope.getSumTotal = function() {
   for(var i in $scope.generateBill.tender.selectedBoq){
     $scope.generateBill.sumTotal+= $scope.generateBill.tender.selectedBoq[i].price;
   }
+  $scope.generateBill.sumTotal = parseFloat($scope.generateBill.sumTotal).toFixed(2);
   $scope.generateBill.salesTaxAmt = parseFloat(($scope.generateBill.salesTaxPer/100*$scope.generateBill.sumTotal).toFixed(2));
   $scope.generateBill.serviceTaxAmt = parseFloat(($scope.generateBill.serviceTaxPer/100*$scope.generateBill.sumTotal).toFixed(2));
   $scope.generateBill.holdAmount = parseFloat(( parseFloat($scope.generateBill.holdPercent)/100*$scope.generateBill.sumTotal).toFixed(2));
@@ -212,7 +227,7 @@ $scope.getInvoices = function() {
   * getting invoice details
 */
 $scope.getInvoiceDetails = function(invoiceId) {
-  $state.go("invoiceDetails",{invoice:invoiceId,tender:$scope.billing.selectedTender});
+  $state.go("invoiceDetails",{invoice:invoiceId,tenderId:$scope.billing.selectedTender.tenderId,tender:$scope.billing.selectedTender});
 }
 /**
 ***************************************************** Generate Billing ends ****************************************

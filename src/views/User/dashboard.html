@@ -8,16 +8,16 @@
           <!-- <div class="box box1 shadow2 pointer">
               <h3>Completed Tender</h3>
           </div> -->
-          <div class="col-md-6 col-lg-6 col-sm-6 box box1 shadow3 pointer boqStatus">
+          <div class="col-md-6 col-lg-6 col-sm-6 box box1 shadow3  boqStatus">
               <h5>Items For My Approval </h5>
               <div class="row">
-                  <div class="col-sm-3 m-l-10p" ui-sref="tenderList({Tenderids:dashboard.boqStatus.pendingIds})">
+                  <div class="col-sm-3 m-l-10p pointer" ui-sref="tenderList({Tenderids:dashboard.boqStatus.pendingIds})">
                       Pending Boq ({{dashboard.boqStatus.pendingCount}})
                   </div>
 
-                  <div class="col-sm-3" ui-sref="tenderList({Tenderids:dashboard.boqStatus.verifiedIds})">
+                  <div class="col-sm-3 pointer" ui-sref="tenderList({Tenderids:dashboard.boqStatus.verifiedIds})">
                       Verified Boq ({{dashboard.boqStatus.verifiedCount}})
-                  </div><div class="col-sm-3" ui-sref="tenderList({Tenderids:dashboard.boqStatus.cancelIds})">
+                  </div><div class="col-sm-3 pointer" ui-sref="tenderList({Tenderids:dashboard.boqStatus.cancelIds})">
                       Rejected Boq ({{dashboard.boqStatus.cancelCount}})
                   </div>
               </div>
@@ -32,21 +32,21 @@
           <div class="col-md-3 col-lg-3 col-sm-3 box box2 shadow5 pointer" ng-click="getTenderByStatus('')">
               <h3 class="ng-binding">Project Milestone ({{dashboard.tenderStatusCount.totalCount}})</h3>
           </div>
-          <div class="col-md-6 col-lg-6 col-sm-6 box box2 shadow4 pointer boqStatus">
+          <div class="col-md-6 col-lg-6 col-sm-6 box box2 shadow4  boqStatus">
               <h5>Billing Report </h5>
               <div class="row">
-                  <div class="col-md-2 col-lg-2 col-sm-2 m-l-10p">
-                      Pending Bills
+                  <div class="col-md-2 col-lg-2 col-sm-2 m-l-10p pointer" ng-click="getInvoiceList('pending',dashboard.invoiceDetails.pending)">
+                      Pending Bills ({{dashboard.invoiceDetails.pending.length}})
                   </div>
 
-                  <div class="col-md-2 col-lg-2 col-sm-2">
-                      Approved Bills
+                  <div class="col-md-2 col-lg-2 col-sm-2 pointer" ng-click="getInvoiceList('approved',dashboard.invoiceDetails.approved)">
+                      Approved Bills ({{dashboard.invoiceDetails.approved.length}})
                   </div>
-                  <div class="col-md-2 col-lg-2 col-sm-2">
-                      Hold Bills
+                  <div class="col-md-2 col-lg-2 col-sm-2 pointer" ng-click="getInvoiceList('hold',dashboard.invoiceDetails.hold)">
+                      Hold Bills ({{dashboard.invoiceDetails.hold.length}})
                   </div>
-                  <div class="col-md-2 col-lg-2 col-sm-2">
-                      Rejected Bills
+                  <div class="col-md-2 col-lg-2 col-sm-2 pointer" ng-click="getInvoiceList('rejected',dashboard.invoiceDetails.rejected)">
+                      Rejected Bills ({{dashboard.invoiceDetails.rejected.length}})
                   </div>
               </div>
           </div>

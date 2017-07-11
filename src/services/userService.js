@@ -110,6 +110,32 @@ app.factory('UserService',function($rootScope,$http,$localStorage,$resource,ApiG
         "state" : "projectMilestone",
         "fClass" : "fa fa-th-large",
       },
+      {
+        "label" : "Billing",
+        "state" : "billing",
+        "fClass" : "fa fa-th-large",
+        "subMenu" : [
+
+          {
+            "label" : "Approved Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },{
+            "label" : "Pending Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },{
+            "label" : "Hold Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },
+          {
+            "label" : "Rejected Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },
+        ]
+      },
 
     ],
     ///////////
@@ -161,6 +187,32 @@ app.factory('UserService',function($rootScope,$http,$localStorage,$resource,ApiG
         "state" : "projectMilestone",
         "fClass" : "fa fa-th-large",
       },
+      {
+        "label" : "Billing",
+        "state" : "billing",
+        "fClass" : "fa fa-th-large",
+        "subMenu" : [
+
+          {
+            "label" : "Approved Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },{
+            "label" : "Pending Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },{
+            "label" : "Hold Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },
+          {
+            "label" : "Rejected Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },
+        ]
+      },
     ],
     'Assistant Engineer' :[
       {
@@ -187,6 +239,32 @@ app.factory('UserService',function($rootScope,$http,$localStorage,$resource,ApiG
         "label" : "Project Milestone",
         "state" : "projectMilestone",
         "fClass" : "fa fa-th-large",
+      },
+      {
+        "label" : "Billing",
+        "state" : "billing",
+        "fClass" : "fa fa-th-large",
+        "subMenu" : [
+
+          {
+            "label" : "Approved Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },{
+            "label" : "Pending Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },{
+            "label" : "Hold Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },
+          {
+            "label" : "Rejected Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },
+        ]
       },
     ],
     'Assistant Engineer Accounts' :[
@@ -242,6 +320,32 @@ app.factory('UserService',function($rootScope,$http,$localStorage,$resource,ApiG
         "state" : "projectMilestone",
         "fClass" : "fa fa-th-large",
       },
+      {
+        "label" : "Billing",
+        "state" : "billing",
+        "fClass" : "fa fa-th-large",
+        "subMenu" : [
+
+          {
+            "label" : "Approved Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },{
+            "label" : "Pending Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },{
+            "label" : "Hold Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },
+          {
+            "label" : "Rejected Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },
+        ]
+      },
     ],
     'Financial Controler' :[
       {
@@ -263,6 +367,32 @@ app.factory('UserService',function($rootScope,$http,$localStorage,$resource,ApiG
         "label" : "Project Milestone",
         "state" : "projectMilestone",
         "fClass" : "fa fa-th-large",
+      },
+      {
+        "label" : "Billing",
+        "state" : "billing",
+        "fClass" : "fa fa-th-large",
+        "subMenu" : [
+
+          {
+            "label" : "Approved Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },{
+            "label" : "Pending Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },{
+            "label" : "Hold Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },
+          {
+            "label" : "Rejected Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },
+        ]
       },
     ],
     'Managing Director' :[
@@ -290,6 +420,32 @@ app.factory('UserService',function($rootScope,$http,$localStorage,$resource,ApiG
         "label" : "Project Milestone",
         "state" : "projectMilestone",
         "fClass" : "fa fa-th-large",
+      },
+      {
+        "label" : "Billing",
+        "state" : "billing",
+        "fClass" : "fa fa-th-large",
+        "subMenu" : [
+
+          {
+            "label" : "Approved Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },{
+            "label" : "Pending Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },{
+            "label" : "Hold Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },
+          {
+            "label" : "Rejected Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },
+        ]
       },
     ],
   }

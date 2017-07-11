@@ -1,4 +1,4 @@
-app.controller('UserController', function($scope, $rootScope, $state,$stateParams, UserService,AppModel,$window, UtilityService,Util,$localStorage, Constants,ApiCall,Events) {
+app.controller('UserController', function($scope, $rootScope, $state,$stateParams,$uibModal,ModalManagerService, UserService,AppModel,$window, UtilityService,Util,$localStorage, Constants,ApiCall,Events) {
     // $scope.UserService = UserService;
     $rootScope.$on(Events.userLogged,function() {
       if(!$scope.user){
@@ -157,12 +157,25 @@ app.controller('UserController', function($scope, $rootScope, $state,$stateParam
              $scope.dashboard.tenderStatusCount.completed = $scope.dashboard.projectMilestone[i].count;
            }
          }
+
        },function(err) {
          Util.alertMessage(err.Status.toLocaleLowerCase(), res.Message);
        })
      }
      $scope.getTenderByStatus = function(tenderStatus) {
        $state.go("tenderList",{tenderStatus:tenderStatus});
+     }
+     $scope.getInvoiceList = function(invoiceStatus,data){
+       var modalData = {
+         page:'dashboard',
+         size:'sm',
+         data:{
+           title:invoiceStatus+' Invoice lists',
+           contents:data
+         }
+       }
+       ModalManagerService.initModal({modalData:modalData});
+
      }
     /**
      * dashboard code ends

@@ -1,0 +1,25 @@
+<div class="modal-header">
+    <h3 class="modal-title">{{title}}</h3>
+</div>
+<div class="modal-body">
+  <div class="table-responsive">
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Tender Id</th>
+                <th>Invoice Id</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="content in contents" ng-click="ok()">
+              <td><button ui-sref="tenderDetails({tenderId:content.tenderId})"  uib-tooltip="get tender details tender id : {{content.tenderId}} " type="button" class="btn btn-success">{{content.tenderId}}</button></td>
+              <td><button ui-sref="invoiceDetails({tenderId:content.tenderId,invoice:content.invoiceId})" type="button" class="btn btn-success" uib-tooltip="get invoice details invoice id : {{content.invoiceId}} " >{{content.invoiceId}}</button></td>
+            </tr>
+        </tbody>
+    </table>
+  </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+    <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+</div>

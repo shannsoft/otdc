@@ -7,6 +7,7 @@
 app.controller('TenderDetailsController', function($scope, $rootScope, $state,$uibModal, $stateParams, ApiCall,Util, EnvService, $timeout, $cookieStore, $localStorage) {
 
     $scope.init = function() {
+      
         $scope.isInit = false;
         $stateParams.action = $stateParams.action || "view"; // setting default action as view
         $scope.isView = $stateParams.action == "view" ? true : false;

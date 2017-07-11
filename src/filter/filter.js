@@ -18,6 +18,17 @@ app.filter('filterDate', function () {
       }
     };
 });
+app.filter('validateNA', function () {
+    var NACheck = ["",undefined,null];
+    return function (value) {
+      if(NACheck.indexOf(value) != -1){
+        return "NA";
+      }
+      else{
+        return value;
+      }
+    };
+});
 app.filter('webServiceName', function () {
     return function (value) {
       var filterValue;

@@ -24,7 +24,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr uib-tooltip="locked for billing" tooltip-enable="boq.invoiceIsLocked" ng-repeat="boq in boqData" ng-class="{'pending-verified':boq.verify == 1,'verified':boq.verify == 2,'cancel-verified':boq.verify == 3,'locked':boq.invoiceIsLocked}">
+                                    <tr uib-tooltip="locked for invoice No {{boq.invoiceId}}" tooltip-enable="boq.invoiceIsLocked" ng-repeat="boq in boqData" ng-class="{'pending-verified':boq.verify == 1,'verified':boq.verify == 2,'cancel-verified':boq.verify == 3,'locked':boq.invoiceIsLocked}">
                                         <td ng-repeat="th in UtilityService.getTableHeaders('billing',boqData[0])" ng-if="UtilityService.isAllowedHeader('boqDetails',th)">
                                             <div ng-if="th == 'quantity'">
                                                 <span ng-if="!boq.isEdit" class="color-black ng-binding">{{boq[th]}}</span>

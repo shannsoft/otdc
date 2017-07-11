@@ -1,7 +1,7 @@
 var dependency = [];
 // lib  dependency
 var distModules = ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate', 'ngCookies', 'ngMessages','ngTable'];
-var custModules = ['validation', 'EventHandler', 'Authentication', 'WebService','uiSwitch'];
+var custModules = ['validation', 'EventHandler', 'Authentication', 'WebService','uiSwitch','ModalManager'];
 dependency = dependency.concat(distModules).concat(custModules);
 
 var app = angular.module("teknobiz", dependency);
@@ -386,9 +386,9 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         })
         .state('invoiceDetails', {
             templateUrl: 'src/views/Billing/invoiceDetails.html',
-            url: '/invoiceDetails/:invoice',
+            url: '/invoiceDetails/:tenderId/:invoice',
             controller: "InvoiceController",
-            params: { invoice:null,tender:null},
+            params: { invoice:null,tenderId:null,tender:null},
             resolve: {
                 loggedout: checkLoggedout
             },

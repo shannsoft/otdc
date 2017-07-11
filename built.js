@@ -1,8 +1,8 @@
-/*! otdc - v1.0.0 - Sun Jun 25 2017 17:36:36 */
+/*! otdc - v1.0.0 - Wed Jul 12 2017 03:41:03 */
 var dependency = [];
 // lib  dependency
 var distModules = ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate', 'ngCookies', 'ngMessages','ngTable'];
-var custModules = ['validation', 'EventHandler', 'Authentication', 'WebService','uiSwitch'];
+var custModules = ['validation', 'EventHandler', 'Authentication', 'WebService','uiSwitch','ModalManager'];
 dependency = dependency.concat(distModules).concat(custModules);
 
 var app = angular.module("teknobiz", dependency);
@@ -387,9 +387,9 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         })
         .state('invoiceDetails', {
             templateUrl: 'src/views/Billing/invoiceDetails.html',
-            url: '/invoiceDetails/:invoice',
+            url: '/invoiceDetails/:tenderId/:invoice',
             controller: "InvoiceController",
-            params: { invoice:null,tender:null},
+            params: { invoice:null,tenderId:null,tender:null},
             resolve: {
                 loggedout: checkLoggedout
             },
@@ -456,7 +456,7 @@ app.factory('Util', ['$rootScope', '$timeout', function($rootScope, $timeout) {
     return Util;
 }]);
 ;app.constant("Constants", {
-        "debug":true,
+        "debug":false,
         "storagePrefix": "goAppOTDC$",
         "getTokenKey" : function() {return this.storagePrefix + "token";},
         "getLoggedIn" : function() {return this.storagePrefix + "loggedin";},
@@ -561,37 +561,51 @@ $scope.generateBill = function() {
   AppModel.pushHistory($location.$$url);
   $state.go("generateBill",{tender:$scope.billing.selectedTender})
 }
+$scope.onChangeinvoiceStatus = function(inVoiceStatus) {
+  alert("call invoice list based on status ---- ")
+}
 /**
 ***************************************************** Generate Billing starts ****************************************
  */
 $scope.generateBillingInit = function(){
-  // getting vendor details
-  $scope.generateBill = {
-    serviceTaxPer : 1,
-    incomeTaxPer  : 2,
-    holdPercent:3,
-    salesTaxPer:5
-  };
+  // api call to get the tax confugrations
+  ApiCall.getTaxConfig(function(response) {
+    $rootScope.showPreloader = false;
+    Util.alertMessage(Events.eventType.success,response.Message);
+    var tax = response.Data;
+    $scope.generateBill = {
+      serviceTaxPer : tax.serviceTax,
+      incomeTaxPer  : 2,
+      holdPercent:3,
+      salesTaxPer:tax.salesTax
+    };
 
-  if(!$stateParams.tender){
-    Util.alertMessage(Events.eventType.warning,Events.selectTender);
-    $state.go("billing");
-    return;
-  }
-  $scope.generateBill.tender = $stateParams.tender;
-  // parsing the selected the boq for the bill generation
-  $scope.generateBill.tender.selectedBoq = [];
-  for(var i in $scope.generateBill.tender.boqData){
-    if($scope.generateBill.tender.boqData[i].isChecked){
-      // updating price as per completed unit
-      $scope.generateBill.tender.boqData[i].price = ($scope.generateBill.tender.boqData[i].completedUnit - $scope.generateBill.tender.boqData[i].unitPaid) * $scope.generateBill.tender.boqData[i].estimateRate;
-      $scope.generateBill.tender.selectedBoq.push($scope.generateBill.tender.boqData[i]);
+    if(!$stateParams.tender){
+      Util.alertMessage(Events.eventType.warning,Events.selectTender);
+      $state.go("billing");
+      return;
     }
-  }
-  // delete the boq data after parsing selected boq
-  delete $scope.generateBill.tender['boqData'];
-  console.log("generateBill.tender.selectedBoq   ",JSON.stringify($scope.generateBill.tender.selectedBoq));
-  $scope.getSumTotal();
+    $scope.generateBill.tender = $stateParams.tender;
+    // parsing the selected the boq for the bill generation
+    $scope.generateBill.tender.selectedBoq = [];
+    for(var i in $scope.generateBill.tender.boqData){
+      if($scope.generateBill.tender.boqData[i].isChecked){
+        // updating price as per completed unit
+        $scope.generateBill.tender.boqData[i].price = ($scope.generateBill.tender.boqData[i].completedUnit - $scope.generateBill.tender.boqData[i].unitPaid) * $scope.generateBill.tender.boqData[i].estimateRate;
+        $scope.generateBill.tender.boqData[i].price = parseFloat($scope.generateBill.tender.boqData[i].price).toFixed(2);
+        $scope.generateBill.tender.selectedBoq.push($scope.generateBill.tender.boqData[i]);
+      }
+    }
+    // delete the boq data after parsing selected boq
+    delete $scope.generateBill.tender['boqData'];
+    console.log("generateBill.tender.selectedBoq   ",JSON.stringify($scope.generateBill.tender.selectedBoq));
+    $scope.getSumTotal();
+  },function(err) {
+    $rootScope.showPreloader = false;
+    Util.alertMessage(Events.eventType.error,err.Message);
+
+  })
+
 }
 $scope.onBillingApproval = function() {
 
@@ -652,6 +666,7 @@ $scope.getSumTotal = function() {
   for(var i in $scope.generateBill.tender.selectedBoq){
     $scope.generateBill.sumTotal+= $scope.generateBill.tender.selectedBoq[i].price;
   }
+  $scope.generateBill.sumTotal = parseFloat($scope.generateBill.sumTotal).toFixed(2);
   $scope.generateBill.salesTaxAmt = parseFloat(($scope.generateBill.salesTaxPer/100*$scope.generateBill.sumTotal).toFixed(2));
   $scope.generateBill.serviceTaxAmt = parseFloat(($scope.generateBill.serviceTaxPer/100*$scope.generateBill.sumTotal).toFixed(2));
   $scope.generateBill.holdAmount = parseFloat(( parseFloat($scope.generateBill.holdPercent)/100*$scope.generateBill.sumTotal).toFixed(2));
@@ -697,7 +712,7 @@ $scope.getInvoices = function() {
   * getting invoice details
 */
 $scope.getInvoiceDetails = function(invoiceId) {
-  $state.go("invoiceDetails",{invoice:invoiceId,tender:$scope.billing.selectedTender});
+  $state.go("invoiceDetails",{invoice:invoiceId,tenderId:$scope.billing.selectedTender.tenderId,tender:$scope.billing.selectedTender});
 }
 /**
 ***************************************************** Generate Billing ends ****************************************
@@ -709,11 +724,23 @@ $scope.getInvoiceDetails = function(invoiceId) {
   $scope.UtilityService = UtilityService;
   $scope.invoiceDetailsInit = function() {
 
-    if(!$stateParams.tender || !$stateParams.invoice) {
+    if(!$stateParams.invoice || (!$stateParams.tender && !$stateParams.tenderId)) {
       Util.alertMessage("warning","No Invoice selected ");
       $state.go("billing");
     }
-    $scope.tender = $stateParams.tender;
+    if($stateParams.tender) {
+      $scope.tender = $stateParams.tender;
+    }
+    if(!$stateParams.tender && $stateParams.tenderId){
+      ApiCall.getTendor({tenderId: $stateParams.tenderId},function(res) {
+        $rootScope.showPreloader = false;
+        Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
+          $scope.tender = res.Data;
+      },function(err) {
+        $rootScope.showPreloader = false;
+        Util.alertMessage(err.Status.toLocaleLowerCase(),err.Message);
+      })
+    }
     var data = {
       invoice:$stateParams.invoice
     }
@@ -725,7 +752,15 @@ $scope.getInvoiceDetails = function(invoiceId) {
       Util.alertMessage(err.Status.toLocaleLowerCase(),err.Message);
     })
   }
+  /**
+   * functionName :onInvoiceAction
+   * Info : on approve , this will assign to finance controller for the approval
+   On reject will reassign to the user with reject comment
+   *
+   */
+  $scope.onInvoiceAction = function(type) {
 
+  }
 });
 ;app.controller('Main_Controller', function($scope, $rootScope, $state, EnvService, $timeout, $cookieStore, $localStorage, validationService, Events, $location, Util, $anchorScroll) {
     // Events handling
@@ -1297,6 +1332,7 @@ app.controller('reviewHistoryController', function ($scope, $state,$uibModalInst
 ;app.controller('TenderDetailsController', function($scope, $rootScope, $state,$uibModal, $stateParams, ApiCall,Util, EnvService, $timeout, $cookieStore, $localStorage) {
 
     $scope.init = function() {
+      
         $scope.isInit = false;
         $stateParams.action = $stateParams.action || "view"; // setting default action as view
         $scope.isView = $stateParams.action == "view" ? true : false;
@@ -1835,7 +1871,7 @@ app.controller('boqHistoryController', function ($scope,$uibModalInstance,tender
          */
 
 })
-;app.controller('UserController', function($scope, $rootScope, $state,$stateParams, UserService,AppModel,$window, UtilityService,Util,$localStorage, Constants,ApiCall,Events) {
+;app.controller('UserController', function($scope, $rootScope, $state,$stateParams,$uibModal,ModalManagerService, UserService,AppModel,$window, UtilityService,Util,$localStorage, Constants,ApiCall,Events) {
     // $scope.UserService = UserService;
     $rootScope.$on(Events.userLogged,function() {
       if(!$scope.user){
@@ -1994,12 +2030,25 @@ app.controller('boqHistoryController', function ($scope,$uibModalInstance,tender
              $scope.dashboard.tenderStatusCount.completed = $scope.dashboard.projectMilestone[i].count;
            }
          }
+
        },function(err) {
          Util.alertMessage(err.Status.toLocaleLowerCase(), res.Message);
        })
      }
      $scope.getTenderByStatus = function(tenderStatus) {
        $state.go("tenderList",{tenderStatus:tenderStatus});
+     }
+     $scope.getInvoiceList = function(invoiceStatus,data){
+       var modalData = {
+         page:'dashboard',
+         size:'sm',
+         data:{
+           title:invoiceStatus+' Invoice lists',
+           contents:data
+         }
+       }
+       ModalManagerService.initModal({modalData:modalData});
+
      }
     /**
      * dashboard code ends
@@ -2391,9 +2440,19 @@ app.controller('deleteVendorModalCtrl', function ($scope, $uibModalInstance,vend
         // ]
         $scope.currTab = 0;
         $scope.configuration = {
-            tender: {},
+            tax: {},
             billing: {},
         }
+        // api call to get the tax confugrations
+        ApiCall.getTaxConfig(function(response) {
+          $rootScope.showPreloader = false;
+          Util.alertMessage(Events.eventType.success,response.Message);
+          $scope.configuration.tax = response.Data;
+        },function(err) {
+          $rootScope.showPreloader = false;
+          Util.alertMessage(Events.eventType.error,err.Message);
+
+        })
     }
     $scope.tabChange = function(tabPos) {
         $scope.currTab = tabPos;
@@ -2403,16 +2462,16 @@ app.controller('deleteVendorModalCtrl', function ($scope, $uibModalInstance,vend
       switch (tabIndex) {
         case 0: // tender
            // api call to save tender details
-           if(!$scope.configuration.tender.serviceTax) {
+           if(!$scope.configuration.tax.serviceTax) {
              Util.alertMessage("warning","Please Enter Service tax");
              return;
            }
-           if(!$scope.configuration.tender.incomeTax) {
-             Util.alertMessage("warning","Please Enter Income tax");
+           if(!$scope.configuration.tax.salesTax) {
+             Util.alertMessage("warning","Please Enter Sales tax");
              return;
            }
-
-           ApiCall.postConfigurations($scope.configuration.tender,function(response) {
+           $scope.configuration.tax.actType = 'U';
+           ApiCall.postTaxConfig($scope.configuration.tax,function(response) {
              $rootScope.showPreloader = false;
              Util.alertMessage(Events.eventType.success,response.Message);
 
@@ -2423,6 +2482,10 @@ app.controller('deleteVendorModalCtrl', function ($scope, $uibModalInstance,vend
            })
           break;
         case 1:
+          // validate the billing amount based on the designation
+          var status = $scope.validateApproveLimit($scope.designations);
+          if(!status)
+          return; // invalid limit set
           // billing configurations
           ApiCall.postBillingAuth($scope.designations,function(response) {
             $rootScope.showPreloader = false;
@@ -2454,7 +2517,31 @@ app.controller('deleteVendorModalCtrl', function ($scope, $uibModalInstance,vend
          Util.alertMessage(Events.eventType.error,err.Message);
        })
      }
-
+     $scope.validateApproveLimit = function(designations){
+       var status = true;
+       var skipDesignation = ['SUPER ADMIN','Assistant Engineer Accounts','Financial Controler'] ; // these designations are not concerned for the billing limit
+       var findParent = function(parentId) {
+         var parent = null;
+         for(var i in designations){
+           if(designations[i].designationId == parentId){
+             parent = designations[i];
+             break;
+           }
+         }
+         return parent;
+       }
+       for(var i in designations){
+         if(skipDesignation.indexOf(designations[i].designationName) == -1){
+           var parent = findParent(designations[i].parentId);
+           if( (parent && parent.limit < designations[i].limit && skipDesignation.indexOf(parent.designationName) == -1)){
+              Util.alertMessage(Events.eventType.warning," limit set for "+designations[i].designationName +" must be  less than its parent "+parent.designationName);
+              status = false;
+              break;
+           }
+         }
+       }
+        return status;
+     }
     /**
      * Billing configuration ends
      */
@@ -2713,6 +2800,17 @@ app.filter('filterDate', function () {
       }
     };
 });
+app.filter('validateNA', function () {
+    var NACheck = ["",undefined,null];
+    return function (value) {
+      if(NACheck.indexOf(value) != -1){
+        return "NA";
+      }
+      else{
+        return value;
+      }
+    };
+});
 app.filter('webServiceName', function () {
     return function (value) {
       var filterValue;
@@ -2844,6 +2942,44 @@ app.filter('webServiceName', function () {
       }
     })
 ;
+;angular.module('ModalManager', [])
+.controller('DashInvoiceListCtrl',function($rootScope,$scope,$uibModalInstance, data){
+  $scope.title = data.title;
+  $scope.contents = data.contents;
+  $scope.ok = function () {
+    $uibModalInstance.close('ok');
+  };
+  $scope.cancel = function () {
+    $uibModalInstance.dismiss('cancel');
+  };
+})
+.factory('ModalManagerService',function($uibModal){
+  var ModalManagerService = {};
+  ModalManagerService.initModal = function(obj){
+        var modalData = obj.modalData; // overriding
+        switch (modalData.page) {
+          case 'dashboard':
+          var modalInstance = $uibModal.open({
+          animation: true,
+          templateUrl: 'src/views/modals/dashBillingListModal.html',
+          controller: 'DashInvoiceListCtrl',
+          size: modalData.size,
+          resolve: {
+            data: function () {
+              return modalData.data;
+            }
+          }
+          });
+
+
+        break;
+      default:
+
+    }
+  }
+
+  return ModalManagerService;
+})
 ;angular.module('validation', [])
     .factory('validationService', function($rootScope,Events) {
       // var validationMessages = {
@@ -3101,6 +3237,16 @@ app.filter('webServiceName', function () {
                 "method": "GET",
                 "Content-Type": "application/json"
             },
+            getTaxConfig: {
+                "url": "/api/_TaxConfig",
+                "method": "GET",
+                "Content-Type": "application/json"
+            },
+            postTaxConfig: {
+                "url": "/api/_TaxConfig",
+                "method": "POST",
+                "Content-Type": "application/json"
+            },
 
 
         }
@@ -3154,6 +3300,8 @@ app.filter('webServiceName', function () {
             postBillingAuth: ApiGenerator.getApi('postBillingAuth'),
             postInvoice: ApiGenerator.getApi('postInvoice'),
             getInvoice: ApiGenerator.getApi('getInvoice'),
+            getTaxConfig: ApiGenerator.getApi('getTaxConfig'),
+            postTaxConfig: ApiGenerator.getApi('postTaxConfig'),
           });
 
     })
@@ -3330,6 +3478,32 @@ app.filter('webServiceName', function () {
         "state" : "projectMilestone",
         "fClass" : "fa fa-th-large",
       },
+      {
+        "label" : "Billing",
+        "state" : "billing",
+        "fClass" : "fa fa-th-large",
+        "subMenu" : [
+
+          {
+            "label" : "Approved Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },{
+            "label" : "Pending Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },{
+            "label" : "Hold Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },
+          {
+            "label" : "Rejected Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },
+        ]
+      },
 
     ],
     ///////////
@@ -3381,6 +3555,32 @@ app.filter('webServiceName', function () {
         "state" : "projectMilestone",
         "fClass" : "fa fa-th-large",
       },
+      {
+        "label" : "Billing",
+        "state" : "billing",
+        "fClass" : "fa fa-th-large",
+        "subMenu" : [
+
+          {
+            "label" : "Approved Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },{
+            "label" : "Pending Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },{
+            "label" : "Hold Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },
+          {
+            "label" : "Rejected Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },
+        ]
+      },
     ],
     'Assistant Engineer' :[
       {
@@ -3407,6 +3607,32 @@ app.filter('webServiceName', function () {
         "label" : "Project Milestone",
         "state" : "projectMilestone",
         "fClass" : "fa fa-th-large",
+      },
+      {
+        "label" : "Billing",
+        "state" : "billing",
+        "fClass" : "fa fa-th-large",
+        "subMenu" : [
+
+          {
+            "label" : "Approved Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },{
+            "label" : "Pending Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },{
+            "label" : "Hold Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },
+          {
+            "label" : "Rejected Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },
+        ]
       },
     ],
     'Assistant Engineer Accounts' :[
@@ -3462,6 +3688,32 @@ app.filter('webServiceName', function () {
         "state" : "projectMilestone",
         "fClass" : "fa fa-th-large",
       },
+      {
+        "label" : "Billing",
+        "state" : "billing",
+        "fClass" : "fa fa-th-large",
+        "subMenu" : [
+
+          {
+            "label" : "Approved Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },{
+            "label" : "Pending Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },{
+            "label" : "Hold Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },
+          {
+            "label" : "Rejected Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },
+        ]
+      },
     ],
     'Financial Controler' :[
       {
@@ -3483,6 +3735,32 @@ app.filter('webServiceName', function () {
         "label" : "Project Milestone",
         "state" : "projectMilestone",
         "fClass" : "fa fa-th-large",
+      },
+      {
+        "label" : "Billing",
+        "state" : "billing",
+        "fClass" : "fa fa-th-large",
+        "subMenu" : [
+
+          {
+            "label" : "Approved Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },{
+            "label" : "Pending Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },{
+            "label" : "Hold Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },
+          {
+            "label" : "Rejected Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },
+        ]
       },
     ],
     'Managing Director' :[
@@ -3510,6 +3788,32 @@ app.filter('webServiceName', function () {
         "label" : "Project Milestone",
         "state" : "projectMilestone",
         "fClass" : "fa fa-th-large",
+      },
+      {
+        "label" : "Billing",
+        "state" : "billing",
+        "fClass" : "fa fa-th-large",
+        "subMenu" : [
+
+          {
+            "label" : "Approved Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },{
+            "label" : "Pending Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },{
+            "label" : "Hold Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },
+          {
+            "label" : "Rejected Bills",
+            "state" : "billing",
+            "fClass" : "fa fa-rupee",
+          },
+        ]
       },
     ],
   }

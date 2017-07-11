@@ -202,6 +202,16 @@ angular.module('WebService', [])
                 "method": "GET",
                 "Content-Type": "application/json"
             },
+            getTaxConfig: {
+                "url": "/api/_TaxConfig",
+                "method": "GET",
+                "Content-Type": "application/json"
+            },
+            postTaxConfig: {
+                "url": "/api/_TaxConfig",
+                "method": "POST",
+                "Content-Type": "application/json"
+            },
 
 
         }
@@ -255,6 +265,8 @@ angular.module('WebService', [])
             postBillingAuth: ApiGenerator.getApi('postBillingAuth'),
             postInvoice: ApiGenerator.getApi('postInvoice'),
             getInvoice: ApiGenerator.getApi('getInvoice'),
+            getTaxConfig: ApiGenerator.getApi('getTaxConfig'),
+            postTaxConfig: ApiGenerator.getApi('postTaxConfig'),
           });
 
     })
