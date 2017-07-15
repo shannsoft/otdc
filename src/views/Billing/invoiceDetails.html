@@ -107,8 +107,10 @@
 
                   </div>
                   <fieldset class="form-group m-t-10">
-                      <button type="button" class="btn btn-success" ng-click="onInvoiceAction(1)">Approve</button>
-                      <button class="btn btn-secondary" ng-click="onInvoiceAction(2)">Reject</button>
+                    <div class="dis-inline" ng-if="validateApprover(invoiceData)">
+                      <button type="button" class="btn btn-success"  ng-click="onInvoiceAction(invoiceData,1)">Approve</button>
+                      <button class="btn btn-secondary"  ng-click="onInvoiceAction(invoiceData,0)">Reject</button>
+                    </div>
                       <button class="btn btn-secondary" history>Back</button>
                   </fieldset>
                   </div>

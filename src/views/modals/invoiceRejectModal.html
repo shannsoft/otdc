@@ -1,0 +1,17 @@
+<div class="modal-header">
+    <h3 class="modal-title">Invoice cancel Modal</h3>
+</div>
+<div class="modal-body">
+  <form name="invoiceRejectForm">
+    <fieldset class="form-group" ng-class="{'has-error':invoiceRejectForm.comment.$touched && invoiceRejectForm.comment.$invalid}">
+        <label class="control-label" for="formGroupExampleInput">Cancel Reason</label>
+        <input type="text"  name="comment" ng-model="rejectdata.remark" class="form-control formInput" id="formGroupExampleInput" required>
+        <span class="has-error formInput" ng-if="invoiceRejectForm.comment.$touched && invoiceRejectForm.comment.$invalid">Remark is invalid</span>
+    </fieldset>
+  </form>
+
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-disabled="invoiceRejectForm.$invalid" ng-click="ok()">OK</button>
+    <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+</div>

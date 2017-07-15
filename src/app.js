@@ -25,6 +25,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
                   console.log("calling web service ->>>>>>>>>>>" , config.url);
                   console.log("Data web service ->>>>>>>>>>>" , JSON.stringify(config.data));
                 }
+                
                 return config;
             },
             response: function(response) {

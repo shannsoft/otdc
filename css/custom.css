@@ -129,7 +129,9 @@
 .h-500px{
   height: 500px;
 }
-
+.dis-inline{
+  display: inline;
+}
 .border-wrap{
   border: 1px solid #000;
 }

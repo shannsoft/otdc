@@ -1,4 +1,4 @@
-/*! otdc - v1.0.0 - Wed Jul 12 2017 03:41:03 */
+/*! otdc - v1.0.0 - Sat Jul 15 2017 16:42:51 */
 var dependency = [];
 // lib  dependency
 var distModules = ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate', 'ngCookies', 'ngMessages','ngTable'];
@@ -26,6 +26,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
                   console.log("calling web service ->>>>>>>>>>>" , config.url);
                   console.log("Data web service ->>>>>>>>>>>" , JSON.stringify(config.data));
                 }
+                
                 return config;
             },
             response: function(response) {
@@ -456,7 +457,7 @@ app.factory('Util', ['$rootScope', '$timeout', function($rootScope, $timeout) {
     return Util;
 }]);
 ;app.constant("Constants", {
-        "debug":false,
+        "debug":true,
         "storagePrefix": "goAppOTDC$",
         "getTokenKey" : function() {return this.storagePrefix + "token";},
         "getLoggedIn" : function() {return this.storagePrefix + "loggedin";},
@@ -720,7 +721,7 @@ $scope.getInvoiceDetails = function(invoiceId) {
 
 
 });
-;app.controller('InvoiceController', function($scope, $rootScope,$window,$location,AppModel, Events,$state,$uibModal, $stateParams,$filter, ApiCall,Util,$timeout,$localStorage,UtilityService,Constants) {
+;app.controller('InvoiceController', function($scope, $rootScope,$window,$location,AppModel,ModalManagerService, UserService,Events,$state,$uibModal, $stateParams,$filter, ApiCall,Util,$timeout,$localStorage,UtilityService,Constants) {
   $scope.UtilityService = UtilityService;
   $scope.invoiceDetailsInit = function() {
 
@@ -753,13 +754,68 @@ $scope.getInvoiceDetails = function(invoiceId) {
     })
   }
   /**
+   * functionName :validateApprover
+   * Info : This is used to validate the log in user to valid to approve/reject the invoice
+            based the limit set in the confugration
+   */
+   $scope.validateApprover = function(invoiceData){
+     var validUsers = invoiceData.notifyDesignation.split(",");
+     console.log(validUsers,UserService.getUser().designationId);
+     if(validUsers.indexOf((UserService.getUser().designationId) != -1 ||  UserService.getUser().designationId == "SUPER ADMIN" ) && invoiceData.sts == "PENDING"){
+       return true;
+     }
+     else {
+       return false;
+     }
+   }
+  /**
    * functionName :onInvoiceAction
    * Info : on approve , this will assign to finance controller for the approval
    On reject will reassign to the user with reject comment
    *
    */
-  $scope.onInvoiceAction = function(type) {
+  $scope.onInvoiceAction = function(invoiceData,type) {
+    switch (type) {
+      case 0:// reject
+      var data = {
+        actType:"REJECT",
+        id:invoiceData.id
+      }
+      var modalData = {
+        page:"invoiceDetails",
+        size:"md",
+        data:{
+          actType:"APPROVE",
+          id:invoiceData.id
+        }
+      }
 
+        ModalManagerService.initModal(modalData);
+      // ApiCall.putInvoice(data,function(res) {
+      //   Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
+      //   //$scope.invoiceDetailsInit();
+      // },function(err) {
+      //   $rootScope.showPreloader = false;
+      //   Util.alertMessage(err.Status.toLocaleLowerCase(),err.Message);
+      // })
+        break;
+      case 1: // approve
+      var data = {
+        actType:"APPROVE",
+        id:invoiceData.id
+      }
+
+      ApiCall.putInvoice(data,function(res) {
+        Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
+        //$scope.invoiceDetailsInit();
+      },function(err) {
+        $rootScope.showPreloader = false;
+        Util.alertMessage(err.Status.toLocaleLowerCase(),err.Message);
+      })
+        break;
+      default:
+
+    }
   }
 });
 ;app.controller('Main_Controller', function($scope, $rootScope, $state, EnvService, $timeout, $cookieStore, $localStorage, validationService, Events, $location, Util, $anchorScroll) {
@@ -2047,7 +2103,7 @@ app.controller('boqHistoryController', function ($scope,$uibModalInstance,tender
            contents:data
          }
        }
-       ModalManagerService.initModal({modalData:modalData});
+       ModalManagerService.initModal(modalData);
 
      }
     /**
@@ -2943,43 +2999,78 @@ app.filter('webServiceName', function () {
     })
 ;
 ;angular.module('ModalManager', [])
-.controller('DashInvoiceListCtrl',function($rootScope,$scope,$uibModalInstance, data){
-  $scope.title = data.title;
-  $scope.contents = data.contents;
-  $scope.ok = function () {
-    $uibModalInstance.close('ok');
-  };
-  $scope.cancel = function () {
-    $uibModalInstance.dismiss('cancel');
-  };
-})
-.factory('ModalManagerService',function($uibModal){
-  var ModalManagerService = {};
-  ModalManagerService.initModal = function(obj){
-        var modalData = obj.modalData; // overriding
-        switch (modalData.page) {
-          case 'dashboard':
+  .controller('DashInvoiceListCtrl', function($rootScope, $scope, $uibModalInstance, data) {
+    $scope.title = data.title;
+    $scope.contents = data.contents;
+    $scope.ok = function() {
+      $uibModalInstance.close('ok');
+    };
+    $scope.cancel = function() {
+      $uibModalInstance.dismiss('cancel');
+    };
+  })
+  .controller('InvoiceRejectModalCtrl', function($rootScope, $scope, $uibModalInstance,Util, ApiCall,data) {
+    $scope.rejectdata = data;
+    $scope.ok = function() {
+      // call service to
+      ApiCall.putInvoice($scope.rejectdata,function(res) {
+        Util.alertMessage(res.Status.toLocaleLowerCase(),res.Message);
+        //$scope.invoiceDetailsInit();
+        $uibModalInstance.close('ok');
+      },function(err) {
+        $rootScope.showPreloader = false;
+        Util.alertMessage(err.Status.toLocaleLowerCase(),err.Message);
+        $uibModalInstance.close('ok');
+      })
+
+
+    };
+    $scope.cancel = function() {
+      $uibModalInstance.dismiss('cancel');
+    };
+  })
+  .factory('ModalManagerService', function($uibModal) {
+    var ModalManagerService = {};
+    ModalManagerService.initModal = function(modalData) {
+
+      switch (modalData.page) {
+        case 'dashboard':
           var modalInstance = $uibModal.open({
-          animation: true,
-          templateUrl: 'src/views/modals/dashBillingListModal.html',
-          controller: 'DashInvoiceListCtrl',
-          size: modalData.size,
-          resolve: {
-            data: function () {
-              return modalData.data;
+            animation: true,
+            templateUrl: 'src/views/modals/dashBillingListModal.html',
+            controller: 'DashInvoiceListCtrl',
+            size: modalData.size,
+            resolve: {
+              data: function() {
+                return modalData.data;
+              }
             }
-          }
+          });
+          break;
+
+
+        case 'invoiceDetails':
+          var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: 'src/views/modals/invoiceRejectModal.html',
+            controller: 'InvoiceRejectModalCtrl',
+            size: modalData.size,
+            resolve: {
+              data: function() {
+                return modalData.data;
+              }
+            }
           });
 
 
-        break;
-      default:
+          break;
+        default:
 
+      }
     }
-  }
 
-  return ModalManagerService;
-})
+    return ModalManagerService;
+  })
 ;angular.module('validation', [])
     .factory('validationService', function($rootScope,Events) {
       // var validationMessages = {
@@ -3237,6 +3328,11 @@ app.filter('webServiceName', function () {
                 "method": "GET",
                 "Content-Type": "application/json"
             },
+            putInvoice: {
+                "url": "/api/_Invoice",
+                "method": "PUT",
+                "Content-Type": "application/json"
+            },
             getTaxConfig: {
                 "url": "/api/_TaxConfig",
                 "method": "GET",
@@ -3247,6 +3343,7 @@ app.filter('webServiceName', function () {
                 "method": "POST",
                 "Content-Type": "application/json"
             },
+
 
 
         }
@@ -3300,6 +3397,7 @@ app.filter('webServiceName', function () {
             postBillingAuth: ApiGenerator.getApi('postBillingAuth'),
             postInvoice: ApiGenerator.getApi('postInvoice'),
             getInvoice: ApiGenerator.getApi('getInvoice'),
+            putInvoice: ApiGenerator.getApi('putInvoice'),
             getTaxConfig: ApiGenerator.getApi('getTaxConfig'),
             postTaxConfig: ApiGenerator.getApi('postTaxConfig'),
           });

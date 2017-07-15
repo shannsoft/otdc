@@ -174,7 +174,7 @@ app.controller('UserController', function($scope, $rootScope, $state,$stateParam
            contents:data
          }
        }
-       ModalManagerService.initModal({modalData:modalData});
+       ModalManagerService.initModal(modalData);
 
      }
     /**
